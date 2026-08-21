@@ -1,24 +1,26 @@
-# Brambleheart Alpha Build 0.03 — GUI & Reference Patch
+# Brambleheart Alpha Build 0.04 — GUI Alignment Patch
 
-This patch continues the interface overhaul while preserving the existing Vue/Vite architecture and local character storage.
+This patch replaces the previous approximation of the application interface with the established reader GUI structure now used as the visual baseline.
 
 ## Included
 
-- Header rebuilt around the centered Brambleheart identity, build information, changelog control, quick appearance toggle, and permanent alpha WIP notice.
-- Normal text reduced to the new compact baseline with five scale choices: Smaller, Small, Normal, Large, Larger.
-- Optional Bold Text setting.
-- Eleven species palette themes corresponding to the current playable-species list. No species background artwork is bundled yet.
-- Background selector remains available with None as the only option.
-- New Install section with install-prompt support, manifest, and service worker.
-- New Support section with Patreon and issue-tracker actions.
-- Rules page reorganized into the requested major rules groups with Search Rules and Recent reference tools.
-- New splash page at `/`; Character List now lives at `/characters`.
-- Additional layout tightening across cards, settings groups, reference panels, responsive controls, and navigation.
+- Rebuilt header and persistent WIP notice.
+- Centered branding, build label, changelog link, light/dark icon, and four-tab primary navigation.
+- Shared 760px reader page width and parchment/card presentation across routed screens.
+- First-visit welcome page with install prompt.
+- Five-step text sizing: Smaller, Small, Normal, Large, Larger.
+- Bold Text and Compact Rows settings.
+- Species palette themes for all currently listed playable species.
+- Backgrounds retained with None as the only current option.
+- Settings reorganized into Install, Report Bugs & Issues, Display, Support, and Data & Content.
+- Rules reorganized into Reference & Updates, Fundamental Rules, Character Creation Rules, Species Rules, Battle Rules, and Role-Playing Rules with Search and Recent controls.
+- Character List and Simulator converted to the same page/card/control hierarchy.
+- Routed Changelog page and compact footer utilities.
 
 ## Local data
 
-The existing keys for characters and application settings are preserved. Saved `medium` text settings migrate to the new `normal` value automatically.
+The existing character storage key remains unchanged. Existing display preferences are migrated where possible into the current settings structure.
 
 ## Applying
 
-Overlay the files in this package onto the current repository, preserving the existing `public/assets/` images and all files not included in the patch.
+Overlay these files onto the current Brambleheart repository and preserve any repository files not included in this patch.

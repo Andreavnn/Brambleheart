@@ -1,4 +1,4 @@
-const CACHE='brambleheart-shell-v0.03'
+const CACHE='brambleheart-shell-v0.04'
 const SHELL=['/','/assets/Icon.png','/assets/Logo.png','/manifest.webmanifest']
 
 self.addEventListener('install',event=>{

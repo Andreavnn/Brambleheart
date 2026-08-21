@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import AppHeader from '../components/AppHeader.vue'
 import { BUILD, ruleChapters, type RuleChapter } from '../data/bramble'
 
-const RECENT_KEY='brambleheart-rules-recent-v0.03'
+const RECENT_KEY='brambleheart-rules-recent-v0.04'
 const query=ref('')
 const open=ref(new Set<string>())
 const recentIds=ref<string[]>(loadRecent())
 
 const groups = [
+  { id:'reference', title:'Reference & Updates', eyebrow:'REFERENCE', ids:[] as string[] },
   { id:'fundamental', title:'Fundamental Rules', eyebrow:'CORE SYSTEM', ids:['fundamentals','core-abilities'] },
   { id:'creation', title:'Character Creation Rules', eyebrow:'CHARACTERS', ids:['character-creation','sparks','homeland','faith-oath','talents','adventuring-gear','trade-goods','transportation','beyond-creation'] },
   { id:'species', title:'Species Rules', eyebrow:'SPECIES', ids:['species'] },
@@ -34,12 +36,14 @@ function openRecent(id:string){
   recordRecent(id)
   requestAnimationFrame(()=>document.getElementById(`rule-${id}`)?.scrollIntoView({behavior:'smooth',block:'center'}))
 }
-function label(status:string){ return status==='interactive'?'LOADED':status==='indexed'?'INDEXED':'TOC' }
+function clearSearch(){ query.value='' }
 function matches(chapter:RuleChapter){
   const q=query.value.trim().toLowerCase()
   return !q || JSON.stringify(chapter).toLowerCase().includes(q)
 }
-const groupedRules=computed(()=>groups.map(group=>({
+function jumpTo(id:string){ document.getElementById(`rules-${id}`)?.scrollIntoView({behavior:'smooth',block:'start'}) }
+
+const categoryGroups=computed(()=>groups.slice(1).map(group=>({
   ...group,
   chapters:group.ids.map(id=>ruleChapters.find(chapter=>chapter.id===id)).filter((chapter): chapter is RuleChapter=>Boolean(chapter)).filter(matches),
 })).filter(group=>group.chapters.length))
@@ -47,51 +51,81 @@ const recentRules=computed(()=>recentIds.value.map(id=>ruleChapters.find(chapter
 </script>
 
 <template>
-  <section>
-    <div class="page-title">
-      <span class="eyebrow">REFERENCE</span>
+  <main class="page rules-page">
+    <AppHeader />
+
+    <div class="page-title-block rules-title-block">
+      <p class="eyebrow">RULES</p>
       <h1>Rules</h1>
-      <p>Search the current Brambleheart reference, return to recent entries, or browse by rules section.</p>
+      <div class="rules-intro-copy">
+        <p>Search the current Brambleheart reference, return to recently opened entries, or browse the major rules sections.</p>
+        <p class="rules-version-note"><strong>Alpha Build {{ BUILD }}</strong> · Reference content reflects the rules currently loaded into this build.</p>
+      </div>
     </div>
 
-    <section class="panel reference-panel">
-      <div class="section-head"><div><span class="eyebrow">REFERENCE &amp; UPDATES</span><h2>Reference &amp; Updates</h2></div><span class="build-chip">BUILD {{ BUILD }}</span></div>
-      <div class="reference-grid">
-        <div class="reference-box">
-          <span class="field-label">Search Rules</span>
-          <label class="search-box embedded"><span>⌕</span><input v-model="query" placeholder="Search rules…" autocomplete="off" /></label>
-          <div class="status-row"><span class="chip">LOADED</span><span class="chip">INDEXED</span><span class="chip toc">TOC</span></div>
+    <label class="search-bar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+      <input v-model="query" type="search" placeholder="Search rules" autocomplete="off" />
+      <button v-if="query" type="button" class="search-clear" aria-label="Clear search" @click="clearSearch">×</button>
+    </label>
+
+    <section class="quick-actions rules-quick-actions" aria-label="Rules sections">
+      <button v-for="group in groups" :key="group.id" type="button" class="quick-action rules-quick-action" @click="jumpTo(group.id)">
+        <span>{{ group.title }}</span>
+      </button>
+    </section>
+
+    <section id="rules-reference" class="section-card rules-reference-card open">
+      <div class="section-heading static-section-heading">
+        <span>Reference &amp; Updates</span>
+        <span class="section-heading-right"><span class="section-count">{{ recentRules.length }}</span></span>
+      </div>
+      <div class="section-content">
+        <div class="list-row muted">
+          <div class="list-row-copy"><span class="list-row-title">Current reference build</span><span class="list-row-subtitle">Brambleheart Alpha Build {{ BUILD }}. Rule groups are indexed from the current application data.</span></div>
+          <span class="row-badge">CURRENT</span>
         </div>
-        <div class="reference-box">
-          <span class="field-label">Recent</span>
-          <div v-if="recentRules.length" class="recent-list">
-            <button v-for="chapter in recentRules" :key="chapter.id" type="button" @click="openRecent(chapter.id)"><strong>{{ chapter.title }}</strong><span>{{ chapter.eyebrow }}</span></button>
-          </div>
-          <p v-else class="muted recent-empty">Recently opened rules will appear here.</p>
-        </div>
+        <template v-if="recentRules.length">
+          <button v-for="chapter in recentRules" :key="chapter.id" type="button" class="list-row recent-rule-row" @click="openRecent(chapter.id)">
+            <div class="list-row-copy"><span class="list-row-title">{{ chapter.title }}</span><span class="list-row-subtitle">Recently opened · {{ chapter.eyebrow }}</span></div>
+            <svg class="row-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+        </template>
+        <div v-else class="empty-inline">Recently opened rules will appear here.</div>
       </div>
     </section>
 
-    <section class="rules-groups">
-      <details v-for="group in groupedRules" :key="group.id" class="panel rule-group" open>
-        <summary class="rule-group-summary">
-          <div><span class="eyebrow">{{ group.eyebrow }}</span><strong>{{ group.title }}</strong><small>{{ group.chapters.length }} entr{{ group.chapters.length===1?'y':'ies' }}</small></div>
-          <span class="summary-mark" aria-hidden="true">+</span>
-        </summary>
-        <div class="rule-group-body">
-          <article v-for="chapter in group.chapters" :id="`rule-${chapter.id}`" :key="chapter.id" class="rule-card">
-            <button class="rule-heading" type="button" @click="toggle(chapter.id)">
-              <div><span class="eyebrow">{{ chapter.eyebrow }}</span><strong>{{ chapter.title }}</strong><small>{{ chapter.summary }}</small></div>
-              <span class="status-pill" :class="chapter.status">{{ label(chapter.status) }}</span>
+    <section class="section-stack rules-accordion-stack">
+      <article v-for="group in categoryGroups" :id="`rules-${group.id}`" :key="group.id" class="section-card" :class="{ open:true }">
+        <div class="section-heading static-section-heading">
+          <span>{{ group.title }}</span>
+          <span class="section-heading-right"><span class="section-count">{{ group.chapters.length }}</span></span>
+        </div>
+        <div class="section-content">
+          <article v-for="chapter in group.chapters" :id="`rule-${chapter.id}`" :key="chapter.id" class="nested-rule-entry">
+            <button type="button" class="list-row nested-rule-toggle" @click="toggle(chapter.id)">
+              <div class="list-row-copy">
+                <span class="list-row-title">{{ chapter.title }}</span>
+                <span class="list-row-subtitle">{{ chapter.summary }}</span>
+              </div>
+              <span class="row-badge">{{ chapter.status === 'interactive' ? 'LOADED' : chapter.status === 'indexed' ? 'INDEXED' : 'TOC' }}</span>
+              <svg class="row-chevron" :class="{ rotated:open.has(chapter.id) }" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
             </button>
-            <div v-if="open.has(chapter.id)" class="rule-content">
-              <div v-for="section in chapter.sections" :key="section[0]" class="rule-row"><strong>{{ section[0] }}</strong><p>{{ section[1] }}</p></div>
+            <div v-if="open.has(chapter.id)" class="nested-rule-content">
+              <div v-for="section in chapter.sections" :key="section[0]" class="rule-copy-row">
+                <strong>{{ section[0] }}</strong>
+                <p>{{ section[1] }}</p>
+              </div>
             </div>
           </article>
         </div>
-      </details>
+      </article>
     </section>
 
-    <section v-if="!groupedRules.length" class="panel empty-state"><h2>No matching rules</h2><p>Try a different word or chapter title.</p></section>
-  </section>
+    <section v-if="query && !categoryGroups.length" class="empty-state card-surface compact-empty">
+      <div class="empty-icon">⌕</div>
+      <h2>No matching rules</h2>
+      <p>Try a different search term.</p>
+    </section>
+  </main>
 </template>

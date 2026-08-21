@@ -1,23 +1,27 @@
-# Brambleheart App — Alpha Build 0.03
+# Brambleheart App — Alpha Build 0.04
 
-Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router companion application with shared components, routed views, centralized rules/data, persistent local settings, and a `dist/` production build.
+Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router companion application.
 
 ## Main views
 
-- Splash / Home
+- First-visit Welcome
 - Character List
 - Rules
 - Simulator
 - Settings
+- Changelog
 
-## Current interface features
+## Interface features
 
-- Light, dark, and system appearance modes
-- Five text sizes plus optional bold text
+- Compact shared reader GUI across all primary pages
+- Light and dark modes
+- Compact Rows
+- Smaller / Small / Normal / Large / Larger text sizes
+- Optional Bold Text
 - Species palette themes for all current playable species
-- Background selector prepared for future artwork
+- Background control prepared for later artwork; None is the only current option
 - Installable web-app support on compatible browsers
-- Rules search and recent rules
+- Rules Search and Recent reference entries
 - Local character persistence and JSON import/export
 
 ## Development
@@ -38,15 +42,8 @@ Vite writes the deployable application to `dist/`.
 
 ## Vercel
 
-Recommended settings:
-
 - Framework Preset: Vite
 - Root Directory: `./`
 - Build Command: `npm run build`
 - Output Directory: `dist`
 - Node.js: 22.x
-- Environment Variables: none currently required
-
-## Local data
-
-Characters, display preferences, and recent rule entries are saved in browser `localStorage`.

@@ -1,34 +1,27 @@
 # Changelog
 
+## 0.04
+
+- Rebuilt the application shell around a unified compact reader interface.
+- Reworked the site header, work-in-progress notice, centered branding, build label, changelog access, appearance control, and primary navigation.
+- Standardized the routed page width, page title hierarchy, cards, list rows, forms, buttons, toggles, tabs, search controls, and footer utilities.
+- Added a first-visit welcome screen with install prompt support and direct entry into the application.
+- Reworked Settings into compact Install, Report Bugs & Issues, Display, Support, and Data & Content groups.
+- Reworked species palettes into the interface theme selector and retained Backgrounds with None as the only current choice.
+- Reworked Rules around compact search, major-section shortcuts, Recent entries, and accordion reference rows.
+- Updated Character List and Simulator presentation to use the same shared interface language.
+- Added a routed Changelog page.
+
 ## 0.03
 
-- Refined the application header and added the persistent alpha work-in-progress banner.
-- Reduced the normal interface text baseline and expanded text sizing to Smaller, Small, Normal, Large, and Larger.
-- Added an optional Bold Text display setting.
-- Added dedicated palette themes for every currently listed playable species.
-- Added Install and Support sections to Settings.
-- Added web-app manifest and service-worker support for browser installation where available.
-- Reorganized Rules into Reference & Updates, Fundamental Rules, Character Creation Rules, Species Rules, Battle Rules, and Role-Playing Rules.
-- Added rules search and locally tracked recent-rule shortcuts.
-- Added a new Brambleheart splash page at the site root.
-- Continued the overall GUI consistency and responsive-layout pass.
+- Added the work-in-progress notice, five text sizes, bold text, species palettes, install and support controls, grouped rules reference, Recent rules, and an initial splash page.
 
 ## 0.02
 
-- Completed an application-wide GUI consistency pass.
-- Reworked spacing, navigation, panels, cards, controls, forms, modals, and responsive behavior.
-- Reorganized Settings into collapsible Display, Species, Background, and Data & Content groups.
-- Added species theme selection using the current playable-species dataset.
-- Added the Background control with None as the current available option.
-- Preserved existing character and display local-storage data.
+- Completed the first application-wide GUI consistency pass.
+- Added species theme selection and the initial Background control.
 
 ## 0.01
 
-- Rebuilt Brambleheart on Vue 3 + TypeScript + Vite + Vue Router.
-- Added routed Character List, Rules, Simulator, and Settings views.
-- Added shared application header and primary navigation components.
-- Added Brambleheart logo and icon assets under `public/assets/`.
-- Added local character persistence plus JSON import/export.
-- Added rules reference and Brambleheart simulator tools.
-- Added shared appearance, text sizing, and compact-card settings.
-- Added Vite-compatible Vercel SPA configuration.
+- Initial Vue 3 + TypeScript + Vite + Vue Router companion build.
+- Added Character List, Rules, Simulator, Settings, local character persistence, JSON import/export, and Brambleheart assets.

@@ -1,87 +1,94 @@
-import { reactive, watchEffect } from 'vue'
+import { reactive, toRef, watch } from 'vue'
 import { species } from '../data/bramble'
 
-export type ThemeMode = 'system'|'light'|'dark'
-export type TextScale = 'smaller'|'small'|'normal'|'large'|'larger'
-export type SpeciesTheme = 'none' | (typeof species)[number]
-export type BackgroundOption = 'none'
+export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
+export type SpeciesTheme = 'default' | (typeof species)[number]
+export type BackgroundChoice = 'none'
 
-export interface AppSettings {
-  theme: ThemeMode
-  text: TextScale
+type SettingsState = {
+  darkMode: boolean
+  compactRows: boolean
+  fontSize: FontSize
   boldText: boolean
-  compact: boolean
   speciesTheme: SpeciesTheme
-  background: BackgroundOption
+  backgroundImage: BackgroundChoice
 }
 
-const KEY = 'brambleheart-settings-v0.01'
-const defaults: AppSettings = {
-  theme:'system',
-  text:'normal',
-  boldText:false,
-  compact:false,
-  speciesTheme:'none',
-  background:'none',
+const storageKey = 'brambleheart-settings-v0.01'
+const defaults: SettingsState = {
+  darkMode: false,
+  compactRows: false,
+  fontSize: 'normal',
+  boldText: false,
+  speciesTheme: 'default',
+  backgroundImage: 'none',
 }
 
-function normalizeText(value: unknown): TextScale {
-  if (value === 'smaller' || value === 'small' || value === 'normal' || value === 'large' || value === 'larger') return value
+function normalizeFontSize(value: unknown): FontSize {
+  if (['smaller','small','normal','large','larger'].includes(String(value))) return value as FontSize
   if (value === 'medium') return 'normal'
-  return defaults.text
+  return 'normal'
 }
-
-function read(): AppSettings {
+function normalizeSpecies(value: unknown): SpeciesTheme {
+  if (value === 'default' || value === 'none') return 'default'
+  return species.includes(value as (typeof species)[number]) ? value as SpeciesTheme : 'default'
+}
+function loadSettings(): SettingsState {
+  if (typeof window === 'undefined') return { ...defaults }
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) || '{}') as Partial<AppSettings> & { text?: unknown }
-    const speciesTheme = saved.speciesTheme === 'none' || species.includes(saved.speciesTheme as (typeof species)[number])
-      ? saved.speciesTheme as SpeciesTheme
-      : 'none'
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}')
+    const legacyTheme = saved.theme
+    const inferredDark = typeof saved.darkMode === 'boolean'
+      ? saved.darkMode
+      : legacyTheme === 'dark'
+        ? true
+        : legacyTheme === 'light'
+          ? false
+          : window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
     return {
-      ...defaults,
-      ...saved,
-      text:normalizeText(saved.text),
-      boldText:Boolean(saved.boldText),
-      speciesTheme,
-      background:'none',
+      darkMode: inferredDark,
+      compactRows: Boolean(saved.compactRows ?? saved.compact),
+      fontSize: normalizeFontSize(saved.fontSize ?? saved.text),
+      boldText: Boolean(saved.boldText),
+      speciesTheme: normalizeSpecies(saved.speciesTheme),
+      backgroundImage: 'none',
     }
   } catch {
     return { ...defaults }
   }
 }
 
-export const settings = reactive<AppSettings>(read())
+const state = reactive<SettingsState>(loadSettings())
 
 function speciesToken(value: SpeciesTheme) {
-  return value === 'none' ? 'none' : value.toLowerCase().replace(/[^a-z0-9]+/g,'-')
+  return value === 'default' ? 'default' : value.toLowerCase().replace(/[^a-z0-9]+/g,'-')
+}
+function applySettings() {
+  if (typeof document === 'undefined') return
+  document.documentElement.dataset.theme = state.darkMode ? 'dark' : 'light'
+  document.documentElement.dataset.density = state.compactRows ? 'compact' : 'comfortable'
+  document.documentElement.dataset.fontSize = state.fontSize
+  document.documentElement.dataset.boldText = state.boldText ? 'true' : 'false'
+  document.documentElement.dataset.speciesTheme = speciesToken(state.speciesTheme)
+  document.documentElement.dataset.background = state.backgroundImage
 }
 
-export function applySettings() {
-  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-  const dark = settings.theme === 'dark' || (settings.theme === 'system' && prefersDark)
-  document.documentElement.dataset.theme = dark ? 'dark' : 'light'
-  document.documentElement.dataset.text = settings.text
-  document.documentElement.dataset.bold = String(settings.boldText)
-  document.documentElement.dataset.compact = String(settings.compact)
-  document.documentElement.dataset.species = speciesToken(settings.speciesTheme)
-  document.documentElement.dataset.background = settings.background
-  localStorage.setItem(KEY, JSON.stringify(settings))
-}
-
-watchEffect(applySettings)
-
-export function resetDisplaySettings() {
-  settings.theme='system'
-  settings.text='normal'
-  settings.boldText=false
-  settings.compact=false
-  settings.speciesTheme='none'
-  settings.background='none'
+watch(state, () => {
   applySettings()
+  if (typeof window !== 'undefined') localStorage.setItem(storageKey, JSON.stringify(state))
+}, { deep:true, immediate:true })
+
+export function useSettings() {
+  return {
+    darkMode: toRef(state,'darkMode'),
+    compactRows: toRef(state,'compactRows'),
+    fontSize: toRef(state,'fontSize'),
+    boldText: toRef(state,'boldText'),
+    speciesTheme: toRef(state,'speciesTheme'),
+    backgroundImage: toRef(state,'backgroundImage'),
+    toggleTheme: () => { state.darkMode = !state.darkMode },
+    reset: () => Object.assign(state, defaults),
+  }
 }
 
-export function resetSettings() {
-  resetDisplaySettings()
-  localStorage.removeItem(KEY)
-  applySettings()
-}
+export function resetSettings() { Object.assign(state, defaults) }
