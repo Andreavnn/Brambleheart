@@ -1,0 +1,415 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#21352a"><title>Bramble Heart — Alpha Build 0.1 Preview</title><style>:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #252a25; background: #edf0e9; font-synthesis:none; text-rendering:optimizeLegibility;
+  --ink:#252a25; --ink-soft:#687067; --paper:#fbfcf8; --paper-2:#f1f4ed; --line:#d4dbd0; --line-dark:#b8c3b5;
+  --accent:#617d59; --accent-dark:#36543d; --accent-wash:#dfe9d9; --heart:#9a503e; --danger:#8b3e35; --good:#416849;
+  --shadow:0 8px 28px rgba(34,49,35,.08); --radius:18px; --page-bg:#edf0e9; --page-gradient:linear-gradient(180deg,#f3f5f0 0,#edf0e9 420px); --font-offset:0px; --card-pad:18px;
+}
+:root[data-theme="dark"] { color:#ecefe8;background:#151a16;--ink:#ecefe8;--ink-soft:#a6afa3;--paper:#1e251f;--paper-2:#252d26;--line:#39443b;--line-dark:#536056;--accent:#8faa83;--accent-dark:#b8d0ae;--accent-wash:#2f4031;--heart:#d07c66;--danger:#dc8075;--good:#8fbd95;--shadow:0 8px 28px rgba(0,0,0,.26);--page-bg:#151a16;--page-gradient:linear-gradient(180deg,#1c241e 0,#151a16 420px)}
+:root[data-text="small"]{--font-offset:-1px}:root[data-text="large"]{--font-offset:2px}:root[data-compact="true"]{--card-pad:12px}
+*{box-sizing:border-box} html{min-width:320px;background:var(--page-bg)} body{margin:0;min-width:320px;min-height:100vh;color:var(--ink);background:var(--page-gradient)} button,input,select{font:inherit;color:inherit} button{cursor:pointer}.app-shell{min-height:100vh}.page{width:min(780px,calc(100% - 28px));margin:0 auto;padding:12px 0 52px}
+.wip-banner{margin:0 -2px 4px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--accent-wash);color:var(--accent-dark);font-size:calc(10px + var(--font-offset));font-weight:750;text-align:center;line-height:1.35}.app-header{min-height:86px;display:grid;grid-template-columns:44px 1fr 44px;align-items:center}.header-spacer{width:44px}.brand-stack{display:flex;flex-direction:column;align-items:center}.brand{text-decoration:none;justify-self:center;gap:2px}.brand-wordmark{font-family:Georgia,'Times New Roman',serif;font-size:calc(26px + var(--font-offset));font-weight:900;letter-spacing:.045em}.brand-heart{color:var(--heart)}.brand small{font-size:calc(9px + var(--font-offset));letter-spacing:.15em;color:var(--ink-soft);font-weight:850}.icon-button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--paper);display:grid;place-items:center;font-size:21px}.icon-button:hover{border-color:var(--line-dark);background:var(--paper-2)}
+.primary-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:5px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--paper) 72%,transparent);margin-bottom:20px;position:sticky;top:6px;z-index:20;backdrop-filter:blur(10px)}.primary-nav a{text-decoration:none;text-align:center;padding:10px 6px;border-radius:10px;color:var(--ink-soft);font-weight:800;font-size:calc(12px + var(--font-offset))}.primary-nav a.active{background:var(--ink);color:var(--paper)}
+.page-title-block{margin:17px 3px 22px}.page-title-block h1,.empty-state h2,.form-heading h2,.sim-card h2,.info-card h2{font-family:Georgia,'Times New Roman',serif;margin:0;color:var(--ink)}.page-title-block h1{font-size:clamp(34px,7vw,47px);letter-spacing:-.025em}.page-title-block p:not(.eyebrow){color:var(--ink-soft);line-height:1.58;max-width:650px;margin:9px 0 0}.eyebrow{font-size:calc(10px + var(--font-offset));letter-spacing:.18em;font-weight:850;color:var(--accent-dark);margin:0 0 7px;text-transform:uppercase}
+.card-surface,.form-card,.settings-card,.info-card{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow)}.launch-card{padding:var(--card-pad);display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:15px}.launch-card p{margin:4px 0 0;color:var(--ink-soft);font-size:13px}.launch-actions,.row-actions,.form-actions{display:flex;gap:8px;flex-wrap:wrap}.primary-button,.secondary-button,.danger-button{min-height:43px;border-radius:11px;padding:0 15px;font-weight:800;border:1px solid var(--line-dark)}.primary-button{background:var(--ink);color:var(--paper);border-color:var(--ink)}.secondary-button{background:var(--paper-2);color:var(--ink)}.danger-button{background:color-mix(in srgb,var(--danger) 10%,var(--paper));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,var(--line))}.wide{width:100%}.saved-stack{display:grid;gap:12px}.saved-card{overflow:hidden}.card-main{width:100%;border:0;background:transparent;padding:var(--card-pad);display:flex;align-items:flex-start;justify-content:space-between;gap:15px;text-align:left}.card-main:hover{background:var(--paper-2)}.card-main strong{font-size:calc(15px + var(--font-offset))}.chip-row,.status-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chip{display:inline-flex;padding:5px 8px;border-radius:99px;background:var(--accent-wash);color:var(--accent-dark);font-size:calc(9px + var(--font-offset));font-weight:800;letter-spacing:.035em}.chip.toc{background:var(--paper-2);color:var(--ink-soft)}.chip.interactive{border:1px solid var(--accent)}.card-meta{text-align:right;display:grid;gap:4px}.card-meta small{color:var(--ink-soft);font-size:10px}.character-detail{border-top:1px solid var(--line);padding:var(--card-pad);background:var(--paper-2)}.stat-grid{display:grid;gap:9px}.stat-grid.five{grid-template-columns:repeat(5,1fr)}.stat-circle{aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--paper);min-width:0}.stat-value{font-family:Georgia,serif;font-weight:800;font-size:20px}.stat-label{font-size:8px;font-weight:900;color:var(--ink-soft)}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}.detail-grid>div{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}.detail-grid span{display:block;color:var(--ink-soft);font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:3px}.detail-grid strong{font-size:12px}.derived-note,.source-note{padding:12px;border-radius:10px;background:var(--accent-wash);color:var(--accent-dark);line-height:1.5;font-size:12px;margin-bottom:12px}.derived-note span{color:var(--ink-soft)}
+.empty-state{text-align:center;padding:46px 24px}.empty-state h2{margin:6px 0 8px}.empty-state p{max-width:500px;margin:0 auto 18px;color:var(--ink-soft);line-height:1.55}.empty-icon{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;border:1px solid var(--line-dark);display:grid;place-items:center;font-size:24px;color:var(--accent-dark)}
+.form-card{padding:var(--card-pad);display:grid;gap:16px;margin:15px 0}.form-heading{display:flex;justify-content:space-between;align-items:flex-start}.field-grid{display:grid;gap:12px}.field-grid.two{grid-template-columns:repeat(2,1fr)}.field-grid.three{grid-template-columns:repeat(3,1fr)}.field-label{display:grid;gap:6px;font-weight:750;font-size:calc(12px + var(--font-offset))}.field-control,.small-control{min-height:44px;border:1px solid var(--line-dark);border-radius:10px;background:var(--paper);color:var(--ink);padding:0 10px;outline:0}.field-control:focus,.small-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}.small-control{min-height:38px}.form-note{margin:3px 0 0;color:var(--ink-soft);font-size:11px}.form-note.left{text-align:left}.section-label-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.section-label-row span{color:var(--accent-dark);font-size:11px;font-weight:800}.attribute-editor{display:grid;gap:6px;margin-top:10px}.attribute-row{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:10px}.attribute-row small{display:block;color:var(--ink-soft);font-size:10px;margin-top:2px}.stepper{display:flex;align-items:center;gap:9px}.stepper button{width:32px;height:32px;border:1px solid var(--line-dark);border-radius:8px;background:var(--paper-2);font-size:18px}.stepper span{width:18px;text-align:center;font-weight:900}.choice-field{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px}.choice-field legend{font-weight:850;padding:0 5px}.choice-field label{font-size:12px}.form-actions{justify-content:flex-end}.error-text{margin:0;color:var(--danger);font-size:12px;font-weight:700}
+.search-bar{height:48px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:13px;background:var(--paper);padding:0 13px;margin:14px 0 12px;box-shadow:0 3px 12px rgba(37,35,31,.035)}.search-bar input{flex:1;border:0;outline:0;background:transparent;color:var(--ink)}.status-key{margin:0 0 15px}.section-stack{display:grid;gap:12px}.section-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);overflow:hidden;box-shadow:var(--shadow)}.section-heading{width:100%;border:0;background:var(--paper);padding:var(--card-pad);display:flex;justify-content:space-between;gap:14px;text-align:left}.section-heading:hover{background:var(--paper-2)}.section-heading>div{display:grid;gap:3px}.section-heading .eyebrow{margin:0;font-size:8px}.section-heading strong{font-size:15px}.section-heading small{color:var(--ink-soft);line-height:1.4;max-width:560px}.rule-status{align-self:flex-start;font-size:8px;padding:5px 7px;border-radius:99px;border:1px solid var(--line-dark);letter-spacing:.07em;font-weight:900;color:var(--ink-soft)}.rule-status.interactive{color:var(--accent-dark);border-color:var(--accent);background:var(--accent-wash)}.rule-status.toc{opacity:.7}.section-content{border-top:1px solid var(--line)}.rule-row{padding:14px var(--card-pad);border-bottom:1px solid var(--line)}.rule-row:last-child{border-bottom:0}.rule-row p{margin:5px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.55}
+.segment-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:5px;border:1px solid var(--line);border-radius:14px;background:var(--paper);margin-bottom:14px}.segment-tab{border:0;border-radius:10px;background:transparent;padding:10px 7px;font-size:11px;font-weight:800;color:var(--ink-soft)}.segment-tab.active{background:var(--ink);color:var(--paper)}.sim-card{padding:var(--card-pad);display:grid;gap:14px}.sim-card h2{font-size:28px}.sim-copy{margin:-6px 0 2px;color:var(--ink-soft);font-size:12px;line-height:1.5}.result-panel{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--paper-2);display:grid;gap:7px;text-align:center}.muted-result{color:var(--ink-soft)}.dice-row{display:flex;justify-content:center;gap:7px}.die{width:40px;height:40px;border:2px solid var(--ink);border-radius:9px;display:grid;place-items:center;background:var(--paper);font-family:Georgia,serif;font-size:19px;font-weight:800}.die.dropped{opacity:.35;text-decoration:line-through}.result-panel>strong{font-family:Georgia,serif;font-size:26px}.result-panel>small{color:var(--ink-soft)}.outcome{padding:7px 10px;border-radius:9px;font-size:11px;font-weight:900;letter-spacing:.08em}.outcome.pass{background:color-mix(in srgb,var(--good) 15%,var(--paper));color:var(--good)}.outcome.fail{background:color-mix(in srgb,var(--danger) 13%,var(--paper));color:var(--danger)}.sub-card{display:grid;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}.opposed-results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.opposed-results>div{display:grid;gap:3px}.opposed-results span{font-size:9px;color:var(--ink-soft);font-weight:900}.opposed-results strong{font-family:Georgia,serif;font-size:31px}.opposed-results small{color:var(--ink-soft)}.math-result{display:grid;grid-template-columns:auto auto auto auto auto auto auto;align-items:center;justify-content:center;gap:7px}.math-result strong{font-family:Georgia,serif;font-size:28px}.math-result span{font-size:9px;color:var(--ink-soft);max-width:70px}.tool-stack{display:grid;gap:12px}.inline-result{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;background:var(--paper-2);font-size:12px;font-weight:800}.good-text{color:var(--good)}.danger-text{color:var(--danger)}.mini-result{text-align:center;color:var(--ink-soft);font-size:11px}
+.settings-card{overflow:hidden;margin-bottom:13px}.setting-row{min-height:70px;padding:13px var(--card-pad);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}.setting-row:last-child{border-bottom:0}.setting-row>div{display:grid;gap:3px}.setting-row small{color:var(--ink-soft);font-size:11px}.switch input{display:none}.switch span{display:block;width:44px;height:25px;border-radius:99px;background:var(--line-dark);position:relative}.switch span:after{content:'';position:absolute;width:19px;height:19px;border-radius:50%;background:white;left:3px;top:3px;transition:.15s}.switch input:checked+span{background:var(--accent)}.switch input:checked+span:after{left:22px}.info-card{padding:var(--card-pad)}.info-card h2{font-size:28px}.info-card p:not(.eyebrow){color:var(--ink-soft);line-height:1.55;font-size:12.5px}.app-footer{text-align:center;padding:18px 15px 28px;color:var(--ink-soft);font-size:10px;letter-spacing:.04em}
+@media(max-width:620px){.page{width:min(100% - 18px,780px)}.primary-nav a{font-size:10px;padding:10px 3px}.field-grid.two,.field-grid.three,.detail-grid{grid-template-columns:1fr}.launch-card,.card-main{align-items:stretch;flex-direction:column}.card-meta{text-align:left}.stat-grid.five{gap:5px}.segment-tabs{grid-template-columns:repeat(2,1fr)}.math-result{grid-template-columns:1fr 1fr}.math-result b{display:none}.setting-row{align-items:flex-start;flex-direction:column}.small-control{width:100%}}
+</style></head><body><div id="app"></div><script type="module">const BUILD = '0.1'
+
+const attributes = [
+  { id: 'agility', name: 'Agility', description: 'Motion & Balance' },
+  { id: 'might', name: 'Might', description: 'Strength & Resolve' },
+  { id: 'hide', name: 'Hide', description: 'Endurance & Defense' },
+  { id: 'lore', name: 'Lore', description: 'Insight & Awareness' },
+  { id: 'bravery', name: 'Bravery', description: 'Emotion & Will' },
+]
+
+const species = ['Auravex','Ardenn','Axalori','Braelor','Cethra','Hedgkin','Ravari','Rivkan','Tordan','Urnath','Virelan']
+
+const sparks = [
+  ['Courageous','Bold, Driven'],['Protector','Compassionate, Steadfast'],['Wanderer','Adaptable, Curious'],
+  ['Scholar','Studious, Reflective'],['Healer','Compassionate, Intuitive'],['Fighter','Bold, Focused'],
+  ['Trickster','Playful, Defiant'],['Tinker','Inventive, Creative'],['Idealist','Hopeful, Driven'],
+  ['Spiritual','Intuitive, Reflective'],['Artisan','Creative, Focused'],['Outsider','Independent, Cautious'],
+  ['Leader','Charming, Driven'],['Defiant Heart','Defiant, Steadfast'],['Dreamer','Hopeful, Creative'],
+  ['Seeker','Curious, Studious'],['Mediator','Charming, Compassionate'],['Pioneer','Adaptable, Bold'],
+]
+
+const homelands = [
+  { name:'Wandering Road', skills:['Guile','Charm'] },
+  { name:'Tidewake Harbor', skills:['Seeking','Tradeskill'] },
+  { name:'Ancient Towers', skills:['Lorekeeping (Ancients)','Awareness'] },
+  { name:'Gloommere', skills:['Whisperstep','Herbalry'] },
+  { name:'Halerun Fields', skills:['Beastride','Stonegrasp'] },
+  { name:'Deepmarket', skills:['Shadehand','Guile'] },
+  { name:'Redmir Dunes', skills:['Wayfinding','Stonegrasp'] },
+  { name:'Evershade', skills:['Awareness','Lorekeeping (Nature or Spirits)'] },
+  { name:'Willowstead', skills:['Herbalry','Charm'] },
+  { name:'Untamed Verge', skills:['Wayfinding','Presence'] },
+]
+
+const faiths = ['Keepers of Old','Last Light','Living Harmony','Deepfather’s Covenant','Dawnborn Order','Ashen Path','Court of Etherium','Origin Prime','The Dreamtide','Feastbound Covenant','The Wayward Path']
+
+const oaths = [
+  ['Kinship','No heart beats alone.'],['Mercy','All wounds can heal, even those unseen.'],['Truth','The world turns false only when I do.'],
+  ['Courage','Better to burn bright than fade cold.'],['Balance','For every step forward, one must listen to the earth.'],['Honor','My word is the weight I carry.'],
+  ['Patience','To know is to listen first.'],['Renewal','What is broken can bloom again.'],['Wilds','Freedom is the truest law.'],
+  ['Steadfast','The unseen watches, and I will not turn my eyes.'],['Justice','All debts must balance before the dusk.'],['Guardian','Between harm and heart, I will stand.'],
+  ['Wisdom','Wisdom speaks only when it must.'],['Selflessness','Good done unseen still mends the world.'],['Inspiration','Hope is the flame I leave behind.'],
+]
+
+const passiveTargets = [
+  ['Easy',14],['Medium',18],['Difficult',22],['Hard',24],['Very Hard',30]
+]
+
+const indexed = 'Indexed from the current Bramble Heart source files. Full interactive transcription is scheduled for a later data pass.'
+
+const ruleChapters = [
+  {
+    id:'fundamentals', title:'The Fundamentals', eyebrow:'CORE SYSTEM', status:'interactive',
+    summary:'The Rhythm Engine, conditions, edged and weighted rolls, targets, attributes, and skills.',
+    sections:[
+      ['The Core Roll','Bramble Heart uses the Rhythm Engine: roll 3d10, total the dice, then add the required stat. Conditions are applied after the dice total and multiple conditions stack.'],
+      ['Edged & Weighted','For an edged or weighted roll, roll 4d10. Edged removes the lowest die; weighted removes the highest die. A roll can never be both.'],
+      ['Targets','Active targets are opposed rolls. Passive targets are fixed values that the total must equal or exceed: Easy 14, Medium 18, Difficult 22, Hard 24, Very Hard 30.'],
+      ['Attributes','The Fundamentals chapter currently names five attributes: Agility, Might, Hide, Lore, and Bravery. Each rank extracts a modifier of 2 per rank.'],
+      ['Source Note','The uploaded Character Creation chapter uses the term Prowess where the Fundamentals chapter uses Agility. v0.1 preserves the Fundamentals terminology and does not infer a replacement rule.'],
+    ]
+  },
+  {
+    id:'core-abilities', title:'Core Abilities', eyebrow:'ABILITY SYSTEM', status:'interactive',
+    summary:'Keyword-based encounter actions shared by characters and NPCs.',
+    sections:[
+      ['Ability Types','There are five ability types: instinct, movement, combat, reaction, and passive. Keywords define when and how an ability can be used.'],
+      ['Root Limitation','Root means once-per-type-per-round: up to one Root Instinct, one Root Movement, one Root Combat, and one Root Reaction each round.'],
+      ['Repeat Limit','A character cannot use the same ability more than once in a round unless another rule compels it.'],
+    ]
+  },
+  {
+    id:'character-creation', title:'Character Creation', eyebrow:'CHARACTERS', status:'interactive',
+    summary:'Eight steps from species and Spark through attributes, talents or magic, equipment, and details.',
+    sections:[
+      ['1. Choose Your Species','Choose a playable species. The current creation chapter grants 3 Species Traits, 2 Culture Traits, a native language, and Commonspeak.'],
+      ['2. Choose Your Spark','A Spark defines the hero’s personality archetype. Completing a deed that shares a Spark keyword grants +3 additional XP for that deed.'],
+      ['3. Select Your Homeland','A Homeland grants 2 skills at rank 1 and is not restricted by species.'],
+      ['4. Choose Faith & Oath','Faith describes what the hero reveres or trusts; Oath describes the principle they act upon.'],
+      ['5. Attribute Distribution','Each attribute starts at rank 1. Spend 5 points to raise them; no attribute may exceed rank 3 during character creation.'],
+      ['6. Rhythm of Body & Spirit','Choose either Magic Level 1 plus 1 Talent, or 2 Talents.'],
+      ['7. Equipment & Items','Begin with an Adventure Kit and 50 sp. The Adventure Kit can be returned for an additional 3 sp.'],
+      ['8. Character Details','Record identity details and calculate secondary stats such as Speed, Power, Guts, and Ward.'],
+    ]
+  },
+  {
+    id:'sparks', title:'Sparks & Deeds', eyebrow:'CHARACTERS', status:'interactive',
+    summary:'Narrative personality archetypes connected to deeds and experience.',
+    sections:[
+      ['What Is a Spark?','A Spark is a personality archetype. It does not alter rolls or stats; it rewards roleplay through deed-aligned XP.'],
+      ['Spark Bonus','When a completed deed aligns with one of the Spark’s two keywords, gain +3 experience for that deed.'],
+      ['Custom Sparks','Name the Spark, choose two keywords from the source keyword library, write a short credo, and review it with the Watcher.'],
+    ]
+  },
+  {
+    id:'homeland', title:'Homeland', eyebrow:'CHARACTERS', status:'interactive',
+    summary:'The lessons, skills, and worldview of the place that shaped a hero.',
+    sections: homelands.map(h => [h.name, `Starting skills: ${h.skills.join(' and ')}.`])
+  },
+  {
+    id:'faith-oath', title:'Faith & Oaths', eyebrow:'CHARACTERS', status:'interactive',
+    summary:'Story-facing belief and moral vows, including narrative favor and consequences.',
+    sections:[
+      ['Oaths','An Oath grants no mechanical bonuses or penalties. Upholding or breaking one may create narrative favor, reputation, or story-driven consequence at the Watcher’s discretion.'],
+      ['Creating an Oath','Define an optional Voice, the Virtue the oath demands, and the Strain that tempts or tests it.'],
+      ['Faith','The uploaded faith chapter includes Keepers of Old, Last Light, Living Harmony, Deepfather’s Covenant, Dawnborn Order, Ashen Path, Court of Etherium, Origin Prime, The Dreamtide, Feastbound Covenant, and The Wayward Path.'],
+    ]
+  },
+  { id:'species', title:'Playable Species', eyebrow:'CHARACTERS', status:'indexed', summary:'Species and culture trait reference.', sections:[[ 'Current Data Pass', 'The current Character Creation chapter names Auravex, Ardenn, Axalori, Braelor, Cethra, Hedgkin, Ravari, Rivkan, Tordan, Urnath, and Virelan among the playable species. Detailed trait blocks remain to be extracted from the source layout.' ]] },
+  { id:'talents', title:'Talents', eyebrow:'CHARACTERS', status:'indexed', summary:'Learned and natural capabilities that expand a character’s ability set.', sections:[[ 'Current Data Pass', indexed ]] },
+  { id:'weapons', title:'Weapons', eyebrow:'EQUIPMENT', status:'indexed', summary:'Weapon profiles, costs, and equipment rules.', sections:[[ 'Current Data Pass', indexed ]] },
+  { id:'armor', title:'Armor & Shields', eyebrow:'EQUIPMENT', status:'indexed', summary:'Protective gear and shield rules.', sections:[[ 'Current Data Pass', indexed ]] },
+  { id:'adventuring-gear', title:'Adventuring Gear', eyebrow:'EQUIPMENT', status:'indexed', summary:'General equipment used during travel and adventures.', sections:[[ 'Current Data Pass', indexed ]] },
+  { id:'trade-goods', title:'Trade Goods', eyebrow:'EQUIPMENT', status:'indexed', summary:'Goods, values, and trade references.', sections:[[ 'Current Data Pass', indexed ]] },
+  { id:'transportation', title:'Transportation', eyebrow:'EQUIPMENT', status:'indexed', summary:'Mounts and overland transportation.', sections:[[ 'Current Data Pass', indexed ]] },
+  {
+    id:'beyond-creation', title:'Beyond Character Creation', eyebrow:'ADVANCEMENT', status:'interactive',
+    summary:'Experience, advancement, and post-creation growth.',
+    sections:[
+      ['Earning Experience','The source lists Deeds Completed (3–5 XP), Spark Expression (1–3 XP), Encounters or Milestones (5–12 XP), and Watcher Awards as major XP sources.'],
+      ['Attribute Rank','Cost: 2 + (2 × current rank) XP.'],
+      ['Skill Rank','Cost: 3 + current rank XP.'],
+      ['New Skill','Cost: 6 XP at rank 1.'],
+      ['New Talent','Cost: 10 XP.'],
+      ['Magic Level','Cost: 10 + (4 × current magic level) XP.'],
+    ]
+  },
+  {
+    id:'winds-of-magic', title:'Winds of Magic', eyebrow:'MAGIC', status:'interactive',
+    summary:'Magic levels, spell slots, lore attunement, mana regeneration, and spell targeting.',
+    sections:[
+      ['Magic Power','Magic levels range from 1 to 10. Each level adds mana regeneration and spell capacity.'],
+      ['Spell Slots','At Magic Level 1, select 3 spells from any of the seven magical lores and gain 1 Invocation spell. Gain 1 additional spell slot each magic level and 1 Invocation spell every 2 magic levels.'],
+      ['Mana Regeneration','Each Magic Level increases mana regeneration by +1.'],
+      ['Lore Attunement','At Magic Level 1 choose one lore attunement. Spells from an attuned lore reduce their mana cost by 2.'],
+      ['Signature Spells','Each lore has a signature spell gained for free when attuned; it does not consume a spell slot.'],
+      ['Area of Effect','The current magic chapter defines Line, Cone, and Orb area-of-effect keywords in squares.'],
+    ]
+  },
+  {
+    id:'battles', title:'The Battles', eyebrow:'COMBAT', status:'interactive',
+    summary:'Encounter setup, initiative, mana, opposed combat rolls, damage, health, and defeat.',
+    sections:[
+      ['Squares & Measurements','Combat is designed for a grid. 1 square equals 1 yard, 3 feet, or 1 meter.'],
+      ['Initiative','Roll 3d10 + Speed + conditions. The current Battle chapter states Speed = +2 plus Prowess rank.'],
+      ['Mana','Every character generates 2 mana at the start of each combat round, with possible additional regeneration from magic levels, talents, abilities, and conditions.'],
+      ['Strike & Ward','Melee strike uses 3d10 + Mettle + conditions. Range uses 3d10 + Aim + conditions. Magical uses 3d10 + Control + conditions. Defense uses 3d10 + Ward + conditions. A strike hits only when it exceeds the Ward result.'],
+      ['Damage & Guts','Standard damage applies Guts normally. Direct damage halves Guts, rounded up to a minimum of 1, before applicable conditions. Lethal damage bypasses Guts and equipment but not applicable conditions.'],
+      ['Health','Player characters have 30 Health. At 5 or less, rolls suffer -1; at 3 or less, -2; at 1 Health, -3.'],
+      ['Defeated','At 0 Health a character is defeated. On their turn they make a 1d10 Hallows save: 6+ passes; 5 or less gives a Fate Mark. Three Fate Marks means death. Restoring at least 1 Health removes all Fate Marks.'],
+    ]
+  },
+  { id:'role-play', title:'The Role-Play', eyebrow:'ROLE-PLAY', status:'toc', summary:'Portraying characters, world interaction, time, travel, illumination, hunger, downtime, building, and crafting.', sections:[[ 'Table of Contents', 'This chapter is present in the current master table of contents but its detailed source chapter was not included in the v0.1 upload set.' ]] },
+  { id:'monsters', title:'Monsters & Critters', eyebrow:'WATCHER', status:'toc', summary:'Threat levels, critters, traps, environments, monsters, and rewards.', sections:[[ 'Table of Contents', 'This chapter is present in the current master table of contents but its detailed source chapter was not included in the v0.1 upload set.' ]] },
+]
+
+function total(values) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
+
+function rhythmResult(dice, mode='normal', stat=0, conditions=0) {
+  const rolled = dice.map(Number)
+  let kept = [...rolled]
+  let dropped = null
+  if (mode === 'edged') {
+    const min = Math.min(...kept)
+    const index = kept.indexOf(min)
+    dropped = kept.splice(index, 1)[0]
+  } else if (mode === 'weighted') {
+    const max = Math.max(...kept)
+    const index = kept.indexOf(max)
+    dropped = kept.splice(index, 1)[0]
+  }
+  const natural = total(kept)
+  return { rolled, kept, dropped, natural, stat:Number(stat)||0, conditions:Number(conditions)||0, total:natural+(Number(stat)||0)+(Number(conditions)||0) }
+}
+
+function opposedResult(strikeDice, strikeStat=0, strikeConditions=0, wardDice, wardStat=0, wardConditions=0) {
+  const strike = rhythmResult(strikeDice, 'normal', strikeStat, strikeConditions)
+  const ward = rhythmResult(wardDice, 'normal', wardStat, wardConditions)
+  return { strike, ward, hit: strike.total > ward.total }
+}
+
+function effectiveGuts(category, hideRank=0, equipment=0, conditions=0) {
+  const base = Math.max(0, Number(hideRank)||0)
+  const gear = Math.max(0, Number(equipment)||0)
+  const cond = Number(conditions)||0
+  if (category === 'lethal') return Math.max(0, cond)
+  if (category === 'direct') return Math.max(0, Math.max(1, Math.ceil((base + gear) / 2)) + cond)
+  return Math.max(0, base + gear + cond)
+}
+
+function damageResult(damage, category, hideRank, equipment, conditions) {
+  const incoming = Math.max(0, Number(damage)||0)
+  const guts = effectiveGuts(category, hideRank, equipment, conditions)
+  return { incoming, guts, suffered: Math.max(0, incoming - guts) }
+}
+
+function healthPenalty(health) {
+  const value = Number(health)
+  if (value <= 0) return null
+  if (value <= 1) return -3
+  if (value <= 3) return -2
+  if (value <= 5) return -1
+  return 0
+}
+
+function advancementCost(type, currentRank=1) {
+  const rank = Math.max(0, Number(currentRank)||0)
+  if (type === 'attribute') return 2 + (2 * rank)
+  if (type === 'skill') return 3 + rank
+  if (type === 'new-skill') return 6
+  if (type === 'talent') return 10
+  if (type === 'magic') return 10 + (4 * rank)
+  return 0
+}
+
+
+const $app = document.querySelector('#app')
+const STORE = { characters:'bh-v01-characters', settings:'bh-v01-settings' }
+
+function readJson(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback } catch { return fallback } }
+function writeJson(key, value) { localStorage.setItem(key, JSON.stringify(value)) }
+function esc(value='') { return String(value).replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m])) }
+function id() { return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}` }
+function die() { const buf = new Uint32Array(1); crypto.getRandomValues(buf); return (buf[0] % 10) + 1 }
+function roll(count) { return Array.from({length:count}, die) }
+
+let settings = readJson(STORE.settings, { theme:'system', text:'medium', compact:false })
+function applySettings() {
+  const dark = settings.theme === 'dark' || (settings.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+  document.documentElement.dataset.text = settings.text
+  document.documentElement.dataset.compact = settings.compact ? 'true' : 'false'
+}
+applySettings()
+
+const fileMode = location.protocol === 'file:'
+function currentPath() { return fileMode ? (location.hash.slice(1) || '/characters') : location.pathname }
+function navigate(path) { if (fileMode) { location.hash = path; return } history.pushState({}, '', path); render() }
+window.addEventListener(fileMode ? 'hashchange' : 'popstate', render)
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[data-route]')
+  if (!link) return
+  event.preventDefault(); navigate(link.getAttribute('href'))
+})
+
+function header() {
+  const path = currentPath()
+  const nav = [['/characters','Character List'],['/rules','Rules'],['/simulator','Simulator'],['/settings','Settings']]
+  return `<header class="app-header-wrap">
+    <div class="wip-banner">Bramble Heart is a work in progress. v0.1 reflects the current uploaded rules and preserves unresolved source terminology.</div>
+    <div class="app-header">
+      <span class="header-spacer"></span>
+      <a data-route href="/characters" class="brand-stack brand" aria-label="Bramble Heart Character List">
+        <span class="brand-wordmark"><span>BRAMBLE</span><span class="brand-heart"> HEART</span></span>
+        <small>ALPHA BUILD ${BUILD}</small>
+      </a>
+      <button class="icon-button" type="button" id="quick-theme" aria-label="Toggle theme" title="Toggle theme">◐</button>
+    </div>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      ${nav.map(([href,label]) => `<a data-route href="${href}" class="${path.startsWith(href)?'active':''}">${label}</a>`).join('')}
+    </nav>
+  </header>`
+}
+
+function shell(content) {
+  $app.innerHTML = `<div class="app-shell"><main class="page">${header()}${content}</main><footer class="app-footer">Bramble Heart · Alpha Build ${BUILD} · Local-first prototype</footer></div>`
+  document.querySelector('#quick-theme')?.addEventListener('click', () => {
+    const currentDark = document.documentElement.dataset.theme === 'dark'
+    settings.theme = currentDark ? 'light' : 'dark'; writeJson(STORE.settings, settings); applySettings()
+  })
+}
+
+function titleBlock(eyebrow, title, copy) { return `<div class="page-title-block"><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p>${copy}</p></div>` }
+function emptyState(icon, title, copy, action='') { return `<section class="empty-state card-surface"><div class="empty-icon">${icon}</div><h2>${title}</h2><p>${copy}</p>${action}</section>` }
+
+function characterSummary(character) {
+  const spark = sparks.find(s => s[0] === character.spark)
+  const home = homelands.find(h => h.name === character.homeland)
+  return `<article class="saved-card card-surface" data-character="${character.id}">
+    <button class="card-main" data-toggle-character="${character.id}">
+      <div><strong>${esc(character.name)}</strong><div class="chip-row"><span class="chip">${esc(character.species)}</span><span class="chip">${esc(character.spark)}</span><span class="chip">${esc(character.homeland)}</span></div></div>
+      <div class="card-meta"><strong>${character.magicPath === 'magic' ? 'Magic 1 · 1 Talent' : '2 Talents'}</strong><small>${esc(spark?.[1] || '')}</small></div>
+    </button>
+    <div class="character-detail" hidden id="detail-${character.id}">
+      <div class="stat-grid five">${attributes.map(a => `<div class="stat-circle"><span class="stat-value">${character.attributes[a.id]}</span><span class="stat-label">${a.name.slice(0,3).toUpperCase()}</span></div>`).join('')}</div>
+      <div class="detail-grid"><div><span>Faith</span><strong>${esc(character.faith)}</strong></div><div><span>Oath</span><strong>${esc(character.oath)}</strong></div><div><span>Starting Skills</span><strong>${esc(home?.skills.join(' · ') || '—')}</strong></div><div><span>Starting Wealth</span><strong>50 sp + Adventure Kit</strong></div></div>
+      <div class="derived-note"><strong>Reliable v0.1 derived values:</strong> Mettle ${character.attributes.might*2}, Ward ${character.attributes.hide*2}, Control ${character.attributes.lore*2}, Power ${character.attributes.might}, Guts ${character.attributes.hide}. <span>Speed is not auto-derived because current source chapters use both Agility and Prowess terminology.</span></div>
+      <div class="row-actions"><button class="secondary-button" data-export-character="${character.id}">Export JSON</button><button class="danger-button" data-delete-character="${character.id}">Delete</button></div>
+    </div>
+  </article>`
+}
+
+function renderCharacters() {
+  const characters = readJson(STORE.characters, [])
+  shell(`${titleBlock('CHARACTERS','Character List','Create and manage Bramble Heart characters on this device. v0.1 stores characters locally and can export them as JSON.')}
+    <section class="launch-card card-surface"><div><strong>My Characters</strong><p>${characters.length ? `${characters.length} saved character${characters.length===1?'':'s'}.` : 'No saved characters yet.'}</p></div><div class="launch-actions"><button class="primary-button" id="create-character">Create a character</button><button class="secondary-button" id="import-character">Import JSON</button><input id="character-file" type="file" accept="application/json,.json" hidden></div></section>
+    <div id="character-form"></div>
+    ${characters.length ? `<section class="saved-stack">${characters.map(characterSummary).join('')}</section>` : emptyState('✦','Your characters will appear here','Use the character creator to establish species, Spark, Homeland, Faith, Oath, attributes, and the Body & Spirit choice.')}`)
+
+  document.querySelector('#create-character')?.addEventListener('click', renderCharacterForm)
+  document.querySelectorAll('[data-toggle-character]').forEach(btn => btn.addEventListener('click', () => { const d=document.querySelector(`#detail-${btn.dataset.toggleCharacter}`); d.hidden=!d.hidden }))
+  document.querySelectorAll('[data-delete-character]').forEach(btn => btn.addEventListener('click', () => { if (!confirm('Delete this character from this device?')) return; writeJson(STORE.characters, characters.filter(c => c.id !== btn.dataset.deleteCharacter)); renderCharacters() }))
+  document.querySelectorAll('[data-export-character]').forEach(btn => btn.addEventListener('click', () => { const c=characters.find(x=>x.id===btn.dataset.exportCharacter); downloadJson(`${c.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase() || 'character'}.bramble.json`, { format:'bramble-heart-character', version:BUILD, character:c }) }))
+  document.querySelector('#import-character')?.addEventListener('click', () => document.querySelector('#character-file').click())
+  document.querySelector('#character-file')?.addEventListener('change', importCharacter)
+}
+
+function renderCharacterForm() {
+  const host = document.querySelector('#character-form')
+  const attr = Object.fromEntries(attributes.map(a => [a.id,1]))
+  host.innerHTML = `<section class="form-card character-form"><div class="form-heading"><div><p class="eyebrow">NEW CHARACTER</p><h2>Create Character</h2></div><button class="icon-button" id="close-character" aria-label="Close">×</button></div>
+    <div class="field-grid two"><label class="field-label">Name<input class="field-control" id="c-name" placeholder="Character name" /></label><label class="field-label">Species<select class="field-control" id="c-species">${species.map(s=>`<option>${s}</option>`).join('')}</select></label></div>
+    <div class="field-grid two"><label class="field-label">Spark<select class="field-control" id="c-spark">${sparks.map(s=>`<option value="${s[0]}">${s[0]} — ${s[1]}</option>`).join('')}</select></label><label class="field-label">Homeland<select class="field-control" id="c-homeland">${homelands.map(h=>`<option>${h.name}</option>`).join('')}</select></label></div>
+    <div class="field-grid two"><label class="field-label">Faith<select class="field-control" id="c-faith">${faiths.map(x=>`<option>${x}</option>`).join('')}</select></label><label class="field-label">Oath<select class="field-control" id="c-oath">${oaths.map(x=>`<option value="${x[0]}">${x[0]} — ${x[1]}</option>`).join('')}</select></label></div>
+    <div><div class="section-label-row"><strong>Attributes</strong><span id="attr-points">5 points remaining</span></div><p class="form-note left">Each starts at rank 1. Spend 5 points; no attribute may exceed rank 3 at creation.</p><div class="attribute-editor">${attributes.map(a=>`<div class="attribute-row"><div><strong>${a.name}</strong><small>${a.description}</small></div><div class="stepper"><button data-attr="${a.id}" data-delta="-1">−</button><span id="attr-${a.id}">1</span><button data-attr="${a.id}" data-delta="1">+</button></div></div>`).join('')}</div></div>
+    <fieldset class="choice-field"><legend>Rhythm of Body & Spirit</legend><label><input type="radio" name="path" value="magic" checked /> Magic Level 1 + 1 Talent</label><label><input type="radio" name="path" value="talents" /> 2 Talents</label></fieldset>
+    <div class="source-note">Species trait details and Talent selection are intentionally deferred in v0.1 because their full structured data has not yet been normalized from the uploaded layouts.</div>
+    <div class="form-actions"><button class="secondary-button" id="cancel-character">Cancel</button><button class="primary-button" id="save-character">Save Character</button></div><p class="error-text" id="character-error"></p>
+  </section>`
+  let ranks = {...attr}
+  const update = () => { const spent=Object.values(ranks).reduce((s,v)=>s+(v-1),0); document.querySelector('#attr-points').textContent=`${5-spent} points remaining`; attributes.forEach(a=>document.querySelector(`#attr-${a.id}`).textContent=ranks[a.id]) }
+  host.querySelectorAll('[data-attr]').forEach(btn => btn.addEventListener('click', () => { const k=btn.dataset.attr, delta=Number(btn.dataset.delta), spent=Object.values(ranks).reduce((s,v)=>s+(v-1),0); if(delta>0 && (ranks[k]>=3 || spent>=5)) return; if(delta<0 && ranks[k]<=1) return; ranks[k]+=delta; update() }))
+  const close=()=>{host.innerHTML=''}; document.querySelector('#close-character').onclick=close; document.querySelector('#cancel-character').onclick=close
+  document.querySelector('#save-character').onclick=()=>{
+    const name=document.querySelector('#c-name').value.trim(), spent=Object.values(ranks).reduce((s,v)=>s+(v-1),0)
+    if(!name){document.querySelector('#character-error').textContent='Enter a character name.'; return}
+    if(spent!==5){document.querySelector('#character-error').textContent='Spend all 5 attribute points before saving.'; return}
+    const list=readJson(STORE.characters,[])
+    list.unshift({id:id(),name,species:document.querySelector('#c-species').value,spark:document.querySelector('#c-spark').value,homeland:document.querySelector('#c-homeland').value,faith:document.querySelector('#c-faith').value,oath:document.querySelector('#c-oath').value,magicPath:document.querySelector('input[name="path"]:checked').value,attributes:ranks,createdAt:new Date().toISOString()})
+    writeJson(STORE.characters,list); renderCharacters()
+  }
+  document.querySelector('#c-name').focus()
+}
+
+async function importCharacter(event) {
+  const file=event.target.files?.[0]; if(!file)return
+  try {
+    const data=JSON.parse(await file.text()); const c=data.character ?? data
+    if(!c?.name || !c?.attributes) throw new Error('Invalid Bramble Heart character JSON.')
+    const list=readJson(STORE.characters,[]); list.unshift({...c,id:id(),createdAt:new Date().toISOString()}); writeJson(STORE.characters,list); renderCharacters()
+  } catch(error) { alert(error.message || 'Could not import this character.') }
+}
+function downloadJson(filename, value) { const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500) }
+
+function renderRules() {
+  shell(`${titleBlock('REFERENCE','Rules','Browse the current Bramble Heart rule structure. Search works across chapter titles, summaries, and loaded v0.1 rule text.')}
+    <label class="search-bar"><span>⌕</span><input id="rule-search" placeholder="Search rules…" autocomplete="off" /></label>
+    <div class="status-key"><span class="chip interactive">Interactive text</span><span class="chip">Indexed</span><span class="chip toc">TOC only</span></div>
+    <section class="section-stack" id="rules-list">${renderRuleCards(ruleChapters)}</section>`)
+  const input=document.querySelector('#rule-search'); input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase(); const filtered=ruleChapters.filter(c=>JSON.stringify(c).toLowerCase().includes(q)); document.querySelector('#rules-list').innerHTML=filtered.length?renderRuleCards(filtered):emptyState('⌕','No matching rules','Try a different word or chapter title.'); bindRuleCards()}); bindRuleCards()
+}
+function renderRuleCards(chapters) { return chapters.map(c=>`<article class="section-card" id="rule-${c.id}"><button class="section-heading" data-rule-toggle="${c.id}"><div><span class="eyebrow">${c.eyebrow}</span><strong>${c.title}</strong><small>${c.summary}</small></div><span class="rule-status ${c.status}">${c.status==='toc'?'TOC':c.status==='interactive'?'LOADED':'INDEXED'}</span></button><div class="section-content" hidden>${c.sections.map(([t,b])=>`<div class="rule-row"><strong>${esc(t)}</strong><p>${esc(b)}</p></div>`).join('')}</div></article>`).join('') }
+function bindRuleCards(){document.querySelectorAll('[data-rule-toggle]').forEach(btn=>btn.addEventListener('click',()=>{const card=btn.closest('.section-card'),content=card.querySelector('.section-content'); content.hidden=!content.hidden; card.classList.toggle('open',!content.hidden)}))}
+
+function renderSimulator() {
+  shell(`${titleBlock('TOOLS','Simulator','Run common Bramble Heart calculations without changing any character data. Dice are generated locally with the browser cryptographic random source.')}
+    <div class="segment-tabs" role="tablist"><button class="segment-tab active" data-sim-tab="rhythm">Rhythm</button><button class="segment-tab" data-sim-tab="opposed">Strike / Ward</button><button class="segment-tab" data-sim-tab="damage">Damage</button><button class="segment-tab" data-sim-tab="health">Health / XP</button></div>
+    <div id="sim-panel"></div>`)
+  document.querySelectorAll('[data-sim-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-sim-tab]').forEach(x=>x.classList.toggle('active',x===btn)); renderSimPanel(btn.dataset.simTab)})); renderSimPanel('rhythm')
+}
+function renderSimPanel(tab) {
+  const host=document.querySelector('#sim-panel')
+  if(tab==='rhythm') {
+    host.innerHTML=`<section class="sim-card card-surface"><div class="sim-heading"><div><p class="eyebrow">THE RHYTHM ENGINE</p><h2>3d10 + Stat</h2></div></div><div class="field-grid three"><label class="field-label">Roll Type<select id="rhythm-mode" class="field-control"><option value="normal">Normal — 3d10</option><option value="edged">Edged — 4d10, drop lowest</option><option value="weighted">Weighted — 4d10, drop highest</option></select></label><label class="field-label">Stat<input id="rhythm-stat" class="field-control" type="number" value="0" /></label><label class="field-label">Conditions<input id="rhythm-cond" class="field-control" type="number" value="0" /></label></div><label class="field-label">Passive Target<select id="rhythm-target" class="field-control"><option value="">No target</option>${passiveTargets.map(([n,v])=>`<option value="${v}">${n} — ${v}</option>`).join('')}</select></label><button class="primary-button wide" id="roll-rhythm">Roll Rhythm</button><div id="rhythm-result" class="result-panel muted-result">Ready.</div></section>`
+    document.querySelector('#roll-rhythm').onclick=()=>{const mode=document.querySelector('#rhythm-mode').value, count=mode==='normal'?3:4, r=rhythmResult(roll(count),mode,document.querySelector('#rhythm-stat').value,document.querySelector('#rhythm-cond').value), target=Number(document.querySelector('#rhythm-target').value)||null; document.querySelector('#rhythm-result').classList.remove('muted-result'); document.querySelector('#rhythm-result').innerHTML=`<div class="dice-row">${r.rolled.map(v=>`<span class="die ${r.dropped===v && r.rolled.filter(x=>x===v).length===1?'dropped':''}">${v}</span>`).join('')}</div><strong>Total ${r.total}</strong><small>${r.natural} dice + ${r.stat} stat ${r.conditions>=0?'+':'−'} ${Math.abs(r.conditions)} conditions${r.dropped!==null?` · dropped ${r.dropped}`:''}</small>${target?`<div class="outcome ${r.total>=target?'pass':'fail'}">${r.total>=target?'SUCCESS':'FAILURE'} vs ${target}</div>`:''}`}
+  } else if(tab==='opposed') {
+    host.innerHTML=`<section class="sim-card card-surface"><p class="eyebrow">ACTIVE TARGET</p><h2>Strike vs Ward</h2><p class="sim-copy">The strike hits only when the Strike total is higher than the Ward total. Equal results are defended.</p><div class="field-grid two"><div class="sub-card"><strong>Strike</strong><label class="field-label">Strike Stat<input id="strike-stat" type="number" value="0" class="field-control" /></label><label class="field-label">Conditions<input id="strike-cond" type="number" value="0" class="field-control" /></label></div><div class="sub-card"><strong>Ward</strong><label class="field-label">Ward Stat<input id="ward-stat" type="number" value="0" class="field-control" /></label><label class="field-label">Conditions<input id="ward-cond" type="number" value="0" class="field-control" /></label></div></div><button class="primary-button wide" id="roll-opposed">Roll Opposed Test</button><div id="opposed-result" class="result-panel muted-result">Ready.</div></section>`
+    document.querySelector('#roll-opposed').onclick=()=>{const r=opposedResult(roll(3),document.querySelector('#strike-stat').value,document.querySelector('#strike-cond').value,roll(3),document.querySelector('#ward-stat').value,document.querySelector('#ward-cond').value); const e=document.querySelector('#opposed-result'); e.classList.remove('muted-result'); e.innerHTML=`<div class="opposed-results"><div><span>STRIKE</span><strong>${r.strike.total}</strong><small>${r.strike.rolled.join(' + ')}</small></div><div><span>WARD</span><strong>${r.ward.total}</strong><small>${r.ward.rolled.join(' + ')}</small></div></div><div class="outcome ${r.hit?'pass':'fail'}">${r.hit?'HIT':'DEFENDED'}</div>`}
+  } else if(tab==='damage') {
+    host.innerHTML=`<section class="sim-card card-surface"><p class="eyebrow">DAMAGE & GUTS</p><h2>Damage Soak</h2><p class="sim-copy">Hide/Guts, equipment, and conditions are kept separate so Direct and Lethal damage can follow the current source order.</p><div class="field-grid two"><label class="field-label">Incoming Damage<input id="damage" type="number" min="0" value="8" class="field-control" /></label><label class="field-label">Category<select id="damage-category" class="field-control"><option value="standard">Standard</option><option value="direct">Direct</option><option value="lethal">Lethal</option></select></label><label class="field-label">Hide / Base Guts<input id="guts-base" type="number" min="0" value="2" class="field-control" /></label><label class="field-label">Equipment Guts<input id="guts-gear" type="number" min="0" value="1" class="field-control" /></label><label class="field-label">Guts Conditions<input id="guts-cond" type="number" value="0" class="field-control" /></label></div><button class="primary-button wide" id="calc-damage">Calculate Damage</button><div id="damage-result" class="result-panel muted-result">Ready.</div></section>`
+    document.querySelector('#calc-damage').onclick=()=>{const r=damageResult(document.querySelector('#damage').value,document.querySelector('#damage-category').value,document.querySelector('#guts-base').value,document.querySelector('#guts-gear').value,document.querySelector('#guts-cond').value); const e=document.querySelector('#damage-result'); e.classList.remove('muted-result'); e.innerHTML=`<div class="math-result"><strong>${r.incoming}</strong><span>damage</span><b>−</b><strong>${r.guts}</strong><span>effective Guts</span><b>=</b><strong>${r.suffered}</strong><span>Health lost</span></div>`}
+  } else {
+    host.innerHTML=`<div class="tool-stack"><section class="sim-card card-surface"><p class="eyebrow">HEALTH</p><h2>Health Threshold</h2><div class="field-grid two"><label class="field-label">Current Health<input id="health" type="number" min="0" max="30" value="30" class="field-control" /></label><div id="health-result" class="inline-result">No roll penalty.</div></div><button class="secondary-button wide" id="hallows-roll">Roll Hallows Save (1d10)</button><div id="hallows-result" class="mini-result">Used when a defeated character is at 0 Health.</div></section><section class="sim-card card-surface"><p class="eyebrow">ADVANCEMENT</p><h2>XP Cost</h2><div class="field-grid two"><label class="field-label">Advancement<select id="xp-type" class="field-control"><option value="attribute">Attribute Rank</option><option value="skill">Skill Rank</option><option value="new-skill">New Skill</option><option value="talent">New Talent</option><option value="magic">Magic Level</option></select></label><label class="field-label">Current Rank / Level<input id="xp-rank" type="number" min="0" value="1" class="field-control" /></label></div><div id="xp-result" class="result-panel"><strong>${advancementCost('attribute',1)} XP</strong></div></section></div>`
+    const updateHealth=()=>{const h=Number(document.querySelector('#health').value),p=healthPenalty(h),e=document.querySelector('#health-result'); e.textContent=h<=0?'Defeated — Hallows saves begin.':p?`${p} condition to all dice rolls.`:'No roll penalty.'; e.className=`inline-result ${h<=0||p?'danger-text':'good-text'}`}; document.querySelector('#health').oninput=updateHealth; document.querySelector('#hallows-roll').onclick=()=>{const v=die(); document.querySelector('#hallows-result').innerHTML=`Rolled <strong>${v}</strong> — ${v>=6?'PASS':'FATE MARK'}`}; const updateXp=()=>document.querySelector('#xp-result').innerHTML=`<strong>${advancementCost(document.querySelector('#xp-type').value,document.querySelector('#xp-rank').value)} XP</strong>`; document.querySelector('#xp-type').onchange=updateXp; document.querySelector('#xp-rank').oninput=updateXp
+  }
+}
+
+function renderSettings() {
+  shell(`${titleBlock('PREFERENCES','Settings','Display preferences are stored on this device. Character data remains local unless you export it.')}
+    <section class="settings-card"><div class="setting-row"><div><strong>Appearance</strong><small>Follow the system theme or choose a fixed mode.</small></div><select id="setting-theme" class="small-control"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div><div class="setting-row"><div><strong>Text Size</strong><small>Adjust interface text without changing rules data.</small></div><select id="setting-text" class="small-control"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select></div><div class="setting-row"><div><strong>Compact Cards</strong><small>Reduce card spacing on smaller displays.</small></div><label class="switch"><input id="setting-compact" type="checkbox"/><span></span></label></div></section>
+    <section class="settings-card"><div class="setting-row"><div><strong>Local Character Data</strong><small>Delete all characters stored by this v0.1 build.</small></div><button class="danger-button" id="reset-characters">Reset Characters</button></div><div class="setting-row"><div><strong>Reset App</strong><small>Restore settings and clear all locally stored Bramble Heart v0.1 data.</small></div><button class="danger-button" id="reset-all">Reset All</button></div></section>
+    <section class="info-card"><p class="eyebrow">BUILD</p><h2>Alpha ${BUILD}</h2><p>Initial Bramble Heart companion build: Character List, searchable Rules, Rhythm/Combat Simulator, and persistent Settings. Source data is based only on the current project uploads and unresolved naming conflicts remain marked rather than silently reconciled.</p></section>`)
+  document.querySelector('#setting-theme').value=settings.theme; document.querySelector('#setting-text').value=settings.text; document.querySelector('#setting-compact').checked=settings.compact
+  const save=()=>{settings={theme:document.querySelector('#setting-theme').value,text:document.querySelector('#setting-text').value,compact:document.querySelector('#setting-compact').checked}; writeJson(STORE.settings,settings); applySettings()}; document.querySelector('#setting-theme').onchange=save; document.querySelector('#setting-text').onchange=save; document.querySelector('#setting-compact').onchange=save
+  document.querySelector('#reset-characters').onclick=()=>{if(confirm('Delete every Bramble Heart character stored on this device?')){localStorage.removeItem(STORE.characters); alert('Character data cleared.')}}
+  document.querySelector('#reset-all').onclick=()=>{if(confirm('Reset all Bramble Heart v0.1 local data?')){localStorage.removeItem(STORE.characters);localStorage.removeItem(STORE.settings);settings={theme:'system',text:'medium',compact:false};applySettings();renderSettings()}}
+}
+
+function render() {
+  let path=currentPath()
+  if(!fileMode && (path==='/'||path==='/index.html')) { history.replaceState({},'', '/characters'); path='/characters' }
+  if(path.startsWith('/rules')) renderRules(); else if(path.startsWith('/simulator')) renderSimulator(); else if(path.startsWith('/settings')) renderSettings(); else renderCharacters()
+}
+
+render()</script></body></html>

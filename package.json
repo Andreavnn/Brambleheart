@@ -1,0 +1,16 @@
+{
+  "name": "bramble-heart-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node tests.mjs",
+    "check": "npm run test && npm run build"
+  },
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10 <11"
+  }
+}
