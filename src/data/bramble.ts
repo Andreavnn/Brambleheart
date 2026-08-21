@@ -1,4 +1,4 @@
-export const BUILD = '0.04'
+export const BUILD = '0.05'
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },
@@ -69,7 +69,7 @@ export const ruleChapters: RuleChapter[] = [
       ['Edged & Weighted','For an edged or weighted roll, roll 4d10. Edged removes the lowest die; weighted removes the highest die. A roll can never be both.'],
       ['Targets','Active targets are opposed rolls. Passive targets are fixed values that the total must equal or exceed: Easy 14, Medium 18, Difficult 22, Hard 24, Very Hard 30.'],
       ['Attributes','The Fundamentals chapter currently names five attributes: Agility, Might, Hide, Lore, and Bravery. Each rank extracts a modifier of 2 per rank.'],
-      ['Source Note','The uploaded Character Creation chapter uses the term Prowess where the Fundamentals chapter uses Agility. v0.01 preserves the Fundamentals terminology and does not infer a replacement rule.'],
+      ['Source Note','The uploaded Character Creation chapter uses the term Agility where the Fundamentals chapter uses Agility. v0.01 preserves the Fundamentals terminology and does not infer a replacement rule.'],
     ]
   },
   {
@@ -154,7 +154,7 @@ export const ruleChapters: RuleChapter[] = [
     summary:'Encounter setup, initiative, mana, opposed combat rolls, damage, health, and defeat.',
     sections:[
       ['Squares & Measurements','Combat is designed for a grid. 1 square equals 1 yard, 3 feet, or 1 meter.'],
-      ['Initiative','Roll 3d10 + Speed + conditions. The current Battle chapter states Speed = +2 plus Prowess rank.'],
+      ['Initiative','Roll 3d10 + Speed + conditions. The current Battle chapter states Speed = +2 plus Agility rank.'],
       ['Mana','Every character generates 2 mana at the start of each combat round, with possible additional regeneration from magic levels, talents, abilities, and conditions.'],
       ['Strike & Ward','Melee strike uses 3d10 + Mettle + conditions. Range uses 3d10 + Aim + conditions. Magical uses 3d10 + Control + conditions. Defense uses 3d10 + Ward + conditions. A strike hits only when it exceeds the Ward result.'],
       ['Damage & Guts','Standard damage applies Guts normally. Direct damage halves Guts, rounded up to a minimum of 1, before applicable conditions. Lethal damage bypasses Guts and equipment but not applicable conditions.'],

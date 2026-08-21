@@ -1,4 +1,4 @@
-const welcomeKey = 'brambleheart.welcome.v0.04'
+const welcomeKey = 'brambleheart.welcome.v0.05'
 const installDismissKey = 'brambleheart.install-welcome-dismissed.v0.04'
 
 export function hasSeenWelcome() {

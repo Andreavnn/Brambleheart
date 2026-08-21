@@ -1,27 +1,30 @@
 # Changelog
 
+## 0.05
+
+- Refined the site header, responsive welcome screen, typography, install icon assets, and default reader palette.
+- Added five fixed-cover background illustrations and darkened/distinguished the species palettes.
+- Moved character creation into its own eight-step guided page with explanatory tips.
+- Added character pinning, centered create/import/export actions, and full character-list export.
+- Rebuilt Rules around the current Brambleheart table of contents with standalone reader pages, Quick Reference, FAQ, Recent, and Changes & Updates.
+- Loaded the supplied Brambleheart rule documents into the local rules reader and standardized Agility terminology.
+- Expanded the Rhythm Engine with explanatory text, optional Active/Passive targets, five-roll local history, and Fortune/Misfortune indicators.
+- Added ongoing combat encounters, encounter history, round tracking, and encounter pinning.
+- Expanded Settings with Donation placeholders, Custom Data, backgrounds, Changelog access, and separate Simulator reset controls.
+- Added a conservative manually triggered repository cleanup workflow that defaults to dry-run mode.
+
 ## 0.04
 
-- Rebuilt the application shell around a unified compact reader interface.
-- Reworked the site header, work-in-progress notice, centered branding, build label, changelog access, appearance control, and primary navigation.
-- Standardized the routed page width, page title hierarchy, cards, list rows, forms, buttons, toggles, tabs, search controls, and footer utilities.
-- Added a first-visit welcome screen with install prompt support and direct entry into the application.
-- Reworked Settings into compact Install, Report Bugs & Issues, Display, Support, and Data & Content groups.
-- Reworked species palettes into the interface theme selector and retained Backgrounds with None as the only current choice.
-- Reworked Rules around compact search, major-section shortcuts, Recent entries, and accordion reference rows.
-- Updated Character List and Simulator presentation to use the same shared interface language.
-- Added a routed Changelog page.
+- Established the compact routed reader layout, shared header/navigation, welcome flow, settings rows, Rules presentation, and common controls.
 
 ## 0.03
 
-- Added the work-in-progress notice, five text sizes, bold text, species palettes, install and support controls, grouped rules reference, Recent rules, and an initial splash page.
+- Added five text sizes, bold text, species palettes, install controls, grouped rules reference, Recent rules, and an initial splash page.
 
 ## 0.02
 
-- Completed the first application-wide GUI consistency pass.
-- Added species theme selection and the initial Background control.
+- Completed the first application-wide GUI consistency pass and initial species/background settings.
 
 ## 0.01
 
-- Initial Vue 3 + TypeScript + Vite + Vue Router companion build.
-- Added Character List, Rules, Simulator, Settings, local character persistence, JSON import/export, and Brambleheart assets.
+- Initial Vue 3 + TypeScript + Vite + Vue Router companion build with Character List, Rules, Simulator, Settings, local persistence, and JSON import/export.

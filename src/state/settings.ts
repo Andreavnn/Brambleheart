@@ -3,7 +3,7 @@ import { species } from '../data/bramble'
 
 export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
 export type SpeciesTheme = 'default' | (typeof species)[number]
-export type BackgroundChoice = 'none'
+export type BackgroundChoice = 'none' | 'crossway-hearth' | 'thornwick-market' | 'leviathans-wreck' | 'deepwood-ruins' | 'mushroom-isles'
 
 type SettingsState = {
   darkMode: boolean
@@ -24,6 +24,8 @@ const defaults: SettingsState = {
   backgroundImage: 'none',
 }
 
+const backgrounds: BackgroundChoice[] = ['none','crossway-hearth','thornwick-market','leviathans-wreck','deepwood-ruins','mushroom-isles']
+
 function normalizeFontSize(value: unknown): FontSize {
   if (['smaller','small','normal','large','larger'].includes(String(value))) return value as FontSize
   if (value === 'medium') return 'normal'
@@ -32,6 +34,9 @@ function normalizeFontSize(value: unknown): FontSize {
 function normalizeSpecies(value: unknown): SpeciesTheme {
   if (value === 'default' || value === 'none') return 'default'
   return species.includes(value as (typeof species)[number]) ? value as SpeciesTheme : 'default'
+}
+function normalizeBackground(value: unknown): BackgroundChoice {
+  return backgrounds.includes(value as BackgroundChoice) ? value as BackgroundChoice : 'none'
 }
 function loadSettings(): SettingsState {
   if (typeof window === 'undefined') return { ...defaults }
@@ -42,16 +47,14 @@ function loadSettings(): SettingsState {
       ? saved.darkMode
       : legacyTheme === 'dark'
         ? true
-        : legacyTheme === 'light'
-          ? false
-          : window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
+        : false
     return {
       darkMode: inferredDark,
       compactRows: Boolean(saved.compactRows ?? saved.compact),
       fontSize: normalizeFontSize(saved.fontSize ?? saved.text),
       boldText: Boolean(saved.boldText),
       speciesTheme: normalizeSpecies(saved.speciesTheme),
-      backgroundImage: 'none',
+      backgroundImage: normalizeBackground(saved.backgroundImage ?? saved.background),
     }
   } catch {
     return { ...defaults }

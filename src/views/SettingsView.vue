@@ -1,173 +1,86 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { species } from '../data/bramble'
 import { canInstall, installMessage, isInstalled, requestInstall } from '../state/install'
-import { useSettings, type FontSize, type SpeciesTheme } from '../state/settings'
+import { useSettings, type BackgroundChoice, type FontSize, type SpeciesTheme } from '../state/settings'
 
-const { darkMode, compactRows, fontSize, boldText, speciesTheme, reset } = useSettings()
+const router=useRouter()
+const { darkMode, compactRows, fontSize, boldText, speciesTheme, backgroundImage, reset } = useSettings()
+const customDataInput=ref<HTMLInputElement|null>(null)
+const customDataLabel=ref(localStorage.getItem('brambleheart-custom-data-name-v0.05')||'None loaded')
 
 const fontOptions: Array<{ value:FontSize; label:string }> = [
-  { value:'smaller', label:'Smaller' },
-  { value:'small', label:'Small' },
-  { value:'normal', label:'Normal' },
-  { value:'large', label:'Large' },
-  { value:'larger', label:'Larger' },
+  { value:'smaller', label:'Smaller' },{ value:'small', label:'Small' },{ value:'normal', label:'Normal' },{ value:'large', label:'Large' },{ value:'larger', label:'Larger' },
 ]
-const speciesOptions = species.map(name => ({ value:name as SpeciesTheme, label:name }))
-const currentSpeciesLabel = computed(() => speciesTheme.value === 'default' ? 'Default' : speciesTheme.value)
+const speciesOptions=species.map(name=>({value:name as SpeciesTheme,label:name}))
+const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:string}>=[
+  {value:'none',label:'None',description:'Use the standard Brambleheart page background.'},
+  {value:'crossway-hearth',label:'The Crossway Hearth',description:'A quiet hearthstead in the woods.'},
+  {value:'thornwick-market',label:'Thornwick Market',description:'A crowded Beastfolk market street.'},
+  {value:'leviathans-wreck',label:'Leviathan’s Wreck',description:'A shattered vessel and a colossal sea beast.'},
+  {value:'deepwood-ruins',label:'Deepwood Ruins',description:'Ancient stone hidden in the deep woods.'},
+  {value:'mushroom-isles',label:'Mushroom Isles',description:'A strange waterside landscape of giant mushrooms.'},
+]
+const currentSpeciesLabel=computed(()=>speciesTheme.value==='default'?'Default':speciesTheme.value)
+const currentBackgroundLabel=computed(()=>backgroundOptions.find(item=>item.value===backgroundImage.value)?.label||'None')
 
-function toggleSpecies(value: SpeciesTheme, event: Event) {
-  const checked = Boolean((event.target as HTMLInputElement | null)?.checked)
-  speciesTheme.value = checked ? value : (speciesTheme.value === value ? 'default' : speciesTheme.value)
+function toggleSpecies(value:SpeciesTheme,event:Event){const checked=Boolean((event.target as HTMLInputElement|null)?.checked);speciesTheme.value=checked?value:(speciesTheme.value===value?'default':speciesTheme.value)}
+function clearKey(key:string,message:string){if(!confirm(message))return;localStorage.removeItem(key)}
+function clearCharacters(){clearKey('brambleheart-characters-v0.01','Clear all saved Brambleheart characters from this device? This cannot be undone.')}
+function clearRecentRules(){if(!confirm('Clear recently opened rules from this device?'))return;['brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05'].forEach(key=>localStorage.removeItem(key))}
+function clearCombat(){clearKey('brambleheart-simulator-encounters-v0.05','Clear all ongoing and completed combat encounters?')}
+function clearDiceRolls(){clearKey('brambleheart-simulator-rhythm-v0.05','Clear the stored Rhythm Engine roll history?')}
+function clearSimulatorAll(){if(!confirm('Clear all Simulator data, including combat encounters and dice rolls?'))return;localStorage.removeItem('brambleheart-simulator-encounters-v0.05');localStorage.removeItem('brambleheart-simulator-rhythm-v0.05')}
+function clearAllLocalData(){
+  if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, simulator history, custom data, and welcome state. Display settings are preserved.'))return
+  const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-simulator-encounters-v0.05','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05']
+  keys.forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded'
 }
-function clearCharacters() {
-  if (typeof window === 'undefined' || !window.confirm('Clear all saved Brambleheart characters from this device? This cannot be undone.')) return
-  localStorage.removeItem('brambleheart-characters-v0.01')
+function reportIssue(){window.open('https://github.com/Andreavnn/Brambleheart/issues','_blank','noopener,noreferrer')}
+async function importCustomData(event:Event){
+  const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
+  try{const raw=await file.text();JSON.parse(raw);localStorage.setItem('brambleheart-custom-data-v0.05',raw);localStorage.setItem('brambleheart-custom-data-name-v0.05',file.name);customDataLabel.value=file.name}
+  catch{alert('Custom Data must be a valid JSON file.')}
+  input.value=''
 }
-function clearRecentRules() {
-  if (typeof window === 'undefined' || !window.confirm('Clear recently opened rules from this device?')) return
-  localStorage.removeItem('brambleheart-rules-recent-v0.04')
-}
-function clearAllLocalData() {
-  if (typeof window === 'undefined' || !window.confirm('Reset Brambleheart local data? This removes saved characters and recent rules. Display settings are preserved.')) return
-  localStorage.removeItem('brambleheart-characters-v0.01')
-  localStorage.removeItem('brambleheart-rules-recent-v0.03')
-  localStorage.removeItem('brambleheart-rules-recent-v0.04')
-  localStorage.removeItem('brambleheart.welcome.v0.04')
-  localStorage.removeItem('brambleheart.install-welcome-dismissed.v0.04')
-}
-function reportIssue() {
-  if (typeof window !== 'undefined') window.open('https://github.com/Andreavnn/Brambleheart/issues', '_blank', 'noopener,noreferrer')
-}
+function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data file?'))return;localStorage.removeItem('brambleheart-custom-data-v0.05');localStorage.removeItem('brambleheart-custom-data-name-v0.05');customDataLabel.value='None loaded'}
 </script>
 
 <template>
   <main class="page settings-page">
     <AppHeader />
-    <div class="page-title-block">
-      <p class="eyebrow">SETTINGS</p>
-      <h1>Settings</h1>
-      <p>Display preferences, species palettes, install options, support links, and local data controls are kept together here.</p>
-    </div>
+    <div class="page-title-block"><p class="eyebrow">SETTINGS</p><h1>Settings</h1><p>Install controls, display preferences, donations, custom data, and local storage tools.</p></div>
 
-    <section class="settings-group" aria-label="Install Brambleheart">
-      <div class="settings-group-heading"><p class="eyebrow settings-group-title">INSTALL</p></div>
-      <section class="settings-card">
-        <div class="setting-row install-setting-row">
-          <span><strong>Install Brambleheart</strong><small>{{ isInstalled ? 'Brambleheart is running as an installed app on this device.' : canInstall ? 'Install Brambleheart as an app on this phone, tablet, or computer.' : 'If the direct prompt is unavailable, use your browser menu and choose Install app or Add to Home Screen.' }}<template v-if="installMessage"> {{ installMessage }}</template></small></span>
-          <button class="secondary-button settings-compact-action" type="button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled ? 'Installed' : 'Install' }}</button>
-        </div>
-      </section>
-    </section>
+    <section class="settings-group" aria-label="Install Brambleheart"><div class="settings-group-heading"><p class="eyebrow settings-group-title">INSTALL</p></div><section class="settings-card"><div class="setting-row install-setting-row"><span><strong>Install Brambleheart</strong><small>{{ isInstalled?'Brambleheart is installed on this device.':canInstall?'Install the companion as an app on this phone, tablet, or computer.':'If the direct prompt is unavailable, use the browser menu and choose Install app or Add to Home Screen.' }}<template v-if="installMessage"> {{ installMessage }}</template></small></span><button class="secondary-button settings-compact-action" type="button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled?'Installed':'Install' }}</button></div></section></section>
 
-    <section class="settings-group" aria-label="Report bugs and issues">
-      <div class="settings-group-heading"><p class="eyebrow settings-group-title">REPORT BUGS &amp; ISSUES</p></div>
-      <section class="settings-card">
-        <div class="setting-row static-row">
-          <span><strong>Bug &amp; issue reporting</strong><small>Open the public issue tracker for reproducible application problems.</small></span>
-          <button class="secondary-button settings-compact-action" type="button" @click="reportIssue">Report</button>
-        </div>
-      </section>
-    </section>
+    <section class="settings-group" aria-label="Report bugs and issues"><div class="settings-group-heading"><p class="eyebrow settings-group-title">REPORT BUGS &amp; ISSUES</p></div><section class="settings-card"><div class="setting-row static-row"><span><strong>Bug &amp; issue reporting</strong><small>Open the public issue tracker for reproducible application problems.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reportIssue">Report</button></div></section></section>
 
-    <section class="settings-group" aria-label="Display settings">
-      <div class="settings-group-heading"><p class="eyebrow settings-group-title">DISPLAY</p></div>
-      <section class="settings-card">
-        <label class="setting-row">
-          <span><strong>Dark mode</strong><small>The same setting controlled by the light/dark button in the top-right header.</small></span>
-          <input v-model="darkMode" type="checkbox" />
-        </label>
-        <label class="setting-row">
-          <span><strong>Compact rows</strong><small>Reduce character, rule, setting, and reference row height throughout Brambleheart.</small></span>
-          <input v-model="compactRows" type="checkbox" />
-        </label>
-        <div class="setting-row">
-          <span><strong>Text size</strong><small>Choose from two steps below or above the normal compact interface text size. The enlarged Brambleheart header is independent of this setting.</small></span>
-          <div class="font-size-control" role="group" aria-label="Text size">
-            <button v-for="option in fontOptions" :key="option.value" type="button" :class="{ active:fontSize === option.value }" @click="fontSize = option.value">{{ option.label }}</button>
-          </div>
-        </div>
-        <label class="setting-row">
-          <span><strong>Bold text</strong><small>Increase the weight of normal interface and reference text.</small></span>
-          <input v-model="boldText" type="checkbox" />
-        </label>
-        <details class="theme-settings-panel species-settings-panel">
-          <summary>
-            <span><strong>Species</strong><small>Species themes change the Brambleheart palette while preserving the selected light or dark mode.</small></span>
-            <span class="value-chip">{{ currentSpeciesLabel }}</span>
-          </summary>
-          <div class="theme-option-list">
-            <label v-for="theme in speciesOptions" :key="String(theme.value)" class="theme-option-row setting-row">
-              <span><strong>{{ theme.label }}</strong><small>Use the {{ theme.label }} interface palette.</small></span>
-              <input :checked="speciesTheme === theme.value" type="checkbox" @change="toggleSpecies(theme.value, $event)" />
-            </label>
-          </div>
-        </details>
-        <details class="background-settings-panel">
-          <summary>
-            <span><strong>Backgrounds</strong><small>Background artwork will be added later. No image background is available in this build.</small></span>
-            <span class="value-chip">Off</span>
-          </summary>
-          <div class="background-option-list">
-            <label class="background-option-row setting-row">
-              <span><strong>None</strong><small>Use the standard Brambleheart page background.</small></span>
-              <input type="checkbox" checked disabled />
-            </label>
-          </div>
-        </details>
-        <div class="setting-row reset-setting-row">
-          <span><strong>Reset local settings</strong><small>Restore display, species, and background preferences on this device to their defaults.</small></span>
-          <button class="secondary-button settings-compact-action" type="button" @click="reset">Reset</button>
-        </div>
-      </section>
-    </section>
+    <section class="settings-group" aria-label="Display settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DISPLAY</p></div><section class="settings-card">
+      <label class="setting-row"><span><strong>Dark mode</strong><small>Switch between the default light reader and the darker night reader.</small></span><input v-model="darkMode" type="checkbox" /></label>
+      <label class="setting-row"><span><strong>Compact rows</strong><small>Reduce list and settings row height throughout the companion.</small></span><input v-model="compactRows" type="checkbox" /></label>
+      <div class="setting-row"><span><strong>Text size</strong><small>Adjust standard interface and rules-reader text. Normal is one step larger than the previous build.</small></span><div class="font-size-control" role="group" aria-label="Text size"><button v-for="option in fontOptions" :key="option.value" type="button" :class="{active:fontSize===option.value}" @click="fontSize=option.value">{{ option.label }}</button></div></div>
+      <label class="setting-row"><span><strong>Bold text</strong><small>Increase the weight of standard interface and reference text.</small></span><input v-model="boldText" type="checkbox" /></label>
+      <details class="theme-settings-panel species-settings-panel"><summary><span><strong>Species</strong><small>Species themes change the palette while preserving the selected light or dark mode.</small></span><span class="value-chip">{{ currentSpeciesLabel }}</span></summary><div class="theme-option-list"><label class="theme-option-row setting-row"><span><strong>Default</strong><small>Use the standard Brambleheart palette.</small></span><input :checked="speciesTheme==='default'" type="checkbox" @change="toggleSpecies('default',$event)" /></label><label v-for="theme in speciesOptions" :key="String(theme.value)" class="theme-option-row setting-row"><span><strong>{{ theme.label }}</strong><small>Use the {{ theme.label }} interface palette.</small></span><input :checked="speciesTheme===theme.value" type="checkbox" @change="toggleSpecies(theme.value,$event)" /></label></div></details>
+      <details class="background-settings-panel"><summary><span><strong>Backgrounds</strong><small>Choose fixed artwork that stays behind the reader while pages scroll.</small></span><span class="value-chip">{{ currentBackgroundLabel }}</span></summary><div class="background-option-list"><label v-for="background in backgroundOptions" :key="background.value" class="background-option-row setting-row" :class="`background-preview-${background.value}`"><span><strong>{{ background.label }}</strong><small>{{ background.description }}</small></span><input v-model="backgroundImage" type="radio" name="background" :value="background.value" /></label></div></details>
+      <div class="setting-row reset-setting-row"><span><strong>Reset local settings</strong><small>Restore display, species, and background preferences to their defaults.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reset">Reset</button></div>
+    </section></section>
 
-    <section class="settings-group" aria-label="Support">
-      <div class="settings-group-heading"><p class="eyebrow settings-group-title">SUPPORT</p></div>
-      <section class="settings-card support-settings-card">
-        <div class="setting-row static-row support-copy-row">
-          <span><strong>Support Brambleheart</strong><small>Support continued Brambleheart development and related Andreavnn projects.</small></span>
-        </div>
-        <div class="support-button-row" aria-label="Brambleheart support options">
-          <a class="secondary-button support-action-button" href="https://www.patreon.com/Andreavnn" target="_blank" rel="noopener noreferrer">Patreon</a>
-          <a class="secondary-button support-action-button" href="https://github.com/Andreavnn/Brambleheart" target="_blank" rel="noopener noreferrer">Project Repository</a>
-        </div>
-      </section>
-    </section>
+    <section class="settings-group" aria-label="Donation"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DONATION</p></div><section class="settings-card support-settings-card"><div class="setting-row static-row support-copy-row"><span><strong>Support Brambleheart</strong><small>Donation destinations will be connected when the final links are supplied.</small></span></div><div class="support-button-row"><button class="secondary-button support-action-button" type="button" disabled>Single Support</button><button class="secondary-button support-action-button" type="button" disabled>Recurring Support</button></div></section></section>
 
-    <section class="settings-group" aria-label="Data and content settings">
-      <div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div>
-      <section class="settings-card">
-        <details class="reset-data-settings-panel">
-          <summary>
-            <span><strong>Reset local data</strong><small>Manage characters, recent rules, welcome state, and other locally stored Brambleheart data.</small></span>
-            <span class="value-chip">MANAGE</span>
-          </summary>
-          <div class="reset-data-option-list">
-            <div class="setting-row reset-data-row">
-              <span><strong>Reset all local data</strong><small>Remove saved characters, recent rules, and local welcome state while preserving Display settings.</small></span>
-              <button class="secondary-button settings-compact-action" type="button" @click="clearAllLocalData">Reset data</button>
-            </div>
-            <div class="setting-row local-clear-row">
-              <span><strong>Clear characters</strong><small>Remove all locally saved Brambleheart characters.</small></span>
-              <button class="secondary-button settings-compact-action" type="button" @click="clearCharacters">Clear</button>
-            </div>
-            <div class="setting-row local-clear-row">
-              <span><strong>Clear recent rules</strong><small>Remove the locally stored Recent list from the rules reference.</small></span>
-              <button class="secondary-button settings-compact-action" type="button" @click="clearRecentRules">Clear</button>
-            </div>
-          </div>
-        </details>
-        <div class="setting-row static-row">
-          <span><strong>Rule content</strong><small>The current Brambleheart reference data is bundled with this alpha build.</small></span>
-          <span class="value-chip">LOCAL</span>
-        </div>
-        <div class="setting-row static-row">
-          <span><strong>Character data</strong><small>Characters are stored locally in this browser and can be imported or exported as JSON.</small></span>
-          <span class="value-chip">LOCAL</span>
-        </div>
-      </section>
-    </section>
+    <section class="settings-group" aria-label="Data and content settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div><section class="settings-card">
+      <details class="reset-data-settings-panel"><summary><span><strong>Reset local data</strong><small>Manage characters, recent rules, Simulator history, custom data, and local welcome state.</small></span><span class="value-chip">MANAGE</span></summary><div class="reset-data-option-list">
+        <div class="setting-row reset-data-row"><span><strong>Reset all local data</strong><small>Remove all locally stored app data while preserving Display settings.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearAllLocalData">Reset data</button></div>
+        <div class="setting-row local-clear-row"><span><strong>Clear characters</strong><small>Remove all locally saved characters.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters">Clear</button></div>
+        <div class="setting-row local-clear-row"><span><strong>Clear recent rules</strong><small>Remove the Recent list from Rules.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearRecentRules">Clear</button></div>
+        <div class="setting-row local-clear-row"><span><strong>Clear combat</strong><small>Remove ongoing and completed encounter records.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearCombat">Clear</button></div>
+        <div class="setting-row local-clear-row"><span><strong>Clear dice rolls</strong><small>Remove the Rhythm Engine roll history.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearDiceRolls">Clear</button></div>
+        <div class="setting-row local-clear-row"><span><strong>Clear Simulator all</strong><small>Remove combat and Rhythm Engine local history together.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearSimulatorAll">Clear</button></div>
+      </div></details>
+      <div class="setting-row static-row"><span><strong>Changelog</strong><small>Review changes to the companion site itself. Rules amendments are listed separately under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>
+      <div class="setting-row static-row"><span><strong>Character data</strong><small>Characters are stored locally and can be imported or exported as JSON.</small></span><span class="value-chip">LOCAL</span></div>
+      <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Load an optional JSON data file into this browser for future custom-content support.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions setting-row"><span><strong>Local JSON data</strong><small>This build stores the validated file locally without replacing bundled system rules.</small></span><div class="button-row"><button class="secondary-button settings-compact-action" type="button" @click="customDataInput?.click()">Import</button><button class="secondary-button settings-compact-action" type="button" @click="clearCustomData">Clear</button><input ref="customDataInput" hidden type="file" accept="application/json,.json" @change="importCustomData" /></div></div></details>
+    </section></section>
   </main>
 </template>
