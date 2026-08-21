@@ -1,16 +1,13 @@
 # Changelog
 
-## 0.1.0 — 2026-08-20
+## 0.01 — 2026-08-21
 
-Initial Bramble Heart app build.
+Rebuilt initial Brambleheart app package.
 
-- Added Character List and v0.1 character creator.
-- Added local character persistence plus JSON import/export.
-- Added searchable Rules reference based on the uploaded project documents.
-- Added Rhythm Engine simulator with normal, edged, and weighted rolls.
-- Added opposed Strike/Ward simulator.
-- Added Standard/Direct/Lethal damage and Guts calculator with conditions separated from base/gear.
-- Added Health threshold, Hallows save, and advancement XP tools.
-- Added Settings with light/dark/system appearance, text sizing, compact cards, and reset controls.
-- Added static Node build/test scripts and Vercel SPA rewrite configuration.
-- Preserved unresolved Agility/Prowess source terminology instead of silently reconciling it.
+- Retained Character List, Rules, Simulator, and Settings from the initial build.
+- Added the approved full Brambleheart logo to the application header.
+- Added the approved Brambleheart icon as the browser/app icon and footer mark.
+- Updated visible build numbering to Alpha Build 0.01.
+- Updated the static build to copy image assets into `dist/assets/`.
+- Updated Vercel configuration to run `npm run build`, serve `dist/`, and preserve SPA deep links.
+- Preserved current local-first character storage and existing rules-source fidelity behavior.
