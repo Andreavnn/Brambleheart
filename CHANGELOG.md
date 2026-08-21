@@ -11,3 +11,5 @@ Rebuilt initial Brambleheart app package.
 - Updated the static build to copy image assets into `dist/assets/`.
 - Updated Vercel configuration to run `npm run build`, serve `dist/`, and preserve SPA deep links.
 - Preserved current local-first character storage and existing rules-source fidelity behavior.
+
+- Vercel static deployment fix: moved the local Node server out of the root so Vercel does not auto-detect it as a serverless Node application.

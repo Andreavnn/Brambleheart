@@ -18,7 +18,7 @@ Alpha companion app for the Bramble Heart TTRPG.
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173`.
+Open `http://127.0.0.1:4173`. The local server lives under `scripts/` so Vercel does not auto-detect it as a production Node server.
 
 ## Test and build
 
