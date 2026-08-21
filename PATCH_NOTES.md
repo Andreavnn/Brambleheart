@@ -1,24 +1,24 @@
-# Brambleheart Alpha 0.02 — GUI Overhaul Patch
+# Brambleheart Alpha Build 0.03 — GUI & Reference Patch
 
-This patch is based on the current `main` branch baseline from Alpha 0.01.
+This patch continues the interface overhaul while preserving the existing Vue/Vite architecture and local character storage.
 
 ## Included
 
-- Application-wide GUI overhaul and visual consistency pass.
-- Updated shell, header, navigation, panels, cards, buttons, form controls, modals, and responsive behavior.
-- Reworked Settings layout with collapsible Display, Species, Background, and Data & Content sections.
-- Added Species Theme preference using the current playable species list.
-- Added Background preference with `None` as the only available option in this build.
-- Preserved current local character storage and compatible display settings.
-- Build label advanced to Alpha 0.02.
+- Header rebuilt around the centered Brambleheart identity, build information, changelog control, quick appearance toggle, and permanent alpha WIP notice.
+- Normal text reduced to the new compact baseline with five scale choices: Smaller, Small, Normal, Large, Larger.
+- Optional Bold Text setting.
+- Eleven species palette themes corresponding to the current playable-species list. No species background artwork is bundled yet.
+- Background selector remains available with None as the only option.
+- New Install section with install-prompt support, manifest, and service worker.
+- New Support section with Patreon and issue-tracker actions.
+- Rules page reorganized into the requested major rules groups with Search Rules and Recent reference tools.
+- New splash page at `/`; Character List now lives at `/characters`.
+- Additional layout tightening across cards, settings groups, reference panels, responsive controls, and navigation.
 
-## Files changed
+## Local data
 
-- `CHANGELOG.md`
-- `README.md`
-- `index.html`
-- `src/App.vue`
-- `src/data/bramble.ts`
-- `src/state/settings.ts`
-- `src/styles.css`
-- `src/views/SettingsView.vue`
+The existing keys for characters and application settings are preserved. Saved `medium` text settings migrate to the new `normal` value automatically.
+
+## Applying
+
+Overlay the files in this package onto the current repository, preserving the existing `public/assets/` images and all files not included in the patch.

@@ -1,0 +1,13 @@
+{
+  "name": "Brambleheart Companion",
+  "short_name": "Brambleheart",
+  "description": "Character, rules, and tabletop companion for Brambleheart.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#10130f",
+  "theme_color": "#1f241d",
+  "icons": [
+    { "src": "/assets/Icon.png", "sizes": "any", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

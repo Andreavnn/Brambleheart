@@ -28,8 +28,16 @@ const showChangelog = ref(false)
         <button class="icon-button" type="button" @click="showChangelog = false">×</button>
       </div>
       <div class="rule-row">
+        <strong>Alpha Build 0.03</strong>
+        <p>Interface refinement patch: revised site header and WIP banner, compact five-step text sizing, bold-text control, species palettes, install and support settings, reorganized rules reference with search and recent entries, and a new splash page.</p>
+      </div>
+      <div class="rule-row">
         <strong>Alpha Build 0.02</strong>
-        <p>GUI overhaul across the application shell, navigation, cards, forms, settings, and responsive layouts. Settings are reorganized into Display, Species, Background, and Data &amp; Content, with species personalization prepared for future visual assets and Background currently set to None.</p>
+        <p>Application-wide GUI consistency pass with revised settings groups, species theme selection, background controls, and tighter responsive presentation.</p>
+      </div>
+      <div class="rule-row">
+        <strong>Alpha Build 0.01</strong>
+        <p>Initial Vue 3 + TypeScript + Vite companion build with Character List, Rules, Simulator, Settings, local persistence, and Brambleheart branding assets.</p>
       </div>
     </section>
   </div>
