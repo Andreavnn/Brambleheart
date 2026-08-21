@@ -1,6 +1,6 @@
-# Brambleheart App — Alpha Build 0.01
+# Brambleheart App — Alpha Build 0.02
 
-Brambleheart companion app rebuilt on the same application pattern used by Old.dex: Vue 3, TypeScript, Vite, Vue Router, shared components, routed views, shared styling/settings, and a `dist/` production build.
+Brambleheart companion app built with Vue 3, TypeScript, Vite, Vue Router, shared components, routed views, shared styling/settings, and a `dist/` production build.
 
 ## Main views
 
@@ -27,19 +27,19 @@ Vite writes the deployable application to `dist/`.
 
 ## Vercel
 
-Import the GitHub repository as a Vite project. The included `vercel.json` declares the Vite framework and a SPA fallback to `index.html`.
+Import the GitHub repository as a Vite project. The included `vercel.json` provides the SPA fallback to `index.html`.
 
 Recommended Vercel settings:
 
 - Framework Preset: Vite
 - Root Directory: `./`
-- Build Command: `npm run build` (Vite preset default is also fine)
-- Output Directory: `dist` (Vite preset default is also fine)
+- Build Command: `npm run build`
+- Output Directory: `dist`
 - Node.js: 22.x
-- Environment Variables: none required for v0.01
+- Environment Variables: none required for v0.02
 
 There is no root Node server, Express server, or Vercel Function entry point.
 
 ## Local data
 
-Characters and display settings are saved to browser `localStorage`.
+Characters and display settings are saved to browser `localStorage`. Alpha 0.02 keeps the existing v0.01 storage keys so current local character data and compatible settings carry forward.

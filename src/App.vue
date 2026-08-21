@@ -28,8 +28,8 @@ const showChangelog = ref(false)
         <button class="icon-button" type="button" @click="showChangelog = false">×</button>
       </div>
       <div class="rule-row">
-        <strong>Alpha Build 0.01</strong>
-        <p>Initial Vue 3 + TypeScript + Vite companion build using the same application structure as Old.dex. Includes Character List, Rules, Simulator, Settings, local persistence, and Brambleheart branding assets.</p>
+        <strong>Alpha Build 0.02</strong>
+        <p>GUI overhaul across the application shell, navigation, cards, forms, settings, and responsive layouts. Settings are reorganized into Display, Species, Background, and Data &amp; Content, with species personalization prepared for future visual assets and Background currently set to None.</p>
       </div>
     </section>
   </div>
