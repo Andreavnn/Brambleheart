@@ -3391,3 +3391,53 @@ body{font-size:calc(14px + var(--font-offset))}
     grid-template-columns:minmax(0,1fr);
   }
 }
+
+
+/* Beta 0.08 Step 1 layout reset — remove the side-by-side grid that allowed expanded Species content to escape its column. */
+.creator-reader-page .species-choice-layout{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+.creator-reader-page .species-choice-copy{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+.creator-reader-page .species-art-shell.species-art-inline{
+  position:relative!important;
+  top:auto!important;
+  width:min(100%,380px)!important;
+  max-width:380px!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:12px auto 14px!important;
+  padding:8px!important;
+}
+.creator-reader-page .species-art-shell.species-art-inline img{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:520px!important;
+  object-fit:contain!important;
+}
+.creator-reader-page .species-choice-copy .creation-info-panel,
+.creator-reader-page .species-choice-copy .creation-info-body,
+.creator-reader-page .species-choice-copy .trait-stack,
+.creator-reader-page .species-choice-copy .trait-card,
+.creator-reader-page .species-choice-copy .rule-breakdown-grid{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+}
+.creator-reader-page .species-choice-copy .rule-breakdown-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+@media(max-width:680px){
+  .creator-reader-page .species-choice-copy .rule-breakdown-grid{grid-template-columns:minmax(0,1fr)!important;}
+  .creator-reader-page .species-art-shell.species-art-inline{width:min(100%,330px)!important;}
+}

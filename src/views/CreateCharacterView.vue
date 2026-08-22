@@ -370,16 +370,16 @@ watch(()=>form.path,()=>ensureTalentSlots())
             <label class="field-label">Appearance<textarea v-model="form.appearance" class="field-control appearance-textarea" rows="3" placeholder="A short visual description"></textarea></label>
           </div>
 
-          <div class="species-choice-layout" :class="{'has-species-art':Boolean(selectedSpeciesImage)}">
+          <div class="species-choice-layout">
             <div class="species-choice-copy">
               <label class="field-label">Species<select v-model="form.species" class="field-control"><option value="">Choose Your Species</option><option v-for="item in species" :key="item" :value="item">{{ item }}</option></select></label>
+              <div v-if="selectedSpeciesImage" class="species-art-shell species-art-inline"><img :src="selectedSpeciesImage" :alt="`${form.species} character artwork`" /></div>
               <template v-if="selectedSpeciesData">
                 <details class="creation-info-panel species-lore-panel" open><summary>{{ selectedSpeciesData.name }} Lore</summary><div class="creation-info-body"><p class="species-quote">“{{ selectedSpeciesData.quote }}”</p><p>{{ selectedSpeciesData.lore }}</p><div class="keyword-pill-row"><span class="keyword-pill">{{ selectedSpeciesData.theme }}</span><span class="keyword-pill">{{ selectedSpeciesData.language.split(',')[0] }}</span></div></div></details>
                 <details class="creation-info-panel trait-panel species-trait-panel"><summary>Species Traits</summary><div class="creation-info-body trait-stack"><article v-for="trait in selectedSpeciesData.speciesTraits" :key="trait.name" class="trait-card species-trait-card"><h3>{{ trait.name }}</h3><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="structuredRule(trait.text).fields.length" class="rule-breakdown-grid"><div v-for="field in structuredRule(trait.text).fields" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in trait.keywords" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
                 <details class="creation-info-panel trait-panel culture-trait-panel"><summary>Culture Traits</summary><div class="creation-info-body"><p>Your Species begins with these two Culture Traits. In Step 2 you may keep them or exchange them for Culture Traits from other peoples.</p><div class="trait-stack"><article v-for="trait in selectedSpeciesData.cultureTraits" :key="trait.name" class="trait-card culture-trait-card"><h3>{{ trait.name }}</h3><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="structuredRule(trait.text).fields.length" class="rule-breakdown-grid"><div v-for="field in structuredRule(trait.text).fields" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in trait.keywords" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></div></details>
               </template>
             </div>
-            <div v-if="selectedSpeciesImage" class="species-art-shell"><img :src="selectedSpeciesImage" :alt="`${form.species} character artwork`" /></div>
           </div>
           <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s player starts with the hero’s identity, then chooses the Beastfolk Species whose story, Traits, and language best fit the character they imagine.</em></div>
         </template>

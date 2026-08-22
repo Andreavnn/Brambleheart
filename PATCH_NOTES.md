@@ -9,6 +9,14 @@ This overlay rebuilds Beta 0.08 from the last known-good **Beta 0.06 Creator & R
 - Once artwork is present, the two-column Species layout uses strict min-width/max-width containment.
 - Expanded Species Lore, Species Traits, Culture Traits, structured rule fields, and keyword pills wrap inside the left column instead of painting across the portrait.
 
+
+## Step 1 layout reset
+
+- Removed the side-by-side Species/art grid entirely on Step 1.
+- Species artwork now sits inline in the same contained vertical flow as the Species selector and rule panels.
+- Expanded Species Lore, Species Traits, and Culture Traits can no longer occupy a sibling portrait column.
+- This patch intentionally changes only the Step 1 layout mechanism; the working Step 10 crash fix is preserved.
+
 ## Included
 
 - Code-red character creator fix for the Spells / Invocations → Talents transition so Talent validation does not mutate reactive state during render.
