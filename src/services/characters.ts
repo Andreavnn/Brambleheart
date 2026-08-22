@@ -1,7 +1,7 @@
 import type { AttributeId } from '../data/bramble'
 
 export type AttributeRanks = Record<AttributeId, number>
-export interface PurchasedEquipment { name:string; costSp:number; category?:string }
+export interface PurchasedEquipment { name:string; costSp:number; category?:string; detail?:string; effect?:string; choice?:string }
 export interface CharacterRecord {
   id:string
   name:string
@@ -56,7 +56,7 @@ export function upsertCharacter(record:CharacterRecord){
   if(index>=0)list[index]=record;else list.unshift(record)
   writeCharacters(list)
 }
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.08',character}}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.09',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)

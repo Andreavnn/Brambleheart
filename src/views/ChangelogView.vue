@@ -9,7 +9,17 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.08</strong><small>Rules navigation, character creator stabilization, and character-linked encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.09</strong><small>Rules reader presentation, creator refinement, theme repair, and encounter validation</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Rebuilt the Rules landing page, removed the redundant Table of Content page, expanded full-width search, and added breadcrumbs plus Old.Dex-inspired Fundamental navigation.</li>
+          <li>Added a site-wide WIP banner, enlarged the Brambleheart logo for the requested scale test, and repaired Dark Mode surfaces for non-default role themes.</li>
+          <li>Expanded Fortune &amp; Misfortune guidance, removed the empty target placeholder, added saved-character Attribute Checks, and made Combat Encounters require a selected character.</li>
+          <li>Refined creator identity fields, Selu examples, help panels, Attributes, Skills, Lore Spells, Talent grouping, modal scroll behavior, equipment purchasing, Languages, and Review.</li>
+          <li>Reworked trait, talent, spell, and rule presentation toward the Old.Dex special-rule card language for future icons and type color coding.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.08</strong><small>Rules navigation, character creator stabilization, and character-linked encounters</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Fixed the Starting Spells → Talents character creator crash.</li>
           <li>Reorganized References, The Fundamentals, and Playable Species; added Fundamental inner links and recently viewed Rules boxes.</li>

@@ -1,66 +1,54 @@
-# Brambleheart Beta 0.08 — Recovery & Encounter Patch
-## Creator page boundary fix
+# Brambleheart Beta 0.09 — Rules, Creator & Rhythm Refinement Patch
 
-- Restores the working v0.06 Character Creation header structure: AppHeader is inside the `.page` container again.
-- Restores the compact Character Creation header so the logo/navigation no longer stretch edge-to-edge when entering the creator.
-- Preserves the v0.08 Step 10 crash fix and all existing character-creation logic.
+This patch starts from the working Beta 0.08 recovery state. It deliberately preserves both the Spells/Invocations → Talents crash fix and the corrected Character Creation page/header boundary that restored the creator layout.
 
+## Rules and reference reader
 
-This overlay rebuilds Beta 0.08 from the last known-good **Beta 0.06 Creator & Rules Patch**. It does not use the broken Beta 0.07 creator/simulator state as its code baseline. Existing character, encounter, Rules-recent, and Settings storage keys are retained where practical.
+- Rebuilt the Rules landing page around the supplied image #1: full-width search, clean References, recent rules, and chapter panels.
+- Removed Table of Content from References and removed the redundant reader page entirely.
+- Added breadcrumbs to individual rule pages.
+- Applied stronger source structure to rule pages: bold section titles, clearer paragraph rhythm, labeled lead-ins, rule tables, and Old.Dex-inspired section cards.
+- Rebuilt The Fundamentals previous/next controls around the compact Old.Dex Core Rules navigation pattern.
+- Restyled trait/talent/spell/rule boxes toward the Old.Dex special-rule card language shown in image #2, leaving room for later icons and type color coding.
 
+## Site presentation and themes
 
-## Focused Step 1 column fix
+- Added the WIP banner to the standard site header and Welcome page.
+- Increased the site logo toward the requested x5 scale test while constraining it to the viewport.
+- Fixed Dark Mode for Adventurer, Storyteller, Tactician, and Mystic so the full page/card surface palette changes to dark rather than only menu/accent colors.
 
-- Species selection stays full width until Species artwork is present.
-- Once artwork is present, the two-column Species layout uses strict min-width/max-width containment.
-- Expanded Species Lore, Species Traits, Culture Traits, structured rule fields, and keyword pills wrap inside the left column instead of painting across the portrait.
+## Rhythm Engine and Combat Encounter
 
+- Removed the empty No Target dotted placeholder; no target result is shown until a target is selected.
+- Expanded the Fortune & Misfortune panel to explain what the natural results mean and how their +1/−1 Conditions are used.
+- Added saved-character selection to Attribute Check, including character Attributes/secondary Stats and Skills.
+- Combat Encounter now requires a saved character. Start Encounter refuses to create an encounter without one and shows an explanatory error.
 
-## Step 1 layout reset
+## Character Creation
 
-- Removed the side-by-side Species/art grid entirely on Step 1.
-- Species artwork now sits inline in the same contained vertical flow as the Species selector and rule panels.
-- Expanded Species Lore, Species Traits, and Culture Traits can no longer occupy a sibling portrait column.
-- This patch intentionally changes only the Step 1 layout mechanism; the working Step 10 crash fix is preserved.
+- Renamed Kinship / Family to Kinship / Pack and aligned it with the resizable Appearance field.
+- Moved each Building Selu callout directly beneath its step title and tightened title/help spacing.
+- Combined overlapping Spark explanation panels.
+- Popup panels now freeze the page behind them and retain independent mouse/touch scrolling.
+- The Culture Trait picker filters out Traits already selected by the character.
+- Removed the redundant SKILL RANKS heading inside Culture Trait cards where the +1 Skill entries are self-explanatory.
+- Attribute Rank controls are right-aligned; the numeric Rank cell is black text on white.
+- Starting Skill Ranks now live under the Skills explanation and identify Culture-granted Skills with a Cultural pill.
+- Homeland Skill fields are now Homeland Skill Option #1 / #2 and overlapping Culture Skills show (+1 rank) in the dropdown.
+- Added non-collapsible Mana guidance to Choose Your Path.
+- Renamed Regular Spells to Lore Spells; the Magical Spells panel now explains Lores, Invocation, Attunement, and starting spell slots together.
+- Attuned Lore groups are labeled “(Attuned)” in Lore Spell selection.
+- Talents are provisionally grouped into Combat, Magic, Movement, Survival, Social, and Utility categories.
+- Equipment & Gear has category tabs, readable Armor/Weapon profile labels, source-backed descriptions and effects, purchase choices where required, a named Purchased Equipment & Gear list, Threadpiece currency guidance, and the renamed Adventure Kit (Starting Equipment Package).
+- Added one additional selectable Language and language context cards.
+- Review Character now permits name editing and presents Attributes with Rank/Modifier, secondary stats, Skills, Languages, Talents, and Equipment & Gear more clearly.
 
+## Versioning and compatibility
 
-## Creator outer-container restoration
-
-- Restores the working v0.06 `character-create-page` creator page class.
-- Restores the working v0.06 `form-card creation-step-card` outer form container.
-- Keeps the v0.08 Step 10 crash fix and all existing creator data/validation logic unchanged.
-- This specifically fixes the creator content appearing to break out of its normal bordered paper/card column.
-
-## Included
-
-- Code-red character creator fix for the Spells / Invocations → Talents transition so Talent validation does not mutate reactive state during render.
-- Species creator containment so expanded Species/Culture information stays in its column instead of covering the Species portrait.
-- Resizable Appearance field, black Species portrait border, contained Oath & Faith layout, black Start Over text, red Close text, and Lore-colored Spell cards.
-- Old.Dex-style information-card treatment and a searchable Culture Trait popup picker.
-- Starting Skills display both Rank and Modifier.
-- Rules menu renamed to References while the linked Quick Reference reader becomes Table of Content.
-- Introduction moved above Dice Rules in The Fundamentals, Fundamental inner links added, and the redundant Fundamentals Menu button removed from Fundamental subpages.
-- Playable Species promoted to its own Rules section and Lore of Anthro Mundas moved to the top of References.
-- Recently viewed Rules boxes added to the Rules page.
-- Default added as the first Theme option.
-- Fortune & Misfortune tip added above Rhythm Engine Roll Type.
-- Combat Encounters can select a saved Character and pull its secondary stats, Skills, Talents, Mana, Lore, and Spells into the encounter.
-- Abilities panel added above Attacking & Defending with start-of-turn guidance, Root-type tracking, Passive guidance, and a clear no-Root-types-remaining state.
-- Opposed Roll renamed Attacking & Defending with separate Melee, Ranged, and Magical Strike modes.
-- Spells & Mana moved directly below Attacking & Defending.
-- Resistance and Weakness controls added to Damage & Guts and applied as Guts Conditions after the damage category.
-- PWA shell cache advanced to v0.08.
-
-## Baseline and recovery
-
-The supplied Beta 0.06 package is the recovery baseline for this patch. Files not explicitly changed for Beta 0.08 are preserved from that stable package instead of inheriting Beta 0.07 regressions.
-
-Species portrait image files added during the later repository work are referenced from `/public/assets/species/`. Overlaying this patch onto the current repository preserves those existing image assets.
-
-## Local data
-
-Character storage remains `brambleheart-characters-v0.01`. Rhythm/Encounter storage remains on the existing v0.05 keys so local histories are not discarded merely by applying this patch.
+- Visible build advanced to Beta 0.09.
+- PWA shell cache advanced to v0.09.
+- Existing local Character, Rules Recent, and Rhythm/Encounter storage keys remain compatible so applying the patch does not intentionally discard saved data.
 
 ## Applying
 
-Overlay the contents of `BrambleHeart-v0.08-CREATOR-RULES-ENCOUNTER-PATCH` onto the current Brambleheart repository, replacing matching files and preserving repository files not included in the patch.
+Overlay the contents of this package onto the current Brambleheart repository, replacing matching files and preserving repository files not included in the patch.

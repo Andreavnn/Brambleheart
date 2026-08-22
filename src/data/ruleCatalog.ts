@@ -21,7 +21,6 @@ const page = (slug:string,title:string,summary:string,sources?:RuleSourceSlice[]
 
 export const quickReferencePages: RulePageDefinition[] = [
   page('lore-anthro-mundas','Lore of Anthro Mundas','The myth-wild world, its peoples, places, histories, and old powers.',[{document:'lore-anthro-mundas'}]),
-  page('quick-reference','Table of Content','A linked table of content for the Brambleheart rules reader.'),
   page('faq','FAQ','Common questions answered from the currently loaded rules.'),
   page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.'),
 ]

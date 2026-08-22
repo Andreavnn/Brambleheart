@@ -2,6 +2,7 @@
 import { RouterLink, useRouter } from 'vue-router'
 import PrimaryNav from './PrimaryNav.vue'
 import { useSettings } from '../state/settings'
+import { BUILD } from '../data/bramble'
 
 const props=defineProps<{compact?:boolean;backTo?:string;backLabel?:string;preferBackTo?:boolean;skipBackPrefix?:string}>()
 const router=useRouter()
@@ -17,6 +18,7 @@ function goBack(){
 
 <template>
   <header class="app-header-wrap bramble-site-header">
+    <div class="wip-banner site-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div>
     <div class="app-header" :class="{compact}">
       <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
       <div v-else class="header-spacer"></div>

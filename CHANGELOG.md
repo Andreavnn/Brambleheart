@@ -1,5 +1,18 @@
 # Site Changelog
 
+## Beta 0.09
+
+- Rebuilt the Rules landing page around the supplied reference layout, removed the redundant Table of Content page, made Rules search full width, and added breadcrumbs.
+- Reworked source-backed rule sections and Fundamental previous/next controls toward the Old.Dex Core Rules presentation.
+- Added a WIP banner and the requested large-logo scale test.
+- Fixed Dark Mode so non-default role themes apply dark surfaces across the full site instead of changing only accent/menu colors.
+- Removed the empty No Target result placeholder, expanded Fortune & Misfortune guidance, added saved-character Attribute Checks, and require a character before starting a Combat Encounter.
+- Refined Character Creation identity fields, Selu callouts, help panels, Attribute controls, cultural Skills, Homeland Skill labels, Mana guidance, Lore Spells, attuned Lore labels, and Talent grouping.
+- Rebuilt Equipment & Gear purchasing with category tabs, readable profiles/descriptions/effects, required purchase choices where applicable, currency guidance, and a Purchased Equipment & Gear list.
+- Added an additional selectable Language with language guidance and rebuilt Review to show editable name, Attributes/Modifiers, secondary stats, Skills, and Equipment.
+- Locked page scrolling behind creator popup panels while preserving touch/mouse scrolling inside the popup itself.
+- Preserved the Beta 0.08 creator crash fix and corrected Character Creation page boundary.
+
 ## Beta 0.08
 
 - Rebuilt from the stable Beta 0.06 package rather than the broken Beta 0.07 implementation baseline.

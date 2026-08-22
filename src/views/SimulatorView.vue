@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import AppHeader from '../components/AppHeader.vue'
 import { damageResult, healthPenalty, opposedResult, rhythmResult } from '../rules/rulesEngine'
 import { passiveTargets } from '../data/bramble'
@@ -53,10 +53,27 @@ function rollAttributeCheck(){
 function rollOutcome(entry:RhythmHistoryEntry){if(entry.target===null)return'';return entry.result.total>=entry.target?'SUCCESS':'FAILURE'}
 
 const characters=ref<CharacterRecord[]>(loadCharacters().filter(character=>!character.draft))
+const attributeCharacterId=ref('')
+const attributeCharacter=computed(()=>attributeCharacterId.value?characters.value.find(character=>character.id===attributeCharacterId.value)||null:null)
+const attributeCharacterStat=ref('agility')
+const attributeStatOptions=computed(()=>{
+  const c=attributeCharacter.value
+  if(!c)return[]
+  const rank=(key:'agility'|'might'|'hide'|'lore'|'bravery')=>Number(c.attributes?.[key]||0)
+  return [
+    ['agility','Agility',rank('agility')*2],['might','Might',rank('might')*2],['hide','Hide',rank('hide')*2],['lore','Lore',rank('lore')*2],['bravery','Bravery',rank('bravery')*2],
+    ['speed','Speed',2+rank('agility')],['aim','Aim',rank('agility')*2],['mettle','Mettle',rank('might')*2],['ward','Ward',rank('hide')*2],['control','Control',rank('lore')*2],['power','Power',rank('might')],['guts','Guts',rank('hide')],
+  ] as Array<[string,string,number]>
+})
+const selectedAttributeStatValue=computed(()=>attributeStatOptions.value.find(([key])=>key===attributeCharacterStat.value)?.[2]??0)
+const attributeCharacterSkills=computed(()=>Object.entries(attributeCharacter.value?.skillRanks||{}).sort(([a],[b])=>a.localeCompare(b)))
+watch([attributeCharacterId,attributeCharacterStat],()=>{if(attributeCharacter.value)rhythmStat.value=selectedAttributeStatValue.value})
+watch(rhythmSkill,()=>{if(attributeCharacter.value){const rank=Number(attributeCharacter.value.skillRanks?.[rhythmSkill.value]||0);rhythmSkillBonus.value=rank*2}})
 const newEncounterCharacterId=ref('')
 const rawEncounters=readStore<EncounterRecord[]>(ENCOUNTER_STORE,[]).map(item=>({...item,health:Number(item.health??30),fateMarks:Number(item.fateMarks??0),mana:Number(item.mana??2),events:Array.isArray(item.events)?item.events:[]}))
 const encounters=ref<EncounterRecord[]>(rawEncounters)
 const encounterName=ref('')
+const encounterStartError=ref('')
 const activeEncounterId=ref<string|null>(encounters.value.find(item=>item.status==='ongoing')?.id||null)
 const activeEncounter=computed(()=>encounters.value.find(item=>item.id===activeEncounterId.value)||null)
 const activeCharacter=computed(()=>activeEncounter.value?.characterId?characters.value.find(character=>character.id===activeEncounter.value?.characterId)||null:null)
@@ -90,9 +107,11 @@ const encounterHistory=computed(()=>encounters.value.filter(item=>item.status===
 function persistEncounters(){writeStore(ENCOUNTER_STORE,encounters.value)}
 function addEvent(text:string){const item=activeEncounter.value;if(!item)return;item.events=[`${new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} — ${text}`,...item.events].slice(0,30);item.lastResult=text;item.updatedAt=stamp();persistEncounters()}
 function newEncounter(){
-  const name=encounterName.value.trim()||`Encounter ${encounters.value.length+1}`
+  encounterStartError.value=''
   const character=characters.value.find(item=>item.id===newEncounterCharacterId.value)||null
-  const now=stamp();const record:EncounterRecord={id:makeId(),name,status:'ongoing',pinned:false,round:1,health:30,fateMarks:0,mana:character?2+(character.path==='magic'?1:0):2,createdAt:now,updatedAt:now,events:[],characterId:character?.id}
+  if(!character){encounterStartError.value='Select a saved character before starting a Combat Encounter.';return}
+  const name=encounterName.value.trim()||`Encounter ${encounters.value.length+1}`
+  const now=stamp();const record:EncounterRecord={id:makeId(),name,status:'ongoing',pinned:false,round:1,health:30,fateMarks:0,mana:character?2+(character.path==='magic'?1:0):2,createdAt:now,updatedAt:now,events:[],characterId:character.id}
   encounters.value=[record,...encounters.value];activeEncounterId.value=record.id;encounterName.value='';newEncounterCharacterId.value='';resetRoundAbilities();persistEncounters()
 }
 function selectEncounter(id:string){activeEncounterId.value=id;resetRoundAbilities();combatResult.value=null}
@@ -154,23 +173,25 @@ function recordSpell(){if(!activeEncounter.value||!spellName.value.trim())return
     <section v-if="tab==='attribute'" class="tool-panel card-surface rhythm-tool-card">
       <div class="tool-heading"><div><p class="eyebrow">ATTRIBUTE CHECK</p><h2>3d10 + Stat + Skill</h2></div></div>
       <p class="tool-explainer">Choose what kind of roll is being made, then add the Attribute or secondary Stat required by the rule. If a Skill applies, choose it and enter its Skill Bonus separately. Edged adds a fourth die and drops the lowest; Weighted adds a fourth die and drops the highest.</p>
-      <aside class="fortune-tip"><strong>Fortune &amp; Misfortune</strong><span>Natural kept dice of 8–10 are highlighted as Fortune results; natural kept dice of 1–2 are highlighted as Misfortune results. Conditions are applied after the dice total.</span></aside>
+      <aside class="fortune-tip"><strong>Fortune &amp; Misfortune</strong><span>Fortune and Misfortune are natural die results that create exceptional or poor circumstances around a check. A kept natural 8–10 is a Fortune and can provide a +1 Condition to the total when that exceptional result applies; a kept natural 1–2 is a Misfortune and can apply a −1 Condition for the poor result. They are read from the natural dice before modifiers, while Conditions are applied after the dice total.</span></aside>
+
+      <label class="field-label attribute-character-picker"><span>Saved Character (Optional)</span><select v-model="attributeCharacterId" class="field-control"><option value="">Manual Check</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select></label>
+      <div v-if="attributeCharacter" class="field-grid two attribute-check-row character-check-fields"><label><span>Character Stat</span><select v-model="attributeCharacterStat" class="field-control"><option v-for="option in attributeStatOptions" :key="option[0]" :value="option[0]">{{ option[1] }} — +{{ option[2] }}</option></select></label><label><span>Character Skill</span><select v-model="rhythmSkill" class="field-control"><option value="">No Skill</option><option v-for="([skill,rank]) in attributeCharacterSkills" :key="skill" :value="skill">{{ skill }} — Rank {{ rank }} / +{{ Number(rank)*2 }}</option></select></label></div>
 
       <div class="field-grid two attribute-check-row">
         <label><span>Roll Type</span><select v-model="rollType" class="field-control"><option v-for="option in rollTypes" :key="option">{{ option }}</option></select></label>
         <label><span>Weighted / Edged</span><select v-model="rhythmMode" class="field-control"><option value="normal">Normal — 3d10</option><option value="edged">Edged — 4d10, Drop Lowest</option><option value="weighted">Weighted — 4d10, Drop Highest</option></select></label>
       </div>
       <div class="field-grid three attribute-check-row">
-        <label><span>Attribute / Stat</span><input v-model.number="rhythmStat" class="field-control" type="number" /></label>
-        <label><span>Skill</span><select v-model="rhythmSkill" class="field-control"><option value="">No Skill</option><option v-for="skill in skillDefinitions" :key="skill.name">{{ skill.name }}</option></select></label>
-        <label><span>Skill Bonus</span><input v-model.number="rhythmSkillBonus" class="field-control" type="number" :disabled="!rhythmSkill" /></label>
+        <label><span>Attribute / Stat</span><input v-model.number="rhythmStat" class="field-control" type="number" :disabled="!!attributeCharacter" /></label>
+        <label v-if="!attributeCharacter"><span>Skill</span><select v-model="rhythmSkill" class="field-control"><option value="">No Skill</option><option v-for="skill in skillDefinitions" :key="skill.name">{{ skill.name }}</option></select></label>
+        <label><span>Skill Bonus</span><input v-model.number="rhythmSkillBonus" class="field-control" type="number" :disabled="!!attributeCharacter||!rhythmSkill" /></label>
       </div>
       <div class="field-grid three attribute-check-row">
         <label><span>Conditions</span><input v-model.number="rhythmConditions" class="field-control" type="number" /></label>
         <label><span>Target Type</span><select v-model="targetMode" class="field-control"><option value="none">No Target</option><option value="passive">Passive</option><option value="active">Active</option></select></label>
         <label v-if="targetMode==='passive'"><span>Passive Target</span><select v-model.number="passiveTarget" class="field-control"><option v-for="target in passiveTargets" :key="target[0]" :value="target[1]">{{ target[0] }} — {{ target[1] }}</option></select></label>
         <label v-else-if="targetMode==='active'"><span>Active Target</span><input v-model.number="activeTarget" class="field-control" type="number" min="0" placeholder="Enter Target" /></label>
-        <div v-else class="attribute-check-placeholder"><span>No Target</span><small>Use this when the result is being recorded without a fixed threshold.</small></div>
       </div>
 
       <div class="sim-stat-total"><span>Combined Bonus</span><strong>{{ rhythmCombinedStat }}</strong><small>Attribute / Stat + Skill Bonus</small></div>
@@ -192,13 +213,13 @@ function recordSpell(){if(!activeEncounter.value||!spellName.value.trim())return
     <template v-if="tab==='combat'">
       <section class="tool-panel card-surface encounter-start-section">
         <div class="tool-heading"><div><p class="eyebrow">COMBAT ENCOUNTER</p><h2>Start Encounter</h2></div></div>
-        <p class="tool-explainer">Choose a saved character to carry its Attributes, secondary stats, Skills, Talents, Mana, and Spells into the encounter. You can also start an encounter without a character and enter combat values manually.</p>
-        <div class="encounter-create-grid"><input v-model="encounterName" class="field-control" placeholder="Encounter Name" @keyup.enter="newEncounter" /><select v-model="newEncounterCharacterId" class="field-control"><option value="">No Character / Manual</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select><button class="primary-button" type="button" @click="newEncounter">Start Encounter</button></div>
+        <p class="tool-explainer">Choose a saved character to carry its Attributes, secondary stats, Skills, Talents, Mana, and Spells into the encounter. A character is required before an encounter can begin.</p>
+        <div class="encounter-create-grid"><input v-model="encounterName" class="field-control" placeholder="Encounter Name" @keyup.enter="newEncounter" /><select v-model="newEncounterCharacterId" class="field-control"><option value="">Choose Character…</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select><button class="primary-button" type="button" @click="newEncounter">Start Encounter</button></div><p v-if="encounterStartError" class="creation-status-message encounter-start-error">{{ encounterStartError }}</p>
 
         <div v-if="activeEncounter" class="active-encounter-tools">
           <div class="active-encounter-card"><div><span class="eyebrow">ACTIVE ENCOUNTER</span><h3>{{ activeEncounter.name }}</h3><small v-if="activeEncounter.lastResult">{{ activeEncounter.lastResult }}</small></div><div class="round-control"><button type="button" class="icon-button" @click="changeRound(-1)">−</button><span><small>ROUND</small><strong>{{ activeEncounter.round }}</strong></span><button type="button" class="icon-button" @click="changeRound(1)">+</button></div></div>
 
-          <label class="encounter-character-select"><span>Encounter Character</span><select class="field-control" :value="activeEncounter.characterId||''" @change="assignActiveCharacterFromEvent"><option value="">No Character / Manual</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select></label>
+          <label class="encounter-character-select"><span>Encounter Character</span><select class="field-control" :value="activeEncounter.characterId||''" @change="assignActiveCharacterFromEvent"><option value="" disabled>Choose Character…</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select></label>
 
           <section v-if="activeCharacter" class="character-encounter-panel">
             <div class="character-encounter-heading"><div><span class="eyebrow">CHARACTER</span><h3>{{ activeCharacter.name }}</h3><small>{{ activeCharacter.species }} · {{ activeCharacter.homeland }}</small></div><span class="value-chip">{{ activeCharacter.path==='magic'?'Magic Level 1':'Talent Path' }}</span></div>

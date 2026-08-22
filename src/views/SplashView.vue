@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { dismissWelcomeInstallPromptPermanently, hasDismissedWelcomeInstallPrompt, markWelcomeSeen } from '../services/welcome'
 import { canInstall, isInstalled, requestInstall } from '../state/install'
+import { BUILD } from '../data/bramble'
 
 const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
 const continuePath=computed(()=>{const candidate=String(route.query.continue||'');return candidate.startsWith('/')&&!candidate.startsWith('/welcome')?candidate:'/characters'})
@@ -15,6 +16,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
 <template>
   <main class="welcome-page bramble-welcome-page">
     <section class="welcome-panel card-surface">
+      <div class="wip-banner welcome-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div>
       <header class="welcome-brand-block bramble-welcome-brand">
         <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="welcome-logo" />
       </header>
@@ -26,7 +28,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
 
       <section class="welcome-intro-grid">
         <article><h2>Character Creation</h2><p>Create a hero step by step through Species, Culture Traits, Spark, Homeland, Skills, Faith, Oath, Attributes, Talents or Magic, equipment, languages, and final character details.</p></article>
-        <article><h2>Rules Reference</h2><p>Browse Brambleheart rules without leaving the companion. Related Fundamental rules link together, while Quick Reference, Recent rules, FAQ, and Changes &amp; Updates keep common information close at hand.</p></article>
+        <article><h2>Rules Reference</h2><p>Browse Brambleheart rules without leaving the companion. Related Fundamental rules link together, while References, Recent rules, FAQ, and Changes &amp; Updates keep common information close at hand.</p></article>
         <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine, record why a roll was made, track recent results, manage ongoing encounters, and keep combat history available while play continues.</p></article>
       </section>
 

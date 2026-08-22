@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.08
+# Brambleheart TTRPG — Beta 0.09
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.08 is a recovery build based on the last known-good Beta 0.06 Creator & Rules package. It restores that stable foundation and layers the requested Rules, creator, and Combat Encounter work on top without using Beta 0.07 as the implementation baseline.
+Beta 0.09 builds on the recovered and stable Beta 0.08 state. The v0.08 creator crash fix and corrected Character Creation page boundary are preserved.
 
 ## Main views
 
@@ -14,17 +14,18 @@ Beta 0.08 is a recovery build based on the last known-good Beta 0.06 Creator & R
 - Settings
 - Site Changelog
 
-## Beta 0.08 focus
+## Beta 0.09 focus
 
-- Character creator crash recovery and layout containment
-- References / Table of Content Rules reorganization
-- Playable Species section and recent Rules boxes
-- Default theme option
-- Character-linked Combat Encounters
-- Abilities / Root tracking
-- Melee, Ranged, and Magical Attacking & Defending
-- Spells & Mana encounter tools
-- Resistance & Weakness damage handling
+- Rules landing page and Rule Reader presentation aligned toward the supplied/Old.Dex references
+- Redundant Table of Content rule page removed
+- Breadcrumbs and cleaned Fundamental next/back navigation
+- Full-width Rules search and recently viewed rules
+- Site-wide WIP banner and enlarged logo scale test
+- Dark Mode repaired for every selectable role theme
+- Saved-character Attribute Checks and character-required Combat Encounters
+- Expanded Fortune & Misfortune explanation
+- Character Creation layout, Skills, Spell, Talent, Equipment, Language, and Review refinements
+- Modal scroll/input isolation on desktop and touch devices
 
 ## Applying
 

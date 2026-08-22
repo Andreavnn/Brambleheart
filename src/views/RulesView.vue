@@ -6,7 +6,7 @@ import { loadRecentRuleSlugs } from '../services/ruleRecent'
 
 const query=ref('')
 const recentSlugs=ref(loadRecentRuleSlugs())
-const recentPages=computed(()=>recentSlugs.value.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,6))
+const recentPages=computed(()=>recentSlugs.value.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,4))
 const searchResults=computed(()=>{
   const q=query.value.trim().toLowerCase()
   if(!q)return[]
@@ -16,64 +16,62 @@ function clearSearch(){query.value=''}
 </script>
 
 <template>
-  <main class="page rules-page">
+  <main class="page rules-page rules-index-page">
     <AppHeader />
 
     <div class="page-title-block rules-title-block">
       <p class="eyebrow">RULES</p>
       <h1>Rules</h1>
-      <p>Search the Brambleheart rules reader, reopen a recent page, or browse the rules by section. Each rule opens as its own reader page.</p>
+      <p>Search the Brambleheart rules, reopen a recent entry, or browse by chapter.</p>
     </div>
 
-    <section class="rules-search-tools" aria-label="Rules search">
-      <label class="search-bar rules-primary-search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
-        <input v-model="query" type="search" placeholder="Search rules" autocomplete="off" />
-        <button v-if="query" type="button" class="search-clear" aria-label="Clear search" @click="clearSearch">×</button>
-      </label>
-    </section>
+    <label class="search-bar rules-primary-search" aria-label="Search rules">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+      <input v-model="query" type="search" placeholder="Search rules…" autocomplete="off" />
+      <button v-if="query" type="button" class="search-clear" aria-label="Clear search" @click="clearSearch">×</button>
+    </label>
 
-    <section v-if="query" class="section-card rules-search-results open">
-      <div class="section-heading static-section-heading"><span>Search Results</span></div>
-      <div class="section-content">
-        <RouterLink v-for="result in searchResults" :key="result.slug" class="list-row" :to="`/rules/read/${result.slug}`">
-          <div class="list-row-copy"><span class="list-row-title">{{ result.title }}</span><span class="list-row-subtitle">{{ result.summary }}</span></div>
-          <svg class="row-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    <section v-if="query" class="rules-index-panel card-surface">
+      <header class="rules-index-heading"><span>Search Results</span><small>{{ searchResults.length }} found</small></header>
+      <div class="rules-index-list">
+        <RouterLink v-for="result in searchResults" :key="result.slug" class="rules-index-row" :to="`/rules/read/${result.slug}`">
+          <span><strong>{{ result.title }}</strong><small>{{ result.summary }}</small></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
         </RouterLink>
         <div v-if="!searchResults.length" class="empty-inline">No matching rules.</div>
       </div>
     </section>
 
     <template v-else>
-      <section v-if="recentPages.length" class="recent-rules-panel card-surface" aria-label="Recently viewed rules">
-        <div class="recent-rules-heading"><div><p class="eyebrow">RECENT</p><h2>Recently Viewed</h2></div><small>Quickly reopen rules you used most recently.</small></div>
-        <div class="recent-rules-grid">
+      <section v-if="recentPages.length" class="rules-index-panel card-surface rules-recent-panel">
+        <header class="rules-index-heading"><span>Recently Viewed</span><small>Quick access</small></header>
+        <div class="rules-recent-grid">
           <RouterLink v-for="recent in recentPages" :key="recent!.slug" class="recent-rule-box" :to="`/rules/read/${recent!.slug}`">
-            <span>{{ recent!.title }}</span><small>{{ recent!.summary }}</small>
+            <strong>{{ recent!.title }}</strong><small>{{ recent!.summary }}</small>
           </RouterLink>
         </div>
       </section>
 
-      <section class="section-card quick-reference-menu open">
-        <div class="section-heading static-section-heading quick-reference-heading"><span>References</span></div>
-        <div class="section-content quick-reference-menu-content">
-          <RouterLink v-for="entry in quickReferencePages" :key="entry.slug" class="list-row quick-reference-row" :to="`/rules/read/${entry.slug}`">
-            <div class="list-row-copy"><span class="list-row-title">{{ entry.title }}</span><span class="list-row-subtitle">{{ entry.summary }}</span></div>
-            <svg class="row-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+      <section class="rules-index-panel card-surface">
+        <header class="rules-index-heading"><span>References</span></header>
+        <div class="rules-index-list">
+          <RouterLink v-for="entry in quickReferencePages" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
+            <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </RouterLink>
         </div>
       </section>
 
-      <section class="section-stack rules-toc-stack">
-        <details v-for="category in ruleCategories" :key="category.id" class="section-card rule-menu-card">
-          <summary class="section-heading rule-menu-summary">
-            <div class="rule-menu-heading-copy"><strong>{{ category.title }}</strong><small>{{ category.summary }}</small></div>
+      <section class="rules-chapter-stack">
+        <details v-for="category in ruleCategories" :key="category.id" class="rules-index-panel rules-chapter card-surface">
+          <summary class="rules-index-heading rules-chapter-heading">
+            <span><strong>{{ category.title }}</strong><small>{{ category.summary }}</small></span>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="section-content rule-menu-content">
-            <RouterLink v-for="entry in category.pages" :key="entry.slug" class="list-row rule-child-row" :to="`/rules/read/${entry.slug}`">
-              <div class="list-row-copy"><span class="list-row-title">{{ entry.title }}</span><span class="list-row-subtitle">{{ entry.summary }}</span></div>
-              <svg class="row-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+          <div class="rules-index-list">
+            <RouterLink v-for="entry in category.pages" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
+              <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
             </RouterLink>
           </div>
         </details>
@@ -83,11 +81,17 @@ function clearSearch(){query.value=''}
 </template>
 
 <style scoped>
-.recent-rules-panel{margin-bottom:13px;overflow:hidden}
-.recent-rules-heading{display:flex;align-items:end;justify-content:space-between;gap:14px;padding:13px 15px;border-bottom:1px solid var(--line);background:var(--paper-2)}
-.recent-rules-heading .eyebrow{margin:0 0 3px}.recent-rules-heading h2{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:calc(18px + var(--font-offset))}.recent-rules-heading>small{max-width:260px;color:var(--ink-soft);text-align:right}
-.recent-rules-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
-.recent-rule-box{min-width:0;display:grid;gap:3px;padding:10px 11px;border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:9px;background:var(--paper);color:var(--ink);text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.04)}
-.recent-rule-box:hover{border-color:var(--line-dark);background:var(--paper-2)}.recent-rule-box span{font-family:Georgia,'Times New Roman',serif;font-weight:800}.recent-rule-box small{color:var(--ink-soft);line-height:1.35}
-@media(max-width:620px){.recent-rules-heading{align-items:flex-start;flex-direction:column}.recent-rules-heading>small{text-align:left}.recent-rules-grid{grid-template-columns:1fr}}
+.rules-primary-search{width:100%;margin:0 0 14px}
+.rules-index-panel{overflow:hidden;margin-bottom:12px;border-radius:13px}
+.rules-index-heading{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--paper-2);font-weight:900}
+.rules-index-heading>small{color:var(--ink-soft);font-weight:650}
+.rules-index-list{display:grid}
+.rules-index-row{min-height:58px;display:grid;grid-template-columns:minmax(0,1fr) 20px;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none}
+.rules-index-row:last-child{border-bottom:0}.rules-index-row:hover{background:var(--paper-2)}
+.rules-index-row>span{display:grid;gap:3px;min-width:0}.rules-index-row strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(15px + var(--font-offset))}.rules-index-row small{color:var(--ink-soft);line-height:1.35}
+.rules-index-row svg,.rules-chapter-heading>svg{width:18px;height:18px;fill:none;stroke:var(--ink-soft);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rules-recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
+.recent-rule-box{display:grid;gap:4px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;background:var(--paper);color:var(--ink);text-decoration:none}.recent-rule-box:hover{background:var(--paper-2)}.recent-rule-box strong{font-family:Georgia,'Times New Roman',serif}.recent-rule-box small{color:var(--ink-soft);line-height:1.35}
+.rules-chapter-stack{display:grid;gap:10px}.rules-chapter{margin:0}.rules-chapter-heading{list-style:none;cursor:pointer;border-bottom:0}.rules-chapter-heading::-webkit-details-marker{display:none}.rules-chapter-heading>span{display:grid;gap:3px}.rules-chapter-heading>span>small{color:var(--ink-soft);font-weight:600}.rules-chapter[open] .rules-chapter-heading{border-bottom:1px solid var(--line)}.rules-chapter[open] .rules-chapter-heading>svg{transform:rotate(180deg)}
+@media(max-width:620px){.rules-recent-grid{grid-template-columns:1fr}.rules-index-heading{align-items:flex-start}}
 </style>

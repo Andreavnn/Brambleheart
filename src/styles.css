@@ -3311,7 +3311,7 @@ body{font-size:calc(14px + var(--font-offset))}
 
 .modal-backdrop{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(17,16,14,.56)}.modal-card{width:min(760px,calc(100% - 24px));max-height:86vh;overflow:auto;padding:14px;border:1px solid var(--line-dark);border-radius:14px;background:var(--paper);box-shadow:0 20px 70px rgba(0,0,0,.28)}.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.gear-shop-modal{display:grid;grid-template-rows:auto auto auto minmax(0,1fr);overflow:hidden}.gear-shop-balance{display:flex;justify-content:space-between;gap:10px;padding:7px 0}.gear-search{margin:8px 0}.gear-shop-list{overflow:auto;border:1px solid var(--line);border-radius:9px}.gear-shop-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px;border-bottom:1px solid var(--line)}
 
-.encounter-start-section,.encounter-list-section{margin-top:12px}.active-encounter-tools{display:grid;gap:9px;margin-top:12px}.encounter-vital-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.encounter-vital-grid label>span{display:block;margin-bottom:4px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850;text-transform:uppercase;letter-spacing:.05em}.encounter-tool-panel{border:1px solid var(--line);border-radius:10px;background:var(--paper-2);overflow:hidden}.encounter-tool-panel summary{padding:10px 12px;font-weight:850;cursor:pointer;background:color-mix(in srgb,var(--paper-2) 78%,var(--accent-wash))}.encounter-tool-body{padding:11px}.encounter-log{max-height:220px;overflow:auto;padding:9px 11px}.encounter-log p{margin:0;padding:6px 0;border-bottom:1px solid var(--line);font-size:calc(10.5px + var(--font-offset))}.standalone-list-body{display:grid}.attribute-check-placeholder{padding:8px 10px;border:1px dashed var(--line-dark);border-radius:9px;color:var(--ink-soft)}
+.encounter-start-section,.encounter-list-section{margin-top:12px}.active-encounter-tools{display:grid;gap:9px;margin-top:12px}.encounter-vital-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.encounter-vital-grid label>span{display:block;margin-bottom:4px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850;text-transform:uppercase;letter-spacing:.05em}.encounter-tool-panel{border:1px solid var(--line);border-radius:10px;background:var(--paper-2);overflow:hidden}.encounter-tool-panel summary{padding:10px 12px;font-weight:850;cursor:pointer;background:color-mix(in srgb,var(--paper-2) 78%,var(--accent-wash))}.encounter-tool-body{padding:11px}.encounter-log{max-height:220px;overflow:auto;padding:9px 11px}.encounter-log p{margin:0;padding:6px 0;border-bottom:1px solid var(--line);font-size:calc(10.5px + var(--font-offset))}.standalone-list-body{display:grid}
 
 .character-card-icon-actions{display:flex;gap:5px}.draft-badge,.lock-badge{font-size:calc(8px + var(--font-offset))}.character-lock-button.active{border-color:var(--accent);color:var(--accent-dark)}
 
@@ -3441,3 +3441,62 @@ body{font-size:calc(14px + var(--font-offset))}
   .creator-reader-page .species-choice-copy .rule-breakdown-grid{grid-template-columns:minmax(0,1fr)!important;}
   .creator-reader-page .species-art-shell.species-art-inline{width:min(100%,330px)!important;}
 }
+
+/* Beta 0.09 — site-wide WIP identity, theme completion, and creator interaction fixes. */
+.site-wip-banner{margin:0 auto 6px;width:min(760px,calc(100% - 28px));color:var(--accent-dark);background:color-mix(in srgb,var(--accent-wash) 72%,var(--paper));border-color:color-mix(in srgb,var(--accent) 42%,var(--line));font-size:calc(9px + var(--font-offset));font-weight:800}
+
+/* Requested logo scale test: five times the previous logo bounds, constrained only by viewport. */
+.bramble-site-header .brand-logo-link{width:min(2800px,calc(100vw - 64px));max-width:none}
+.bramble-site-header .brand-logo{width:100%;max-height:640px}
+.bramble-site-header .app-header{min-height:min(650px,56vw)}
+.bramble-site-header .app-header.compact{min-height:min(450px,42vw)}
+.bramble-site-header .app-header.compact .brand-logo{width:100%;max-height:440px}
+@media(max-width:820px){.bramble-site-header .brand-logo-link{width:min(2400px,calc(100vw - 76px))}.bramble-site-header .app-header{min-height:min(520px,56vw)}.bramble-site-header .app-header.compact{min-height:min(360px,42vw)}}
+@media(max-width:620px){.bramble-site-header .brand-logo-link{width:min(1800px,calc(100vw - 68px))}.bramble-site-header .app-header{min-height:min(420px,58vw)}.bramble-site-header .app-header.compact{min-height:min(310px,46vw)}}
+
+/* Role themes must retain a complete dark surface palette, not only dark menu accents. */
+:root[data-theme="dark"][data-role-theme]{--ink:#eee9df;--ink-soft:#aaa398;--paper:#211f1b;--paper-2:#28251f;--line:#3c3932;--line-dark:#59544a;--page-bg:#171613;--page-gradient:linear-gradient(180deg,#201e1a 0,#171613 420px);--shadow:0 8px 28px rgba(0,0,0,.28)}
+:root[data-theme="dark"][data-role-theme="adventurer"]{--accent:#7d9f30;--accent-dark:#a8c860;--accent-wash:#263019}
+:root[data-theme="dark"][data-role-theme="storyteller"]{--accent:#a5675d;--accent-dark:#d09085;--accent-wash:#34221f}
+:root[data-theme="dark"][data-role-theme="tactician"]{--accent:#66869a;--accent-dark:#91b1c3;--accent-wash:#1d2a31}
+:root[data-theme="dark"][data-role-theme="mystic"]{--accent:#8870a1;--accent-dark:#b49ac9;--accent-wash:#2b2433}
+
+html.modal-open,body.modal-open{overflow:hidden!important;overscroll-behavior:none!important}
+.modal-backdrop{overscroll-behavior:contain}
+.modal-card,.culture-picker-list,.gear-shop-list{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+
+/* Old.Dex-inspired rule/trait boxes: strong header rail, readable body, future icon slot. */
+.trait-card,.talent-detail-card,.spell-detail-card{position:relative;overflow:hidden;border:1px solid var(--line-dark)!important;border-radius:9px!important;background:var(--paper)!important;box-shadow:0 2px 7px rgba(0,0,0,.055)}
+.trait-card>h3,.trait-card-head,.talent-detail-head,.spell-detail-head{margin:-11px -12px 10px!important;padding:9px 11px 9px 14px;border-bottom:1px solid var(--line);border-left:5px solid var(--accent);background:color-mix(in srgb,var(--accent-wash) 45%,var(--paper-2))}
+.trait-card>h3{font-weight:900}.species-trait-card>h3{border-left-color:#527934}.culture-trait-card>h3,.culture-trait-card .trait-card-head{border-left-color:#6b4d8c}
+
+/* Creator spacing and controls. */
+.creation-step-card>.form-card-heading{margin-bottom:0}
+.creation-step-card>.creation-example{margin:4px 0 7px}
+.creation-step-card>.creation-example+.creation-info-panel{margin-top:0}
+.identity-tall-field{align-self:start}.kinship-textarea{min-height:82px;resize:vertical;line-height:1.45;font:inherit}
+.attribute-control-grid{grid-template-columns:minmax(100px,.4fr) minmax(210px,1fr)}
+.attribute-rank-column{justify-items:end;text-align:right}.rank-stepper-line{justify-content:flex-end;width:100%}.stepper span{background:#fff!important;color:#000!important;border-top:1px solid #aaa;border-bottom:1px solid #aaa}
+.creator-static-panel{margin:8px 0 11px;padding:11px 13px;border:1px solid var(--line-dark);border-left:5px solid var(--accent);border-radius:9px;background:var(--paper-2)}.creator-static-panel strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(17px + var(--font-offset))}.creator-static-panel p{margin:5px 0 0;color:var(--ink-soft);line-height:1.5}
+.cultural-skill-pill{display:inline-flex;width:max-content;margin-top:3px;padding:2px 6px;border:1px solid var(--pill-border);border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);font-size:calc(8px + var(--font-offset));font-weight:850}
+.skill-rank-name{display:grid;gap:2px;min-width:0}
+.currency-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0}.currency-grid span{display:grid;gap:2px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--paper-2);text-align:center}.currency-grid small{color:var(--ink-soft)}
+.purchased-equipment-section{margin-top:12px}.purchased-equipment-section>h2{font-family:Georgia,'Times New Roman',serif;font-size:calc(18px + var(--font-offset))}.purchased-gear-list .list-row{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto}.purchased-item-detail{display:grid;gap:3px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset))}
+.gear-tabs{display:flex;gap:5px;overflow-x:auto;padding:2px 0 7px}.gear-tabs button{flex:0 0 auto;min-height:32px;padding:0 9px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink-soft);font-weight:800;cursor:pointer}.gear-tabs button.active{border-color:var(--accent);background:var(--accent-wash);color:var(--ink)}
+.gear-shop-modal{grid-template-rows:auto auto auto auto minmax(0,1fr)!important}.gear-shop-copy{display:grid;gap:5px;min-width:0}.gear-shop-title{display:grid;gap:2px}.gear-shop-title small{color:var(--accent-dark);font-weight:750}.gear-description,.gear-profile,.gear-effect{margin:0!important;color:var(--ink-soft);line-height:1.42}.gear-description{font-style:italic}.gear-profile strong,.gear-effect strong{color:var(--ink)}.gear-choice-field{margin-top:4px}.gear-shop-row{align-items:start}
+.language-choice-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.language-card{display:grid;align-content:start;gap:5px}.language-card>span,.language-card>p{color:var(--ink-soft);line-height:1.45}.additional-language-card{grid-column:auto}
+.review-name-field{margin:8px 0 12px}.review-attribute-cards,.review-skill-grid,.review-equipment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.review-attribute-cards article,.review-skill-grid article,.review-equipment-grid article{display:grid;gap:3px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}.review-attribute-cards span,.review-skill-grid span{color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:800}.review-subheading{margin:14px 0 7px;font-size:calc(15px + var(--font-offset))}.review-secondary-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.review-secondary-stats>div{display:grid;gap:2px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);text-align:center}.review-secondary-stats span{color:var(--ink-soft);font-size:calc(8px + var(--font-offset))}
+@media(max-width:680px){.language-choice-grid,.currency-grid,.review-attribute-cards,.review-skill-grid,.review-equipment-grid{grid-template-columns:1fr 1fr}.review-secondary-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.purchased-gear-list .list-row{grid-template-columns:1fr}.purchased-item-detail{grid-column:1}}
+@media(max-width:460px){.language-choice-grid,.currency-grid,.review-attribute-cards,.review-skill-grid,.review-equipment-grid{grid-template-columns:1fr}}
+
+/* Beta 0.09 logo scale test also applies to the Welcome mark. */
+.welcome-logo{width:min(2800px,calc(100vw - 48px))!important;max-width:none!important;max-height:760px!important}
+.welcome-wip-banner{width:100%;margin-bottom:2px}
+@media(max-width:820px){.welcome-logo{width:min(2200px,calc(100vw - 40px))!important;max-height:560px!important}}
+@media(max-width:620px){.welcome-logo{width:min(1600px,calc(100vw - 32px))!important;max-height:420px!important}}
+
+/* Beta 0.09 final card pass — mirror the Old.Dex special-rule card silhouette. */
+.trait-card,.talent-detail-card{--rule-tone:var(--accent);border-top:7px solid var(--rule-tone)!important}
+.species-trait-card{--rule-tone:#527934}.culture-trait-card{--rule-tone:#6b4d8c}.talent-detail-card{--rule-tone:#a67913}
+.trait-card>h3,.trait-card-head,.talent-detail-head{border-left:0!important;background:linear-gradient(180deg,color-mix(in srgb,var(--rule-tone) 10%,var(--paper-2)),var(--paper-2))!important}
+.trait-card>h3,.trait-card-head{color:var(--ink)}
