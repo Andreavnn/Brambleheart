@@ -1,51 +1,42 @@
-# Brambleheart TTRPG — Beta Build 0.07
+# Brambleheart Beta 0.08 — Emergency Patch Packet
 
-Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router companion application for character creation, rules reference, Rhythm Engine checks, and Combat Encounter tracking.
+Baseline: Brambleheart Beta 0.07 / `main`
+Target repository: `Andreavnn/Brambleheart`
 
-## Main views
+This packet is the self-contained patch-delivery format.
 
-- Welcome / Splash
-- Character List
-- Create Character
-- Rules
-- Rhythm Engine
-- Settings
-- Site Changelog
+## What this packet fixes
 
-## Current interface features
+- Step 10 → Talents crash caused by Talent validation mutating reactive state during render.
+- Species/Culture information panels escaping the left creator column and covering the Species portrait.
+- Black border around Species portraits.
+- Appearance changed to a vertically resizable textarea.
+- Oath & Faith page over-stretching contained without redesigning the page.
+- Start Over text changed to black.
+- Close text changed to red.
+- Spell information cards colored by Lore.
 
-- Light and dark readers
-- Smaller / Small / Normal / Large / Larger text sizes and optional Bold Text
-- Adventurer, Storyteller, Tactician, and Mystic themes
-- Fixed selectable background artwork plus Default
-- Installable web-app support
-- Discord/community access
-- Rules search, Recent rules, Quick Reference, and standalone rule-reader pages
-- Guided character creation with Species art and local draft saving
-- Character pinning and locking
-- Attribute Check history and persistent Combat Encounter tracking
-- Local JSON character import/export and Custom Data support
+## Apply
 
-## Development
+### Windows / PowerShell
+Run `apply.ps1` from the repository root, or pass the repository path:
 
-```bash
-npm install
-npm run dev
+```powershell
+powershell -ExecutionPolicy Bypass -File .\BH_BETA_0.08_EMERGENCY_PACKET\apply.ps1
 ```
 
-## Validation / production build
+### macOS / Linux
+Run:
 
 ```bash
-npm run typecheck
-npm run build
+bash BH_BETA_0.08_EMERGENCY_PACKET/apply.sh
 ```
 
-Vite writes the deployable application to `dist/`.
+The scripts first run `git apply --check`. They stop without modifying files if the packet does not match the current source.
 
-## Vercel
+## Files changed by the packet
 
-- Framework Preset: Vite
-- Root Directory: `./`
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Node.js: 22.x
+- `src/views/CreateCharacterView.vue`
+- `src/styles.css`
+
+No test workflow, temporary GitHub verification marker, or other support artifact is added to the repository.
