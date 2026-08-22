@@ -11,6 +11,9 @@ const showGlobalPageTools = computed(() => route.name !== 'welcome')
 function reportIssue() {
   if (typeof window !== 'undefined') window.open('https://github.com/Andreavnn/Brambleheart/issues', '_blank', 'noopener,noreferrer')
 }
+function openDiscord() {
+  if (typeof window !== 'undefined') window.open('https://discord.gg/NHf3YdueHE', '_blank', 'noopener,noreferrer')
+}
 </script>
 
 <template>
@@ -21,6 +24,7 @@ function reportIssue() {
       <div class="page-utility-actions">
         <button type="button" class="secondary-button footer-tool-button" @click="reportIssue">Report</button>
         <button type="button" class="secondary-button footer-tool-button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled ? 'Installed' : 'Install Brambleheart' }}</button>
+        <button type="button" class="secondary-button footer-tool-button" @click="openDiscord">Join Discord</button>
       </div>
     </section>
 

@@ -1,28 +1,30 @@
-# Brambleheart TTRPG — Beta 0.06
+# Brambleheart TTRPG — Beta Build 0.07
 
-Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
+Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router companion application for character creation, rules reference, Rhythm Engine checks, and Combat Encounter tracking.
 
 ## Main views
 
 - Welcome / Splash
 - Character List
-- Guided Character Creation
+- Create Character
 - Rules
-- Rule Reader
-- Simulator
+- Rhythm Engine
 - Settings
 - Site Changelog
 
-## Current companion features
+## Current interface features
 
-- Responsive reader interface with light/dark modes and selectable text sizes
-- Species palette themes and selectable fixed-cover Brambleheart backgrounds
-- Local character persistence, JSON import/export, and character pinning
-- Source-backed Rules reader with Search, Recent Rules, Quick Reference, FAQ, and Changes & Updates
-- Guided character creation with source-backed Species, Culture, Skills, Magic, Talents, equipment, and Languages
-- Rhythm Engine roll history and Encounter tracking
-- Installable web-app support on compatible browsers
-- Donation links, Custom Data, local-data reset controls, and a protected repository cleanup workflow
+- Light and dark readers
+- Smaller / Small / Normal / Large / Larger text sizes and optional Bold Text
+- Adventurer, Storyteller, Tactician, and Mystic themes
+- Fixed selectable background artwork plus Default
+- Installable web-app support
+- Discord/community access
+- Rules search, Recent rules, Quick Reference, and standalone rule-reader pages
+- Guided character creation with Species art and local draft saving
+- Character pinning and locking
+- Attribute Check history and persistent Combat Encounter tracking
+- Local JSON character import/export and Custom Data support
 
 ## Development
 

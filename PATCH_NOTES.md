@@ -1,29 +1,21 @@
-# Brambleheart Beta 0.06 — Creator & Rules Patch
+# Brambleheart Beta Build 0.07 — Rhythm & Creator Patch
 
-This overlay advances the current Brambleheart companion to Beta 0.06 while preserving the existing Vue 3 + TypeScript + Vite + Vue Router architecture and existing character storage.
+This patch continues the application-wide GUI, character-creation, and tabletop-tool refinement pass while preserving the existing Vue/Vite architecture and local character storage.
 
 ## Included
 
-- Larger responsive Brambleheart identity treatment for the splash and regular reader header.
-- Browser and install identity updated to **Brambleheart TTRPG**.
-- Current release presentation changed from Alpha to Beta.
-- Donation and Recurring Support wired to the supplied Stripe links.
-- Rules Search plus Recent Rules access, static Quick Reference, FAQ, Changes & Updates, and reorganized source-backed rule categories.
-- Standalone reader pages for supplied Species and magical Lore source documents.
-- Linked previous/menu/next navigation across Fundamental-rule pages.
-- Source-aware example presentation and keyword-pill treatment.
-- Expanded guided Character Creation covering Species, Culture Traits, Sparks, Homeland, Skills, Faith & Oath, Attributes, Body & Spirit, Magic/Lore Attunement, Talents, equipment, Languages, and final details.
-- Detailed Attribute allocation with Rank, Modifier, creation MAX state, secondary-stat references, and expandable explanations.
-- Equipment purchasing modal using the supplied equipment data and starting-wealth rules.
-- Expanded saved-character details for Culture Traits, Skills, Languages, Talents, Magic, and equipment.
-- Rhythm Engine reason field, separate Attribute/Secondary Stat and optional Skill values, targets, five-roll history, and Fortune/Misfortune display.
-- Strike vs Ward integrated into the Encounter tracker.
-- Existing backgrounds, install support, Custom Data, Simulator resets, character/encounter pinning, and protected repository cleanup workflow retained.
-
-## Local data
-
-The existing character storage key is unchanged. Existing v0.05 Simulator/Recent/Welcome keys are intentionally retained where practical so applying this patch does not discard local histories or re-run onboarding unnecessarily.
+- Replaced Species-linked display themes with four stable player-archetype themes: Adventurer, Storyteller, Tactician, and Mystic.
+- Reworked the splash entry flow, community actions, background presentation, and fixed Thornwick Market splash artwork.
+- Added Discord access to the splash page, Settings, and global page utilities.
+- Changed primary selection/highlight treatment to the darker leaf green used by Brambleheart branding.
+- Renamed Simulator to Rhythm Engine, rebuilt Attribute Check controls, and rebuilt Combat Encounter around encounter tracking and history.
+- Added Health, Mana, Fate Mark, damage, opposed-roll, spell-use, round, and event tracking to Combat Encounters.
+- Rebuilt character creation with clickable creation-step navigation, Species artwork, Culture Trait exchange, structured Trait/Talent/Spell rules, custom Homelands, Skill rank calculation, revised Attribute cards, Magic/Lore and Spell steps, requirement-aware Talents, Equipment & Gear, draft saving, and final validation.
+- Added all supplied playable-Species artwork with responsive desktop/tablet/mobile behavior.
+- Sharpened the supplied fixed backgrounds without changing their source dimensions.
+- Added character locking in the Character List.
+- Updated Beta build label to 0.07.
 
 ## Applying
 
-Overlay this package onto the current Brambleheart repository, replacing matching files and preserving repository files not included in the patch.
+Overlay the files in this package onto the current Brambleheart repository. Preserve repository files that are not included in this patch.

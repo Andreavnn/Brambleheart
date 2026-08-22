@@ -12,9 +12,12 @@ export interface CharacterRecord {
   kinship?:string
   species:string
   cultureTraits?:string[]
+  cultureSkillChoices?:Record<string,string>
   spark:string
   homeland:string
+  homelandDetail?:string
   skills?:string[]
+  skillRanks?:Record<string,number>
   faith:string
   oath:string
   path:'magic'|'talents'
@@ -22,6 +25,7 @@ export interface CharacterRecord {
   loreAttunement?:string
   spells?:string[]
   invocationSpell?:string
+  invocationSpells?:string[]
   languages?:string[]
   equipment?:PurchasedEquipment[]
   adventureKit?:boolean
@@ -29,7 +33,11 @@ export interface CharacterRecord {
   wealthRemaining?:number
   attributes:AttributeRanks
   pinned?:boolean
+  locked?:boolean
+  draft?:boolean
+  creationStep?:string
   createdAt:string
+  updatedAt?:string
 }
 
 export const CHARACTER_STORE='brambleheart-characters-v0.01'
@@ -43,7 +51,12 @@ export function loadCharacters():CharacterRecord[]{
 }
 export function writeCharacters(characters:CharacterRecord[]){localStorage.setItem(CHARACTER_STORE,JSON.stringify(characters))}
 export function addCharacter(record:CharacterRecord){const list=loadCharacters();list.unshift(record);writeCharacters(list)}
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.06',character}}
+export function upsertCharacter(record:CharacterRecord){
+  const list=loadCharacters();const index=list.findIndex(item=>item.id===record.id)
+  if(index>=0)list[index]=record;else list.unshift(record)
+  writeCharacters(list)
+}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.07',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)
