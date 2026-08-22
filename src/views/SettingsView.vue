@@ -21,7 +21,7 @@ const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
   {value:'mystic',label:'Mystic',description:'Deep indigo and violet tones inspired by the Winds of Magic.'},
 ]
 const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:string}>=[
-  {value:'default',label:'Default',description:'Use the standard Brambleheart reader background.'},
+  {value:'none',label:'Default',description:'Use the standard Brambleheart reader background.'},
   {value:'crossway-hearth',label:'The Crossway Hearth',description:'A quiet hearthstead in the woods.'},
   {value:'thornwick-market',label:'Thornwick Market',description:'A crowded Beastfolk market street.'},
   {value:'leviathans-wreck',label:'Leviathan’s Wreck',description:'A shattered vessel and a colossal sea beast.'},

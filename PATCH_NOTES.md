@@ -1,35 +1,37 @@
-# Brambleheart Beta Build 0.08 — Rules, Creator & Encounter Patch
+# Brambleheart Beta 0.08 — Recovery & Encounter Patch
 
-This overlay advances the current Brambleheart companion from Beta Build 0.07 to Beta Build 0.08 while preserving the existing Vue 3 + TypeScript + Vite + Vue Router architecture and existing local character/encounter storage.
+This overlay rebuilds Beta 0.08 from the last known-good **Beta 0.06 Creator & Rules Patch**. It does not use the broken Beta 0.07 creator/simulator state as its code baseline. Existing character, encounter, Rules-recent, and Settings storage keys are retained where practical.
 
 ## Included
 
-- Fixes the code-red Character Creator crash when continuing from Starting Spells & Invocations into Talents by removing reactive mutation from Talent validation.
-- Renames the Rules menu heading from Quick Reference to References and renames the Quick Reference reader page to Table of Content.
-- Moves Introduction into The Fundamentals above Dice Rules, adds inner Fundamental-page navigation, and removes the redundant Fundamentals Menu button from Fundamental subpages.
-- Promotes Playable Species to its own Rules section containing the Species index and individual Species pages.
-- Moves Lore of Anthro Mundas to the top of References.
-- Replaces the Rules Recent dropdown with recently viewed rule boxes while preserving Rules search.
-- Adds Default as the first selectable interface theme.
-- Adds a Fortune & Misfortune Tip above Roll Type in the Rhythm Engine.
-- Allows a saved Character to be selected for Combat Encounters and uses that Character's secondary stats, Skills, Talents, Mana, Spells, and related character information throughout the encounter tools.
-- Adds an Abilities panel above Attacking & Defending with Root-type availability and remaining-action status.
-- Renames Opposed Roll — Strike vs Ward to Attacking & Defending and adds Melee, Ranged, and Magical Strike modes.
-- Moves Spells & Mana immediately below Attacking & Defending.
-- Adds Resistance and Weakness controls to Damage & Guts.
-- Makes Appearance vertically resizable using the standard lower-right textarea drag handle.
-- Fixes Species/Culture information overflow so expanded content remains inside its creator column and does not cover the Species portrait.
-- Adds black Species portrait borders.
-- Restyles Character Creator information panels to the compact rule-card treatment used for rules/spells.
-- Replaces the inline Culture Trait list with a searchable popup selector.
-- Changes Start Over text to black and Close text to red.
-- Shows Skill Rank and Modifier in Character Creation and saved-character summaries.
-- Contains the Oath & Faith page so it no longer stretches beyond the intended page width; its content/design is otherwise left intact.
-- Colors spell cards by Lore.
-- Updates character export metadata, changelog text, PWA shell cache, and visible Beta Build number to 0.08.
+- Code-red character creator fix for the Spells / Invocations → Talents transition so Talent validation does not mutate reactive state during render.
+- Species creator containment so expanded Species/Culture information stays in its column instead of covering the Species portrait.
+- Resizable Appearance field, black Species portrait border, contained Oath & Faith layout, black Start Over text, red Close text, and Lore-colored Spell cards.
+- Old.Dex-style information-card treatment and a searchable Culture Trait popup picker.
+- Starting Skills display both Rank and Modifier.
+- Rules menu renamed to References while the linked Quick Reference reader becomes Table of Content.
+- Introduction moved above Dice Rules in The Fundamentals, Fundamental inner links added, and the redundant Fundamentals Menu button removed from Fundamental subpages.
+- Playable Species promoted to its own Rules section and Lore of Anthro Mundas moved to the top of References.
+- Recently viewed Rules boxes added to the Rules page.
+- Default added as the first Theme option.
+- Fortune & Misfortune tip added above Rhythm Engine Roll Type.
+- Combat Encounters can select a saved Character and pull its secondary stats, Skills, Talents, Mana, Lore, and Spells into the encounter.
+- Abilities panel added above Attacking & Defending with start-of-turn guidance, Root-type tracking, Passive guidance, and a clear no-Root-types-remaining state.
+- Opposed Roll renamed Attacking & Defending with separate Melee, Ranged, and Magical Strike modes.
+- Spells & Mana moved directly below Attacking & Defending.
+- Resistance and Weakness controls added to Damage & Guts and applied as Guts Conditions after the damage category.
+- PWA shell cache advanced to v0.08.
+
+## Baseline and recovery
+
+The supplied Beta 0.06 package is the recovery baseline for this patch. Files not explicitly changed for Beta 0.08 are preserved from that stable package instead of inheriting Beta 0.07 regressions.
+
+Species portrait image files added during the later repository work are referenced from `/public/assets/species/`. Overlaying this patch onto the current repository preserves those existing image assets.
+
+## Local data
+
+Character storage remains `brambleheart-characters-v0.01`. Rhythm/Encounter storage remains on the existing v0.05 keys so local histories are not discarded merely by applying this patch.
 
 ## Applying
 
-Overlay the files in this package onto the current Brambleheart repository, replacing matching files and preserving repository files that are not included in this patch.
-
-This package uses the same repository-overlay layout as the Beta Build 0.07 patch: files are stored at their actual repository paths. No apply scripts, patch payloads, manifests, verification markers, or temporary test-workflow files are included.
+Overlay the contents of `BrambleHeart-v0.08-CREATOR-RULES-ENCOUNTER-PATCH` onto the current Brambleheart repository, replacing matching files and preserving repository files not included in the patch.

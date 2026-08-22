@@ -1,44 +1,42 @@
-# Brambleheart Changelog
+# Site Changelog
 
-## Beta Build 0.08
+## Beta 0.08
 
-- Fixed the character creator crash when advancing from Starting Spells into Talents by removing reactive mutation from Talent validation.
-- Reworked Rules navigation: References heading, Table of Content page, Introduction moved into The Fundamentals, Playable Species promoted to its own section, and Lore of Anthro Mundas moved to the top of References.
-- Added compact inner navigation between Fundamental reader pages and removed the redundant Fundamentals Menu button from those subpages.
-- Replaced the Rules recent dropdown with recently viewed rule boxes.
-- Added Default as the first selectable interface theme.
-- Refined character creation: resizable Appearance, contained Species/Oath/Faith layouts, black Species portrait border, rule-card style information boxes, Culture Trait popup picker, Skill Rank + Modifier display, requested button colors, and Lore-colored spell cards.
-- Expanded the Rhythm Engine with a Fortune & Misfortune tip, saved-character selection for encounters, character-derived secondary stats/Skills/Talents/Mana/Spells, an Abilities panel, Melee/Ranged/Magical Strike modes, Attacking & Defending naming, Spells & Mana placement, and Resistance/Weakness controls.
-- Bumped the PWA shell cache to v0.08 so deployed clients do not remain on the previous interface bundle.
+- Rebuilt from the stable Beta 0.06 package rather than the broken Beta 0.07 implementation baseline.
+- Fixed the Spells / Invocations → Talents creator crash and Species/Culture layout overflow.
+- Added requested creator presentation fixes, Culture Trait popup, Skill Rank + Modifier, and Lore-colored Spell cards.
+- Reorganized Rules into References, Table of Content, The Fundamentals, and a standalone Playable Species section; added recent Rules boxes.
+- Added Default as the first Theme option.
+- Expanded Combat Encounters with saved-character data, Abilities/Root tracking, Melee/Ranged/Magical Attacking & Defending, Spells & Mana, and Resistance/Weakness.
+- Advanced the PWA shell cache and visible build label to 0.08.
 
-## Beta Build 0.07
+## Beta 0.06
 
-- Replaced Species-linked display themes with four stable player-archetype themes.
-- Updated splash entry, Thornwick Market presentation, Discord access, fixed backgrounds, and green interaction highlights.
-- Rebuilt the Rhythm Engine around Attribute Checks and persistent Combat Encounters with Health, Mana, Fate Marks, round tracking, combat tools, and history.
-- Rebuilt guided character creation with clickable step navigation, Species artwork, Culture Trait exchange, source-based Skill ranks, revised Attributes, custom Homelands, Magic/Lore and Spell steps, Talent validation, Equipment & Gear, draft saves, and final validation.
-- Added character locking and refined display treatment for Traits, Talents, Spells, and rule keywords.
+- Expanded guided Character Creation with Species lore and Traits, Culture Traits, Skills, Spark/Deed guidance, Homeland, Faith & Oath guidance, detailed Attribute allocation, Body & Spirit paths, Lore Attunement, Spells, Talents, equipment purchasing, Languages, and final character review.
+- Added source-backed individual Playable Species and Lore of Magic reader pages, Quick Reference, FAQ, Recent Rules, Changes & Updates, and linked Fundamental-rule navigation.
+- Refined the Rules menu hierarchy, parent/child tones, keyword pills, capitalization, and example-dialogue presentation.
+- Expanded the Rhythm Engine with Reason for the Roll, separate Attribute/Secondary Stat and optional Skill values, targets, Fortune/Misfortune results, and five-roll history.
+- Moved Strike vs Ward into the Encounter tracker and retained ongoing/completed encounter history with pinning.
+- Updated the Brambleheart identity presentation, responsive logo sizing, Beta labeling, browser/app naming, and text consistency.
+- Connected Donation and Recurring Support to the supplied support links.
+- Retained Custom Data, fixed-cover backgrounds, install support, Simulator reset controls, and the protected repository cleanup workflow.
 
-## Beta Build 0.06
+## Alpha 0.05
 
-Expanded guided creation, standalone source-backed Rules pages, Donation controls, and Beta presentation.
+- Added fixed-cover Brambleheart backgrounds, standalone Rules reader pages, the initial guided Character Creation flow, expanded Simulator history, and repository cleanup tooling.
 
-## Alpha Build 0.05
+## Alpha 0.04
 
-Added supplied backgrounds, the expanded Rules reader, guided creation, encounter history, Rhythm roll history, Custom Data, and repository cleanup workflow.
+- Established the compact routed reader layout, Settings presentation, welcome flow, and shared interface components.
 
-## Alpha Build 0.04
+## Alpha 0.03
 
-Established the compact routed reader layout, Settings presentation, welcome flow, and shared interface components.
+- Added five text sizes, bold text, species palettes, install controls, grouped Rules reference, Recent Rules, and the initial splash page.
 
-## Alpha Build 0.03
+## Alpha 0.02
 
-Added five text sizes, bold text, install controls, grouped Rules reference, Recent Rules, and the initial splash page.
+- Standardized the first generation of application panels, controls, spacing, and Settings.
 
-## Alpha Build 0.02
+## Alpha 0.01
 
-Standardized the first generation of application panels, controls, spacing, and Settings.
-
-## Alpha Build 0.01
-
-Initial Vue 3 + TypeScript + Vite build with Character List, Rules, Simulator, Settings, local persistence, and Brambleheart assets.
+- Initial Vue 3 + TypeScript + Vite companion build with Character List, Rules, Simulator, Settings, local persistence, and Brambleheart assets.

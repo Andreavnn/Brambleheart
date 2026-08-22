@@ -4,8 +4,8 @@ export interface CultureSkillGrant {
   note?: string
 }
 
-// These grants are transcribed from the current Culture Trait effects. Character Creation itself
-// provides two Homeland Skills at Rank 1; there is no separate creation Skill-point pool in the supplied rules.
+// Culture-skill grants transcribed from the currently supplied Culture Trait effects.
+// Character Creation still supplies the two Homeland Skills separately.
 export const cultureSkillGrants: Record<string, CultureSkillGrant> = {
   'Ardenn::Hunters Intuition': { fixed:['Wayfinding'], choices:[['Awareness','Presence']] },
   'Auravex::Pathfinder’s Call': { fixed:['Wayfinding'], choices:[['Awareness','Herbalry']] },

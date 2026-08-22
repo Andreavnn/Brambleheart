@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { dismissWelcomeInstallPromptPermanently, hasDismissedWelcomeInstallPrompt, markWelcomeSeen } from '../services/welcome'
 import { canInstall, isInstalled, requestInstall } from '../state/install'
 
-const router=useRouter()
-const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt())
-const installHelp=ref(false)
+const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
+const continuePath=computed(()=>{const candidate=String(route.query.continue||'');return candidate.startsWith('/')&&!candidate.startsWith('/welcome')?candidate:'/characters'})
 async function installNow(){if(!canInstall.value)installHelp.value=true;await requestInstall();if(canInstall.value)installModalOpen.value=false}
 function dismissInstall(){installModalOpen.value=false}
 function dismissInstallPermanently(){dismissWelcomeInstallPromptPermanently();installModalOpen.value=false}
-function continueToBrambleheart(){markWelcomeSeen();void router.replace('/rules')}
+function continueToBrambleheart(){markWelcomeSeen();void router.replace(continuePath.value)}
 </script>
 
 <template>
@@ -26,17 +25,16 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace('/rules'
       </section>
 
       <section class="welcome-intro-grid">
-        <article><h2>Character Creation</h2><p>Shape a Beastfolk hero from the first story details onward: choose Species and Culture, define the Spark that drives them, remember the Homeland that taught them, then build Attributes, Skills, Talents or Magic, gear, and the promises they carry into the world.</p></article>
-        <article><h2>Rhythm Engine</h2><p>The Rhythm Engine is the pulse beneath Brambleheart. It turns Attributes, Skills, Conditions, Edged or Weighted rolls, and opposed Targets into a consistent language for uncertain moments — from quiet discoveries to desperate choices.</p></article>
-        <article><h2>Tabletop Tools</h2><p>Keep the practical parts of play close at hand: make Attribute Checks, manage Combat Encounters, track rounds and Fate Marks, resolve opposed rolls and damage, and keep recent results available while the story moves forward.</p></article>
+        <article><h2>Character Creation</h2><p>Create a hero step by step through Species, Culture Traits, Spark, Homeland, Skills, Faith, Oath, Attributes, Talents or Magic, equipment, languages, and final character details.</p></article>
+        <article><h2>Rules Reference</h2><p>Browse Brambleheart rules without leaving the companion. Related Fundamental rules link together, while Quick Reference, Recent rules, FAQ, and Changes &amp; Updates keep common information close at hand.</p></article>
+        <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine, record why a roll was made, track recent results, manage ongoing encounters, and keep combat history available while play continues.</p></article>
       </section>
 
       <section class="welcome-support-block">
-        <div><p class="eyebrow">COMMUNITY &amp; SUPPORT</p><h2>Stay Connected</h2><p>Join the community or support continued development of the Brambleheart companion.</p></div>
-        <div class="welcome-support-actions" aria-label="Brambleheart community and donation options">
-          <a class="secondary-button welcome-support-button" href="https://discord.gg/NHf3YdueHE" target="_blank" rel="noopener noreferrer">Join Discord</a>
-          <a class="secondary-button welcome-support-button donation-offset" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a>
-          <a class="secondary-button welcome-support-button donation-offset" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a>
+        <div><p class="eyebrow">DONATION</p><h2>Support Brambleheart</h2><p>Voluntary support helps cover development, hosting, and the services used to keep Brambleheart available.</p></div>
+        <div class="welcome-support-actions" aria-label="Brambleheart donation options">
+          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a>
+          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a>
         </div>
       </section>
 
