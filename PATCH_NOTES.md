@@ -1,4 +1,10 @@
 # Brambleheart Beta 0.08 — Recovery & Encounter Patch
+## Creator page boundary fix
+
+- Restores the working v0.06 Character Creation header structure: AppHeader is inside the `.page` container again.
+- Restores the compact Character Creation header so the logo/navigation no longer stretch edge-to-edge when entering the creator.
+- Preserves the v0.08 Step 10 crash fix and all existing character-creation logic.
+
 
 This overlay rebuilds Beta 0.08 from the last known-good **Beta 0.06 Creator & Rules Patch**. It does not use the broken Beta 0.07 creator/simulator state as its code baseline. Existing character, encounter, Rules-recent, and Settings storage keys are retained where practical.
 
