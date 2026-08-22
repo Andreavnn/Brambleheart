@@ -1,36 +1,44 @@
-# Site Changelog
+# Brambleheart Changelog
 
-## Beta 0.07
+## Beta Build 0.08
 
-- Replaced Species-linked themes with four stable role-player themes.
-- Updated splash entry, Thornwick Market splash artwork, Discord access, background rendering, and green selection/highlight treatment.
-- Renamed Simulator to Rhythm Engine and rebuilt Attribute Check and Combat Encounter tools.
-- Added encounter rounds, Health, Mana, Fate Marks, combat actions, spell-use records, pins, ongoing encounters, and encounter history.
-- Rebuilt the character creator around a guided, clickable multi-step flow.
-- Added responsive artwork for every currently playable Species.
-- Added Species and Culture Trait rule breakdowns, Culture Trait exchange, custom Homelands, automatic Culture Trait Skill ranks, revised Attributes, Magic/Lore/Spell steps, requirement-aware Talents, Equipment & Gear, draft saving, and final character validation.
-- Added character locking to the Character List.
+- Fixed the character creator crash when advancing from Starting Spells into Talents by removing reactive mutation from Talent validation.
+- Reworked Rules navigation: References heading, Table of Content page, Introduction moved into The Fundamentals, Playable Species promoted to its own section, and Lore of Anthro Mundas moved to the top of References.
+- Added compact inner navigation between Fundamental reader pages and removed the redundant Fundamentals Menu button from those subpages.
+- Replaced the Rules recent dropdown with recently viewed rule boxes.
+- Added Default as the first selectable interface theme.
+- Refined character creation: resizable Appearance, contained Species/Oath/Faith layouts, black Species portrait border, rule-card style information boxes, Culture Trait popup picker, Skill Rank + Modifier display, requested button colors, and Lore-colored spell cards.
+- Expanded the Rhythm Engine with a Fortune & Misfortune tip, saved-character selection for encounters, character-derived secondary stats/Skills/Talents/Mana/Spells, an Abilities panel, Melee/Ranged/Magical Strike modes, Attacking & Defending naming, Spells & Mana placement, and Resistance/Weakness controls.
+- Bumped the PWA shell cache to v0.08 so deployed clients do not remain on the previous interface bundle.
 
-## Beta 0.06
+## Beta Build 0.07
 
-- Expanded character creation, Rules navigation, structured reference content, Donation links, and Beta presentation.
+- Replaced Species-linked display themes with four stable player-archetype themes.
+- Updated splash entry, Thornwick Market presentation, Discord access, fixed backgrounds, and green interaction highlights.
+- Rebuilt the Rhythm Engine around Attribute Checks and persistent Combat Encounters with Health, Mana, Fate Marks, round tracking, combat tools, and history.
+- Rebuilt guided character creation with clickable step navigation, Species artwork, Culture Trait exchange, source-based Skill ranks, revised Attributes, custom Homelands, Magic/Lore and Spell steps, Talent validation, Equipment & Gear, draft saves, and final validation.
+- Added character locking and refined display treatment for Traits, Talents, Spells, and rule keywords.
 
-## Alpha 0.05
+## Beta Build 0.06
 
-- Added the full rules-reader structure, backgrounds, guided character creation, encounter history, Rhythm roll history, Custom Data, and repository cleanup workflow.
+Expanded guided creation, standalone source-backed Rules pages, Donation controls, and Beta presentation.
 
-## Alpha 0.04
+## Alpha Build 0.05
 
-- Rebuilt the application shell and shared reader interface.
+Added supplied backgrounds, the expanded Rules reader, guided creation, encounter history, Rhythm roll history, Custom Data, and repository cleanup workflow.
 
-## Alpha 0.03
+## Alpha Build 0.04
 
-- Added install support, species palettes, Rules search/recent tools, and the first splash page.
+Established the compact routed reader layout, Settings presentation, welcome flow, and shared interface components.
 
-## Alpha 0.02
+## Alpha Build 0.03
 
-- Completed the first application-wide GUI consistency pass.
+Added five text sizes, bold text, install controls, grouped Rules reference, Recent Rules, and the initial splash page.
 
-## Alpha 0.01
+## Alpha Build 0.02
 
-- Initial Vue 3 + TypeScript + Vite + Vue Router companion build.
+Standardized the first generation of application panels, controls, spacing, and Settings.
+
+## Alpha Build 0.01
+
+Initial Vue 3 + TypeScript + Vite build with Character List, Rules, Simulator, Settings, local persistence, and Brambleheart assets.

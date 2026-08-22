@@ -1,42 +1,52 @@
-# Brambleheart Beta 0.08 — Emergency Patch Packet
+# Brambleheart TTRPG — Beta Build 0.08
 
-Baseline: Brambleheart Beta 0.07 / `main`
-Target repository: `Andreavnn/Brambleheart`
+Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router companion application for character creation, rules reference, Rhythm Engine checks, and Combat Encounter tracking.
 
-This packet is the self-contained patch-delivery format.
+## Main views
 
-## What this packet fixes
+- Welcome / Splash
+- Character List
+- Create Character
+- Rules
+- Rhythm Engine
+- Settings
+- Site Changelog
 
-- Step 10 → Talents crash caused by Talent validation mutating reactive state during render.
-- Species/Culture information panels escaping the left creator column and covering the Species portrait.
-- Black border around Species portraits.
-- Appearance changed to a vertically resizable textarea.
-- Oath & Faith page over-stretching contained without redesigning the page.
-- Start Over text changed to black.
-- Close text changed to red.
-- Spell information cards colored by Lore.
+## Current interface features
 
-## Apply
+- Light and dark readers
+- Smaller / Small / Normal / Large / Larger text sizes and optional Bold Text
+- Default, Adventurer, Storyteller, Tactician, and Mystic themes
+- Fixed selectable background artwork plus Default
+- Installable web-app support
+- Discord/community access
+- Rules search, recently viewed rule boxes, References, and standalone rule-reader pages
+- Guided character creation with Species art, Culture Trait picker, local draft saving, and source-backed Talent/Magic validation
+- Character pinning and locking
+- Character-linked Combat Encounters with secondary stats, Skills, Talents, Mana, Spells, Abilities, attack/defence, and damage tools
+- Attribute Check history and persistent Combat Encounter tracking
+- Local JSON character import/export and Custom Data support
 
-### Windows / PowerShell
-Run `apply.ps1` from the repository root, or pass the repository path:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\BH_BETA_0.08_EMERGENCY_PACKET\apply.ps1
-```
-
-### macOS / Linux
-Run:
+## Development
 
 ```bash
-bash BH_BETA_0.08_EMERGENCY_PACKET/apply.sh
+npm install
+npm run dev
 ```
 
-The scripts first run `git apply --check`. They stop without modifying files if the packet does not match the current source.
+## Validation / production build
 
-## Files changed by the packet
+```bash
+npm run typecheck
+npm run build
+```
 
-- `src/views/CreateCharacterView.vue`
-- `src/styles.css`
+Vite writes the deployable application to `dist/`.
 
-No test workflow, temporary GitHub verification marker, or other support artifact is added to the repository.
+## Vercel
+
+- Framework Preset: Vite
+- Root Directory: `./`
+- Build Command: `npm run build`
+- Output Directory: `dist/`
+- Node.js: 22.x

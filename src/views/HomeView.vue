@@ -14,7 +14,7 @@ function togglePin(id:string){const c=characters.value.find(item=>item.id===id);
 function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.07',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.08',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -34,8 +34,8 @@ function homelandSkills(name:string){return homelands.find(h=>h.name===name)?.sk
 function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
 function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.attributes.agility*2,mettle:c.attributes.might*2,ward:c.attributes.hide*2,control:c.attributes.lore*2,power:c.attributes.might,guts:c.attributes.hide}}
 function skillSummary(character:CharacterRecord){
-  if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name} ${rank}`).join(' · ')
-  return character.skills?.length?character.skills.join(' · '):homelandSkills(character.homeland)
+  if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${rank*2}`).join(' · ')
+  return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
 }
 </script>
 
@@ -69,24 +69,13 @@ function skillSummary(character:CharacterRecord){
             <div class="saved-list-card-meta"><strong>{{ character.path==='magic'?'Magic + Talent':'Talents' }}</strong><small>{{ sparkWords(character.spark) }}</small></div>
           </button>
           <div class="character-card-icon-actions">
-            <button class="icon-button character-lock-button" type="button" :class="{active:character.locked}" :aria-label="character.locked?'Unlock character':'Lock character'" :title="character.locked?'Unlock character':'Lock character'" @click="toggleLock(character.id)">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg>
-            </button>
-            <button class="icon-button character-pin-button" type="button" :aria-label="character.pinned?'Unpin character':'Pin character'" :title="character.pinned?'Unpin character':'Pin character'" @click="togglePin(character.id)">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-3 1-4 4-1 5-2-2-4 4-1-1 4-4-2-2 5-1 4-4 1-3Z"/></svg>
-            </button>
+            <button class="icon-button character-lock-button" type="button" :class="{active:character.locked}" :aria-label="character.locked?'Unlock character':'Lock character'" :title="character.locked?'Unlock character':'Lock character'" @click="toggleLock(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg></button>
+            <button class="icon-button character-pin-button" type="button" :aria-label="character.pinned?'Unpin character':'Pin character'" :title="character.pinned?'Unpin character':'Pin character'" @click="togglePin(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-3 1-4 4-1 5-2-2-4 4-1-1 4-4-2-2 5-1 4-4 1-3Z"/></svg></button>
           </div>
         </div>
         <div v-if="openIds.has(character.id)" class="character-detail-panel">
-          <div class="stat-grid character-stat-grid">
-            <div v-for="attribute in attributes" :key="attribute.id" class="character-stat"><strong>{{ character.attributes[attribute.id] }}</strong><span>{{ attribute.name.slice(0,3).toUpperCase() }}</span></div>
-          </div>
-          <div class="detail-grid">
-            <div><span>Faith</span><strong>{{ character.faith||'—' }}</strong></div>
-            <div><span>Oath</span><strong>{{ character.oath||'—' }}</strong></div>
-            <div><span>Skills</span><strong>{{ skillSummary(character) }}</strong></div>
-            <div><span>Starting Wealth</span><strong>{{ character.wealthRemaining ?? character.startingWealth ?? 50 }} sp Remaining{{ character.adventureKit===false?'':' · Adventure Kit' }}</strong></div>
-          </div>
+          <div class="stat-grid character-stat-grid"><div v-for="attribute in attributes" :key="attribute.id" class="character-stat"><strong>{{ character.attributes[attribute.id] }}</strong><span>{{ attribute.name.slice(0,3).toUpperCase() }}</span></div></div>
+          <div class="detail-grid"><div><span>Faith</span><strong>{{ character.faith||'—' }}</strong></div><div><span>Oath</span><strong>{{ character.oath||'—' }}</strong></div><div><span>Skills</span><strong>{{ skillSummary(character) }}</strong></div><div><span>Starting Wealth</span><strong>{{ character.wealthRemaining ?? character.startingWealth ?? 50 }} sp Remaining{{ character.adventureKit===false?'':' · Adventure Kit' }}</strong></div></div>
           <div v-if="character.cultureTraits?.length" class="info-card"><strong>Culture Traits</strong><p>{{ character.cultureTraits.join(' · ') }}</p></div>
           <div v-if="character.languages?.length" class="info-card"><strong>Languages</strong><p>{{ character.languages.join(' · ') }}</p></div>
           <div class="info-card character-derived"><strong>Derived Values</strong><p>Speed {{ derived(character).speed }} · Aim {{ derived(character).aim }} · Mettle {{ derived(character).mettle }} · Ward {{ derived(character).ward }} · Control {{ derived(character).control }} · Power {{ derived(character).power }} · Guts {{ derived(character).guts }}.</p></div>
@@ -98,8 +87,6 @@ function skillSummary(character:CharacterRecord){
       </article>
     </section>
 
-    <section v-else class="empty-state card-surface compact-empty lists-empty-state">
-      <div class="empty-icon">◆</div><h2>Your characters will appear here</h2><p>Create a character or import an existing Brambleheart character file.</p>
-    </section>
+    <section v-else class="empty-state card-surface compact-empty lists-empty-state"><div class="empty-icon">◆</div><h2>Your characters will appear here</h2><p>Create a character or import an existing Brambleheart character file.</p></section>
   </main>
 </template>

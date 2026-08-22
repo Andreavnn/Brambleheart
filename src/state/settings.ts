@@ -1,7 +1,7 @@
 import { reactive, toRef, watch } from 'vue'
 
 export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
-export type RoleTheme = 'adventurer' | 'storyteller' | 'tactician' | 'mystic'
+export type RoleTheme = 'default' | 'adventurer' | 'storyteller' | 'tactician' | 'mystic'
 export type BackgroundChoice = 'default' | 'crossway-hearth' | 'thornwick-market' | 'leviathans-wreck' | 'deepwood-ruins' | 'mushroom-isles'
 
 type SettingsState = {
@@ -19,12 +19,12 @@ const defaults: SettingsState = {
   compactRows: false,
   fontSize: 'normal',
   boldText: false,
-  roleTheme: 'adventurer',
+  roleTheme: 'default',
   backgroundImage: 'default',
 }
 
 const backgrounds: BackgroundChoice[] = ['default','crossway-hearth','thornwick-market','leviathans-wreck','deepwood-ruins','mushroom-isles']
-const roles: RoleTheme[] = ['adventurer','storyteller','tactician','mystic']
+const roles: RoleTheme[] = ['default','adventurer','storyteller','tactician','mystic']
 
 function normalizeFontSize(value: unknown): FontSize {
   if (['smaller','small','normal','large','larger'].includes(String(value))) return value as FontSize
@@ -33,8 +33,7 @@ function normalizeFontSize(value: unknown): FontSize {
 }
 function normalizeRole(value: unknown): RoleTheme {
   if (roles.includes(value as RoleTheme)) return value as RoleTheme
-  // Migrate every former species/default palette to the stable Adventurer theme.
-  return 'adventurer'
+  return 'default'
 }
 function normalizeBackground(value: unknown): BackgroundChoice {
   if (value === 'none') return 'default'

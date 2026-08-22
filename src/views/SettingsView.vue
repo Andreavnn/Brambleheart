@@ -8,12 +8,13 @@ import { useSettings, type BackgroundChoice, type FontSize, type RoleTheme } fro
 const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, reset } = useSettings()
 const customDataInput=ref<HTMLInputElement|null>(null)
-const customDataLabel=ref(localStorage.getItem('brambleheart-custom-data-name-v0.07')||localStorage.getItem('brambleheart-custom-data-name-v0.06')||'None loaded')
+const customDataLabel=ref(localStorage.getItem('brambleheart-custom-data-name-v0.08')||localStorage.getItem('brambleheart-custom-data-name-v0.07')||localStorage.getItem('brambleheart-custom-data-name-v0.06')||'None loaded')
 
 const fontOptions:Array<{value:FontSize;label:string}>=[
   {value:'smaller',label:'Smaller'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Larger'},
 ]
 const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
+  {value:'default',label:'Default',description:'Use the standard Brambleheart colors and reader treatment.'},
   {value:'adventurer',label:'Adventurer',description:'Forest greens and worn-paper neutrals for the classic journey-first reader.'},
   {value:'storyteller',label:'Storyteller',description:'Deep berry and warm parchment tones for character- and narrative-focused tables.'},
   {value:'tactician',label:'Tactician',description:'Cool slate and steel-blue tones for encounter-focused play.'},
@@ -27,7 +28,7 @@ const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:s
   {value:'deepwood-ruins',label:'Deepwood Ruins',description:'Ancient stone hidden in the deep woods.'},
   {value:'mushroom-isles',label:'Mushroom Isles',description:'A strange waterside landscape of giant mushrooms.'},
 ]
-const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Adventurer')
+const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
 const currentBackgroundLabel=computed(()=>backgroundOptions.find(item=>item.value===backgroundImage.value)?.label||'Default')
 
 function clearKey(key:string,message:string){if(!confirm(message))return;localStorage.removeItem(key)}
@@ -37,18 +38,18 @@ function clearDiceRolls(){clearKey('brambleheart-simulator-rhythm-v0.05','Clear 
 function clearSimulatorAll(){if(!confirm('Clear all Rhythm Engine data, including combat encounters and dice rolls?'))return;localStorage.removeItem('brambleheart-simulator-encounters-v0.05');localStorage.removeItem('brambleheart-simulator-rhythm-v0.05')}
 function clearAllLocalData(){
   if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, Rhythm Engine history, custom data, and welcome state. Display settings are preserved.'))return
-  const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-rules-recent-v0.06','brambleheart-rules-recent-v0.07','brambleheart-simulator-encounters-v0.05','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.welcome.v0.06','brambleheart.welcome.v0.07','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05','brambleheart.install-welcome-dismissed.v0.06','brambleheart.install-welcome-dismissed.v0.07']
+  const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-rules-recent-v0.06','brambleheart-rules-recent-v0.07','brambleheart-rules-recent-v0.08','brambleheart-simulator-encounters-v0.05','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart-custom-data-v0.08','brambleheart-custom-data-name-v0.08','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.welcome.v0.06','brambleheart.welcome.v0.07','brambleheart.welcome.v0.08','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05','brambleheart.install-welcome-dismissed.v0.06','brambleheart.install-welcome-dismissed.v0.07','brambleheart.install-welcome-dismissed.v0.08']
   keys.forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded'
 }
 function reportIssue(){window.open('https://github.com/Andreavnn/Brambleheart/issues','_blank','noopener,noreferrer')}
 function openDiscord(){window.open('https://discord.gg/NHf3YdueHE','_blank','noopener,noreferrer')}
 async function importCustomData(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
-  try{const raw=await file.text();JSON.parse(raw);localStorage.setItem('brambleheart-custom-data-v0.07',raw);localStorage.setItem('brambleheart-custom-data-name-v0.07',file.name);customDataLabel.value=file.name}
+  try{const raw=await file.text();JSON.parse(raw);localStorage.setItem('brambleheart-custom-data-v0.08',raw);localStorage.setItem('brambleheart-custom-data-name-v0.08',file.name);customDataLabel.value=file.name}
   catch{alert('Custom Data must be a valid JSON file.')}
   input.value=''
 }
-function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data file?'))return;['brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07'].forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded'}
+function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data file?'))return;['brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart-custom-data-v0.08','brambleheart-custom-data-name-v0.08'].forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded'}
 </script>
 
 <template>

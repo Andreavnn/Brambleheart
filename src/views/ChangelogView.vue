@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.07</strong><small>Rhythm Engine, character creator, Species artwork, and interface refinement</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.08</strong><small>Rules navigation, character creator stabilization, and character-linked encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Fixed the Starting Spells → Talents character creator crash.</li>
+          <li>Reorganized References, The Fundamentals, and Playable Species; added Fundamental inner links and recently viewed Rules boxes.</li>
+          <li>Refined creator Species/Culture presentation, resizable Appearance, Skill Rank + Modifier display, information cards, button colors, and Lore-colored Spell cards.</li>
+          <li>Added Default to the top of Themes.</li>
+          <li>Expanded Combat Encounters with saved-character selection, secondary stats, Skills, Talents, Mana, Spells, Abilities, Melee/Ranged/Magical Strike modes, Attacking &amp; Defending, and Resistance/Weakness controls.</li>
+          <li>Added the Fortune &amp; Misfortune Rhythm Engine tip and refreshed the PWA shell cache.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.07</strong><small>Rhythm Engine, character creator, Species artwork, and interface refinement</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Replaced Species-linked display themes with four stable player-archetype themes.</li>
           <li>Updated splash entry, Thornwick Market presentation, Discord access, fixed backgrounds, and green interaction highlights.</li>

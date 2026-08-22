@@ -62,9 +62,13 @@ const nextFundamental=computed(()=>fundamentalIndex.value>=0&&fundamentalIndex.v
         <div v-if="page.keywords?.length" class="keyword-pill-row page-keywords"><span v-for="keyword in page.keywords" :key="keyword" class="keyword-pill">{{ keyword }}</span></div>
       </div>
 
+      <nav v-if="fundamentalIndex>=0" class="fundamental-inner-links card-surface" aria-label="The Fundamentals pages">
+        <RouterLink v-for="item in fundamentalsNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink>
+      </nav>
+
       <template v-if="page.slug==='quick-reference'">
         <section class="rule-content-card card-surface quick-reference-reader">
-          <div class="rule-copy-card"><h2>Quick Reference</h2><p>Use these links to jump directly to the rules currently organized in the Brambleheart reader.</p></div>
+          <div class="rule-copy-card"><h2>Table of Content</h2><p>Use these links to jump directly to the rules currently organized in the Brambleheart reader.</p></div>
           <div class="quick-reference-group quick-reference-featured">
             <h2>Reference &amp; Setting</h2>
             <div class="quick-reference-link-grid">
@@ -124,9 +128,8 @@ const nextFundamental=computed(()=>fundamentalIndex.value>=0&&fundamentalIndex.v
         <section v-else-if="!page.note" class="empty-state card-surface compact-empty"><h2>Rule Text Unavailable</h2><p>This page is organized in the reader but has no supplied source text in the current rules package.</p></section>
       </template>
 
-      <nav v-if="fundamentalIndex>=0" class="reader-page-nav card-surface" aria-label="Fundamental rules navigation">
+      <nav v-if="fundamentalIndex>=0" class="reader-page-nav fundamental-bottom-nav card-surface" aria-label="Fundamental rules navigation">
         <RouterLink v-if="previousFundamental" class="secondary-button" :to="`/rules/read/${previousFundamental.slug}`">← {{ previousFundamental.title }}</RouterLink><span v-else></span>
-        <RouterLink class="secondary-button" to="/rules">Fundamentals Menu</RouterLink>
         <RouterLink v-if="nextFundamental" class="secondary-button" :to="`/rules/read/${nextFundamental.slug}`">{{ nextFundamental.title }} →</RouterLink><span v-else></span>
       </nav>
     </template>
@@ -134,3 +137,11 @@ const nextFundamental=computed(()=>fundamentalIndex.value>=0&&fundamentalIndex.v
     <section v-else class="empty-state card-surface compact-empty"><h2>Rule Not Found</h2><p>The requested rule page is not available.</p><RouterLink class="primary-button" to="/rules">Back to Rules</RouterLink></section>
   </main>
 </template>
+
+<style scoped>
+.fundamental-inner-links{display:flex;gap:6px;padding:7px;margin:0 0 13px;overflow-x:auto}
+.fundamental-inner-links a{flex:1 0 auto;min-height:34px;display:flex;align-items:center;justify-content:center;padding:5px 9px;border:1px solid var(--line);border-radius:7px;background:var(--paper-2);color:var(--ink-soft);text-decoration:none;font-size:calc(9px + var(--font-offset));font-weight:750;white-space:nowrap}
+.fundamental-inner-links a.active{border-color:var(--accent);background:var(--accent-wash);color:var(--ink)}
+.fundamental-bottom-nav{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}.fundamental-bottom-nav .secondary-button:first-child{justify-self:start}.fundamental-bottom-nav .secondary-button:nth-child(2){justify-self:end}
+@media(max-width:620px){.fundamental-bottom-nav{display:grid!important;grid-template-columns:1fr!important}.fundamental-bottom-nav>span{display:none}.fundamental-bottom-nav .secondary-button{width:100%;justify-self:stretch!important}}
+</style>

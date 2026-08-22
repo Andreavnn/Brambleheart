@@ -20,14 +20,14 @@ export interface RuleCategoryDefinition {
 const page = (slug:string,title:string,summary:string,sources?:RuleSourceSlice[],note?:string,keywords?:string[]):RulePageDefinition => ({slug,title,summary,sources,note,keywords})
 
 export const quickReferencePages: RulePageDefinition[] = [
-  page('quick-reference','Quick Reference','A linked index to the Brambleheart rules reader.'),
-  page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
   page('lore-anthro-mundas','Lore of Anthro Mundas','The myth-wild world, its peoples, places, histories, and old powers.',[{document:'lore-anthro-mundas'}]),
+  page('quick-reference','Table of Content','A linked table of content for the Brambleheart rules reader.'),
   page('faq','FAQ','Common questions answered from the currently loaded rules.'),
   page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.'),
 ]
 
 const fundamentalPages: RulePageDefinition[] = [
+  page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
   page('dice-rules','Dice Rules','The Rhythm Engine, Conditions, Fortune and Misfortune, Edged and Weighted rolls, and Half-Step rolls.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
   page('dice-roll','Dice Roll','How to make the core 3d10 roll and add the required stat.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS']}],undefined,['3d10','Roll']),
   page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, skill trees, expanded skills, and restricted skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
@@ -47,7 +47,7 @@ const speciesPages = speciesData.map(item=>page(
 
 export const ruleCategories: RuleCategoryDefinition[] = [
   {
-    id:'fundamentals', title:'The Fundamentals', summary:'Dice, targets, Conditions, Attributes, Skills, Keywords, and Core Abilities.', pages:fundamentalPages,
+    id:'fundamentals', title:'The Fundamentals', summary:'Introduction, dice, targets, Conditions, Attributes, Skills, Keywords, and Core Abilities.', pages:fundamentalPages,
   },
   {
     id:'character-creation', title:'Character Creation', summary:'Build a hero and reference the character-facing rules used during creation and growth.', pages:[
@@ -56,11 +56,15 @@ export const ruleCategories: RuleCategoryDefinition[] = [
       page('homeland','Homeland','Homelands, their Skills, and guidance for creating one.',[{document:'homeland'}]),
       page('oath','Oath','Choosing, creating, and playing an Oath.',[{document:'oath'}]),
       page('faith','Faith','Choosing, creating, and playing a Faith.',[{document:'faith'}]),
-      page('playable-species','Playable Species','Playable Species, Species Traits, Culture Traits, and languages.'),
-      ...speciesPages,
       page('talents','Talents','The current Talents reference.',[{document:'talents'}],undefined,['Talent']),
       page('adventuring-gear','Adventuring Gear','Weapons, Armor, Shields, Threadpieces, kits, supplies, tools, accessories, and field gear.',[{document:'weapons'},{document:'armor-shields'},{document:'adventuring-gear'}]),
       page('beyond-character-creation','Beyond Character Creation','Experience, advancement, and growth after creation.',[{document:'beyond-creation'}]),
+    ],
+  },
+  {
+    id:'playable-species', title:'Playable Species', summary:'Species lore, Species Traits, Culture Traits, and native languages.', pages:[
+      page('playable-species','Species Index','Choose a playable Species and open its dedicated rules page.'),
+      ...speciesPages,
     ],
   },
   {
