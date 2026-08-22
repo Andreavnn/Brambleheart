@@ -346,7 +346,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 <template>
   <div class="app-page creator-page">
     <AppHeader back-to="/characters" back-label="Back to Character List" prefer-back-to />
-    <main class="page creator-reader-page">
+    <main class="page character-create-page creator-reader-page">
       <section class="creator-progress-shell" aria-label="Character creation steps">
         <div class="creator-progress-labels">
           <button v-for="(step,index) in stepDefs" :key="step.id" type="button" :class="{active:index===stepIndex,complete:index<stepIndex}" @click="jumpTo(index)">{{ step.label }}</button>
@@ -356,7 +356,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
         </div>
       </section>
 
-      <section class="card creation-step-card">
+      <section class="form-card creation-step-card">
         <template v-if="stepId==='species'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Choose Your Species</h1></div></div>
           <details class="creation-info-panel help-panel" open><summary>What is a Species?</summary><div class="creation-info-body"><p>Your Species describes the Beastfolk lineage your hero belongs to. Across Anthro Mundas, Beastfolk are peoples of fur, feather, scale, and many other forms, each carrying their own histories, languages, Species Traits, and cultural traditions.</p><p>Species Traits are inherent features of that lineage. Culture Traits reflect learned traditions and can be exchanged in the next step.</p></div></details>

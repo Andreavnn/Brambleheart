@@ -17,6 +17,14 @@ This overlay rebuilds Beta 0.08 from the last known-good **Beta 0.06 Creator & R
 - Expanded Species Lore, Species Traits, and Culture Traits can no longer occupy a sibling portrait column.
 - This patch intentionally changes only the Step 1 layout mechanism; the working Step 10 crash fix is preserved.
 
+
+## Creator outer-container restoration
+
+- Restores the working v0.06 `character-create-page` creator page class.
+- Restores the working v0.06 `form-card creation-step-card` outer form container.
+- Keeps the v0.08 Step 10 crash fix and all existing creator data/validation logic unchanged.
+- This specifically fixes the creator content appearing to break out of its normal bordered paper/card column.
+
 ## Included
 
 - Code-red character creator fix for the Spells / Invocations → Talents transition so Talent validation does not mutate reactive state during render.
