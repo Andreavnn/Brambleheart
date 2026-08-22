@@ -370,7 +370,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
             <label class="field-label">Appearance<textarea v-model="form.appearance" class="field-control appearance-textarea" rows="3" placeholder="A short visual description"></textarea></label>
           </div>
 
-          <div class="species-choice-layout">
+          <div class="species-choice-layout" :class="{'has-species-art':Boolean(selectedSpeciesImage)}">
             <div class="species-choice-copy">
               <label class="field-label">Species<select v-model="form.species" class="field-control"><option value="">Choose Your Species</option><option v-for="item in species" :key="item" :value="item">{{ item }}</option></select></label>
               <template v-if="selectedSpeciesData">

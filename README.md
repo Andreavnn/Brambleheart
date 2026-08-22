@@ -26,4 +26,6 @@ Beta 0.08 is a recovery build based on the last known-good Beta 0.06 Creator & R
 - Spells & Mana encounter tools
 - Resistance & Weakness damage handling
 
-  
+## Applying
+
+Overlay this package onto the current Brambleheart repository, replacing matching files while preserving repository files not present in the package.

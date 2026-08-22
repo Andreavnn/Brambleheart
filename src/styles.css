@@ -3320,3 +3320,74 @@ body{font-size:calc(14px + var(--font-offset))}
 @media(max-width:420px){.creator-progress-dots{grid-template-columns:repeat(5,minmax(0,1fr))}.review-attributes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .creation-step-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.creation-step-actions .primary-button,.creation-step-actions .secondary-button{min-width:120px}.stat-grid.five{grid-template-columns:repeat(5,minmax(0,1fr))}.wealth-grid{margin-top:8px}.purchased-gear-list{margin-top:9px;border:1px solid var(--line);border-radius:9px;overflow:hidden}.alternate-pill{opacity:.82}.compact-donation-group .settings-card{padding:5px 0}.compact-support-buttons{padding:1px 10px 4px!important;gap:7px}.compact-support-buttons .support-action-button{min-height:34px}
 @media(max-width:620px){.creation-step-actions{display:grid;grid-template-columns:1fr 1fr}.creation-step-actions .primary-button,.creation-step-actions .secondary-button{width:100%;min-width:0}.stat-grid.five{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+
+/* Beta 0.08 focused fix — keep Step 1 Species content inside its column. */
+.creator-reader-page,
+.creation-step-card,
+.species-choice-layout,
+.species-choice-copy,
+.creation-info-panel,
+.creation-info-body,
+.trait-stack,
+.trait-card,
+.rule-breakdown-grid,
+.rule-breakdown-grid>div,
+.keyword-pill-row,
+.field-grid,
+.field-label{
+  min-width:0;
+  max-width:100%;
+}
+
+/* Do not reserve an empty portrait column before a Species has been chosen. */
+.species-choice-layout{
+  width:100%;
+  grid-template-columns:minmax(0,1fr);
+}
+.species-choice-layout.has-species-art{
+  grid-template-columns:minmax(0,1fr) minmax(210px,34%);
+}
+
+/* Expanded lore/trait content is never allowed to paint into the portrait column. */
+.species-choice-copy{
+  width:100%;
+  overflow:hidden;
+}
+.species-choice-copy>*{
+  min-width:0;
+  max-width:100%;
+}
+.creation-info-panel>summary,
+.creation-info-body,
+.creation-info-body>*,
+.trait-card,
+.trait-card>*,
+.rule-breakdown-grid>div,
+.rule-breakdown-grid span,
+.rule-flavor,
+.trait-card p,
+.keyword-pill{
+  min-width:0;
+  max-width:100%;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.species-art-shell{
+  min-width:0;
+  max-width:100%;
+  z-index:1;
+}
+
+@media(max-width:820px){
+  .species-choice-layout.has-species-art{
+    grid-template-columns:minmax(0,1fr) minmax(180px,30%);
+  }
+}
+@media(max-width:680px){
+  .species-choice-layout,
+  .species-choice-layout.has-species-art{
+    grid-template-columns:minmax(0,1fr);
+  }
+}
