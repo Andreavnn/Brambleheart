@@ -9,6 +9,7 @@ export interface RulePageDefinition {
   sources?: RuleSourceSlice[]
   note?: string
   keywords?: string[]
+  loreHeading?: string
 }
 export interface RuleCategoryDefinition {
   id: string
@@ -17,10 +18,25 @@ export interface RuleCategoryDefinition {
   pages: RulePageDefinition[]
 }
 
-const page = (slug:string,title:string,summary:string,sources?:RuleSourceSlice[],note?:string,keywords?:string[]):RulePageDefinition => ({slug,title,summary,sources,note,keywords})
+const page = (slug:string,title:string,summary:string,sources?:RuleSourceSlice[],note?:string,keywords?:string[],loreHeading?:string):RulePageDefinition => ({slug,title,summary,sources,note,keywords,loreHeading})
+
+const lorePage = (slug:string,title:string,summary:string,heading:string) => page(slug,title,summary,[{document:'lore-anthro-mundas'}],undefined,['Lore','Anthro Mundas'],heading)
+export const loreAnthroMundasPages: RulePageDefinition[] = [
+  lorePage('lore-anthro-mundas','Lore of Anthro Mundas','Brambleheart and the myth-wild world in which its heroes find their rhythm.','BRAMBLEHEART'),
+  lorePage('lore-anthro-mundas-world','Anthro Mundas','The living world, its lands, peoples, ruins, and restless wonders.','ANTHRO MUNDAS'),
+  lorePage('lore-anthro-mundas-winds','Winds of Magic','The unseen primal currents that move through air, soil, spirit, and spellcraft.','WINDS OF MAGIC'),
+  lorePage('lore-anthro-mundas-hallows','The Howling Hallows','The realm beyond the mortal veil, shaped by memory, spirit, and the Winds.','THE HOWLING HALLOWS'),
+  lorePage('lore-anthro-mundas-ancients','The Ancients','The vanished people who mastered, bound, and ultimately starved the Winds.','THE ANCIENTS'),
+  lorePage('lore-anthro-mundas-morphing','The Great Morphing','The cataclysm that freed the Winds and gave rise to the Beastfolk.','THE GREAT MORPHING'),
+  lorePage('lore-anthro-mundas-discovery','The Era of Discovery','The first generations of Beastfolk and the cultures that took root across the world.','THE ERA OF DISCOVERY'),
+  lorePage('lore-anthro-mundas-strife','The Age of Strife','The unraveling of unity, the weaponization of magic, and the rise of King Covine.','THE AGE OF STRIFE'),
+  lorePage('lore-anthro-mundas-undeath','The Blight of Undeath','Covine, Dominous, the breach into the Hallows, and the spreading Blight.','THE BLIGHT OF UNDEATH'),
+  lorePage('lore-anthro-mundas-adventure','Age of Adventure','The hopeful age of rediscovery in which Brambleheart takes place.','AGE OF ADVENTURE'),
+]
+export const loreNavigation = loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
 
 export const quickReferencePages: RulePageDefinition[] = [
-  page('lore-anthro-mundas','Lore of Anthro Mundas','The myth-wild world, its peoples, places, histories, and old powers.',[{document:'lore-anthro-mundas'}]),
+  loreAnthroMundasPages[0],
   page('faq','FAQ','Common questions answered from the currently loaded rules.'),
   page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.'),
 ]
@@ -124,7 +140,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
   },
 ]
 
-export const allRulePages = [...quickReferencePages, ...ruleCategories.flatMap(category => category.pages)]
+export const allRulePages = [...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => category.pages)]
 export const fundamentalsNavigation = fundamentalPages.map(({slug,title})=>({slug,title}))
 export function findRulePage(slug:string) { return allRulePages.find(item => item.slug === slug) }
 

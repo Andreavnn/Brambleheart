@@ -9,7 +9,17 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.09</strong><small>Rules reader presentation, creator refinement, theme repair, and encounter validation</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.10</strong><small>Character campaigns, Lore section pages, archetype themes, dependent Attribute Checks, and dedicated encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Added Campaign Name and updated the Character List identity summary.</li>
+          <li>Split Lore of Anthro Mundas into navigable section pages and removed keyword pills from Rule Reader pages.</li>
+          <li>Replaced themes with Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster and reduced the large-logo test by half.</li>
+          <li>Made Attribute Check choices dependent on Roll Type and selected Stat, and moved Combat Encounters to their own routed pages.</li>
+          <li>Refined Culture Traits, Talents, Skills, Mana, Threadpiece wealth, Equipment &amp; Gear, Languages, and Review.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.09</strong><small>Rules reader presentation, creator refinement, theme repair, and encounter validation</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Rebuilt the Rules landing page, removed the redundant Table of Content page, expanded full-width search, and added breadcrumbs plus Old.Dex-inspired Fundamental navigation.</li>
           <li>Added a site-wide WIP banner, enlarged the Brambleheart logo for the requested scale test, and repaired Dark Mode surfaces for non-default role themes.</li>

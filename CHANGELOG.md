@@ -1,5 +1,14 @@
 # Site Changelog
 
+## Beta 0.10
+
+- Added Campaign Name to characters and the Character List.
+- Split Lore of Anthro Mundas into section pages with previous/next navigation and removed Rule Reader keyword pills.
+- Replaced role themes with Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster; reduced the previous oversized logo test by half.
+- Reworked Attribute Check dependencies and moved Combat Encounters to dedicated pages.
+- Refined Culture/Talent selection, Skill normalization, Winds of Magic Mana guidance, Threadpiece wealth, Equipment attachments, Languages, and Character Review.
+- Normalized mobile/tablet select controls and card dividers.
+
 ## Beta 0.09
 
 - Rebuilt the Rules landing page around the supplied reference layout, removed the redundant Table of Content page, made Rules search full width, and added breadcrumbs.

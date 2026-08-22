@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.09
+# Brambleheart TTRPG — Beta 0.10
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.09 builds on the recovered and stable Beta 0.08 state. The v0.08 creator crash fix and corrected Character Creation page boundary are preserved.
+Beta 0.10 builds on the stabilized Beta 0.09 package and preserves the recovered Character Creation crash and page-boundary fixes.
 
 ## Main views
 
@@ -11,21 +11,19 @@ Beta 0.09 builds on the recovered and stable Beta 0.08 state. The v0.08 creator 
 - Guided Character Creation
 - Rules / Rule Reader
 - Rhythm Engine
+- Dedicated Combat Encounter pages
 - Settings
 - Site Changelog
 
-## Beta 0.09 focus
+## Beta 0.10 focus
 
-- Rules landing page and Rule Reader presentation aligned toward the supplied/Old.Dex references
-- Redundant Table of Content rule page removed
-- Breadcrumbs and cleaned Fundamental next/back navigation
-- Full-width Rules search and recently viewed rules
-- Site-wide WIP banner and enlarged logo scale test
-- Dark Mode repaired for every selectable role theme
-- Saved-character Attribute Checks and character-required Combat Encounters
-- Expanded Fortune & Misfortune explanation
-- Character Creation layout, Skills, Spell, Talent, Equipment, Language, and Review refinements
-- Modal scroll/input isolation on desktop and touch devices
+- Campaign Name replaces the character Pronunciation field and is surfaced on the Character List.
+- Lore of Anthro Mundas is split into navigable section pages. Rule-reader keyword pills are removed.
+- Themes are now Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster with full light/dark palettes.
+- The previous oversized logo experiment is reduced by half.
+- Attribute Checks now narrow Character Stat and Skill choices from Roll Type.
+- Combat Encounters open as dedicated pages rather than living inside the Rhythm Engine panel.
+- Character Creation gains Culture/Talent picker refinements, normalized Skills, Mana guidance, Threadpiece wealth, Language detail, equipment attachments, and an expanded Review.
 
 ## Applying
 

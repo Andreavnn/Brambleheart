@@ -14,11 +14,12 @@ const fontOptions:Array<{value:FontSize;label:string}>=[
   {value:'smaller',label:'Smaller'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Larger'},
 ]
 const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
-  {value:'default',label:'Default',description:'Use the standard Brambleheart colors and reader treatment.'},
-  {value:'adventurer',label:'Adventurer',description:'Forest greens and worn-paper neutrals for the classic journey-first reader.'},
-  {value:'storyteller',label:'Storyteller',description:'Deep berry and warm parchment tones for character- and narrative-focused tables.'},
-  {value:'tactician',label:'Tactician',description:'Cool slate and steel-blue tones for encounter-focused play.'},
-  {value:'mystic',label:'Mystic',description:'Deep indigo and violet tones inspired by the Winds of Magic.'},
+  {value:'warrior',label:'Warrior',description:'Iron, ember, and deep red tones for direct martial play.'},
+  {value:'ranger',label:'Ranger',description:'Forest green and weathered earth tones for scouts and wanderers.'},
+  {value:'spellcaster',label:'Spellcaster',description:'Violet, indigo, and arcane-blue tones for the Winds of Magic.'},
+  {value:'healer',label:'Healer',description:'Soft teal, sage, and restorative light tones.'},
+  {value:'thief',label:'Thief',description:'Shadowed slate and muted brass tones for subtle play.'},
+  {value:'trickster',label:'Trickster',description:'Amber, plum, and lively contrast for mischief and improvisation.'},
 ]
 const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:string}>=[
   {value:'none',label:'Default',description:'Use the standard Brambleheart reader background.'},
@@ -28,7 +29,7 @@ const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:s
   {value:'deepwood-ruins',label:'Deepwood Ruins',description:'Ancient stone hidden in the deep woods.'},
   {value:'mushroom-isles',label:'Mushroom Isles',description:'A strange waterside landscape of giant mushrooms.'},
 ]
-const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
+const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Warrior')
 const currentBackgroundLabel=computed(()=>backgroundOptions.find(item=>item.value===backgroundImage.value)?.label||'Default')
 
 function clearKey(key:string,message:string){if(!confirm(message))return;localStorage.removeItem(key)}
@@ -69,7 +70,7 @@ function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data fi
       <label class="setting-row"><span><strong>Compact Rows</strong><small>Reduce list and settings row height throughout the companion.</small></span><input v-model="compactRows" type="checkbox" /></label>
       <div class="setting-row"><span><strong>Text Size</strong><small>Adjust standard interface and rules-reader text.</small></span><div class="font-size-control" role="group" aria-label="Text size"><button v-for="option in fontOptions" :key="option.value" type="button" :class="{active:fontSize===option.value}" @click="fontSize=option.value">{{ option.label }}</button></div></div>
       <label class="setting-row"><span><strong>Bold Text</strong><small>Increase the weight of standard interface and reference text.</small></span><input v-model="boldText" type="checkbox" /></label>
-      <details class="theme-settings-panel"><summary><span><strong>Themes</strong><small>Choose a stable role-player theme. Themes no longer depend on the Species list.</small></span><span class="value-chip">{{ currentRoleLabel }}</span></summary><div class="theme-option-list"><label v-for="theme in roleOptions" :key="theme.value" class="theme-option-row setting-row"><span><strong>{{ theme.label }}</strong><small>{{ theme.description }}</small></span><input v-model="roleTheme" type="radio" name="role-theme" :value="theme.value" /></label></div></details>
+      <details class="theme-settings-panel"><summary><span><strong>Themes</strong><small>Choose a character-archetype theme. Dark Mode has a complete matching palette for every theme.</small></span><span class="value-chip">{{ currentRoleLabel }}</span></summary><div class="theme-option-list"><label v-for="theme in roleOptions" :key="theme.value" class="theme-option-row setting-row"><span><strong>{{ theme.label }}</strong><small>{{ theme.description }}</small></span><input v-model="roleTheme" type="radio" name="role-theme" :value="theme.value" /></label></div></details>
       <details class="background-settings-panel"><summary><span><strong>Backgrounds</strong><small>Choose fixed artwork that remains behind the reader while pages scroll.</small></span><span class="value-chip">{{ currentBackgroundLabel }}</span></summary><div class="background-option-list"><label v-for="background in backgroundOptions" :key="background.value" class="background-option-row setting-row" :class="`background-preview-${background.value}`"><span><strong>{{ background.label }}</strong><small>{{ background.description }}</small></span><input v-model="backgroundImage" type="radio" name="background" :value="background.value" /></label></div></details>
       <div class="setting-row reset-setting-row"><span><strong>Reset Local Settings</strong><small>Restore display, theme, and background preferences to their defaults.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reset">Reset</button></div>
     </section></section>

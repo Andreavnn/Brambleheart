@@ -14,7 +14,7 @@ function togglePin(id:string){const c=characters.value.find(item=>item.id===id);
 function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.09',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.10',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -64,9 +64,9 @@ function skillSummary(character:CharacterRecord){
           <button class="saved-list-open-area character-open-area" type="button" @click="toggle(character.id)">
             <div>
               <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="character.draft" class="row-badge draft-badge">DRAFT</span><span v-if="character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
-              <div class="saved-list-labels"><span class="app-option-label">{{ character.species||'Species not selected' }}</span><span class="app-option-label">{{ character.spark||'Spark not selected' }}</span><span class="app-option-label">{{ character.homeland||'Homeland not selected' }}</span></div>
+              <div class="saved-list-labels character-list-summary"><span class="app-option-label">{{ character.species||'Species not selected' }}</span><span class="app-option-label">{{ character.campaignName||'No campaign assigned' }}</span></div>
             </div>
-            <div class="saved-list-card-meta"><strong>{{ character.path==='magic'?'Magic + Talent':'Talents' }}</strong><small>{{ sparkWords(character.spark) }}</small></div>
+            <div class="saved-list-card-meta"><strong>{{ character.campaignName||'Independent' }}</strong><small>{{ character.species||'Species not selected' }}</small></div>
           </button>
           <div class="character-card-icon-actions">
             <button class="icon-button character-lock-button" type="button" :class="{active:character.locked}" :aria-label="character.locked?'Unlock character':'Lock character'" :title="character.locked?'Unlock character':'Lock character'" @click="toggleLock(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg></button>
