@@ -1,7 +1,7 @@
 {
-  "name": "Brambleheart Companion",
+  "name": "Brambleheart TTRPG",
   "short_name": "Brambleheart",
-  "description": "Character, rules, and tabletop companion for Brambleheart.",
+  "description": "Character, rules, and tabletop companion for Brambleheart TTRPG.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -17,11 +17,6 @@ function goBack(){
 
 <template>
   <header class="app-header-wrap bramble-site-header">
-    <aside v-if="!compact" class="bramble-world-intro">
-      <strong>Welcome to Brambleheart</strong>
-      <p>Brambleheart is a story-driven tabletop role-playing game of courage, kinship, and discovery, set in the myth-wild world of Anthro Mundas — a land where storms sing names, ancient oaths still echo, and the Beastfolk of fur, feather, and scale walk beneath the gaze of old gods and older memories.</p>
-    </aside>
-
     <div class="app-header" :class="{compact}">
       <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
       <div v-else class="header-spacer"></div>

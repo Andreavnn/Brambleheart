@@ -3152,3 +3152,114 @@ html[data-background]:not([data-background="none"]) .card-surface,html[data-back
   .rule-source-table{min-width:390px}
   .welcome-install-dialog{grid-template-columns:52px minmax(0,1fr)}.welcome-install-icon,.welcome-install-dialog img{width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important}
 }
+
+/* Beta 0.06 — Brambleheart creator, rules, simulator, and responsive refinement. */
+:root[data-font-size="smaller"]{--font-offset:-1px}
+:root[data-font-size="small"]{--font-offset:0px}
+:root[data-font-size="normal"]{--font-offset:1px}
+:root[data-font-size="large"]{--font-offset:2px}
+:root[data-font-size="larger"]{--font-offset:3px}
+body{font-size:calc(14px + var(--font-offset))}
+.page-title-block p:not(.eyebrow),.tool-explainer,.form-note,.creation-info-body,.choice-summary,.step-tip,.rule-copy-card p,.changelog-entry-body,.setting-row small{font-size:calc(12px + var(--font-offset));line-height:1.52}
+.list-row-subtitle,.sim-record-main small,.field-help{font-size:calc(11px + var(--font-offset));line-height:1.4}
+
+/* Site identity: use the large horizontal Brambleheart logo without the regular-page welcome copy. */
+.bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:178px;grid-template-columns:46px minmax(0,1fr) 46px;margin-bottom:9px}
+.bramble-site-header .brand-logo-link{max-width:720px}
+.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{width:min(100%,700px);max-height:170px}
+.bramble-world-intro{display:none!important}
+
+/* Splash identity is intentionally larger than the in-app brand. */
+.bramble-welcome-page .welcome-panel{width:min(1040px,100%)}
+.bramble-welcome-brand{width:100%}
+.welcome-logo{width:min(900px,100%);max-height:330px}
+.welcome-tagline{display:none!important}
+.welcome-story-block h2{font-size:calc(23px + var(--font-offset))}
+.welcome-story-block p{font-size:calc(12px + var(--font-offset))}
+
+/* Rules: search/recent controls, static Quick Reference, and stronger parent/child hierarchy. */
+.rules-search-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:10px;align-items:end;margin-bottom:15px}
+.rules-primary-search{margin:0}
+.recent-rule-search{display:grid;gap:5px}.recent-rule-search>span{color:var(--ink-soft);font-size:calc(10px + var(--font-offset));font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+.quick-reference-menu{margin-bottom:10px;border-color:color-mix(in srgb,var(--accent) 36%,var(--line))}
+.quick-reference-heading{background:color-mix(in srgb,var(--accent-wash) 54%,var(--paper-2));color:var(--ink)}
+.quick-reference-row{background:color-mix(in srgb,var(--paper) 90%,var(--accent-wash))}
+.quick-reference-row:hover{background:color-mix(in srgb,var(--paper-2) 80%,var(--accent-wash))!important}
+.rule-menu-card{background:var(--paper);border-color:var(--line-dark)}
+.rule-menu-card>.rule-menu-summary{background:color-mix(in srgb,var(--paper-2) 76%,var(--accent-wash));color:var(--ink)}
+.rule-menu-card[open]>.rule-menu-summary{background:color-mix(in srgb,var(--accent-wash) 70%,var(--paper-2));border-bottom:1px solid var(--line)}
+.rule-menu-content{background:color-mix(in srgb,var(--paper-2) 64%,var(--paper))}
+.rule-child-row{background:color-mix(in srgb,var(--paper) 82%,var(--paper-2));padding-left:20px}
+.rule-child-row:hover{background:var(--paper-2)!important}
+.rule-menu-heading-copy strong{font-size:calc(14px + var(--font-offset))}
+.rule-menu-heading-copy small{font-size:calc(11px + var(--font-offset))}
+.keyword-pill-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.keyword-pill{display:inline-flex;align-items:center;min-height:25px;padding:3px 8px;border:1px solid var(--line-dark);border-radius:999px;background:var(--paper-2);color:var(--ink);font-size:calc(9px + var(--font-offset));font-weight:750;line-height:1.15}
+.dialogue-example-box,.example-source-card{font-weight:400}.dialogue-example-box p,.example-copy{font-weight:400;font-style:italic}.dialogue-example-box strong{font-style:normal;font-weight:850}
+.reader-page-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:14px;padding:10px}.reader-page-nav>*:last-child{justify-self:end}.reader-page-nav>*:first-child{justify-self:start}
+
+/* Character creation: guided panels and detailed Attribute controls. */
+.creation-progress{grid-template-columns:repeat(13,minmax(0,1fr));gap:4px}
+.creation-info-panel{margin:11px 0;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--paper)}
+.creation-info-panel>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:43px;padding:10px 13px;background:var(--paper-2);font-weight:850;cursor:pointer}.creation-info-panel>summary::-webkit-details-marker{display:none}.creation-info-panel>summary::after{content:'›';font-size:20px;color:var(--ink-soft);transform:rotate(90deg);transition:transform .15s ease}.creation-info-panel[open]>summary::after{transform:rotate(-90deg)}
+.creation-info-body{padding:12px 14px;border-top:1px solid var(--line)}.creation-info-body p:first-child{margin-top:0}.creation-info-body p:last-child{margin-bottom:0}
+.trait-card-stack,.selected-skill-stack,.selected-talent-stack{display:grid;gap:8px}.trait-choice-card,.choice-summary{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper-2)}.trait-choice-card p,.choice-summary p{margin:5px 0;color:var(--ink-soft)}
+.species-quote{font-style:italic;color:var(--ink-soft)}
+.own-culture-panel{margin:12px 0}.own-culture-panel h3{margin:0 0 8px;font-family:Georgia,'Times New Roman',serif}
+.culture-choice-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:12px}.culture-choice-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--paper)}.culture-choice-row>span{display:grid;gap:2px}.culture-choice-row small{color:var(--ink-soft)}
+.descriptive-choice-panel{margin-top:10px}.descriptive-choice-panel>strong{display:block;margin-bottom:3px;color:var(--ink)}
+.inline-rule-link{display:inline-flex;margin-top:8px;color:var(--accent-dark);font-weight:800;text-underline-offset:3px}
+.creation-example{margin:13px 0 0;padding:11px 13px;border-left:4px solid var(--accent);border-radius:8px;background:var(--paper-2);font-weight:400;line-height:1.5}.creation-example strong{font-style:normal;font-weight:850}.creation-example em{font-weight:400}
+
+.detailed-attribute-editor{gap:9px}.attribute-detail-card{overflow:hidden;border:1px solid var(--line);border-radius:11px;background:var(--paper)}.attribute-detail-card.expanded{border-color:color-mix(in srgb,var(--accent) 46%,var(--line))}
+.attribute-info-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:0;background:var(--paper-2);color:var(--ink);text-align:left;cursor:pointer}.attribute-info-toggle>span{display:grid;gap:2px}.attribute-info-toggle small{color:var(--ink-soft)}.attribute-info-toggle em{margin-top:2px;color:var(--accent-dark);font-size:calc(10px + var(--font-offset));font-style:normal;font-weight:750}.attribute-info-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .15s}.attribute-detail-card.expanded .attribute-info-toggle svg{transform:rotate(180deg)}
+.attribute-control-grid{display:grid;grid-template-columns:minmax(110px,.45fr) minmax(210px,1fr);align-items:center;gap:13px;padding:10px 12px;border-top:1px solid var(--line)}.attribute-modifier-column,.attribute-rank-column{display:grid;gap:4px}.attribute-modifier-column small,.attribute-rank-column>small{text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850}.attribute-modifier-column strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(22px + var(--font-offset))}
+.rank-stepper-line{display:flex;align-items:center;gap:8px}.max-marker{min-width:34px;color:var(--accent-dark);font-size:calc(9px + var(--font-offset));font-weight:900;letter-spacing:.06em}.stepper{grid-template-columns:38px 44px 38px}.stepper button{height:38px;background:#fff!important;color:#000!important;border-color:#aaa!important}.stepper button:hover:not(:disabled){background:#f0f0f0!important}.stepper span{height:38px;background:#111;color:#fff}
+.attribute-secondary-detail{display:grid;gap:7px;padding:10px 12px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--paper-2) 70%,var(--paper))}.attribute-secondary-detail article{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}.attribute-secondary-detail article strong{display:block}.attribute-secondary-detail article small{color:var(--accent-dark);font-weight:800}.attribute-secondary-detail article p{margin:4px 0 0;color:var(--ink-soft)}
+.path-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.path-choice-card{padding:15px;border:1px solid var(--line-dark);border-radius:12px;background:var(--paper);color:var(--ink);text-align:left;cursor:pointer}.path-choice-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent);background:color-mix(in srgb,var(--accent-wash) 40%,var(--paper))}.path-choice-card strong{display:block;margin:4px 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:calc(18px + var(--font-offset))}.path-choice-card p{margin:0;color:var(--ink-soft);line-height:1.45}.path-choice-kicker{color:var(--accent-dark);font-size:calc(9px + var(--font-offset));font-weight:900;letter-spacing:.09em}
+.language-choice-grid,.review-attribute-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.review-attribute-grid{grid-template-columns:repeat(5,minmax(0,1fr));margin-top:14px}.review-attribute-grid article{display:grid;gap:3px;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--paper-2);text-align:center}.review-attribute-grid span,.review-attribute-grid small{color:var(--ink-soft);font-size:calc(9px + var(--font-offset))}
+.character-review-card{margin-top:12px;padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--paper-2)}.character-review-card p{margin:5px 0;color:var(--ink-soft)}
+.equipment-shop-modal{width:min(760px,calc(100% - 24px));max-height:82vh;overflow:hidden;display:grid;grid-template-rows:auto auto auto minmax(0,1fr)}.shop-wealth-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0}.equipment-shop-list{overflow:auto;border:1px solid var(--line);border-radius:10px}.equipment-shop-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 11px;border-bottom:1px solid var(--line)}.equipment-shop-row:last-child{border-bottom:0}.equipment-shop-row>div{display:grid;gap:3px}.equipment-shop-row small{color:var(--ink-soft)}
+
+/* Simulator: reason/Skill-aware Rhythm rolls and opposed rolls inside encounter management. */
+.rhythm-reason-field{display:block;margin-bottom:10px}.field-help{display:block;margin-top:4px;color:var(--ink-soft);font-weight:500;text-transform:none;letter-spacing:0}
+.sim-stat-total{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:8px;margin:10px 0;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--paper-2)}.sim-stat-total span{font-weight:850}.sim-stat-total strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(22px + var(--font-offset));color:var(--accent-dark)}.sim-stat-total small{color:var(--ink-soft)}
+.roll-reason{display:block;margin:0 0 8px;font-size:calc(12px + var(--font-offset));text-align:center}
+.encounter-opposed-panel{margin:13px 0;padding:13px;border:1px solid var(--line);border-radius:11px;background:var(--paper-2)}.subsection-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:8px}.subsection-heading h3{margin:2px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:calc(19px + var(--font-offset))}.subsection-heading>small{color:var(--ink-soft)}
+
+/* Add the supplied Sauren to the selectable species palettes. */
+:root[data-species-theme="sauren"]{--accent:#7b426f;--accent-dark:#4d2948;--accent-wash:#c7adc1;--page-bg:#cec5ca;--page-gradient:linear-gradient(180deg,#ddd3d8 0,#cec5ca 420px)}
+:root[data-theme="dark"][data-species-theme="sauren"]{--accent:#965d89;--accent-dark:#bf86b0;--accent-wash:#2c1e29}
+
+@media(max-width:820px){
+  .bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:146px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{width:min(100%,620px);max-height:138px}
+  .welcome-logo{width:min(100%,800px);max-height:280px}
+  .rules-search-tools{grid-template-columns:1fr}
+  .creation-progress{grid-template-columns:repeat(7,1fr)}
+  .review-attribute-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:116px;grid-template-columns:40px minmax(0,1fr) 40px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{width:min(100%,480px);max-height:108px}
+  .welcome-logo{width:100%;max-height:220px}
+  .culture-choice-list,.path-choice-grid,.language-choice-grid{grid-template-columns:1fr}
+  .attribute-control-grid{grid-template-columns:1fr}.attribute-modifier-column{grid-template-columns:auto auto;justify-content:space-between;align-items:center}.rank-stepper-line{justify-content:space-between}
+  .review-attribute-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .creation-progress{grid-template-columns:repeat(5,1fr)}
+  .reader-page-nav{grid-template-columns:1fr}.reader-page-nav>*{justify-self:stretch!important;text-align:center}
+  .subsection-heading{align-items:flex-start;flex-direction:column}
+  .sim-stat-total{grid-template-columns:auto auto}.sim-stat-total small{grid-column:1/-1}
+}
+@media(max-width:390px){
+  .bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:96px;grid-template-columns:36px minmax(0,1fr) 36px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:88px}
+  .welcome-logo{max-height:180px}
+  .creation-progress{grid-template-columns:repeat(4,1fr)}
+}
+
+/* Final Beta 0.06 brand sizing: the regular reader logo may overhang the 760px content column, but never the viewport. */
+.bramble-site-header .brand-logo-link{width:min(1040px,calc(100vw - 96px));max-width:none}
+.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{width:100%;max-height:245px}
+.bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:246px;overflow:visible}
+.welcome-logo{width:min(1000px,100%);max-height:420px}
+@media(max-width:820px){.bramble-site-header .brand-logo-link{width:min(760px,calc(100vw - 84px))}.bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:178px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:170px}.welcome-logo{max-height:310px}}
+@media(max-width:620px){.bramble-site-header .brand-logo-link{width:min(520px,calc(100vw - 76px))}.bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:124px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:116px}.welcome-logo{max-height:235px}}
+@media(max-width:390px){.bramble-site-header .brand-logo-link{width:min(370px,calc(100vw - 68px))}.bramble-site-header .app-header,.bramble-site-header .app-header.compact{min-height:104px}.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:96px}.welcome-logo{max-height:190px}}

@@ -17,7 +17,6 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
     <section class="welcome-panel card-surface">
       <header class="welcome-brand-block bramble-welcome-brand">
         <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="welcome-logo" />
-        <p class="welcome-tagline">Build characters, check rules, and use tabletop tools from one companion.</p>
       </header>
 
       <section class="welcome-story-block">
@@ -26,16 +25,16 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
       </section>
 
       <section class="welcome-intro-grid">
-        <article><h2>Character Creation</h2><p>Build a hero step by step, then keep saved characters organized on this device with import, export, and pinning tools.</p></article>
-        <article><h2>Rules Reference</h2><p>Browse the Brambleheart rules as individual reader pages, search the table of contents, jump through Quick Reference links, and return to recently opened rules.</p></article>
-        <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine, track encounters, resolve combat, and keep recent dice results available while play continues.</p></article>
+        <article><h2>Character Creation</h2><p>Create a hero step by step through Species, Culture Traits, Spark, Homeland, Skills, Faith, Oath, Attributes, Talents or Magic, equipment, languages, and final character details.</p></article>
+        <article><h2>Rules Reference</h2><p>Browse Brambleheart rules without leaving the companion. Related Fundamental rules link together, while Quick Reference, Recent rules, FAQ, and Changes &amp; Updates keep common information close at hand.</p></article>
+        <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine, record why a roll was made, track recent results, manage ongoing encounters, and keep combat history available while play continues.</p></article>
       </section>
 
       <section class="welcome-support-block">
-        <div><p class="eyebrow">DONATION</p><h2>Support Brambleheart</h2><p>Donation links will be added when they are ready.</p></div>
+        <div><p class="eyebrow">DONATION</p><h2>Support Brambleheart</h2><p>Voluntary support helps cover development, hosting, and the services used to keep Brambleheart available.</p></div>
         <div class="welcome-support-actions" aria-label="Brambleheart donation options">
-          <button class="secondary-button welcome-support-button" type="button" disabled title="Link coming later">Single Support</button>
-          <button class="secondary-button welcome-support-button" type="button" disabled title="Link coming later">Recurring Support</button>
+          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a>
+          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a>
         </div>
       </section>
 
@@ -46,7 +45,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
       <section class="welcome-install-dialog card-surface" role="dialog" aria-modal="true" aria-labelledby="welcome-install-title">
         <img src="/icons/favicon-64.png" alt="" aria-hidden="true" class="welcome-install-icon" />
         <div><p class="eyebrow">INSTALL BRAMBLEHEART</p><h2 id="welcome-install-title">Use Brambleheart like an app?</h2><p>Install Brambleheart on this phone, tablet, or computer for a home-screen or desktop icon and a standalone app window.</p><p v-if="installHelp" class="install-help-copy">Your browser has not exposed the direct install prompt yet. Open the browser menu and choose <strong>Install app</strong> or <strong>Add to Home Screen</strong>.</p></div>
-        <div class="welcome-install-actions"><button type="button" class="primary-button" @click="installNow">{{ canInstall?'Install Brambleheart':'Install options' }}</button><button type="button" class="secondary-button" @click="dismissInstall">Not now</button><button type="button" class="secondary-button welcome-install-never" @click="dismissInstallPermanently">Do not show again</button></div>
+        <div class="welcome-install-actions"><button type="button" class="primary-button" @click="installNow">{{ canInstall?'Install Brambleheart':'Install Options' }}</button><button type="button" class="secondary-button" @click="dismissInstall">Not Now</button><button type="button" class="secondary-button welcome-install-never" @click="dismissInstallPermanently">Do Not Show Again</button></div>
       </section>
     </div>
   </main>

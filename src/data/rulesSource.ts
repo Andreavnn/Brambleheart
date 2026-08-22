@@ -6287,5 +6287,3267 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": []
       }
     ]
+  },
+  "species-ardenn": {
+    "sourceFile": "12_BH_ARDENN.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "ARDENN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "ARDENN (AHR-den)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“By pact and paw, by moon and stone—we guard the realms until the last howl fades. Our strength is not tooth or blade, but the hearts that answer when we call.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "ARDENN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Loyalty and pack coordination."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Lunar Pursuit, Loyalty’s Will, Feral Resolve."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Hunter’s Mark, Pack Fighting. → Focus on reactionary teamwork and endurance at low health."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Ardenn embody loyalty and vigor, their lives shaped by unity, instinct, and the bonds of packhood. Their culture centers on the Moon Pacts, sacred rites said to bind their spirits beneath shifting lunar light. When night falls, Ardenn voices rise in woven chorus—part prayer, part remembrance—to honor kin and the wilds that first shaped them."
+          },
+          {
+            "type": "paragraph",
+            "text": "After the Battle of Dominous, when Blight nearly drowned the world in undeath, the Ardenn answered with purpose. They formed the Moonbound Orders, a vast knightly network sworn to defend all peoples of Anthro Mundas. These orders built roads between realms, patrolled borders, and erected fortresses of stone, crafted with the renowned Ardenn masonry and architecture. Many of the realm’s great strongholds still bear their mark."
+          },
+          {
+            "type": "paragraph",
+            "text": "Leadership among the Ardenn is earned, not inherited. Alpha Knights rise through service and merit, while the High Alpha is chosen for wisdom, restraint, and devotion to the entire network of packs. Though fiercely loyal allies and formidable protectors, the Ardenn remain guided by deep intuition and a steadfast belief: every life is worth guarding, and every pack—however scattered—is family."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Fennic, a blend of growls and tonal cadence. Spoken from the chest."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "LUNAR PURSUIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the pack is threatened, you move without thought — drawn by the pull of instinct and oath."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: After any enemy character resolves a charge ability against an ally within [3] squares."
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLEAR: Select the enemy character who performed the charge. EFFECT: Move your character up to [2] squares toward target. If your character ends this movement within [1] square of the charging enemy, gain [+1] to your next strike roll against that target. RESTRICTIONS: This movement must end closer to the charging enemy than where it began and cannot pass through impassable terrain. KEYWORDS: | REACTION | MOVE | ARDENN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "LOYALTY’S WILL"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your loyalty runs deeper than fear or pain — when others bleed, your heart answers first. TRIGGER: This ability can be used when an ally within [3] squares suffers damage. EFFECT: You may suffer up to [3] health to reduce that damage by up to [-3]. Reduce the damage by [1] for each point of health you chose to suffer. KEYWORDS: REACTION | ARDENN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "FERAL RESOLVE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Gain [+3] to strike, ward, guts, and damage until the end of the next round. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. KEYWORDS: ROOT | REACTION | URNATH | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "HUNTERS INTUITION"
+          },
+          {
+            "type": "paragraph",
+            "text": "From youth, every Ardenn learns to track the world by scent, silence, and shared rhythm."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either the awareness or presence skill. KEYWORDS: PASSIVE | CULTURE |"
+          },
+          {
+            "type": "paragraph",
+            "text": "PACK FIGHTING"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ardenn warriors fight as one — each motion answered by another, every strike a shared instinct."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: If there are [1] or more ally characters within [3] squares of you, gain [+1] to strike. If there are [2] or more all characters within [ 3] squares of you also gain [+1] to damage with all physical and shoot combat abilities. KEYWORDS: PASSIVE | CULTURE |"
+          }
+        ]
+      }
+    ]
+  },
+  "species-auravex": {
+    "sourceFile": "13_BH_AURAVEX.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "AURAVEX"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "AURAVEX (OR-uh-vek-s)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“The Beast walks before us, and our shadows follow in its stride. All life is one trail; we simply walk its truth.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "AURAVEX"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Kinship with motion and nature’s rhythm."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Wild Stride, Voice of the Herd, Cycle of the Beast."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Pathfinder’s Call, Leaf in the Wind. → Synergizes with buffs, ally support, and kinetic flow."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Auravex are nomadic kin of the wild heart, their lineage echoing the grace of forest ungulates. Guided by their faith, The Way of the Beast, they believe all life flows from a single primal spirit whose rhythm shapes wind, soil, and season."
+          },
+          {
+            "type": "paragraph",
+            "text": "Auravex travel in great herds across plains, forests, and mountain paths, following these rhythms rather than claiming land as their own. Their camps are woven from branch, hide, and song—beautiful, impermanent, and leaving no trace when they depart."
+          },
+          {
+            "type": "paragraph",
+            "text": "Each herd functions as a living circle. Pathfinders read the sky and earth to choose safe routes; Guardians defend the herd and the wild places they pass through; Keepers tend to stories, rituals, and the spiritual flame that binds the Auravex to the Beast’s call. These rites attune them deeply to the world; many can sense weather shifts, wounded land, or places where magic has soured long before others notice."
+          },
+          {
+            "type": "paragraph",
+            "text": "Though gentle and patient in manner, the Auravex are fierce when balance is threatened. Outsiders often view them as wandering mystics or relics of an older age, yet their purpose remains unwavering: to walk the untamed paths, safeguard the pulse of the wild, and ensure that nature’s harmony endures no matter how the world changes around them."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Antheric, a melodic tongue shaped by breath, grunts, movement and hoof."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "WILD STRIDE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your steps echo the pulse of the forest; where you walk, the wild flows with you."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may move up to double their speed. If your character passes within [1] square of an ally during this movement, that ally gains [+1] to their next roll this round. RESTRICTIONS: This ability cannot be used if your character is within [+2] squares of an enemy and cannot end within [+2] squares of an enemy. KEYWORDS: ROOT | MOVE | AURAVEX | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "VOICE OF THE HERD"
+          },
+          {
+            "type": "paragraph",
+            "text": "You move in chorus with the world around you; the wild whispers its warnings through others."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: When an ally within [3] squares is the target of a magical ability"
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLARE: Select the targeted ally."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: The target character gains resistance[+1] against the damage type of the magical ability. If the ability cannot deal damage, the character gains [+1] to the attribute save against the spell."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTIVE | AURAVEX | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CYCLE OF THE BEAST"
+          },
+          {
+            "type": "paragraph",
+            "text": "As motion stirs life in all things, the beast’s rhythm returns to you through those you guide."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the end of the round. EFFECT: Count the total number of condition bonuses your character granted to ally characters this round. For every [2] instances of condition granted, restore either health [+1] or mana [+1] in any combination. KEYWORDS: ROOT | INSTINCT | AURAVEX | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "PATHFINDER’S CALL"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your people have walked every road beneath the sky, guided by intuition and song."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either the awareness or herbalry skill. KEYWORDS: PASSIVE | CULTURE |"
+          },
+          {
+            "type": "paragraph",
+            "text": "LEAF IN THE WIND"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your voice carries a whisper among leaves, steadying a heartbeat not yet gone."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares is compelled to use the renew the heart ability. EFFECT: The target ally’s attribute save roll for renew the heart is considered edged. KEYWORDS: ROOT | REACTION | CULTURE |"
+          }
+        ]
+      }
+    ]
+  },
+  "species-axalori": {
+    "sourceFile": "14_BH_AXALORI.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "AXALORI"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "AXALORI (AX-uh-lohr-ee)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“We do not lift our hands to harm, but we will not let life be taken. Even the smallest spark of life is worthy of protection.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "AXALORI"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Calm renewal and healing resonance."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Stillwater Renewal, Heartcurrent, Harmonic Field."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Tranquil Discipline, Resonant Pulse. → Healing and mana interchange, ideal support species."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Axalori are gentle, introspective folk whose lives flow with the quiet strength of rivers and rain. Their lineage echoes amphibians of marsh and tide, their movements fluid and their voices soft, shaped by a deep devotion to healing and renewal. Guided by a philosophy known as the Great Renewal, the Axalori believe that all wounds—of body, spirit, or land—can be mended when life is given space to breathe and grow."
+          },
+          {
+            "type": "paragraph",
+            "text": "They are credited as the first to understand the Lore of Life, perceiving the Winds of Magic as pulses of living rhythm rather than forces to be bent or commanded. Their mastery spread far beyond their wetland sanctuaries, forming the foundation of modern restorative magic across Anthro Mundas."
+          },
+          {
+            "type": "paragraph",
+            "text": "Axalori guide travelers and waterways, cultivate medicines, gardens, and practice endurance, meditation, and the discipline of quiet strength. None stand above others—balance is found only when all are in harmony."
+          },
+          {
+            "type": "paragraph",
+            "text": "To many, the Axalori seem serene wanderers, but their purpose is steady and eternal—to nurture what lives, mend what breaks, and keep the world’s heartbeat strong."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Antheric, a melodic tongue shaped by breath, grunts, movement and hoof."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "STILLWATER RENEWAL"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [+2] and mana [+1]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEARTCURRENT"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may transfer [2] health to restore [+1] mana or spend [1] mana to restore health [+2]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "HARMONIC FIELD"
+          },
+          {
+            "type": "paragraph",
+            "text": "Healing flows outward, rippling through the bonds that connect all life."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | AUGMENT | AXALORI | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRANQUIL DISCIPLINE"
+          },
+          {
+            "type": "paragraph",
+            "text": "You were raised in the still halls of reflection, where patience and observation guide the mind as much as the hand."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the lorekeeping skill and the herbalry skill. KEYWORDS: PASSIVE | CULTURE |"
+          },
+          {
+            "type": "paragraph",
+            "text": "RESONANT PULSE"
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Axalori, empathy is a current that binds all living things. When one heart trembles, another steadies it."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers damage, you may spend [1] mana to reduce that damage by [-1] and restore your character health [+1]. KEYWORDS: INSTINCT | CULTURE"
+          }
+        ]
+      }
+    ]
+  },
+  "species-braelor": {
+    "sourceFile": "15_BH_BRAELOR.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "BRAELOR"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "BRAELOR (BRAY-lor)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“One blade brought shame; ten thousand deeds will restore our name. Patience is our shield; resolve is our spear.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "BRAELOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Storm-forged strength and defiance of corruption."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Thunderstep, Stoneheart, Covine Heirs."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Forge-Kin, Stillstorm Totem. → Heavy melee damage, anti-magic resistance, disciplined faith motifs."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Braelor are steadfast folk shaped by the endurance and honor of great horned beasts. Their homes rise across open plains and high valleys where stone meets sky, surrounded by wind-carved monuments and echoing forges. Strength and craftsmanship define their way of life; every hammer strike is a prayer, every tool a testament to discipline and spirit."
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Braelor, labor is sacred—will made visible, shaping both the world and the self."
+          },
+          {
+            "type": "paragraph",
+            "text": "They are guided by shamans who commune with ancestral echoes carried in dream, thunder, and ringing steel. These spiritual leaders teach that courage must be grounded, loyalty must be chosen, and truth must be spoken even when it scars."
+          },
+          {
+            "type": "paragraph",
+            "text": "Yet the Braelor carry a shadow alongside their virtues. Long ago, one of their own—Covine, the war-sorcerer, unleashed the Blight and became the Lich King, a name carved into history with grief and warning. Though the sin was his alone, the memory weighs heavily on his people. In its wake, the Braelor dedicate themselves to redemption."
+          },
+          {
+            "type": "paragraph",
+            "text": "With great horns, steady gaze, and unmatched endurance, the Braelor stand as symbols of the living earth—unyielding, honest, and unbroken."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Snortish, a guttural, rhythmic speech tied to breath and emotion."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "THUNDERSTEP"
+          },
+          {
+            "type": "paragraph",
+            "text": "Braelor hearts beat with stormlight, and the air itself trembles in their wake."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [3] mana TRIGGER: This ability can be used during your turn. EFFECT: Your character may move a number of squares equal to their speed plus [+5] toward a visible enemy within line of sight. If your character uses a combat ability against that target and deals damage during the same turn, increase the total damage by [+2]. POWER THROUGH: At the end of your turn, if your character moved the total movement granted by this ability, deal [3] lethal damage to the target of thunderstep. The target is forced back [1] square directly away from you. If the target cannot be moved, they suffer an [2] lethal damage instead. RESTRICTIONS: This movement must end within [1] square of the target and cannot pass through impassable terrain. KEYWORDS: ROOT | MOVE | BRAELOR | CHARGE | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "STONEHEART"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Braelor’s will is as steady as forged iron, their bodies and spirits refusing to yield to pain or fear."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain [+2] to all guts rolls made to resist any non-magical damage. When your character suffers lethal damage, reduce that damage by [-1], to a minimum of [1]. KEYWORDS: PASSIVE | BRAELOR | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "COVINE HEIRS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Echoes of the Lich King’s dominion linger in Braelor blood. TRIGGER: This ability can be used at the end of the round. EFFECT: When your character successfully resists a hex or compelled effect, restore health [+1] for each instance of success. KEYWORDS: ROOT | INSTINCT | BRAELOR | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "FORGE-KIN"
+          },
+          {
+            "type": "paragraph",
+            "text": "The twin arts of body and spirit: the strength to shape stone and the presence to command respect."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank[+1] in the stonegrasp and either presence or crafting[blacksmithing] skills. KEYWORDS: PASSIVE | CULTURE |"
+          },
+          {
+            "type": "paragraph",
+            "text": "STILLSTORM TOTEM"
+          },
+          {
+            "type": "paragraph",
+            "text": "Braelor shamans bind the echoes of wind and forge into sacred totems humming with stormlight."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Summon a spiritual totem within [2] squares of your character. EFFECT: While the totem is active, your character automatically passes the first compelled effect from a spell each round. ally characters within [3] squares of the totem gain [+1] to attribute saves made when using the renew the heart ability. RESTRICTIONS: A character cannot benefit from multiple stillstorm totem from different sources. DURATION: The totem remains until it until destroyed. KEYWORDS: ROOT | INSTINCT | AUGMENT | SUMMON | CULTURE"
+          }
+        ]
+      }
+    ]
+  },
+  "species-cethra": {
+    "sourceFile": "16_BH_CETHRA.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "CETHRA"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "CETHRA (SETH-rah)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“When the Evershade stirs, so too does destiny. What moves in shadow often carries the truest shape of fate.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "CETHRA"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Precision, stealth, and poise."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Primal Grace, Shadowstep, Poised Reflex."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Artisan’s Focus, Viled Paw. → Agile duelist class, high-risk precision strikes."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Cethra are quiet wanderers shaped by the poise and mystery of the great cats. They dwell in hidden forests, mist-veiled glades, and the crumbling bones of ancient ruins. To the Cethra, stillness is strength—every step intentional. Their presence is subtle yet unmistakable, like moonlight shifting across stone."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Cethra hold a quiet but vital place in the wider world. They are known to appear in troubled regions without explanation. Some say they sense disturbances through the Evershade Tree, drawn to fractures others cannot perceive. They rarely stay long, offering guidance through silence or subtle gesture before slipping back into the wilds."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Evershade Tree is said to be the oldest living thing in the world, a silent echo of Anthro Mundas itself. Its roots are whispered to drink from the realm’s lifeblood, carrying omens through soil and shadow. Only the Cethra stand as its guardians—devoted stewards of fate’s quiet weave, and the only folk who have ever looked upon its hidden boughs."
+          },
+          {
+            "type": "paragraph",
+            "text": "Though outsiders often mistake their calm for aloofness, beneath their serene exterior lies fierce compassion. The Cethra walk where shadow meets song, balancing solitude with deep reverence for the hidden threads that bind the world."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Purrish, a melodic blend of hums, trills, and soft vocal tones."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "PRIMAL GRACE"
+          },
+          {
+            "type": "paragraph",
+            "text": "You flow around danger like wind through tall grass — untouchable, deliberate, and ever-moving."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used when your character is targeted by a combat ability that requires a ward roll. EFFECT: After the ability is resolved, you may move your character up to [3] squares in any direction and gain [+2] to ward until the end of the round RESTRICTIONS: This movement cannot end within [2] squares of the attacking enemy. KEYWORDS: REACTION | MOVE | CETHRA | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "SHADOWSTEP"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your stillness is a weapon; the enemy never sees the motion that ends them."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used at the end of the round. EFFECT: Select a point of origin within [5] squares and move your character to that point. This movement does not require line of sight and can pass through any terrain type. Afterwards, you may move up to [2] additional squares in any direction."
+          },
+          {
+            "type": "paragraph",
+            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: This movement cannot end within two [2] squares of an enemy. KEYWORDS: ROOT | INSTINCT | CETHRA"
+          },
+          {
+            "type": "paragraph",
+            "text": "POISED REFLEX"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even under pressure, your body acts with effortless control — instinct shaped by endless discipline."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when your character fails an attribute save. EFFECT: You may reroll the failed attribute save with [+1]. KEYWORDS: ROOT | INSTINCT | CETHRA | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "ARTISAN’S FOCUS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Cethra find balance in creation — their art a mirror of patience and will."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Tumblecraft and either the Shadehand or Whisperster skill. KEYWORDS: PASSIVE | CULTURE | CETHRA"
+          },
+          {
+            "type": "paragraph",
+            "text": "VILED PAW"
+          },
+          {
+            "type": "paragraph",
+            "text": "A flash of motion — graceful, inevitable, and unseen until it’s too late."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: When you make a successful strike roll against an enemy character that has not yet taken their turn this round. EFFECT: Increase the total damage dealt by the strike roll by [+2]. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: This ability cannot be used with a magical or ranged ability. KEYWORDS: ROOT | REACTIVE | CULTURE |"
+          }
+        ]
+      }
+    ]
+  },
+  "species-hedgkin": {
+    "sourceFile": "17_BH_HEDGKID.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "HEDGKIN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "HEDGKIN (HEHJ-kin)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“Tend a spark of hope, and you’ll soon have a hearth. For even the darkest soil can bloom again.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEDGKIN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Hearth, protection, and small miracles."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Hearthborn Courage, Burrowstep, Spine Guard."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Thicket Craft, Thriving Harmony. → Strong support / reaction traits, charm-based healing and retaliation."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hedgkin embody the warmth of hearth and garden, their lives rooted in gentle earth and peaceful companionship. They dwell in rolling meadows, riverbanks, and burrowed homes lined with moss, lantern glass, and flowering vines. Quiet by nature but rich in spirit, the Hedgkin cultivate gardens said to be touched by the Winds of Magic themselves—places where herbs grow sweeter, fruit ripens brighter, and weary travelers find unexpected rest."
+          },
+          {
+            "type": "paragraph",
+            "text": "Known as keepers of comfort, they maintain vast communal orchards and shared fields, feeding their kin and any wanderer who arrives at their door. Their deep connection to the land has made them beloved across Anthro Mundas, especially in ages when wounds—of war, Blight, or sorrow—cut through the world. In recent generations, Hedgkin growers and herbalists have become skilled at coaxing life back into blight-scarred soil, slowly cleansing corrupted ground through patient tending and ancient botanical rites."
+          },
+          {
+            "type": "paragraph",
+            "text": "Though humble in size, they are remarkably brave when peace is threatened. Hedgkin stand firm not out of fury, but out of love for the life they cultivate. To them, harmony is not a luxury—it is a garden tended daily, a living promise to future generations."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Hedgely, Silken and whisperlike, built from trills, hums, and quiet pauses"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEARTHBORN COURAGE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hedgkin’s bravery burns slow but never fades — a quiet ember against fear."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when an ally within [3] squares is compelled."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: The affected ally gains [+2] to the roll made to resist the effect. If that roll succeeds, the ally gains [+1] to strike or ward until the end of their next turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of hearthborn courage from different sources."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | REACTION | AUGMENT | HEDGKIN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "BURROWSTEP"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hedgkin move where others cannot — under roots, through brush, and between the cracks of battle."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when an enemy character moves during an ally’s turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLARE: Choose [1] ally within [3] squares of the moving character."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: The chosen ally may move [1] square at the end of the current turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTIVE | HEDGKIN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPINE GUARD"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hedgkin’s quills bristle at danger, turning defense into quiet retribution."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when your character is the target of a combat ability, and the attacker is within [3] squares."
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLARE: Target the character using the combat ability."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: The targeted character suffers [1] lethal damage. If the triggering combat ability successfully deals damage or applies an effect, the attacker suffers an additional [1] lethal damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTIVE | HEDGKIN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "THICKET CRAFT"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hedgkin’s hands are always busy — mending, stirring, or mixing some small miracle."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Seeking and Herbalry skill. Additionally, gain rank [+1] in one of the following skills: Lorekeeping, Wayfinding, or Tradecraft skill."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: PASSIVE | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "THRIVING HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "A warm word, a full belly, a safe fire — such things keep the darkness away."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the end of the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLARE: Choose [1] ally within [3] squares."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Target ally restores health [+2] and gains [+1] to their next attribute save, until the end of the next round. If your character is within [1] square of another ally when targeted by this ability, you also restore health [+1]."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | INSTINCT | AUGMENT | CULTURE |"
+          }
+        ]
+      }
+    ]
+  },
+  "species-ravari": {
+    "sourceFile": "18_BH_RAVARI.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "RAVARI"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "RAVARI (RIV-kan)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“A good story is worth any climb. And if trouble finds you, outwit it. If that fails, outclimb it.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "RAVARI"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Acrobatics, trickery, and instinctive teamwork."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Treeleaper, Haphazard Genius, Crooktail Bound."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Jester of Trade, Dexterous Paws. → Movement specialists with synergistic reaction play."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Ravari are curious, cunning folk shaped by the quick wit and nimble grace of forest scavengers. They thrive in the high canopies of the Veilwood and other dense forests of Anthro Mundas. To the Ravari, every hollow hides a secret and every trail hints at a tale worth chasing."
+          },
+          {
+            "type": "paragraph",
+            "text": "Agile climbers and deft-handed gatherers, they collect stories as eagerly as trinkets, believing that anything—no matter how small—may carry wonder, wisdom, or opportunity. Ravari culture celebrates ingenuity and improvisation, where art, invention, and mischief often mix into creations equal parts brilliant and absurd."
+          },
+          {
+            "type": "paragraph",
+            "text": "Their greatest celebration, Treasure Day, marks the turning of the year: a festival of shared discoveries where baubles, riddles, jokes, and heartfelt gifts light their halls. It is a full day of memory and generosity, reminding every Ravari that joy is a treasure best passed on."
+          },
+          {
+            "type": "paragraph",
+            "text": "Beneath their humor lies a fierce loyalty. A Ravari may tease, trick, and tangle in mischief, but they never abandon a friend or kin in danger."
+          },
+          {
+            "type": "paragraph",
+            "text": "They move lightly through the world, but they leave behind laughter, cleverness, and the quiet certainty that curiosity is its own kind of courage."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Ravariese, a melodic tongue of chitters and lyrical cadence."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "TREELEAPER"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Ravari were born for the high places, where every fall teaches a better landing. EFFECT: When your character moves, they may ignore height penalties and difficult terrain caused by natural obstacles such as vines, roots, or elevation. If your character falls or is pushed from a height of [5] squares or less, they take no damage and may move [1] square in any direction upon landing. KEYWORDS: PASSIVE | MOVE | RAVARI | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "HAPHAZARD GENIUS"
+          },
+          {
+            "type": "paragraph",
+            "text": "You might not know what you’re doing — but somehow, it works."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the start of the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLEAR: Select [1] enemy character within [3] squares. EFFECT: The targeted character suffers [-1] when making ward rolls against you. Additionally, each time you make a successful strike roll against the target, you may move [1] square."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTICTION: This ability cannot be used against the same target in back-to-back rounds."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | INSTINCT | RAVARI | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CROOKTAIL BOUND"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the Ravari work together, they do so by instinct — a flick, a nod, a jump."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares performs a move or combat ability. EFFECT: Your character may move [1] square. If the move ends within an adjacent square of a different ally that didn’t trigger this ability, you and that ally gain [+1] to the next roll made this round. KEYWORDS: ROOT | REACTION | RAVARI"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "JESTER OF TRADE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ravari crafts are built to the sound of laughter, argument, and rhythm."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Guile and Tumblecraft skill. Additionally, gain rank [+1] in one of the following skills: Shadehand, Stonegrasp, Whisperster, Seeking, or Wayfinding skill. KEYWORDS: PASSIVE | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "DEXTEROUS PAWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Ravari hands are quick and clever, made for balance, mischief, and motion. EFFECT: When your character is wielding a weapon in each hand, gain [+1] to strike rolls and damage for physical combat abilities. KEYWORDS: PASSIVE | CULTURE"
+          }
+        ]
+      }
+    ]
+  },
+  "species-rivkan": {
+    "sourceFile": "19_BH_RIVKAN.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "RIVKAN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "RIVKAN (RIV-kan)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“Power doesn’t shout. It flows. Control the waters, and the arguments grow quieter.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "RIVKAN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Social fluidity and adaptability."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Communal Adaptation (Jippis familiar), Leapfrog, Double Lilly."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Social Savvy, River’s Favor. → Defensive and RNG-adaptive, strong familiar and social synergy."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Rivkan are a people shaped by wetlands, marshes, and winding deltas—resilient, collaborative, and sharper than they appear. Their communal instinct runs deep; every Rivkan is raised to know that strength flows from the group, not the individual. Many foster bonds with the nimble winged Jippis, companions whose keen senses heighten awareness and intuition."
+          },
+          {
+            "type": "paragraph",
+            "text": "Yet when this ideal expanded beyond their villages and into the wider world, it placed the Rivkan in a uniquely powerful position. Controlling countless waterways, harbors, and river crossings across Anthro Mundas, the Rivkan gradually became the quiet pulse of the continent’s trade."
+          },
+          {
+            "type": "paragraph",
+            "text": "Their greatest stronghold, Vellimar, sits where three great rivers converge into the sea—a sprawling stilt-born metropolis of markets and docks. Barges from every culture crowd its piers, and deals struck there can shift the fortunes of entire regions."
+          },
+          {
+            "type": "paragraph",
+            "text": "Though humble in stature, the Rivkan understand influence better than most. They move goods, news, and people with equal ease, and their say carries weight in any negotiation. While they may seem harmless, those who mistake Rivkan for weak soon learn otherwise."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Corakish, a croaking, percussive tongue that shifts with emotion."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "COMMUNAL ADAPTATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "Every Rivkan shares their path with a Jippis — a clever, mimicking creature of water and intuition."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Your character gains the critter Jippis as a familiar. The Jippis counts as a summoned character. Follow the normal rules for a summoned familiar. JIPPIS AID: When your character succeeds on a roll compelled attribute save and they control a Jippis familiar, restore mana [+1]. KEYWORDS: PASSIVE | SUMMON | RIVKAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "LEAPFROG"
+          },
+          {
+            "type": "paragraph",
+            "text": "Bufo’s powerful legs allow them to evade danger and mitigate damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: When your character is the target of an area of effect spell."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana EFFECT: Reduce the total damage dealt by the spell by half. This effect is applied after all other damage conditions or effects. If the spell compels an attribute save, and your Jippis familiar is summoned, gain [+3] to save against the compelled effect."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTION | RIVKAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "DOUBLE LILLY"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the first jump fails, the second one lands."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when your character fails a roll. EFFECT: Gain [+2] to your next roll of the same type (combat, spell, or attribute) made within the next round. If that follow-up roll succeeds, restore mana [+2]. KEYWORDS: ROOT | REACTION | RIVKAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "SOCIAL SAVVY"
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Rivkan, words are currency and silence is a debt unpaid."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Charm and Guile skills. Additionally, gain rank [+1] in one of the following skills: Expression, Tradeskill, Seeking or Shadehand skill. KEYWORDS: PASSIVE | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "RIVER’S FAVOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Rivkan believe the river grants small mercies to those who travel with good timing."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when an ally within [3] squares rolls a natural [1] or [10]. EFFECT: On a natural [1], the affected ally gains [+1] to the roll that triggered this ability. On a natural [10], the affected ally restores mana [+1]. KEYWORDS: REACTION | CULTURE | RIVKAN"
+          }
+        ]
+      }
+    ]
+  },
+  "species-sauren": {
+    "sourceFile": "20_BH_SAUREN.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "SAUREN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "SAUREN (SORE-en)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“Survival is devotion made visible. Every dawn is a promise kept.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "SAUREN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Endurance and desert-born ferocity."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Bond of the Vurox, Heatbloom, Furnacehide."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Nomad’s Profession, Scent of Blood. → Tanky beastmasters with reactive burst potential."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Sauren are the resilient children of the sun—scaled wanderers shaped by the endurance of desert reptiles and the vast, wind-scarred plains. Their nomadic tribes follow ancient migration routes alongside the great herds they tend, living by a strict code of reciprocity: take only what the land offers, and repay every gift with stewardship."
+          },
+          {
+            "type": "paragraph",
+            "text": "From birth, each Sauren forms a sacred bond with a Vurox pup, a lupine companion whose spirit is believed to intertwine with theirs across life and death. These pairings are not pets or mounts, but soul-kin—guardians, mirrors, and lifelong partners."
+          },
+          {
+            "type": "paragraph",
+            "text": "Direct, honest, and efficient in both word and deed, the Sauren often seem severe to outsiders. Yet among themselves, every gesture carries layered meaning: a flick of the tail, a brief nod, a shared silence. Respect among Sauren is quiet and constant, woven through small acts of reliability."
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Sauren, survival is not merely instinct—it is devotion. Through fire, wind, and dust, they endure, believing that each day they outlast the world’s hardships is a prayer answered and a promise kept."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Drashti, A breath-heavy, hissing tongue born of the desert winds- sharp, short, and powerful."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "BOND OF THE VUROX"
+          },
+          {
+            "type": "paragraph",
+            "text": "From birth, every Sauren shares their path with a bonded Vurox."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Your character has a bonded Vurox companion. The Vurox acts as a summoned critter and during combat encounters takes a turn immediately after your character regardless of initiative order."
+          },
+          {
+            "type": "paragraph",
+            "text": "BONDED PAIR: When your character’s Vurox is within [3] squares and your character restores health, the Vurox restores [1] health."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: PASSIVE | SUMMON | SAUREN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEATBLOOM"
+          },
+          {
+            "type": "paragraph",
+            "text": "Slow, heat-fueled reptilian healing that rewards good positioning and the desert identity. TRIGGER: This ability can be used at the end of the round, if your character suffer [5] or more damage during the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Immediately restore health [+2] and mana [+1]. If you are within [3] or at least two or more allies increase the health you restore by [+1]. If your Vurox is within [3] increase the mana you restore by [+1]."
+          },
+          {
+            "type": "paragraph",
+            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | INSTINCT | SAUREN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "FURNACEHIDE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The desert hardens both skin and spirit."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Reduce all incoming direct or standard damage by [-1]. Additionally, gain resistance [2] against fire and poison damage types."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: PASSIVE | SAUREN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "NOMAD’S PROFESSION"
+          },
+          {
+            "type": "paragraph",
+            "text": "Sauren travel light and remember much."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Wayfinding and Beastcraft skills."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: PASSIVE | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "SCENT OF BLOOD"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even the faintest scent of weakness stirs the Sauren’s instinct — a silent, inevitable pressure that crushes resolve."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used when an enemy character within [3] squares is compelled to make an attribute save."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: The target character suffers [-1] to the attribute save roll. If the save fails, the target also gains [-1] to ward until the end of their next turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTION | HEX | CULTURE"
+          }
+        ]
+      }
+    ]
+  },
+  "species-urnath": {
+    "sourceFile": "21_BH_URNATH.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "URNATH"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "URNATH (UR-NATH)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“In the cold we find our truth—fear shatters, lies freeze, but the heart that stands for others never breaks.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Winter, endurance and guardianship."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Frostwalker, Blood of the North, Keeper’s Roar."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Hearthward Oath, Rites of the Deep Winter. → Defensive tank with strong ally protection and elemental resistance."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Urnath are towering guardians of the north, standing where frost and undeath meet. Clad in thick fur and unyielding resolve, they hold the line against the Blight—the cursed corruption unleashed when Covine the war-sorcerer tore open the veil during the Battle of Dominous. Since that day, the Urnath have watched the frozen horizon, sworn to prevent the undead legions from ever spilling across the world again."
+          },
+          {
+            "type": "paragraph",
+            "text": "Their clans are ruled by strength tempered with wisdom; each king chosen not by bloodline, but by deed. To the Urnath, battle is a sacred duty, never a tool of conquest. Though fearsome in war, their culture is gentle at its core—families are sacred, hospitality is a solemn responsibility, and the eternal hearthfire is revered as a living symbol of hope."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hearthfire, an immense pyre kept burning since the end of the Battle of Dominous, is housed within the citadel city Dawnmaw. It is said as long as its flames endure, so too shall the Urnath stand unbroken against the Blight."
+          },
+          {
+            "type": "paragraph",
+            "text": "Few Urnath travel beyond their frozen domain, but those who do are renowned as steadfast allies whose loyalty burns brighter than any forge."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Ursidian, a deep, resonant language of growls and harmonic tones"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "FROSTWALKER"
+          },
+          {
+            "type": "paragraph",
+            "text": "You stride through the cold as if it were air, your blood singing with winter’s stillness."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Your character gains resistance [+3] against cold damage and ignores movement penalties from icy or difficult terrain caused by weather or environment. NATURAL TERRAIN: If your character begins the round on icy terrain, they gain condition [+3] to ward until the end of their next turn. KEYWORDS: PASSIVE | URNATH | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "BLOOD OF THE NORTH"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Immediately restore health [+3] and gain [+2] to guts until the end of your next turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. KEYWORDS: ROOT | REACTION | URNATH | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "KEEPER’S ROAR"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your bellow carries the weight of ancestral duty, shaking both fear and frost from the hearts of your allies."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana TRIGGER: This ability can be used during your turn. DECLARE: Target all ally characters within orb [4]. EFFECT: Each target gains [+1] to ward and attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of keeper’s roar from different sources. KEYWORDS: ROOT | INSTINCT | AUGMENT | URNATH | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEARTHWARD OATH"
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Urnath, protection is sacred—every home, every life a flame worth defending."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: When an ally within [3] squares suffers damage that would reduce their health below [5], your character may redirect that damage to themselves. After resolving the damage, gain [+1] to guts until the end of the next round. KEYWORDS: REACTION | AUGMENT | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "RITES OF THE DEEP WINTER"
+          },
+          {
+            "type": "paragraph",
+            "text": "You have learned to honor the cold—in silence, stillness, and endurance."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either lorekeeping or presence skill. KEYWORDS: PASSIVE | CULTURE"
+          }
+        ]
+      }
+    ]
+  },
+  "species-tordan": {
+    "sourceFile": "22_BH_TORDAN.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "TORDAN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "TORDAN (TOR-dan)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“The world hurries. We do not. As some burdens are chosen. Others simply call your name.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "TORDAN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Patience and foresight."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Dreamshell, Steady Pace, Echo of Tomorrow."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Memorybrew, Deep Trance. → Magical foresight and attrition play; defensive casters."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Tordan are wise keepers of the green depths, patient as the earth they cherish. With shells etched in ancient patterns, they carry history upon their backs and peace within their hearts."
+          },
+          {
+            "type": "paragraph",
+            "text": "Practitioners of alchemy, herbalism, and dreamwalking, the Tordan move easily between the seen and unseen. To the Tordan, dreams are not illusions but memories of the world itself—messages carried on currents of thought, echoing from ages long forgotten."
+          },
+          {
+            "type": "paragraph",
+            "text": "At the heart of their culture lies the Dream Pool, a vast whirlpool hidden in a sacred glade. Said to be as old as the first rain, it spirals endlessly downward, glowing with soft, shifting light. Legends claim its depths touch the dreams of all Anthro Mundas, allowing those who enter it to glimpse the fears, hopes, and futures of the world. The Tordan guard it with solemn devotion, for its waters are both a gift and a burden—revealing truths not all are ready to bear."
+          },
+          {
+            "type": "paragraph",
+            "text": "Slow to anger and slower to forget, the Tordan act with deliberate care in all things. Many mistake them for hermits, but those who earn their trust find the most steadfast allies imaginable."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Tordesh, A breath-heavy, hissing tongue born of the desert winds- sharp, short, and powerful."
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "DREAMSHELL"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the world strikes, the Tordan retreat inward — wrapped in the calm of their second sight."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana TRIGGER: This ability can be used when your character suffers direct or standard damage. EFFECT: Reduce the total damage dealt by [-2]. Additionally, after that ability is resolved, you can select one damage type and gain resistance [1] against the selected type until the end of the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: ROOT | REACTION | AUGMENT | TORDAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "STEADY PACE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Tordan move with deliberate patience, unhurried and unshaken by the world’s rush. EFFECT: Whenever your character uses a move ability reduce the total number of squares they are allowed to move by [-1]. Moreover, reduce the affects of all conditions, abilities, or effects that target your character and reduce their speed by [2]. KEYWORDS: PASSIVE | TORDAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "ECHO OF TOMORROW"
+          },
+          {
+            "type": "paragraph",
+            "text": "You act on echoes of what has not yet come — shaping the next moment before it arrives."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally within [3] squares. EFFECT: The target ally gains [+1] to the strike roll for the next magical ability they use this round. If ability is successful, restore mana [+1] to your character. If ability fails, the target ally restores [1] mana. COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: | INSTINCT | TORDAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "MEMORYBREW"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Tordan distill memory itself into tincture and tea — wisdom steeped in patience."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the herbalry skill and either the lorekeeping or runecraft skill."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: PASSIVE | CULTURE | TORDAN"
+          },
+          {
+            "type": "paragraph",
+            "text": "DEEP TRANCE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Tordan’s meditation bridges the seen and unseen, mending more than flesh."
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the end of the round. EFFECT: Reduce your characters speed by [-1] until the end of the next round and increase the amount of mana they generate at the start of the next round by [+2] KEYWORDS: ROOT | INSTINCT | CULTURE |"
+          }
+        ]
+      }
+    ]
+  },
+  "species-virelan": {
+    "sourceFile": "23_BH_VIRELAN.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "VIRELAN"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "VIRELAN (VEER-eh-lan)"
+          },
+          {
+            "type": "paragraph",
+            "text": "“Elegance is a blade. Most simply admire it. To rise to it is beauty. To rise to it with purpose is destiny.”"
+          },
+          {
+            "type": "paragraph",
+            "text": "VIRELAN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Theme: Airborne mastery and creative composure."
+          },
+          {
+            "type": "paragraph",
+            "text": "Traits: Airstep, Skyborn Reflexes, Composed Mind."
+          },
+          {
+            "type": "paragraph",
+            "text": "Culture: Artisan’s Discipline, Arcane Affinity. → Terrain-ignoring movement, spell economy, and edged saves."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Virelan are luminous, expressive folk shaped by the grace and bearing of countless avian lineages. Their cities glimmer with glass, gold, and polished stone, perched upon storm-cut cliffs or soaring spires where the winds sing through crystal arches."
+          },
+          {
+            "type": "paragraph",
+            "text": "Magic itself is both science and scripture to them. In their grand libraries, scholars study the behavior of winds, storms, and arcane currents, seeking patterns in the chaos of the skies."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Virelan also maintain vast collections of arcane relics—shards of fallen aeroliths, stormglass fragments, and whispering charms unearthed from Ancient ruins. Officially, these archives exist for study and preservation. Unofficially, some aeries covet objects best left buried, believing power and truth lie side by side. Among the Virelan, curiosity is a virtue."
+          },
+          {
+            "type": "paragraph",
+            "text": "Yet beneath their elegance and magical prying lies a current of quiet rivalry. Ambition glides on soft feathers, and prestige is often won not through battle, but through brilliance—artistic, magical, or political subterfuge. Proud, the Virelan believe life itself is a performance worth perfecting, each moment an opportunity to rise on unseen winds."
+          },
+          {
+            "type": "paragraph",
+            "text": "Language: Skylith, A high, crystalline language shaped by clipped syllables and airy resonance,"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECIES TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "AIRSTEP"
+          },
+          {
+            "type": "paragraph",
+            "text": "Every motion is an act of design; even a strike is a form of art."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: When you use any move ability."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: When your character moves, they do not count has having passed through squares along their path and are unaffected by terrain, obstacles, or effects that trigger from moving through the squares."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: REACTIVE | VIRELAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "SKYBORN REFLEXES"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Virelan react with a dancer’s poise — their movements guided by air and instinct alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: When your character is required to make an attribute save with a target of easy or medium, your dice roll for that save is considered edged. KEYWORDS: ROOT | INSTINCT | VIRELAN | TRAIT"
+          },
+          {
+            "type": "paragraph",
+            "text": "COMPOSED MIND"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the moment falters, you breathe, adjust, and let the flow return."
+          },
+          {
+            "type": "paragraph",
+            "text": "trigger: This ability can be used when your character casts a spell or uses a magical ability that requires mana as a cost. EFFECT: If the spell or ability fails to strike or affect its target(s), restore half of the, actually, mana cost of the ability. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: If the triggering spell or magical ability can affect more than one target, you must fail all strike rolls or all targets must successfully resist the effect."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | REACTION | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "CULTURE TRAITS"
+          },
+          {
+            "type": "paragraph",
+            "text": "ARTISAN’S DISCIPLINE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Every Virelan learns the sacred patience of precision — mastery through repetition, not haste."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Gain rank [+1] in the Runecraft and either the Lorekeeping or Charm skill. KEYWORDS: PASSIVE | CULTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Arcane Affinity"
+          },
+          {
+            "type": "paragraph",
+            "text": "TRIGGER: This ability can be used at the start of the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "EFFECT: Generate [+1] additional mana. Roll [1d10] on a result of [5] or higher generate another additional [2] mana."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: ROOT | INSTINCT | VIRELAN | TRAIT"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-invocation": {
+    "sourceFile": "032_BH_INVOCATION SPELLS.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "INVOCATION SPELLS"
+          },
+          {
+            "type": "paragraph",
+            "text": "WHISPERING WIND"
+          },
+          {
+            "type": "paragraph",
+            "text": "The wild carries your voice across distance and dusk."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana DECLARE: Summon a critter to carry your message. EFFECT: The critter delivers a short mental message to a target you name. RESTRICTIONS: The message can travel any distance but may be delayed by your watcher. KEYWORDS: CANTRIP | MAGIC | INVOCATION | SUMMON"
+          },
+          {
+            "type": "paragraph",
+            "text": "SOOTHING BLOOM"
+          },
+          {
+            "type": "paragraph",
+            "text": "Life answers when kindness is given form."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana DECLARE: Target one ally within [4] squares. EFFECT: The target restores [2] health. EMPOWER: Spend [+3] additional mana to increase range to [+4] squares and the target restores [4] health. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "BARKSKIN WARD"
+          },
+          {
+            "type": "paragraph",
+            "text": "The calm strength of bark shields the fragile beneath."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] MANA DECLARE: Target one ally within four [4] squares. EFFECT: The target gains [+2] guts until the end of their next turn. EMPOWER: Spend [+2] additional mana to increase effect by [+2]. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "WYRD BOLT"
+          },
+          {
+            "type": "paragraph",
+            "text": "A crack of woven power leaps through the air like a whispered oath."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana DECLARE: Target one character within [4] squares. EFFECT: Deal [5] direct arcane damage. EMPOWER: Spend [+3] additional mana to increase range to [+6] squares and damage by [+3]. KEYWORDS: COMBAT | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECTRAL ARMAMENT"
+          },
+          {
+            "type": "paragraph",
+            "text": "The air hums as a weapon of pure will takes shape."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] MANA DECLARE: Summon a weapon of shimmering energy into your grasp. EFFECT: Select one weapon from the weapon equipment list. Selected weapon materializes in your grasp and functions as the real item."
+          },
+          {
+            "type": "paragraph",
+            "text": "EMPOWER: Spend [+2] additional mana to summon another weapon in a second hand. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR | SUMMON"
+          },
+          {
+            "type": "paragraph",
+            "text": "VEIL OF GLIMMER"
+          },
+          {
+            "type": "paragraph",
+            "text": "A shimmer of thought weaves light, color, and sound into gentle wonder."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana DECLARE: Create a minor illusion or sensory effect within [6] squares. EFFECT: Conjure or alter harmless visual, auditory, or sensory phenomena—shift color, dim or brighten light, soften sound, or craft an image no larger than three [3] squares. Effects are temporary and fade when concentration ends. RESTRICTIONS: Cannot move independently, deal damage, cause harm, or create permanent change. KEYWORDS: CANTRIP | MAGIC | INVOCATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECTRAL HAND"
+          },
+          {
+            "type": "paragraph",
+            "text": "An unseen hand reaches where yours cannot."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana DECLARE: Manifest a spectral hand within eight [8] squares. EFFECT: Manipulate objects weighing up to five pounds or perform delicate tasks within [24] squares away."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: Spell lasts up to three minutes in-game time or [3] rounds. Lasts until your third turn or combat ends. KEYWORDS: CANTRIP | MAGIC | INVOCATION |"
+          },
+          {
+            "type": "paragraph",
+            "text": "KINBOUND CALL"
+          },
+          {
+            "type": "paragraph",
+            "text": "A loyal echo of spirit answers your summons."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [1] mana DECLARE: Summon a critter into an empty adjacent square. EFFECT: The summoned critter obeys your commands. Use the critter’s monster entry for statistics. RESTRICTIONS: You may only have one summon spell active at a time. Casting another summon spell automatically ends the previous one. Lasts until combat ends. KEYWORDS: COMBAT | SUMMON | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "FORAGER’S GIFT"
+          },
+          {
+            "type": "paragraph",
+            "text": "The land provides for those who ask with respect."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana DECLARE: Conjure simple food, drink, or mundane supplies within [5] squares. EFFECT: Create enough sustenance for up to [3] characters for one day. Conjured items vanish after twenty-four hours. RESTRICTIONS: Cannot be sold, traded, or used offensively. KEYWORDS: CANTRIP | MAGIC | INVOCATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "MENDCRAFT"
+          },
+          {
+            "type": "paragraph",
+            "text": "The weave remembers what was once whole."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana DECLARE: Touch a damaged nonliving object. EFFECT: Restore one [1] break value to the object. The target must be made of natural materials and be no larger than three [3] squares. KEYWORDS: AUGMENT | MAGIC | INVOCATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "SHADEVEIL"
+          },
+          {
+            "type": "paragraph",
+            "text": "The unseen world folds its shadow around you."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana DECLARE: Cast upon an ally within [4] squares. EFFECT: The target becomes invisible, gaining [+2] to all dice rolls against any characters that cannot see them. RESTRICTIONS: Effect ends if the target performs any action or otherwise reveals themselves. Lasts until combat ends. KEYWORDS: AUGMENT | COMBAT | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEARTH VOW"
+          },
+          {
+            "type": "paragraph",
+            "text": "The promise of flame binds blade and spirit as one."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana DECLARE: Target one ally within four [4] squares. EFFECT: The target gains [+1] to strike or ward rolls (their choice) until the end of their next turn. RESTRICTIONS: Cannot stack from multiple sources. Lasts until combat ends."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "UNRAVELING WORD"
+          },
+          {
+            "type": "paragraph",
+            "text": "You sever the threads that hold another’s power together."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [2] mana DECLARE: Target one ally within four [4] squares. EFFECT: The target can use the ability renew the heart immediately, without cost. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-flames": {
+    "sourceFile": "033_BH_LORE OF FLAMES.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF FLAMES"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Flames is power given heat and hunger. Those attuned to it bring light where there’s shadow, fury where there’s resistance, and cleansing where there’s rot. Flame consumes, but it also purifies and sustains. To wield it is to decide what should burn — and what should endure."
+          },
+          {
+            "type": "paragraph",
+            "text": "SMOLDER"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ember takes hold; pain lingers, waiting to bloom."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of flames spell. DECLARE: Choose [1] target successfully affected by the triggering spell. EFFECT: The target gains smolder until the start of the next round. Characters with smolder suffer [1] lethal fire damage each time they are successfully targeted by a lore of flames spell."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: A single character can be affected by smolder up a maximum of [5] times per round. KEYWORDS: HEX | MAGIC | FLAMES | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "SCORCHING HAND"
+          },
+          {
+            "type": "paragraph",
+            "text": "Heat leaps from your grasp, clinging like hungry cinders."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] enemy character within [4] squares. EFFECT: Deal [6] direct fire damage and the target gains smolder."
+          },
+          {
+            "type": "paragraph",
+            "text": "EMPOWER: Spend [+2] additional mana. If you do, increase damage by [+1], and the target gains smolder twice, instead of once."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: COMBAT | MAGIC | FLAMES"
+          },
+          {
+            "type": "paragraph",
+            "text": "FLAMING SHROUD"
+          },
+          {
+            "type": "paragraph",
+            "text": "A crown of thin, judging flame answers violence with pain."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Cast on yourself. EFFECT: Any character that passes through, is within or ends a movement within [1] square of the caster suffers [2] lethal fire damage. Additionally, all attacks with the shoot or magic keyword suffer [-1] on all strike rolls against the caster."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTION: This spell can only trigger smolder when cast. It does not trigger smolder on targets that pass through, are within or ends a movement within [1] square of the caster"
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This spell lasts [1d10/2] rounds, effects end at the start of the round. Or when the caster elects to end the effects. KEYWORDS: MAGIC | FLAMES | AUGMENT"
+          },
+          {
+            "type": "paragraph",
+            "text": "BLAZING WEAPON"
+          },
+          {
+            "type": "paragraph",
+            "text": "Steel drinks fire and answers in kind."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] ally character within [4] squares wielding a weapon. EFFECT: Increase the target weapons damage by [+1] and damage type to fire, until the end of the next round. AFTERBURN: Any character that suffers damage from the target weapon suffers [1] lethal fire damage at the start of the following round."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTION: This spell cannot trigger smolder and the target weapon’s fire damage cannot trigger smolder. KEYWORDS: AUGMENT | MAGIC | FLAMES |"
+          },
+          {
+            "type": "paragraph",
+            "text": "FIRE BOLT"
+          },
+          {
+            "type": "paragraph",
+            "text": "Purifying flame tears forward in a focused burst."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target [1] enemy character within [4] squares. EFFECT: Deal [7] direct fire damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "EMPOWER: Spend [+3] additional mana. If you do, increase damage by [+2], and the target gains smolder."
+          },
+          {
+            "type": "paragraph",
+            "text": "PURIFY: If the target has the following keywords: undeath, flammable, curse, disease, corruption, unclean - increase the total damage deal by spell by [+4]."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: COMBAT | MAGIC | FLAMES | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "CASCADING FIRE"
+          },
+          {
+            "type": "paragraph",
+            "text": "What catches, spreads."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Select a point of origin within [5] squares. Target all characters within ORB[4] expanding from that point of origin. EFFECT: The target(s) are compelled[difficult] to make a renew the heart ability. On failure, Deal [5] direct fire damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "ENGULF: Any character that passes through, is within or ends a movement within the spell’s orb suffers [2] lethal fire damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: COMBAT | MAGIC | FLAMES | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "INFERNO STRIKE"
+          },
+          {
+            "type": "paragraph",
+            "text": "A focused blast of living flame that will not let go."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target [1] enemy character within [4] squares. EFFECT: Deal [5] direct fire damage. BURNED: Any character that suffers DAMAGE from this spell suffers [2] lethal fire damage at the start of the following round. DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: COMBAT | MAGIC | FLAMES"
+          },
+          {
+            "type": "paragraph",
+            "text": "INFERNAL REBUKE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Pain answers pain."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target [1] enemy character within [4] squares. EFFECT: Deal [3] lethal fire damage to the target. EMPOWER: Spend [+2] additional mana. If you do, increase damage by [+2], and the target gains smolder."
+          },
+          {
+            "type": "paragraph",
+            "text": "REBUKE: If the target of this spell has dealt any damage to the caster, since the end of the caster’s last turn, reduce the mana cost of this spell by [-2]."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: HEX | COMBAT | MAGIC | FLAMES"
+          },
+          {
+            "type": "paragraph",
+            "text": "SUN BURST"
+          },
+          {
+            "type": "paragraph",
+            "text": "Light without mercy."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target all enemy characters within orb[5] centered on a point of origin within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, targets suffer [2] lethal fire and [-2] to strike and ward rolls; and the targets gain smolder."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: HEX | MAGIC | FLAMES | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "DETONATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "Fire learns patience — then teaches regret."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target rolls [1d10] and consults that results below."
+          },
+          {
+            "type": "paragraph",
+            "text": "1–3 | SPARK: Deal [2] lethal fire DAMAGE to the target immediately and target rolls again at the start of the next round. 4–6 | PRESSURE: Target rolls again at the start of the next round. 7–9 | BURST: Deal [7] direct fire damage to the target immediately and target rolls again at the start of the next round. 10 | CATASTROPHE: Deal [6] lethal fire damage to the target immediately and the effects end."
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This effect lasts [1d10/2+1] rounds, effects end at the start of the round. KEYWORDS: HEX | MAGIC | FLAMES | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "IMMOLATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "The flame does not ask permission."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: Deal [8] direct fire damage to the target immediately and that target gains immolated. IMMOLATED: At the start of each round, characters with immolation suffer [3] lethal fire damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "IGNITION: Any character that passes through, is within or ends a movement within [1] square of a character with immolated gains immolated."
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This effect lasts [1d10/2+1] rounds, effects end at the start of the round. RESTRICTIONS: A character cannot be affected by multiple instances of immolation at the same time or from different sources. immolation damage cannot trigger smolder. KEYWORDS: HEX | MAGIC | FLAMES | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-wilds": {
+    "sourceFile": "034_BHG_LORE OF WILDS.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF WILDS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Wilds commands the primal forces of nature — the restless spirits of root, claw, and storm. Defenders of the natural order, neither purely healer nor destroyer, but a force of balance in motion."
+          },
+          {
+            "type": "paragraph",
+            "text": "FLOURISHING EARTH"
+          },
+          {
+            "type": "paragraph",
+            "text": "Life and death share one rhythm; the wild decides which blooms."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of wilds spell. DECLARE: Target [1] ally within [5] squares. EFFECT: Reduce a negative condition from the target by[-1]. This can reduce the condition to zero but does not remove the condition or ends it duration. KEYWORDS: AUGMENT | MAGIC | WILDS | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "ELEMENTAL ARMOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "The elements answer the call, forming a living shell of power."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gains resistance [+2] against a chosen damage type until the start of their next turn. EMPOWER: Spend [+2] additional mana to grant resistance [+2] to a second damage type. KEYWORDS: AUGMENT | MAGIC | WILDS"
+          },
+          {
+            "type": "paragraph",
+            "text": "CURSE OF PATRONUS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The guardian spirits turn their wrath upon the impure."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target up to [3] enemy characters within [4] squares. EFFECT: Each target is compelled[medium] to use the renew the heart ability. On failure, they suffer [3] lethal nature damage and gain [-1] when rolling strike with any magic abilities until the end of their next turn. KEYWORDS: HEX | MAGIC | WILDS | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "MOON BOLT"
+          },
+          {
+            "type": "paragraph",
+            "text": "A shaft of cold light tears through shadow and pride alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[easy] to use the renew the heart ability. On failure, deal [10] direct nature damage; on success, deal half damage. KEYWORDS: COMBAT | MAGIC | WILDS"
+          },
+          {
+            "type": "paragraph",
+            "text": "NATURE’S FURY"
+          },
+          {
+            "type": "paragraph",
+            "text": "Wind, rain, and stone answer your command in one violent breath."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target all enemy characters within line[4]. EFFECT: Each target suffers deal [3] lethal nature damage. KEYWORDS: COMBAT | MAGIC | WILDS | LINE"
+          },
+          {
+            "type": "paragraph",
+            "text": "ENTANGLING ROOTS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The earth itself rises to claim those who would defy its law."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, reduce speed to [1], gain rooted, and apply [-2] to ward until the end of their next turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "ROOTED: At the start of each round, if a target is rooted, they suffer [2] lethal nature damage. DURATION: This effect lasts [1d10] rounds, effects end at the start of the round. KEYWORDS: HEX | MAGIC | WILDS | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "HALLOWING THORNS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The ground twists and bristles with the wild’s fury."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [9] mana DECLARE: Target an area within [5] squares; create an orb[4]. EFFECT: Each enemy within the orb is compelled[easy] to use the renew the heart ability. On failure, they suffer [10] direct nature damage."
+          },
+          {
+            "type": "paragraph",
+            "text": "DIFFICULT TERRAIN: The targeted squares become difficult terrain until the end of the next round. Any characters moving through them are compelled to use the renew the heart ability. On failure they suffer [2] lethal nature damage. DURATION: [1d10/2] rounds, effects end at the start of the round. KEYWORDS: MAGIC | WILDS | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "BLESSING OF THE WILDS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The wind and soil conspire to lift and shelter those who walk in harmony."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target all ally characters within orb[6]. EFFECT: Each target chooses one: gain condition [+1] to strike or [+1] to ward and swift strider, until the end of their next turn. SWIFT STRIDER: Target(s) ignore difficult terrain. RESTRICTIONS: A character cannot be affected by multiple instances of blessing of the wilds"
+          },
+          {
+            "type": "paragraph",
+            "text": "from different sources. KEYWORDS: AUGMENT | MAGIC | WILDS | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "WILD SHAPE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your body bends and shifts, becoming one with primal instinct."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [9] mana DECLARE: Cast on yourself. EFFECT: Gain [+2] to strike, ward, guts, and all non-magical damage until the start of your next turn. EMPOWER: Spend [+3] additional mana to cast this spell on an ally within [5] squares. KEYWORDS: AUGMENT | MAGIC | WILDS | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "CALL OF THE BEAST"
+          },
+          {
+            "type": "paragraph",
+            "text": "The wilds themselves answer your plea with tooth and claw."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [10] mana DECLARE: Choose one empty square within [4] squares. EFFECT: summon one beast monster with a threat level of [4] or lower. The beast is added to the initiative order immediately your turn until defeated or dismissed. KEYWORDS: MAGIC | WILDS | SUMMON | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "BREATH OF LIFE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Even destruction becomes renewal beneath the wild’s grace."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target all enemy characters within CONE[6]. EFFECT: Each target is compelled[medium] to use the renew the heart ability. On failure, suffer [4] lethal nature damage. For each enemy character that suffers damage from this spell, select one ally character within [6] squares and restore [2] health. KEYWORDS: MAGIC | WILDS | CONE | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-oath": {
+    "sourceFile": "035_BH_LORE OF OATHS.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF OATHS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Oaths binds word to will. Those who swear upon their honor shape the unseen forces of duty, loyalty, and conviction into tangible power."
+          },
+          {
+            "type": "paragraph",
+            "text": "OATH OF PROTECTION"
+          },
+          {
+            "type": "paragraph",
+            "text": "A vow sworn in truth hardens the heart and shields the worthy."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of oaths spell. DECLARE: Choose [1] ally character within [5] squares. EFFECT: The chosen character gains [+2] to guts until the start of the next round. RESTRICTIONS: A character cannot benefit from multiple instances of oath of protection. KEYWORDS: AUGMENT | MAGIC | OATHS | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "WORD OF CHALLENGE"
+          },
+          {
+            "type": "paragraph",
+            "text": "To stand before the foe is to demand their respect—or their fear."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, their outgoing damage against targets other than the caster is reduced by [-2], to a minimum of [1], until the end of their next turn. KEYWORDS: HEX | MAGIC | OATHS | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "THUNDER’S FURY"
+          },
+          {
+            "type": "paragraph",
+            "text": "The storm answers a promise of retribution. COST: [5] MANA DECLARE: Target [1] ally character within [5] squares wielding a weapon. EFFECT: Increase the target weapons Damage by [+2] and change the damage type to lighting, until the end of the next round. AFTERBURN: Any character that suffers damage from the target weapon suffers [1] lethal light damage at the start of the following round."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTION: The target weapon’s lighting damage cannot trigger oath of protection. KEYWORDS: AUGMENT | MAGIC | FLAMES |"
+          },
+          {
+            "type": "paragraph",
+            "text": "POWER WORD: REINFORCEMENT"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your vow steadies the hands and hearts of those who fight beside you."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] MANA DECLARE: Target [1] ally character within [5] squares. EFFECT: The target decreases all damage categories by [1]. Lethal DAMAGE changes to direct and direct damage changes to standard. KEYWORDS: AUGMENT | MAGIC | OATHS"
+          },
+          {
+            "type": "paragraph",
+            "text": "VOW OF ELEMENTS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Through oath and focus, you command the world’s primal powers to defend your ally."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target selects [1] DAMAGE type and gain resistance [+2] against that type until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS"
+          },
+          {
+            "type": "paragraph",
+            "text": "WIND SCARING"
+          },
+          {
+            "type": "paragraph",
+            "text": "A surge of cutting energy carries your oath’s fury across the field."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] ally character within [5] squares wielding a weapon. EFFECT: Increase the target weapons damage by [+2] and change the damage type to arcane, until the end of the next round."
+          },
+          {
+            "type": "paragraph",
+            "text": "DUALING ELEMENTS: Targets of this spell can have"
+          },
+          {
+            "type": "paragraph",
+            "text": "THUNDERSTORM: If the target weapon it under the effects of thunder’s fury, increase the damage condition for both spells by [+1]. The weapon is granted both damage types for the duration. KEYWORDS: AUGMENT | MAGIC | OATHS"
+          },
+          {
+            "type": "paragraph",
+            "text": "EARTH GRASP"
+          },
+          {
+            "type": "paragraph",
+            "text": "Stone rises in obedience to your pledge of defense."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target [1] empty square within [6] squares and summon a totem. EFFECT: All enemy characters within orb[5] of the totem suffer [-2] to speed until the end of their next turn. KEYWORDS: MAGIC | OATHS | SUMMON | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "PRIMAL SURGE"
+          },
+          {
+            "type": "paragraph",
+            "text": "You channel raw conviction into flesh and faith."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target [1] ALLY within [5] squares. EFFECT: The target restores health [+4] and gains [+2] to strike rolls until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS"
+          },
+          {
+            "type": "paragraph",
+            "text": "THE IMMORTAL WARRIOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "You become the living symbol of your vow, standing against all that would falter."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [10] mana DECLARE: Cast on yourself. EFFECT: Gain [+2] to ward and guts until the end of your next turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "DEFECTION: When the target of an attack that deals damage, you can be compelled[medium] to use the renew the heart ability. On failure, nothing happens. If successful you suffer no damage and half the intended damage from the attack is reflected back at the attacker KEYWORDS: AUGMENT | MAGIC | OATHS | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "OATHKEEPER"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your promise shields your comrades and punishes betrayal."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target all enemy characters within orb[5] of the caster EFFECT: Each target is compelled[medium] to use the renew the heart ability. On failure, their outgoing damage against targets other than the caster is reduced by [-5], to a minimum of [1], until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS | ORB | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-frost": {
+    "sourceFile": "036_BH_LORE OF FROST.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Frost draws power from stillness, silence, and the patience of winter. Those attuned to it bring calm where there was motion, memory where there was flame, and endurance where there was weakness."
+          },
+          {
+            "type": "paragraph",
+            "text": "HYPOTHERMIA"
+          },
+          {
+            "type": "paragraph",
+            "text": "The air stills; the warmth of life falters beneath an unseen chill."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of frost spell. DECLARE: Choose one enemy character within [5] squares. EFFECT: The target suffers [-1] to speed until the end of their next turn. KEYWORDS: HEX | MAGIC | FROST | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "MIND FREEZE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Frost creeps through the mind, locking thought in brittle silence."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [3] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[easy] to use the renew the heart ability. On failure, they suffer [-1] to all attribute saves until the end of their next turn. KEYWORDS: HEX | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "FROST SHOCK"
+          },
+          {
+            "type": "paragraph",
+            "text": "A pulse of frozen energy shatters the air, leaving a biting trail of rime."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: Deal [5] direct cold DAMAGE. The target suffers [-1] to guts until the end of their next turn. KEYWORDS: COMBAT | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "BITING BLADE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Steel cracks beneath the weight of winter’s edge."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] enemy character within [5] squares wielding a weapon. EFFECT: Reduce the target weapons damage by [-1] until the end of the next round. KEYWORDS: HEX | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "TORRENT OF FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "A wave of white wind bursts outward, freezing flesh and breath alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target all characters within a cone[5]. EFFECT The target(s) is compelled[medium] to use the renew the heart ability. On failure, deal [3] lethal cold damage, or half as much on success. Targets that fail also suffer [-1] to guts until the end of their next turn. KEYWORDS: COMBAT | MAGIC | FROST | CONE"
+          },
+          {
+            "type": "paragraph",
+            "text": "ICE WALL"
+          },
+          {
+            "type": "paragraph",
+            "text": "A wall of glittering frost rises, sealing paths and muting sound."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target all characters within a line[5]. EFFECT: Each target suffers [4] direct cold damage and gain [-2] to their next roll made, until the end of the round. Additionally, the targeted squares become difficult terrain until the end of the next round. Any characters moving through them are compelled[medium] to use the renew the heart ability. On failure they suffer [2] lethal cold damage. KEYWORDS: MAGIC | FROST | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "POLAR VORTEX"
+          },
+          {
+            "type": "paragraph",
+            "text": "A spiral of biting wind draws heat and will from the air."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Select a point of origin within [5] squares. Target all characters within orb[5] expanding from that point of origin. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, deal [3] lethal cold damage and targets suffer [-1] to ward until the end of their next turn. KEYWORDS: HEX | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "FROSTBITE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The chill gnaws deep, numbing flesh and thought alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, deal [6] direct cold damage and the target suffers [-1] to speed until the end of their next turn, or resists effects and half damage on successes. KEYWORDS: COMBAT | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "FROZEN BLOOD"
+          },
+          {
+            "type": "paragraph",
+            "text": "The heart slows, each beat thick with ice."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[hard] to make a renew the heart ability. On failure, suffer [-2] to strike rolls and speed until the end of their next turn, or resists effects. KEYWORDS: HEX | MAGIC | FROST"
+          },
+          {
+            "type": "paragraph",
+            "text": "ICY TOMB"
+          },
+          {
+            "type": "paragraph",
+            "text": "A prison of frost closes around the living, sealing motion in silence."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[difficult] to use the renew the heart ability. On failure, reduce target’s speed to [1], suffer [-2] to strike and ward rolls. Additionally, reduce all healing effects that restore health by [-2] and increase all damage suffered by [+2]."
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTION: LETHAL DAMAGE suffered is not effected by this spell effect. KEYWORDS: HEX | MAGIC | FROST | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-hallows": {
+    "sourceFile": "037_BH_LORE OF HALLOWS.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Hallows delves into the howling void between life and death — a place of whispers, echoes, and madness. Channeling fear and despair into devastating magic that tears at both body and mind."
+          },
+          {
+            "type": "paragraph",
+            "text": "SCARY FACE"
+          },
+          {
+            "type": "paragraph",
+            "text": "A malevolent grin embodies the sinister nature of the Hallows, leaving its victims trembling and faltering in their focus."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of hallows spell. DECLARE: Choose [1] enemy character within [5] squares. EFFECT: Reduce the target’s mana regeneration at the start of the next round by [-1] plus one-half the value of their magic level. RESTRICTIONS: A character cannot be affected by multiple instances of scary face from different sources. KEYWORDS: HEX | MAGIC | HALLOWS | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "SOULFIRE BOLT"
+          },
+          {
+            "type": "paragraph",
+            "text": "A chilling bolt of haunted energy rips through the veil, searing flesh and unraveling sanity."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target suffers [8] psychic damage and is compelled[medium] to use the renew the heart ability. On failure, they suffer an additional [2] lethal psychic damage. EMPOWER: Spend [+2] additional mana. Increase damage by [+2]. KEYWORDS: COMBAT | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "HEX OF MISFORTUNE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Hallows twist the strands of fate, cursing your foe with wretched luck."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [3] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target gains [-1] to using renew the heart until the end of the next round. EMPOWER: Spend [+2] additional mana. Reduce the target’s ward by [-2] and extend the duration to [2] rounds. KEYWORDS: HEX | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "EERIE APPARITION"
+          },
+          {
+            "type": "paragraph",
+            "text": "A spectral vision of doom rises before your foe, driving terror deep into their mind."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, they move [3] squares in any direction away from you. If they cannot move or be moved, they suffer [2] lethal psychic damage instead. DRIVING FEAR: At the start of the next round, the target is compelled[easy] to use the renew the heart ability. On failure, they move [2] squares in any direction away from you. If they cannot move or be moved, they suffer [2] lethal psychic damage instead. KEYWORDS: HEX | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "SHROUD OF DESPAIR"
+          },
+          {
+            "type": "paragraph",
+            "text": "You cloak your ally in the wailing fog of the Hallows, turning despair into protection."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target applies [-2] to all strike rolls against them, until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of shroud of despair from different sources. KEYWORDS: AUGMENT | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECTRAL GRASP"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your hand becomes a conduit of nightmare energy, reaching through the veil to rend flesh and spirit alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[easy] to use the renew the heart ability. On failure, deal [7] psychic damage, or on success deal half damage EMPOWER: Spend [+2] additional mana. Increase the compelled target to [medium]. KEYWORDS: COMBAT | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "PIERCE THE VEIL"
+          },
+          {
+            "type": "paragraph",
+            "text": "You draw your ally into the Hallows’ ethereal threshold, where nothing solid can harm them."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana"
+          },
+          {
+            "type": "paragraph",
+            "text": "DECLARE: Target [1] ally character within [5] squares. EFFECT: The target becomes ethereal until the start of your next turn. ETHEREAL: Target characters cannot use any abilities, suffer any damage or otherwise interact with the tangle world."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of PIERCE THE VEIL. KEYWORDS: AUGMENT | MAGIC | HALLOWS | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "DEATHLY SHADOW"
+          },
+          {
+            "type": "paragraph",
+            "text": "You command the Hallows’ gloom to devour your enemy’s courage and steady your ally’s defense."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gain [+3] to ward and guts until the end of the round. EMPOWER: Spend [+2] additional mana. Increase the bonus to [+1] and extend the effect until the end of the next round. KEYWORDS: AUGMENT | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPECTRAL RECKONING"
+          },
+          {
+            "type": "paragraph",
+            "text": "You summon vengeful spirits to lash at the soul of your enemy."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [10] mana DECLARE: Target [1] enemy character within [5] squares. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, deal [9] psychic damage, or on success deal half damage EMPOWER: Spend [+2] additional mana. Increase the compelled target to [hard]. KEYWORDS: COMBAT | MAGIC | HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "ORB OF IMPURITY"
+          },
+          {
+            "type": "paragraph",
+            "text": "A seething sphere of corruption poisons the very air around it."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Select a point of origin within [5] squares. Target enemy characters within ORB[5] expanding from that point of origin. EFFECT: The target is compelled[medium] to use the renew the heart ability. On failure, the caster grants weakness[2] against a chosen damage type, until the end of the next around. Or on success, the target suffers lethal psychic damage. KEYWORDS: HEX | MAGIC | HALLOWS | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "VORTEX OF SHADOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "The void awakens, howling with the cries of the lost."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [11] mana DECLARE: Select a point of origin within [5] squares. Target enemy characters within ORB[5] expanding from that point of origin. EFFECT: The target is compelled[difficult] to use the renew the heart ability. On failure, deal [8] psychic damage and gain condition[-2] on their initiative order position. Or on success, deal half damage. EMPOWER: Spend [+3] additional mana. Increase the initiative condition to [-4]. KEYWORDS: HEX | MAGIC | HALLOWS | ORB | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-harmony": {
+    "sourceFile": "038_BH_LORE OF HARMONY.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Harmony weaves sound, emotion, and magic into one unbroken resonance. Through voice, instrument, or will alone, they shape vibration into both solace and devastation."
+          },
+          {
+            "type": "paragraph",
+            "text": "CHORUS OF HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "The first note steadies the spirit; the second calls the world to listen."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] # TRIGGER: When you successfully cast any # spell. DECLARE: Choose [1] friendly character within [6] squares. EFFECT: The chosen character reduces the # cost of their next spell by [-1], to a minimum of [1]. RESTRICTIONS: A character cannot be affected by multiple instances of chorus of harmony from different sources. KEYWORDS: AUGMENT | MAGIC | HARMONY | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "BALLAD OF THE COURAGEOUS"
+          },
+          {
+            "type": "paragraph",
+            "text": "A brave melody lifts hearts beyond fear and doubt."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [3] mana DECLARE: Target all ally characters within orb[6] of the caster. EFFECT: Each affected ally gains [+1] to all attribute saves until the end of the next round. KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "NOTE OF FORCE"
+          },
+          {
+            "type": "paragraph",
+            "text": "A resonant tone ripples through the air, cracking armor and composure alike."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] enemy character within [6] squares. EFFECT: Deal [7] direct arcane damage. The target is compelled[medium] to use the renew the heart ability. On failure, they gain [-2] to strike rolls until the end of their next turn. EMPOWER: Spend [+3] additional mana. If you do, increase range by [+2] squares and damage by [+2]. KEYWORDS: COMBAT | MAGIC | HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "HYMN OF SCORN"
+          },
+          {
+            "type": "paragraph",
+            "text": "Dissonance twists the heart, turning conviction to despair."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] enemy character within [6] squares. EFFECT: Deal [5] direct arcane damage. The target is compelled[medium] to use the renew the heart ability. On failure, they gain [-2] to ward until the end of the next round. KEYWORDS: HEX | MAGIC | HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "MELODY OF SUPERIORITY"
+          },
+          {
+            "type": "paragraph",
+            "text": "A song of triumph that sharpens the mind and steadies the hand."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] mana DECLARE: Target all ally characters within ORB[5] of the caster. EFFECT: Each affected ally selects one of the following effects until the end of the next round:"
+          },
+          {
+            "type": "paragraph",
+            "text": "Agility: [+1] to prowess rolls."
+          },
+          {
+            "type": "paragraph",
+            "text": "Strength: [+1] to might rolls."
+          },
+          {
+            "type": "paragraph",
+            "text": "Endurance: [+1] to guts."
+          },
+          {
+            "type": "paragraph",
+            "text": "Wisdom: [+1] to lore rolls."
+          },
+          {
+            "type": "paragraph",
+            "text": "Heroism: [+1] to bravery rolls."
+          },
+          {
+            "type": "paragraph",
+            "text": "Splendor: [+1] to all attribute saves."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of melody of superiority from different sources."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "DRUMS OF WAR"
+          },
+          {
+            "type": "paragraph",
+            "text": "A thunderous rhythm drives the body to move before thought can follow."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [5] mana DECLARE: Target [1] friendly character within [6] squares. EFFECT: The target may, immediately, use the hero’s charge core ability with no mana cost. RESTRICTIONS: A character cannot be affected by multiple instances of war drums more than once per round."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY"
+          },
+          {
+            "type": "paragraph",
+            "text": "ODE TO THE LORES"
+          },
+          {
+            "type": "paragraph",
+            "text": "A song that aligns every spell’s rhythm into one grand refrain."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [7] MANA DECLARE: Target [1] friendly character within [6] squares. EFFECT: The chosen character reduces the MANA cost of their next spell by [-2], to a minimum of [1]. RESTRICTIONS: A character cannot be affected by multiple instances of ode to the lores from different sources."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "CHANT OF RESILIENCE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Steady rhythm becomes a wall no blade can breach."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [9] mana DECLARE: Target all ally characters within ORB[6] of the caster. EFFECT: Each affected character gains [+2] to ward until the end of the round. RESTRICTIONS: A character cannot be affected by multiple instances of chant of resilience from different sources."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "SONG OF STORMS"
+          },
+          {
+            "type": "paragraph",
+            "text": "A tempest answers the crescendo of your voice."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [10] mana DECLARE: Target all enemy characters within ORB[5] centered on a point of origin within [5] squares. EFFECT: Each target is compelled[difficult] to use the renew the heart ability. On failure, deal [7] direct lightning damage and apply [-2] to speed until the end of the turn."
+          },
+          {
+            "type": "paragraph",
+            "text": "ROLLING STORM: Characters still within the orb at the start of the round suffer the effects again. Reduce the compelled target difficulty by [1] each time a character is required to take it, minimum compelled[EASY]."
+          },
+          {
+            "type": "paragraph",
+            "text": "DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: COMBAT | MAGIC | HARMONY | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "SYMPHONY OF VALOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "Every heartbeat and breath joins in one chorus of courage."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target all ally characters within ORB[6] of the caster. EFFECT: Each affected ally restores HEALTH[+3] and gains [+2] to strike rolls until the end of their next turn. RESTRICTIONS: A character cannot be affected by multiple instances symphony of valor from different sources. KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-life": {
+    "sourceFile": "039_BH_LORE OF LIFE.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "LORE OF LIFE"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Lore of Life is the magic of renewal, protection, and growth. Practitioners channel the pulse of existence itself, restoring the fallen, shielding the living, and withering corruption wherever it takes root."
+          },
+          {
+            "type": "paragraph",
+            "text": "REGROWTH"
+          },
+          {
+            "type": "paragraph",
+            "text": "The pulse of creation answers your call."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of life spell. DECLARE: Choose [1] ally character within [6] squares. EFFECT: The chosen character restores [+1] health. KEYWORDS: AUGMENT | MAGIC | LIFE | SIGNATURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "LIGHT SPEAR"
+          },
+          {
+            "type": "paragraph",
+            "text": "A radiant lance pierces shadow and mends the worthy."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [4] mana DECLARE: Target all characters within a LINE[5]. EFFECT: Enemy target(s) suffer [6] direct light damage. Ally characters restore [+2] health. KEYWORDS: COMBAT | MAGIC | LIFE | LINE"
+          },
+          {
+            "type": "paragraph",
+            "text": "DIVINE GRASP"
+          },
+          {
+            "type": "paragraph",
+            "text": "The living world obeys your will to save—or to punish."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target [1] character within [6] squares. EFFECT: If the target is an enemy character, they are compelled[easy] to use the renew the heart ability. On failure, move the target up to [5] squares to an empty space of your choice, or on success [1] square. If the target is an ally, they may immediately use the stride core ability. KEYWORDS: MAGIC | LIFE | CONTROL"
+          },
+          {
+            "type": "paragraph",
+            "text": "RADIANT BREATH"
+          },
+          {
+            "type": "paragraph",
+            "text": "A wave of warmth restores the faithful and humbles the corrupt."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [6] mana DECLARE: Target all characters within a CONE[5]. EFFECT: If the target is an enemy character, they are compelled[easy] to use the renew the heart ability. On failure, enemy targets gain [-1] to strike. If the target is an ally, they gain [+1] to strike."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | CONE"
+          },
+          {
+            "type": "paragraph",
+            "text": "TOUCH OF LIFE"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your hand carries the warmth of renewal to those fading from the world."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [9] mana DECLARE: Target [1] ally character within [6] squares who has [5] or less health EFFECT: The target immediately restores health[10]. RESTRICTIONS: A character cannot be affected by touch of life more than once per encounter. KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "SHIELD OF PROTECTION"
+          },
+          {
+            "type": "paragraph",
+            "text": "A luminous barrier rises between your ally and annihilation."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Choose [1] ally character within [6] squares. EFFECT: The target gains [10] to guts until the end of the round. RESTRICTIONS: A character cannot be affected by multiple instances of shield of protection from different sources. KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "MASS RESTORATION"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your voice becomes the heartbeat of the world, restoring all who hear it."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [9] mana DECLARE: Target all ally characters within orb[6]. EFFECT: Each target restores [+3] health. EMPOWER: Spend [+2] additional mana. If you do, increase restored health by [+2]. KEYWORDS: AUGMENT | MAGIC | LIFE | ORB"
+          },
+          {
+            "type": "paragraph",
+            "text": "CHANT OF SANCTUARY"
+          },
+          {
+            "type": "paragraph",
+            "text": "Your will becomes a ward that rejects harm and impurity."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [8] mana DECLARE: Target all ally characters within orb[6]. EFFECT: Targe(s) gain [+2] to ward and reduce all other negative conditions by [-1] until the end of the next round."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | ORB | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "SPARE THE PERISHING"
+          },
+          {
+            "type": "paragraph",
+            "text": "You reach across the threshold and pull a soul back from the brink."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [12] mana DECLARE: Target [1] ally character within [6] squares who has [5] or less health. EFFECT: The target completely restores their health to full value. RESTRICTIONS: A character cannot be affected by spare the perishing"
+          },
+          {
+            "type": "paragraph",
+            "text": "more than once per encounter."
+          },
+          {
+            "type": "paragraph",
+            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+          },
+          {
+            "type": "paragraph",
+            "text": "SANCTUARY"
+          },
+          {
+            "type": "paragraph",
+            "text": "A radiant sphere envelops all within, sealing the wounded in peace."
+          },
+          {
+            "type": "paragraph",
+            "text": "COST: [10] mana DECLARE: Create an orb[4] centered on the caster. EFFECT: Target(s) restore health[+2], gain [+2] to ward, and reduce all negative conditions to [0] for the duration. DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: AUGMENT | MAGIC | LIFE | ORB | ANCHOR"
+          }
+        ]
+      }
+    ]
+  },
+  "lore-anthro-mundas": {
+    "sourceFile": "03_BH_LORE.docx",
+    "sections": [
+      {
+        "heading": "Overview",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "LORE OF ANTHRO MUNDAS"
+              ]
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "BRAMBLEHEART"
+          },
+          {
+            "type": "paragraph",
+            "text": "Brambleheart is a tabletop role-playing game of courage and kinship set in the myth-wild world of Anthro Mundas, where the Beastfolk of fur, feather, and scale build hearths, forge oaths, and face the remnants of a ruined and forgotten age."
+          },
+          {
+            "type": "paragraph",
+            "text": "ANTHRO MUNDAS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Anthro Mundas is a living world born from ruin and ash, its soil still warm with the echoes of creation. The realm itself aware, as though every mountain and grove holds a quiet intent."
+          },
+          {
+            "type": "paragraph",
+            "text": "Across its vast continents stretch many faces of the land. The Veilwood forests climb sky-high canopies, woven with glowmoss and ancient rope bridges where Ravari dwell among whispering leaves. The Sea of Roots, where Axalori villages cling to mangrove pillars. The sun-seared reaches of the Barrens where the Sauren shepherd herd flocks of [creature]. Where the earth cools the Urnath stand sentinel against the creeping Blight that still seeps from the cursed heart of Dominous."
+          },
+          {
+            "type": "paragraph",
+            "text": "Rivkan river-cities coil like silver serpents through marsh and delta, trading goods and tales alike. Elsewhere, the Hedgkin tend their gardens and villages—quiet, enduring hearts that keep the world’s rhythm steady. The skies are no less alive than the ground. The Virelan ride warm currents and magical winds, building crystal roosts that sing in during storms."
+          },
+          {
+            "type": "paragraph",
+            "text": "But beauty never stands alone in Anthro Mundas. For every tranquil glade, there is ruins where something old still stirs. Relics of the Ancients—machines, idols, and forges—sometimes wake without warning, belching light and sorrow into the world."
+          },
+          {
+            "type": "paragraph",
+            "text": "WINDS OF MAGIC"
+          },
+          {
+            "type": "paragraph",
+            "text": "Winds of Magic, unseen streams of primal energy that twist through air, soil, and soul. Birthing beasts of impossible form: vine-serpents, molten hounds, and whispering swarms that steal dreams."
+          },
+          {
+            "type": "paragraph",
+            "text": "Some scholars say the Winds are the lifeblood of Anthro Mundas; others believe they are the last breath of the broken gods known only as the Ancients."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Winds are fickle, calm one day, furious the next. They gather in storms that flash colors unknown to mortal eyes, or fall silent for seasons, leaving spellcraft weak and sluggish."
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Beastfolk, the Winds are not merely tools but living presences. Mages and shamans describe them as spirits, moods, or even songs—forces that must be coaxed, never commanded."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE HOWLING HALLOWS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Beyond the mortal veil lies the Howling Hallows, a realm of soft winds, silver light, and endless murmurs. The folk of Anthro Mundas say that when one dies their spirit walks among trees whose leaves sing with memory. The Hallows is neither paradise nor punishment—it is reflection, a place where the echoes of all things drift until they fade or find their way home."
+          },
+          {
+            "type": "paragraph",
+            "text": "To some, the Hallows appears as a vast forest of moonlit paths; to others, a valley of flowing stars, or a quiet ocean lit from beneath. Its form bends to the soul that sees it, shaped by memory and emotion."
+          },
+          {
+            "type": "paragraph",
+            "text": "The winds that sigh through the Hallows are said to be the same that stir the living world—the Winds of Magic in their purest state. Where they blow strongest, the veil thins. In such places, the living may glimpse their ancestors or feel unseen hands guiding them."
+          },
+          {
+            "type": "paragraph",
+            "text": "To live in Anthro Mundas is to walk with ghosts. Every whispering wind and flickering flame may carry the voice of someone who once was—and perhaps, will be again."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE ANCIENTS"
+          },
+          {
+            "type": "paragraph",
+            "text": "Before the rise of the Beastfolk, the world belonged to the Ancients—a people whose names and faces have long since turned to dust. Only their ruins remain: blackened towers on the horizon, half-sunken vaults beneath the roots, and fractured monuments humming faintly with forgotten power."
+          },
+          {
+            "type": "paragraph",
+            "text": "The Ancients were not born of magic—they made it. They discovered the Winds of Magic and, through genius and arrogance, learned to shape them as easily as breath. Their cities gleamed with light that never dimmed; their skies sang with silver vessels; their seas were carved by engines that parted waves like cloth."
+          },
+          {
+            "type": "paragraph",
+            "text": "To the Ancients, the Winds were not sacred or wild, but a science of rhythm and resonance. They built colossal engines called Aeroliths, continent-spanning machines that tethered the Winds and bent them to their purpose."
+          },
+          {
+            "type": "paragraph",
+            "text": "They wove the Winds into every facet of life—architecture that healed its own cracks, fields that grew without seed, and voices that could command metal as if it were clay. Through their mastery, the Ancients lifted entire cities into the clouds, anchored by unseen chains of force."
+          },
+          {
+            "type": "paragraph",
+            "text": "Yet, in binding the Winds, they began to starve the world itself. The natural balance—the living pulse of magic that threaded soil to spirit—was bled dry to feed their engines. Where the Winds once danced freely, they were now trapped in brass hearts and crystal chambers, humming like caged storms."
+          },
+          {
+            "type": "paragraph",
+            "text": "The exact cause of the Ancients’ downfall is lost to history, but every telling agrees that their hunger exceeded their wisdom."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE GREAT MORPHING"
+          },
+          {
+            "type": "paragraph",
+            "text": "When the world rose to life, the towers of the Ancients fell silent. The Winds of Magic, once bound, broke free in a single cataclysmic exhalation that rippled across land and sea. The air shimmered with wild colors, the earth shuddered, and oceans boiled with light as mountains unfolded like petals."
+          },
+          {
+            "type": "paragraph",
+            "text": "No one knows whether it was punishment, healing, or just fate. But from the ruins of the old world rose the Beastfolk. Creatures who morphed from fur and feathers, waking beneath strange starts, with the spark of recognition in their eyes."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE ERA OF DISCOVERY"
+          },
+          {
+            "type": "paragraph",
+            "text": "For a time, the world itself seemed to breathe with the Beastfolk. New forests spread over the bones of old cities. The seas cooled. The great magical storms that had ravaged the land softened into mist and rain. The Winds, still wild but no longer furious, found rhythm again."
+          },
+          {
+            "type": "paragraph",
+            "text": "At first, the Beastfolk wandered. They were hunters and gatherers of wonder, seeking shelter among the shattered towers and overgrown halls of the old world. But as time creped ever forward. They learned to weave bark into cloth, to strike flint for flame, and to sing small songs that kept the restless spirits at bay. Each tribe discovered its own rhythm with the Winds, and from those rhythms, the first cultures took root."
+          },
+          {
+            "type": "paragraph",
+            "text": "As generations passed, the Beastfolk spread across Anthro Mundas, shaping the land as the land shaped them. The Rivkan followed the rivers, learning the songs of water and current. The Virelan rose to the skies, carving dwellings in storm-ridden cliffs. The Hedgkin cultivated gardens where wildflowers once ruled, coaxing peace from soil and seed. The Axalori built floating sanctuaries upon the mangrove tides, and the Urnath turned their strengths into fortress of ice and stone."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE AGE OF STRIFE"
+          },
+          {
+            "type": "paragraph",
+            "text": "As generations passed, harmony faded into pride. What began as small rivalries between tribes and trades grew into deeper divides. Unity slowly unraveled beneath the weight of desire. Scholars hoarded knowledge, warlords forged spells as weapons, and the old oaths that once bound the Beastfolk began to lose their strength."
+          },
+          {
+            "type": "paragraph",
+            "text": "Magic, once wondrous and unbound, became a tool of ambition. No longer a gift, but a weapon. Spells that once healed now shattered stone. War and conquest scarred the lands where pride drowned wisdom."
+          },
+          {
+            "type": "paragraph",
+            "text": "Out of that chaos rose King Covine, a Braelor war-sorcerer whose hunger outmatched all. Charismatic and cruel, he gathered followers beneath a blackened banner, promising glory and dominion that would never fade. He envisioned himself as a deathless king, ruling Anthro Mundas for all eternity."
+          },
+          {
+            "type": "paragraph",
+            "text": "THE BLIGHT OF UNDEATH"
+          },
+          {
+            "type": "paragraph",
+            "text": "In the far, frozen north hidden deep beneath the ruined fortress of Dominous, Covine discovered the answer to the undying rule sought. The Tome of Undeath, a grimoire of the Ancients written in bone, ash, and blood."
+          },
+          {
+            "type": "paragraph",
+            "text": "During the climactic battle of Dominous, at the peak of the world, as the united tribes of Anthro Mundas marched against him. Covine unleashed a catastrophic spell that tore a hole in the veil between life and the Hallows."
+          },
+          {
+            "type": "paragraph",
+            "text": "The sky became pitch black and land itself recoiled as earth screamed. But the spell did not grant eternal life. Instead Covine and his followers began to wither as their spirits were ripped from their bodies. Their skin turned as pale as ash and rotted away, as the light left their eyes. Covine became the Lich King of the Undeath and his armies turned into a legion of undead monsters."
+          },
+          {
+            "type": "paragraph",
+            "text": "The land, too, was corrupted by the curse, a spreading infection that could not be cured, called the Blight washed over the world. Leaving death and undead monsters in its wake."
+          },
+          {
+            "type": "paragraph",
+            "text": "The war that followed is remembered as The Battle of Dominous. It lasted seven days and seven nights. At its end, Covine and his legion had been pushed back deep into the frozen north. Yet, with no end in sight the survivors built great cairns along the Blight’s border to contain the plague."
+          },
+          {
+            "type": "paragraph",
+            "text": "To this day, the Urnath stand upon a frozen horizon, guarding the world against the silence of the undead."
+          },
+          {
+            "type": "paragraph",
+            "text": "AGE OF ADVENTURE"
+          },
+          {
+            "type": "paragraph",
+            "text": "As the world healed and the fires of war dimmed, stories turned into tales and tales into legends. And as the scars of the undeath and blight faded into history, a new generation of courage and adventure bloomed."
+          },
+          {
+            "type": "paragraph",
+            "text": "Lore seekers, adventurers and treasure hunters began to trace overgrown paths rediscovering the ancient wonders of a forgotten age. This stirring of journey marked the Age of Adventure, when hope and courage became the compass."
+          },
+          {
+            "type": "paragraph",
+            "text": "From humble hearths came brave souls who sought not power, but purpose. They crossed mountains, delved the ruins of the past, and wove new stories into the world’s long memory."
+          },
+          {
+            "type": "paragraph",
+            "text": "This is the age of Brambleheart, where the light of the past guides courageous heroes toward the unknown, and every step forged into the legend of Anthro Mundas."
+          }
+        ]
+      }
+    ]
   }
 } as const

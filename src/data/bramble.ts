@@ -1,4 +1,4 @@
-export const BUILD = '0.05'
+export const BUILD = '0.06'
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },
@@ -10,7 +10,7 @@ export const attributes = [
 
 export type AttributeId = (typeof attributes)[number]['id']
 
-export const species = ['Auravex','Ardenn','Axalori','Braelor','Cethra','Hedgkin','Ravari','Rivkan','Tordan','Urnath','Virelan'] as const
+export const species = ['Auravex','Ardenn','Axalori','Braelor','Cethra','Hedgkin','Ravari','Rivkan','Sauren','Tordan','Urnath','Virelan'] as const
 
 export const sparks = [
   ['Courageous','Bold, Driven'],['Protector','Compassionate, Steadfast'],['Wanderer','Adaptable, Curious'],
@@ -69,8 +69,7 @@ export const ruleChapters: RuleChapter[] = [
       ['Edged & Weighted','For an edged or weighted roll, roll 4d10. Edged removes the lowest die; weighted removes the highest die. A roll can never be both.'],
       ['Targets','Active targets are opposed rolls. Passive targets are fixed values that the total must equal or exceed: Easy 14, Medium 18, Difficult 22, Hard 24, Very Hard 30.'],
       ['Attributes','The Fundamentals chapter currently names five attributes: Agility, Might, Hide, Lore, and Bravery. Each rank extracts a modifier of 2 per rank.'],
-      ['Source Note','The uploaded Character Creation chapter uses the term Agility where the Fundamentals chapter uses Agility. v0.01 preserves the Fundamentals terminology and does not infer a replacement rule.'],
-    ]
+          ]
   },
   {
     id:'core-abilities', title:'Core Abilities', eyebrow:'ABILITY SYSTEM', status:'interactive',
@@ -118,7 +117,7 @@ export const ruleChapters: RuleChapter[] = [
       ['Faith','The uploaded faith chapter includes Keepers of Old, Last Light, Living Harmony, Deepfather’s Covenant, Dawnborn Order, Ashen Path, Court of Etherium, Origin Prime, The Dreamtide, Feastbound Covenant, and The Wayward Path.'],
     ]
   },
-  { id:'species', title:'Playable Species', eyebrow:'CHARACTERS', status:'indexed', summary:'Species and culture trait reference.', sections:[[ 'Current Data Pass', 'The current Character Creation chapter names Auravex, Ardenn, Axalori, Braelor, Cethra, Hedgkin, Ravari, Rivkan, Tordan, Urnath, and Virelan among the playable species. Detailed trait blocks remain to be extracted from the source layout.' ]] },
+  { id:'species', title:'Playable Species', eyebrow:'CHARACTERS', status:'indexed', summary:'Species and culture trait reference.', sections:[[ 'Current Data Pass', 'The current Character Creation chapter names Auravex, Ardenn, Axalori, Braelor, Cethra, Hedgkin, Ravari, Rivkan, Sauren, Tordan, Urnath, and Virelan among the playable species. Detailed trait blocks remain to be extracted from the source layout.' ]] },
   { id:'talents', title:'Talents', eyebrow:'CHARACTERS', status:'indexed', summary:'Learned and natural capabilities that expand a character’s ability set.', sections:[[ 'Current Data Pass', indexed ]] },
   { id:'weapons', title:'Weapons', eyebrow:'EQUIPMENT', status:'indexed', summary:'Weapon profiles, costs, and equipment rules.', sections:[[ 'Current Data Pass', indexed ]] },
   { id:'armor', title:'Armor & Shields', eyebrow:'EQUIPMENT', status:'indexed', summary:'Protective gear and shield rules.', sections:[[ 'Current Data Pass', indexed ]] },

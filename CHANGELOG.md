@@ -1,30 +1,32 @@
-# Changelog
+# Site Changelog
 
-## 0.05
+## Beta 0.06
 
-- Refined the site header, responsive welcome screen, typography, install icon assets, and default reader palette.
-- Added five fixed-cover background illustrations and darkened/distinguished the species palettes.
-- Moved character creation into its own eight-step guided page with explanatory tips.
-- Added character pinning, centered create/import/export actions, and full character-list export.
-- Rebuilt Rules around the current Brambleheart table of contents with standalone reader pages, Quick Reference, FAQ, Recent, and Changes & Updates.
-- Loaded the supplied Brambleheart rule documents into the local rules reader and standardized Agility terminology.
-- Expanded the Rhythm Engine with explanatory text, optional Active/Passive targets, five-roll local history, and Fortune/Misfortune indicators.
-- Added ongoing combat encounters, encounter history, round tracking, and encounter pinning.
-- Expanded Settings with Donation placeholders, Custom Data, backgrounds, Changelog access, and separate Simulator reset controls.
-- Added a conservative manually triggered repository cleanup workflow that defaults to dry-run mode.
+- Expanded guided Character Creation with Species lore and Traits, Culture Traits, Skills, Spark/Deed guidance, Homeland, Faith & Oath guidance, detailed Attribute allocation, Body & Spirit paths, Lore Attunement, Spells, Talents, equipment purchasing, Languages, and final character review.
+- Added source-backed individual Playable Species and Lore of Magic reader pages, Quick Reference, FAQ, Recent Rules, Changes & Updates, and linked Fundamental-rule navigation.
+- Refined the Rules menu hierarchy, parent/child tones, keyword pills, capitalization, and example-dialogue presentation.
+- Expanded the Rhythm Engine with Reason for the Roll, separate Attribute/Secondary Stat and optional Skill values, targets, Fortune/Misfortune results, and five-roll history.
+- Moved Strike vs Ward into the Encounter tracker and retained ongoing/completed encounter history with pinning.
+- Updated the Brambleheart identity presentation, responsive logo sizing, Beta labeling, browser/app naming, and text consistency.
+- Connected Donation and Recurring Support to the supplied support links.
+- Retained Custom Data, fixed-cover backgrounds, install support, Simulator reset controls, and the protected repository cleanup workflow.
 
-## 0.04
+## Alpha 0.05
 
-- Established the compact routed reader layout, shared header/navigation, welcome flow, settings rows, Rules presentation, and common controls.
+- Added fixed-cover Brambleheart backgrounds, standalone Rules reader pages, the initial guided Character Creation flow, expanded Simulator history, and repository cleanup tooling.
 
-## 0.03
+## Alpha 0.04
 
-- Added five text sizes, bold text, species palettes, install controls, grouped rules reference, Recent rules, and an initial splash page.
+- Established the compact routed reader layout, Settings presentation, welcome flow, and shared interface components.
 
-## 0.02
+## Alpha 0.03
 
-- Completed the first application-wide GUI consistency pass and initial species/background settings.
+- Added five text sizes, bold text, species palettes, install controls, grouped Rules reference, Recent Rules, and the initial splash page.
 
-## 0.01
+## Alpha 0.02
 
-- Initial Vue 3 + TypeScript + Vite + Vue Router companion build with Character List, Rules, Simulator, Settings, local persistence, and JSON import/export.
+- Standardized the first generation of application panels, controls, spacing, and Settings.
+
+## Alpha 0.01
+
+- Initial Vue 3 + TypeScript + Vite companion build with Character List, Rules, Simulator, Settings, local persistence, and Brambleheart assets.

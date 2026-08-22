@@ -13,7 +13,7 @@ function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.d
 function togglePin(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;persist()}
 function removeCharacter(id:string){if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(c=>c.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.05',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.06',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -46,9 +46,9 @@ function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.at
 
     <section class="list-launch card-surface character-action-launch">
       <div class="list-launch-actions centered-character-actions">
-        <RouterLink class="primary-button" to="/characters/create">Create a character</RouterLink>
-        <button class="secondary-button" type="button" @click="fileInput?.click()">Import character</button>
-        <button class="secondary-button" type="button" :disabled="!characters.length" @click="exportCharacters">Export characters</button>
+        <RouterLink class="primary-button" to="/characters/create">Create a Character</RouterLink>
+        <button class="secondary-button" type="button" @click="fileInput?.click()">Import Character</button>
+        <button class="secondary-button" type="button" :disabled="!characters.length" @click="exportCharacters">Export Characters</button>
         <input ref="fileInput" class="file-import-input" type="file" accept="application/json,.json" @change="importCharacter" />
       </div>
     </section>
@@ -72,11 +72,18 @@ function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.at
             <div v-for="attribute in attributes" :key="attribute.id" class="character-stat"><strong>{{ character.attributes[attribute.id] }}</strong><span>{{ attribute.name.slice(0,3).toUpperCase() }}</span></div>
           </div>
           <div class="detail-grid">
-            <div><span>Faith</span><strong>{{ character.faith }}</strong></div><div><span>Oath</span><strong>{{ character.oath }}</strong></div><div><span>Starting Skills</span><strong>{{ homelandSkills(character.homeland) }}</strong></div><div><span>Starting Wealth</span><strong>{{ character.startingWealth ?? 50 }} sp{{ character.adventureKit===false?'':' + Adventure Kit' }}</strong></div>
+            <div><span>Faith</span><strong>{{ character.faith }}</strong></div>
+            <div><span>Oath</span><strong>{{ character.oath }}</strong></div>
+            <div><span>Starting Skills</span><strong>{{ character.skills?.length ? character.skills.join(' · ') : homelandSkills(character.homeland) }}</strong></div>
+            <div><span>Starting Wealth</span><strong>{{ character.wealthRemaining ?? character.startingWealth ?? 50 }} sp Remaining{{ character.adventureKit===false?'':' · Adventure Kit' }}</strong></div>
           </div>
-          <div class="info-card character-derived"><strong>Derived values</strong><p>Speed {{ derived(character).speed }} · Aim {{ derived(character).aim }} · Mettle {{ derived(character).mettle }} · Ward {{ derived(character).ward }} · Control {{ derived(character).control }} · Power {{ derived(character).power }} · Guts {{ derived(character).guts }}.</p></div>
+          <div v-if="character.cultureTraits?.length" class="info-card"><strong>Culture Traits</strong><p>{{ character.cultureTraits.join(' · ') }}</p></div>
+          <div v-if="character.languages?.length" class="info-card"><strong>Languages</strong><p>{{ character.languages.join(' · ') }}</p></div>
+          <div class="info-card character-derived"><strong>Derived Values</strong><p>Speed {{ derived(character).speed }} · Aim {{ derived(character).aim }} · Mettle {{ derived(character).mettle }} · Ward {{ derived(character).ward }} · Control {{ derived(character).control }} · Power {{ derived(character).power }} · Guts {{ derived(character).guts }}.</p></div>
           <div v-if="character.talents?.length" class="info-card"><strong>Talents{{ character.loreAttunement?` · ${character.loreAttunement} Attunement`:'' }}</strong><p>{{ character.talents.join(' · ') }}</p></div>
-          <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to top' }}</button><button class="danger-button" type="button" @click="removeCharacter(character.id)">Delete</button></div>
+          <div v-if="character.spells?.length || character.invocationSpell" class="info-card"><strong>Magic</strong><p><template v-if="character.spells?.length">Spells: {{ character.spells.join(' · ') }}</template><template v-if="character.invocationSpell"> · Invocation: {{ character.invocationSpell }}</template></p></div>
+          <div v-if="character.equipment?.length" class="info-card"><strong>Purchased Equipment</strong><p>{{ character.equipment.map(item=>item.name).join(' · ') }}</p></div>
+          <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" @click="removeCharacter(character.id)">Delete</button></div>
         </div>
       </article>
     </section>

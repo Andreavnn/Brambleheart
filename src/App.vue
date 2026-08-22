@@ -25,7 +25,7 @@ function reportIssue() {
     </section>
 
     <footer v-if="showGlobalPageTools" class="app-footer">
-      <span>Brambleheart Alpha Build {{ BUILD }}</span>
+      <span>Brambleheart Beta Build {{ BUILD }}</span>
     </footer>
   </div>
 </template>
