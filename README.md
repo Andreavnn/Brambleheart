@@ -24,7 +24,3 @@ Beta 0.10 builds on the stabilized Beta 0.09 package and preserves the recovered
 - Attribute Checks now narrow Character Stat and Skill choices from Roll Type.
 - Combat Encounters open as dedicated pages rather than living inside the Rhythm Engine panel.
 - Character Creation gains Culture/Talent picker refinements, normalized Skills, Mana guidance, Threadpiece wealth, Language detail, equipment attachments, and an expanded Review.
-
-## Applying
-
-Overlay this package onto the current Brambleheart repository, replacing matching files while preserving repository files not present in the package.
