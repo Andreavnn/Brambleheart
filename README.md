@@ -25,7 +25,3 @@ Beta 0.11 builds on the stable Beta 0.10 package and preserves the recovered Cha
 - Anthro Mundas starts the setting-lore sequence; all rule sections gain previous/next navigation and rule cards are flatter and denser.
 - Reset Local Data returns to the Welcome page, and the splash install flow is more defensive when the browser install prompt is unavailable.
 - Settings now offers only the standard background and the supplied Ready For Adventure artwork.
-
-## Applying
-
-Overlay this package onto the current Brambleheart repository, replacing matching files while preserving repository files not present in the package.
