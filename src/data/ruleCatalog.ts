@@ -22,8 +22,7 @@ const page = (slug:string,title:string,summary:string,sources?:RuleSourceSlice[]
 
 const lorePage = (slug:string,title:string,summary:string,heading:string) => page(slug,title,summary,[{document:'lore-anthro-mundas'}],undefined,['Lore','Anthro Mundas'],heading)
 export const loreAnthroMundasPages: RulePageDefinition[] = [
-  lorePage('lore-anthro-mundas','Lore of Anthro Mundas','Brambleheart and the myth-wild world in which its heroes find their rhythm.','BRAMBLEHEART'),
-  lorePage('lore-anthro-mundas-world','Anthro Mundas','The living world, its lands, peoples, ruins, and restless wonders.','ANTHRO MUNDAS'),
+  lorePage('lore-anthro-mundas','Anthro Mundas','The living world, its lands, peoples, ruins, and restless wonders.','ANTHRO MUNDAS'),
   lorePage('lore-anthro-mundas-winds','Winds of Magic','The unseen primal currents that move through air, soil, spirit, and spellcraft.','WINDS OF MAGIC'),
   lorePage('lore-anthro-mundas-hallows','The Howling Hallows','The realm beyond the mortal veil, shaped by memory, spirit, and the Winds.','THE HOWLING HALLOWS'),
   lorePage('lore-anthro-mundas-ancients','The Ancients','The vanished people who mastered, bound, and ultimately starved the Winds.','THE ANCIENTS'),

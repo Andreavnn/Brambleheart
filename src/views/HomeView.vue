@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { attributes, homelands, sparks } from '../data/bramble'
 import { characterExportPayload, downloadJson, loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 
+const router=useRouter()
 const characters=ref<CharacterRecord[]>(loadCharacters())
 const openIds=ref(new Set<string>())
 const fileInput=ref<HTMLInputElement|null>(null)
@@ -12,9 +14,11 @@ function persist(){writeCharacters(characters.value)}
 function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.delete(id):next.add(id);openIds.value=next}
 function togglePin(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist()}
 function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}
+function editCharacter(id:string){void router.push({path:'/characters/create',query:{edit:id}})}
+function copyCharacter(id:string){const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist()}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.10',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.11',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -32,7 +36,8 @@ async function importCharacter(event:Event){
 }
 function homelandSkills(name:string){return homelands.find(h=>h.name===name)?.skills.join(' · ')||'—'}
 function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
-function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.attributes.agility*2,mettle:c.attributes.might*2,ward:c.attributes.hide*2,control:c.attributes.lore*2,power:c.attributes.might,guts:c.attributes.hide}}
+function equipmentGuts(c:CharacterRecord){return Math.max(0,...(c.equipment||[]).map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0}))}
+function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.attributes.agility*2,mettle:c.attributes.might*2,ward:c.attributes.hide*2,control:c.attributes.lore*2,power:c.attributes.might,guts:c.attributes.hide+equipmentGuts(c)}}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${rank*2}`).join(' · ')
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
@@ -44,7 +49,6 @@ function skillSummary(character:CharacterRecord){
     <AppHeader />
 
     <div class="page-title-block">
-      <p class="eyebrow">CHARACTERS</p>
       <h1>Character List</h1>
       <p>Create, import, export, pin, lock, and manage Brambleheart characters stored on this device.</p>
     </div>
@@ -59,18 +63,20 @@ function skillSummary(character:CharacterRecord){
     </section>
 
     <section v-if="characters.length" class="saved-list-stack character-list-stack">
-      <article v-for="character in sortedCharacters" :key="character.id" class="saved-list-card card-surface character-card" :class="{pinned:character.pinned,locked:character.locked,draft:character.draft}">
+      <article v-for="character in sortedCharacters" :key="character.id" class="saved-list-card card-surface character-card" :class="{pinned:character.pinned,locked:character.locked,draft:character.draft,'character-status-incomplete':character.draft,'character-status-complete':!character.draft}">
         <div class="character-card-topline">
           <button class="saved-list-open-area character-open-area" type="button" @click="toggle(character.id)">
             <div>
-              <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="character.draft" class="row-badge draft-badge">DRAFT</span><span v-if="character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
+              <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="character.draft" class="character-status-badge incomplete">INCOMPLETE</span><span v-else class="character-status-badge complete">COMPLETE</span><span v-if="character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
               <div class="saved-list-labels character-list-summary"><span class="app-option-label">{{ character.species||'Species not selected' }}</span><span class="app-option-label">{{ character.campaignName||'No campaign assigned' }}</span></div>
             </div>
             <div class="saved-list-card-meta"><strong>{{ character.campaignName||'Independent' }}</strong><small>{{ character.species||'Species not selected' }}</small></div>
           </button>
-          <div class="character-card-icon-actions">
-            <button class="icon-button character-lock-button" type="button" :class="{active:character.locked}" :aria-label="character.locked?'Unlock character':'Lock character'" :title="character.locked?'Unlock character':'Lock character'" @click="toggleLock(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M12 14v2"/></svg></button>
-            <button class="icon-button character-pin-button" type="button" :aria-label="character.pinned?'Unpin character':'Pin character'" :title="character.pinned?'Unpin character':'Pin character'" @click="togglePin(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4 6 6-3 1-4 4-1 5-2-2-4 4-1-1 4-4-2-2 5-1 4-4 1-3Z"/></svg></button>
+          <div class="character-card-actions-visible">
+            <button class="secondary-button compact-action" type="button" :disabled="character.locked" @click="editCharacter(character.id)">Edit</button>
+            <button class="secondary-button compact-action character-lock-button" type="button" :class="{active:character.locked}" @click="toggleLock(character.id)">{{ character.locked?'Unlock':'Lock' }}</button>
+            <button class="secondary-button compact-action" type="button" @click="copyCharacter(character.id)">Copy</button>
+            <button class="danger-button compact-action" type="button" :disabled="character.locked" @click="removeCharacter(character.id)">Delete</button>
           </div>
         </div>
         <div v-if="openIds.has(character.id)" class="character-detail-panel">

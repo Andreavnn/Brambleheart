@@ -14,6 +14,7 @@ type RhythmResultValue=ReturnType<typeof rhythmResult>
 interface RhythmHistoryEntry{id:string;createdAt:string;rollType:string;mode:RhythmMode;stat:number;skillName:string;skillBonus:number;conditions:number;target:number|null;targetLabel:string;result:RhythmResultValue;fortunes:number;misfortunes:number}
 const RHYTHM_STORE='brambleheart-simulator-rhythm-v0.05'
 const router=useRouter()
+const sheet=ref<'attribute'|'encounters'>('attribute')
 function die(){const a=new Uint32Array(1);crypto.getRandomValues(a);return(a[0]%10)+1}
 function dice(count:number){return Array.from({length:count},die)}
 function readStore<T>(key:string,fallback:T):T{try{return JSON.parse(localStorage.getItem(key)||'') as T}catch{return fallback}}
@@ -71,14 +72,15 @@ const characterSkillOptions=computed(()=>{
 })
 const statFieldLabel=computed(()=>rollType.value==='Strike'?'Strike Stat':rollType.value==='Ward'?'Ward Stat':rollType.value==='Initiative'?'Initiative Stat':rollType.value==='Attribute Save'?'Save Attribute':rollType.value==='Skill Check'?'Skill Attribute':'Character Stat')
 const skillFieldLabel=computed(()=>selectedStat.value?`${selectedStat.value.attribute} Skill`:'Character Skill')
-watch([rollType,attributeCharacterId],()=>{const first=attributeStatOptions.value[0];attributeCharacterStat.value=first?.key||'agility';rhythmSkill.value=''},{immediate:true})
+const rollUsesSkill=computed(()=>['Attribute Check','Skill Check','Role-Play','Other'].includes(rollType.value))
+watch([rollType,attributeCharacterId],()=>{const first=attributeStatOptions.value[0];attributeCharacterStat.value=first?.key||'agility';rhythmSkill.value='';if(!rollUsesSkill.value)rhythmSkillBonus.value=0},{immediate:true})
 watch(attributeCharacterStat,()=>{rhythmSkill.value='';if(attributeCharacter.value)rhythmStat.value=selectedStat.value?.value||0},{immediate:true})
-watch(rhythmSkill,()=>{if(attributeCharacter.value){const entry=characterSkillOptions.value.find(item=>item.name===rhythmSkill.value);rhythmSkillBonus.value=(entry?.rank||0)*2}})
+watch(rhythmSkill,()=>{if(!rollUsesSkill.value){rhythmSkillBonus.value=0;return}if(attributeCharacter.value){const entry=characterSkillOptions.value.find(item=>item.name===rhythmSkill.value);rhythmSkillBonus.value=(entry?.rank||0)*2}})
 const effectiveRhythmStat=computed(()=>attributeCharacter.value?Number(selectedStat.value?.value||0):Number(rhythmStat.value||0))
-const rhythmCombinedStat=computed(()=>effectiveRhythmStat.value+Number(rhythmSkillBonus.value||0))
+const rhythmCombinedStat=computed(()=>effectiveRhythmStat.value+(rollUsesSkill.value?Number(rhythmSkillBonus.value||0):0))
 const currentTarget=computed(()=>targetMode.value==='passive'?Number(passiveTarget.value):targetMode.value==='active'&&activeTarget.value!==null?Number(activeTarget.value):null)
 function targetLabel(){if(targetMode.value==='active')return'Active Target';if(targetMode.value==='passive')return passiveTargets.find(([,value])=>value===Number(passiveTarget.value))?.[0]||'Passive Target';return'No Target'}
-function rollAttributeCheck(){const result=rhythmResult(dice(rhythmMode.value==='normal'?3:4),rhythmMode.value,rhythmCombinedStat.value,rhythmConditions.value);const kept=result.kept||result.rolled;const entry:RhythmHistoryEntry={id:crypto.randomUUID(),createdAt:stamp(),rollType:rollType.value,mode:rhythmMode.value,stat:effectiveRhythmStat.value,skillName:rhythmSkill.value,skillBonus:Number(rhythmSkillBonus.value||0),conditions:Number(rhythmConditions.value||0),target:currentTarget.value,targetLabel:targetLabel(),result,fortunes:kept.filter(value=>value>=8).length,misfortunes:kept.filter(value=>value<=2).length};rhythmHistory.value=[entry,...rhythmHistory.value].slice(0,5);writeStore(RHYTHM_STORE,rhythmHistory.value)}
+function rollAttributeCheck(){const result=rhythmResult(dice(rhythmMode.value==='normal'?3:4),rhythmMode.value,rhythmCombinedStat.value,rhythmConditions.value);const kept=result.kept||result.rolled;const entry:RhythmHistoryEntry={id:crypto.randomUUID(),createdAt:stamp(),rollType:rollType.value,mode:rhythmMode.value,stat:effectiveRhythmStat.value,skillName:rollUsesSkill.value?rhythmSkill.value:'',skillBonus:rollUsesSkill.value?Number(rhythmSkillBonus.value||0):0,conditions:Number(rhythmConditions.value||0),target:currentTarget.value,targetLabel:targetLabel(),result,fortunes:kept.filter(value=>value>=8).length,misfortunes:kept.filter(value=>value<=2).length};rhythmHistory.value=[entry,...rhythmHistory.value].slice(0,5);writeStore(RHYTHM_STORE,rhythmHistory.value)}
 function rollOutcome(entry:RhythmHistoryEntry){if(entry.target===null)return'';return entry.result.total>=entry.target?'SUCCESS':'FAILURE'}
 
 const encounters=ref<EncounterRecord[]>(loadEncounters())
@@ -97,25 +99,27 @@ function remove(id:string){if(!confirm('Delete this encounter and its local hist
 <template>
   <main class="page simulator-page rhythm-engine-page">
     <AppHeader />
-    <div class="page-title-block"><p class="eyebrow">RHYTHM ENGINE</p><h1>Rhythm Engine</h1><p>Make focused Attribute Checks and open Combat Encounters as dedicated encounter pages.</p></div>
+    <div class="page-title-block"><h1>Rhythm Engine</h1><p>Make focused Attribute Checks and manage Combat Encounters from separate sheets.</p></div>
 
-    <section class="tool-panel card-surface rhythm-tool-card">
+    <div class="segment-tabs rhythm-sheet-tabs" role="tablist"><button type="button" class="segment-tab" :class="{active:sheet==='attribute'}" @click="sheet='attribute'">Attribute Check</button><button type="button" class="segment-tab" :class="{active:sheet==='encounters'}" @click="sheet='encounters'">Combat Encounters</button></div>
+
+    <section v-if="sheet==='attribute'" class="tool-panel card-surface rhythm-tool-card">
       <div class="tool-heading"><div><p class="eyebrow">ATTRIBUTE CHECK</p><h2>3d10 + Stat + Skill</h2></div></div>
       <p class="tool-explainer">Choose a character, then narrow the roll from Roll Type to the appropriate Character Stat and finally to Skills governed by that Stat. You can still roll manually without selecting a character.</p>
       <aside class="fortune-tip"><strong>Fortune &amp; Misfortune</strong><span>Natural kept dice of 8–10 create Fortune results and natural kept dice of 1–2 create Misfortune results. Fortune represents an advantageous twist and may create a +1 Condition where the rule allows; Misfortune represents a complication and may create a −1 Condition. These results are read from the natural dice before ordinary Conditions are added.</span></aside>
-      <label class="field-label attribute-character-picker">Character<select v-model="attributeCharacterId" class="field-control"><option value="">Manual / No Character</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select></label>
+      <label class="field-label attribute-character-picker">Character<select v-model="attributeCharacterId" class="field-control"><option value="">Manual / No Character</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} {{ character.species }}</option></select></label>
 
       <div class="rhythm-dependent-grid">
         <label class="field-label">Roll Type<select v-model="rollType" class="field-control"><option v-for="option in rollTypes" :key="option">{{ option }}</option></select></label>
-        <label class="field-label">{{ statFieldLabel }}<select v-if="attributeCharacter" v-model="attributeCharacterStat" class="field-control"><option v-for="stat in attributeStatOptions" :key="stat.key" :value="stat.key">{{ stat.label }} — +{{ stat.value }}</option></select><input v-else v-model.number="rhythmStat" class="field-control" type="number" /></label>
-        <label class="field-label">{{ skillFieldLabel }}<select v-if="attributeCharacter" v-model="rhythmSkill" class="field-control"><option value="">No Skill</option><option v-for="skill in characterSkillOptions" :key="skill.name" :value="skill.name">{{ skill.name }} — Rank {{ skill.rank }} / +{{ skill.rank*2 }}</option></select><input v-else v-model.number="rhythmSkillBonus" class="field-control" type="number" placeholder="Skill Bonus" /></label>
+        <label class="field-label">{{ statFieldLabel }}<select v-if="attributeCharacter" v-model="attributeCharacterStat" class="field-control"><option v-for="stat in attributeStatOptions" :key="stat.key" :value="stat.key">{{ stat.label }} +{{ stat.value }}</option></select><input v-else v-model.number="rhythmStat" class="field-control" type="number" /></label>
+        <label class="field-label" :class="{'field-off':!rollUsesSkill}">{{ rollUsesSkill?skillFieldLabel:'Skill (Not Used)' }}<select v-if="rollUsesSkill&&attributeCharacter" v-model="rhythmSkill" class="field-control"><option value="">No Skill</option><option v-for="skill in characterSkillOptions" :key="skill.name" :value="skill.name">{{ skill.name }} Rank {{ skill.rank }} +{{ skill.rank*2 }}</option></select><input v-else-if="rollUsesSkill" v-model.number="rhythmSkillBonus" class="field-control" type="number" placeholder="Skill Bonus" /><div v-else class="field-control disabled-readout">Off for {{ rollType }}</div></label>
       </div>
       <div class="rhythm-compact-values">
-        <label class="field-label">Roll Style<select v-model="rhythmMode" class="field-control"><option value="normal">Normal — 3d10</option><option value="edged">Edged — 4d10, Drop Lowest</option><option value="weighted">Weighted — 4d10, Drop Highest</option></select></label>
+        <label class="field-label">Roll Style<select v-model="rhythmMode" class="field-control"><option value="normal">Normal 3d10</option><option value="edged">Edged 4d10, Drop Lowest</option><option value="weighted">Weighted 4d10, Drop Highest</option></select></label>
         <label class="field-label">Conditions<input v-model.number="rhythmConditions" class="field-control" type="number" /></label>
         <label class="field-label">Target Type<select v-model="targetMode" class="field-control"><option value="none">No Target</option><option value="passive">Passive</option><option value="active">Active</option></select></label>
       </div>
-      <label v-if="targetMode==='passive'" class="field-label target-value-field">Passive Target<select v-model.number="passiveTarget" class="field-control"><option v-for="target in passiveTargets" :key="target[0]" :value="target[1]">{{ target[0] }} — {{ target[1] }}</option></select></label>
+      <label v-if="targetMode==='passive'" class="field-label target-value-field">Passive Target<select v-model.number="passiveTarget" class="field-control"><option v-for="target in passiveTargets" :key="target[0]" :value="target[1]">{{ target[0] }} {{ target[1] }}</option></select></label>
       <label v-else-if="targetMode==='active'" class="field-label target-value-field">Active Target<input v-model.number="activeTarget" class="field-control" type="number" min="0" placeholder="Enter Target" /></label>
       <div class="sim-stat-total"><span>Combined Bonus</span><strong>{{ rhythmCombinedStat }}</strong><small>Stat + Skill</small></div>
       <button class="primary-button wide" @click="rollAttributeCheck">Roll Attribute Check</button>
@@ -124,18 +128,20 @@ function remove(id:string){if(!confirm('Delete this encounter and its local hist
       <div v-else class="empty-inline sim-empty-inline">No rolls yet.</div>
     </section>
 
+    <template v-if="sheet==='encounters'">
     <section class="tool-panel card-surface encounter-start-section">
       <div class="tool-heading"><div><p class="eyebrow">COMBAT ENCOUNTERS</p><h2>Start Encounter</h2></div></div>
       <p class="tool-explainer">Combat Encounters now open as dedicated pages. Select a saved character before starting; the encounter carries that character’s combat statistics, Mana, Talents, and Spells with it.</p>
-      <div class="encounter-create-grid"><input v-model="encounterName" class="field-control" placeholder="Encounter Name" /><select v-model="newEncounterCharacterId" class="field-control"><option value="">Choose a Character</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} — {{ character.species }}</option></select><button class="primary-button" type="button" @click="newEncounter">Start Encounter</button></div>
+      <div class="encounter-create-grid"><input v-model="encounterName" class="field-control" placeholder="Encounter Name" /><select v-model="newEncounterCharacterId" class="field-control"><option value="">Choose a Character</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} {{ character.species }}</option></select><button class="primary-button" type="button" @click="newEncounter">Start Encounter</button></div>
       <p v-if="encounterStartError" class="creation-status-message">{{ encounterStartError }}</p>
     </section>
 
     <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">ONGOING</p><h2>Ongoing Encounters</h2></div></div><div v-if="!ongoingEncounters.length" class="empty-inline">No ongoing encounters.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in ongoingEncounters" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Round {{ encounter.round }} · Health {{ encounter.health }} · Fate {{ encounter.fateMarks }}/3</small></RouterLink><div class="sim-record-actions"><button class="pin-button" :class="{pinned:encounter.pinned}" @click="togglePin(encounter.id)">⌖</button><button class="secondary-button compact-action" @click="complete(encounter.id)">Complete</button><button class="icon-button compact-icon" @click="remove(encounter.id)">×</button></div></article></div></section>
     <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">HISTORY</p><h2>Encounter History</h2></div></div><div v-if="!encounterHistory.length" class="empty-inline">Completed encounters will appear here.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in encounterHistory" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Completed · Round {{ encounter.round }}</small></RouterLink><div class="sim-record-actions"><button class="secondary-button compact-action" @click="reopen(encounter.id)">Reopen</button><button class="icon-button compact-icon" @click="remove(encounter.id)">×</button></div></article></div></section>
+    </template>
   </main>
 </template>
 
 <style scoped>
-.fortune-tip{display:grid;gap:4px;margin:12px 0;padding:10px 12px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:9px;background:var(--paper-2)}.fortune-tip strong{font-family:Georgia,'Times New Roman',serif}.fortune-tip span{color:var(--ink-soft);line-height:1.5}.attribute-character-picker{margin-bottom:9px}.target-value-field{display:block;margin-top:8px}.encounter-create-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px}.encounter-list-section{margin-top:12px}@media(max-width:760px){.encounter-create-grid{grid-template-columns:1fr}}
+.fortune-tip{display:grid;gap:4px;margin:12px 0;padding:10px 12px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:9px;background:var(--paper-2)}.fortune-tip strong{font-family:Georgia,'Times New Roman',serif}.fortune-tip span{color:var(--ink-soft);line-height:1.5}.attribute-character-picker{margin-bottom:9px}.rhythm-sheet-tabs{margin-bottom:12px}.field-off{opacity:.7}.disabled-readout{display:flex;align-items:center;background:var(--paper-2);color:var(--ink-soft);cursor:not-allowed}.target-value-field{display:block;margin-top:8px}.encounter-create-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px}.encounter-list-section{margin-top:12px}@media(max-width:760px){.encounter-create-grid{grid-template-columns:1fr}}
 </style>

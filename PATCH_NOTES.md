@@ -1,43 +1,45 @@
-# Brambleheart Beta 0.10 — Character, Rules & Encounter Patch
+# Brambleheart Beta 0.11 — Character, Rhythm & Rules Patch
 
-This full overlay starts from the working Beta 0.09 package. The v0.08/v0.09 Character Creation crash and page-boundary recovery fixes are preserved.
+This full overlay starts from the working Beta 0.10 package and preserves the recovered Character Creation crash and page-boundary fixes.
 
-## Characters and creation
+## Character List and Character Creation
 
-- Replaced Pronunciation with Campaign Name and display Character Name, Species, and Campaign on the Character List.
-- Culture Trait picker now has All + Species tabs. Adding a Trait automatically replaces selected Traits in alternating first/second order instead of forcing manual removal.
-- Culture Trait Skill choices use a clean dropdown with the selected +1 Skill below it; creation-time specialized Skill labels are normalized to their base Skill names where appropriate.
-- Homeland Skills are displayed as text with optional replacements beneath them.
-- Building Selu callouts now use a distinct two-sided color treatment.
-- Winds of Magic Mana guidance uses the supplied rules: every character generates 2 Mana at the start of a combat round and Magic Level 1 adds +1 regeneration. Conditional Trait Mana effects are shown as conditional notes rather than permanently added to base Mana.
-- Talent selection is now a searchable popup with All and category tabs.
-- Threadpiece wealth is represented in WP, NP, SP, and BP from the source exchange table while Starting/Remaining Wealth are combined into one adjusting balance.
-- Equipment shop rows are cleaner, category labels disappear inside a specific category tab, and compatible accessories can optionally attach/apply to purchased weapons.
-- Language cards are larger and use available Species-language descriptions.
-- Review adds Campaign, Mana, compact Secondary Stat boxes, collapsible Magic/Spells and Talents, and attachment details.
+- Character cards show Name, Species, and Campaign with always-visible Edit, Lock/Unlock, Copy, and Delete controls.
+- Complete and Incomplete states use clear green/red status treatment; locked characters cannot be edited or deleted until unlocked.
+- Step 1 removes Age, Pronouns, and Kinship/Pack. Identity is now Character Name + Campaign with a larger Appearance field below.
+- Character Review uses one editable Name/Campaign row, displays the actual Path name, tightens empty space, and presents secondary stats as compact stat boxes.
+- Explicit permanent equipment Guts bonuses are included in Review/character-sheet Guts. Conditional Trait/Talent effects and temporary Spell effects are not folded into base stats.
+- Talent selection remains open for multi-selection, uses a roomier one-column list, and all creator popups use wider independently scrolling content areas.
+- Language cards are tightened to remove unnecessary vertical whitespace.
+
+## Rhythm Engine and Combat Encounters
+
+- Attribute Check and Combat Encounters are separate selectable sheets.
+- Attribute Check uses Roll Type → Character Stat → Character Skill dependency; Skill is visibly disabled for roll types that do not use Skills.
+- Dropdown labels are compact and remove decorative dashes between labels and values.
+- Dedicated Combat Encounter pages are rebuilt toward a character-sheet layout. Click Attributes or applicable secondary stats to roll them; click saved Weapons to make their associated Melee/Ranged Strike against the current Target Ward.
+- Weapon cards expose the saved profile and calculated damage basis while retaining the existing advanced encounter panels for later expansion.
 
 ## Rules
 
-- Lore of Anthro Mundas is split into ten source-backed pages: Brambleheart, Anthro Mundas, Winds of Magic, The Howling Hallows, The Ancients, The Great Morphing, The Era of Discovery, The Age of Strife, The Blight of Undeath, and Age of Adventure.
-- Lore pages include horizontal section navigation and previous/next controls like The Fundamentals.
-- Keyword pill UI is removed from Rule Reader pages; Keywords render as ordinary rule text.
-- Box dividers are tightened to run edge-to-edge beneath headers, while Mana costs remain at the top-right of cards where present.
+- The Lore of Anthro Mundas sequence begins with Anthro Mundas; the redundant Brambleheart page is removed.
+- Previous/next navigation is added across References and every rules category, in addition to Fundamentals and Anthro Mundas.
+- Main-page secondary eyebrow titles are removed where they duplicated the page title.
+- FAQ typography is reduced. Rule-card title separators span the full card width, inner boxed fragments are flattened, and spacing is reduced.
+- Rules Recent/Common access is seeded with a useful default set even before local history exists.
 
-## Rhythm Engine and encounters
+## Themes, Header, Welcome, and Settings
 
-- Attribute Check fields follow Roll Type → Character Stat → Character Skill. Roll Type restricts available Stats, and the selected Stat filters saved-character Skills by governing Attribute.
-- Attribute Check controls are reduced to compact three-column groups.
-- Combat Encounters now open as their own routed pages, similar to Old.Dex match pages, while retaining existing local encounter storage compatibility.
-- Mobile/tablet select controls are normalized to a stable readable size.
-
-## Themes and presentation
-
-- Themes are now Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster, each with light and complete dark palettes. Legacy theme values migrate to the nearest new theme.
-- The Beta 0.09 x5 logo experiment is reduced by half for this pass.
+- Default returns as the first Theme, followed by Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster.
+- Theme palettes are darker, more distinct, and control full-site surfaces, primary controls, and Dark Mode rather than only menu accents.
+- Site logo grows one step from Beta 0.10 while the gap between the logo/header and navigation is reduced by roughly half.
+- Reset All Local Data clears welcome/install dismissal state and immediately returns to the Welcome page.
+- Splash install handling no longer attempts a missing browser install prompt.
+- All previous selectable backgrounds are removed from Settings. The only optional artwork is the supplied Ready For Adventure image, alongside Default.
 
 ## Compatibility
 
 - Character storage remains `brambleheart-characters-v0.01`.
 - Encounter storage remains `brambleheart-simulator-encounters-v0.05`.
 - Rhythm history remains `brambleheart-simulator-rhythm-v0.05`.
-- PWA shell cache advances to v0.10.
+- PWA shell cache advances to v0.11.

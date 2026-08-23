@@ -5,11 +5,22 @@ import AppHeader from '../components/AppHeader.vue'
 <template>
   <main class="page changelog-page">
     <AppHeader compact back-to="/characters" back-label="Back to Character List" />
-    <div class="page-title-block"><p class="eyebrow">SITE UPDATES</p><h1>Site Changelog</h1><p>Changes to the Brambleheart companion site. System-rule amendments are tracked under Rules → Changes &amp; Updates.</p></div>
+    <div class="page-title-block"><h1>Site Changelog</h1><p>Changes to the Brambleheart companion site. System-rule amendments are tracked under Rules → Changes &amp; Updates.</p></div>
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.10</strong><small>Character campaigns, Lore section pages, archetype themes, dependent Attribute Checks, and dedicated encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.11</strong><small>Character-sheet encounters, visible character actions, stronger themes, rule navigation, and Ready For Adventure</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Made Character List Edit, Lock, Copy, and Delete controls always visible and added clear Complete/Incomplete status treatment.</li>
+          <li>Simplified creator identity to Character Name, Campaign, and Appearance; tightened Review, Languages, Talents, and creator popup layouts.</li>
+          <li>Separated Attribute Check and Combat Encounter sheets, disabled Skills for roll types that do not use them, and rebuilt encounter pages around clickable character statistics and weapons.</li>
+          <li>Restored Default and strengthened all six archetype themes in both light and Dark Mode.</li>
+          <li>Removed the redundant Brambleheart lore page, expanded previous/next rule navigation, flattened rule-card internals, and reduced FAQ typography.</li>
+          <li>Reduced header/navigation spacing, enlarged the logo one step, made Reset Data return to Welcome, hardened splash install handling, and replaced selectable backgrounds with Ready For Adventure.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.10</strong><small>Character campaigns, Lore section pages, archetype themes, dependent Attribute Checks, and dedicated encounters</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Added Campaign Name and updated the Character List identity summary.</li>
           <li>Split Lore of Anthro Mundas into navigable section pages and removed keyword pills from Rule Reader pages.</li>

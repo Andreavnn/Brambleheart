@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.10
+# Brambleheart TTRPG — Beta 0.11
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.10 builds on the stabilized Beta 0.09 package and preserves the recovered Character Creation crash and page-boundary fixes.
+Beta 0.11 builds on the stable Beta 0.10 package and preserves the recovered Character Creation crash and page-boundary fixes.
 
 ## Main views
 
@@ -10,17 +10,22 @@ Beta 0.10 builds on the stabilized Beta 0.09 package and preserves the recovered
 - Character List
 - Guided Character Creation
 - Rules / Rule Reader
-- Rhythm Engine
-- Dedicated Combat Encounter pages
+- Rhythm Engine — Attribute Check
+- Combat Encounter sheets
 - Settings
 - Site Changelog
 
-## Beta 0.10 focus
+## Beta 0.11 focus
 
-- Campaign Name replaces the character Pronunciation field and is surfaced on the Character List.
-- Lore of Anthro Mundas is split into navigable section pages. Rule-reader keyword pills are removed.
-- Themes are now Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster with full light/dark palettes.
-- The previous oversized logo experiment is reduced by half.
-- Attribute Checks now narrow Character Stat and Skill choices from Roll Type.
-- Combat Encounters open as dedicated pages rather than living inside the Rhythm Engine panel.
-- Character Creation gains Culture/Talent picker refinements, normalized Skills, Mana guidance, Threadpiece wealth, Language detail, equipment attachments, and an expanded Review.
+- Character List now keeps Edit, Lock, Copy, and Delete visible and clearly marks Complete/Incomplete characters.
+- Character Creation identity is reduced to Character Name, Campaign, and a larger Appearance field.
+- Attribute Check and Combat Encounters are separate Rhythm Engine sheets; Skills turn off for roll types that do not use them.
+- Combat Encounters use a character-sheet presentation with clickable Attributes, secondary stats, weapons, and spells for common rolls.
+- Default plus Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster themes now use stronger full-site light/dark palettes.
+- Anthro Mundas starts the setting-lore sequence; all rule sections gain previous/next navigation and rule cards are flatter and denser.
+- Reset Local Data returns to the Welcome page, and the splash install flow is more defensive when the browser install prompt is unavailable.
+- Settings now offers only the standard background and the supplied Ready For Adventure artwork.
+
+## Applying
+
+Overlay this package onto the current Brambleheart repository, replacing matching files while preserving repository files not present in the package.

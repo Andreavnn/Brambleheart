@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { attributes, faiths, homelands, oaths, sparks, species, type AttributeId } from '../data/bramble'
 import { allCultureTraits, speciesByName } from '../data/speciesData'
@@ -9,9 +9,10 @@ import { cultureSkillGrants, speciesImagePaths } from '../data/creationRules'
 import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
-import { upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 
 const router = useRouter()
+const route = useRoute()
 const stepIndex = ref(0)
 const error = ref('')
 const shopOpen = ref(false)
@@ -25,9 +26,9 @@ const cultureReplaceIndex = ref(0)
 const talentPickerOpen = ref(false)
 const talentSearch = ref('')
 const talentTab = ref('All')
-const activeTalentSlot = ref(0)
 const openAttribute = ref<AttributeId | null>(null)
 const draftId = ref<string | null>(null)
+const originalCreatedAt = ref<string | null>(null)
 const pathTouched = ref(false)
 
 interface StructuredField { label:string; value:string }
@@ -51,7 +52,7 @@ function structuredRule(text:string):{ intro:string; fields:StructuredField[] } 
 }
 function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST')}
 function manaCostFromText(text:string){const match=text.match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
-function singleKeywords(values:string[]|undefined){return Array.from(new Set((values||[]).flatMap(value=>String(value).split('|').map(item=>item.trim()).filter(Boolean))))}
+function singleKeywords(values:string[]|undefined){return Array.from(new Set((values||[]).flatMap(value=>String(value).split(/[|,;]+/).map(item=>item.trim()).filter(Boolean))))}
 
 const talentSections = ruleSourceDocuments.talents.sections.filter(section =>
   section.heading !== 'Overview' && section.heading !== 'TALENTS' && !section.heading.startsWith('KEYWORDS')
@@ -214,6 +215,9 @@ const derived=computed(()=>({
   power:form.attributes.might,
   guts:form.attributes.hide,
 }))
+const gearGutsBonus=computed(()=>Math.max(0,...form.equipment.map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0})))
+const reviewGuts=computed(()=>derived.value.guts+gearGutsBonus.value)
+const selectedPathName=computed(()=>form.path==='magic'?'Wind-Touched':'Gifted Heart')
 const secondaryStats:Record<AttributeId,Array<{name:string;formula:string;description:string;slug?:string}>>={
   agility:[
     {name:'Speed',formula:'2 + Agility Rank',description:'Speed contributes to movement and is used when determining Initiative.',slug:'initiative-order'},
@@ -384,8 +388,21 @@ function equipmentAttachTargets(item:PurchasedEquipment){
   return[]
 }
 function setAttachment(index:number,event:Event){const item=form.equipment[index];if(item)item.attachedTo=(event.target as HTMLSelectElement|null)?.value||undefined}
-function openTalentPicker(index:number){activeTalentSlot.value=index;talentTab.value='All';talentSearch.value='';talentPickerOpen.value=true}
-function chooseTalent(name:string){if(form.talents.some((selected,index)=>selected===name&&index!==activeTalentSlot.value))return;form.talents[activeTalentSlot.value]=name;talentPickerOpen.value=false}
+function openTalentPicker(_index=0){talentTab.value='All';talentSearch.value='';talentPickerOpen.value=true}
+function talentSelected(name:string){return form.talents.includes(name)}
+function toggleTalentChoice(name:string){
+  const selected=form.talents.filter(Boolean)
+  if(selected.includes(name)){
+    const next=selected.filter(item=>item!==name)
+    while(next.length<requiredTalentCount())next.push('')
+    form.talents=next.slice(0,requiredTalentCount())
+    return
+  }
+  if(selected.length>=requiredTalentCount()||!talentRequirementMet(name))return
+  const next=[...selected,name]
+  while(next.length<requiredTalentCount())next.push('')
+  form.talents=next.slice(0,requiredTalentCount())
+}
 function spellLore(name:string){return spellDetails[name]?.lore||''}
 function spellLoreClass(name:string){const lore=spellLore(name).toLowerCase().replace(/[^a-z0-9]+/g,'-');return lore?`spell-lore-${lore}`:'spell-lore-untyped'}
 function effectiveMana(name:string){
@@ -453,7 +470,7 @@ function buildRecord(draft:boolean):CharacterRecord{
   return {
     id:draftId.value||crypto.randomUUID(),
     name:form.name.trim()||(draft?'Unnamed Draft':'Unnamed Character'),
-    campaignName:form.campaignName.trim(), age:form.age.trim(), appearance:form.appearance.trim(), pronouns:form.pronouns.trim(), kinship:form.kinship.trim(),
+    campaignName:form.campaignName.trim(), appearance:form.appearance.trim(),
     species:form.species,
     cultureTraits:selectedCultureTraits.value.map(item=>`${item.name} (${item.species})`),
     cultureSkillChoices:{...form.cultureSkillChoices},
@@ -469,7 +486,7 @@ function buildRecord(draft:boolean):CharacterRecord{
     languages:[...languages.value], equipment:[...form.equipment], adventureKit:form.adventureKit,
     startingWealth:startingWealth.value, wealthRemaining:wealthRemaining.value,
     attributes:{...form.attributes}, draft, creationStep:stepId.value,
-    createdAt:now, updatedAt:now,
+    createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
 }
 function saveDraft(close=false){
@@ -484,7 +501,7 @@ function resetForm(){
   form.name='';form.campaignName='';form.age='';form.appearance='';form.pronouns='';form.kinship='';form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
   form.spark=sparks[0][0];form.homeland=homelands[0].name;form.customHomelandName='';form.customHomelandDetail='';form.skills=homelands[0].skills.map(normalizeSkillName);form.faith=faiths[0];form.oath=oaths[0][0];
   attributes.forEach(attribute=>form.attributes[attribute.id]=1);form.path='magic';pathTouched.value=false;form.loreAttunement='';form.spells=['',''];form.invocationSpells=['',''];form.talents=[''];form.adventureKit=true;form.equipment=[];form.additionalLanguage='';
-  draftId.value=null;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
+  draftId.value=null;originalCreatedAt.value=null;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
 }
 function closeWithoutSave(){void router.push('/characters')}
 
@@ -516,6 +533,26 @@ function syncModalScrollLock(){
   }
 }
 watch([shopOpen,culturePickerOpen,talentPickerOpen],syncModalScrollLock)
+onMounted(async()=>{
+  const editId=String(route.query.edit||'')
+  if(!editId)return
+  const record=loadCharacters().find(item=>item.id===editId)
+  if(!record)return
+  draftId.value=record.id;originalCreatedAt.value=record.createdAt
+  form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||''
+  form.species=record.species||''
+  await nextTick()
+  form.cultureTraits=(record.cultureTraits||[]).map(label=>{const match=String(label).match(/^(.*) \(([^)]+)\)$/);return match?cultureId(match[2],match[1]):label}).filter(id=>Boolean(findCulture(id))).slice(0,2)
+  form.cultureSkillChoices={...(record.cultureSkillChoices||{})};form.spark=record.spark||sparks[0][0]
+  form.homeland=homelands.some(item=>item.name===record.homeland)?record.homeland:'__custom__';form.customHomelandName=form.homeland==='__custom__'?record.homeland:'';form.customHomelandDetail=record.homelandDetail||''
+  form.skills=(record.skills||[]).map(normalizeSkillName).slice(0,2);while(form.skills.length<2)form.skills.push('')
+  form.faith=record.faith||faiths[0];form.oath=record.oath||oaths[0][0];Object.assign(form.attributes,record.attributes||{})
+  form.path=record.path||'magic';pathTouched.value=true;form.loreAttunement=record.loreAttunement||'';form.spells=[...(record.spells||[]).slice(0,2)];while(form.spells.length<2)form.spells.push('')
+  form.invocationSpells=[...(record.invocationSpells||[]).slice(0,2)];while(form.invocationSpells.length<2)form.invocationSpells.push('')
+  form.talents=[...(record.talents||[]).slice(0,requiredTalentCount())];while(form.talents.length<requiredTalentCount())form.talents.push('')
+  form.adventureKit=record.adventureKit!==false;form.equipment=[...(record.equipment||[])]
+  const known=new Set([nativeLanguage.value,'Commonspeak']);form.additionalLanguage=(record.languages||[]).find(language=>!known.has(language))||''
+})
 onBeforeUnmount(()=>{
   if(typeof document==='undefined'||typeof window==='undefined')return
   if(modalScrollLocked){
@@ -555,13 +592,9 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s player starts with the hero’s identity, then chooses the Beastfolk Species whose story, Traits, and language best fit the character they imagine.</em></div>
           <details class="creation-info-panel help-panel" open><summary>What is a Species?</summary><div class="creation-info-body"><p>Your Species describes the Beastfolk lineage your hero belongs to. Across Anthro Mundas, Beastfolk are peoples of fur, feather, scale, and many other forms, each carrying their own histories, languages, Species Traits, and cultural traditions.</p><p>Species Traits are inherent features of that lineage. Culture Traits reflect learned traditions and can be exchanged in the next step.</p></div></details>
 
-          <div class="identity-fields field-grid two">
-            <label class="field-label">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label>
-            <label class="field-label">Campaign Name<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label>
-            <label class="field-label">Age<input v-model="form.age" class="field-control" placeholder="Age" /></label>
-            <label class="field-label">Pronouns<input v-model="form.pronouns" class="field-control" placeholder="Pronouns" /></label>
-            <label class="field-label identity-tall-field">Kinship / Pack<textarea v-model="form.kinship" class="field-control kinship-textarea" rows="3" placeholder="Kin, pack, circle, chosen family…"></textarea></label>
-            <label class="field-label identity-tall-field">Appearance<textarea v-model="form.appearance" class="field-control appearance-textarea" rows="3" placeholder="A short visual description"></textarea></label>
+          <div class="identity-fields creator-identity-fields">
+            <div class="field-grid two"><label class="field-label">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label><label class="field-label">Campaign<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label></div>
+            <label class="field-label creator-appearance-field">Appearance<textarea v-model="form.appearance" class="field-control appearance-textarea" rows="5" placeholder="Describe your character's appearance"></textarea></label>
           </div>
 
           <div class="species-choice-layout">
@@ -678,8 +711,8 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Review Character</h1></div></div>
           <div v-if="finalErrors.length" class="invalid-panel final-invalid-panel"><h2>Character Cannot Be Finished</h2><ul><li v-for="message in finalErrors" :key="message">{{ message }}</li></ul></div>
           <div v-else class="valid-panel"><strong>Character Ready</strong><p>All required creation choices are valid. Review the summary below, then finish the character.</p></div>
-          <div class="field-grid two review-identity-edit"><label class="field-label review-name-field">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label><label class="field-label review-name-field">Campaign Name<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label></div><div class="review-grid"><article><span>Character</span><strong>{{ form.name||'Unnamed' }}</strong><small>{{ form.pronouns }} {{ form.age }}</small></article><article><span>Campaign</span><strong>{{ form.campaignName||'Independent' }}</strong></article><article><span>Species</span><strong>{{ form.species||'Not selected' }}</strong><small>{{ nativeLanguage }}</small></article><article><span>Spark</span><strong>{{ form.spark }}</strong></article><article><span>Homeland</span><strong>{{ isCustomHomeland?(form.customHomelandName||'Custom Homeland'):form.homeland }}</strong></article><article><span>Oath</span><strong>{{ form.oath }}</strong></article><article><span>Faith</span><strong>{{ form.faith }}</strong></article><article><span>Path</span><strong>{{ form.path==='magic'?'Magic Level 1 + 1 Talent':'2 Talents' }}</strong></article><article><span>Languages</span><strong>{{ languages.join(' · ') }}</strong></article></div>
-          <section class="review-section"><h2>Attributes</h2><div class="review-attribute-cards"><article v-for="attribute in attributes" :key="attribute.id"><span>{{ attribute.name }}</span><strong>Rank {{ form.attributes[attribute.id] }}</strong><small>Modifier +{{ attributeModifier(form.attributes[attribute.id]) }}</small></article></div><h3 class="review-subheading">Secondary Stats</h3><div class="review-attribute-cards review-secondary-cards"><article><span>Speed</span><strong>{{ derived.speed }}</strong></article><article><span>Aim</span><strong>{{ derived.aim }}</strong></article><article><span>Mettle</span><strong>{{ derived.mettle }}</strong></article><article><span>Ward</span><strong>{{ derived.ward }}</strong></article><article><span>Control</span><strong>{{ derived.control }}</strong></article><article><span>Power</span><strong>{{ derived.power }}</strong></article><article><span>Guts</span><strong>{{ derived.guts }}</strong></article><article><span>Mana</span><strong>{{ startingMana }}</strong><small>+{{ manaPerRound }} / round</small></article></div></section>
+          <div class="field-grid two review-identity-edit"><label class="field-label review-name-field">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label><label class="field-label review-name-field">Campaign<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label></div><div class="review-grid review-summary-grid"><article><span>Species</span><strong>{{ form.species||'Not selected' }}</strong><small>{{ nativeLanguage }}</small></article><article><span>Spark</span><strong>{{ form.spark }}</strong></article><article><span>Homeland</span><strong>{{ isCustomHomeland?(form.customHomelandName||'Custom Homeland'):form.homeland }}</strong></article><article><span>Oath</span><strong>{{ form.oath }}</strong></article><article><span>Faith</span><strong>{{ form.faith }}</strong></article><article><span>Path</span><strong>{{ selectedPathName }}</strong><small>{{ form.path==='magic'?'Magic Level 1 + 1 Talent':'2 Talents' }}</small></article><article class="review-wide-field"><span>Languages</span><strong>{{ languages.join(' · ') }}</strong></article></div>
+          <section class="review-section"><h2>Attributes</h2><div class="review-attribute-cards"><article v-for="attribute in attributes" :key="attribute.id"><span>{{ attribute.name }}</span><strong>Rank {{ form.attributes[attribute.id] }}</strong><small>Modifier +{{ attributeModifier(form.attributes[attribute.id]) }}</small></article></div><h3 class="review-subheading">Secondary Stats</h3><div class="review-attribute-cards review-secondary-cards"><article><span>Speed</span><strong>{{ derived.speed }}</strong></article><article><span>Aim</span><strong>{{ derived.aim }}</strong></article><article><span>Mettle</span><strong>{{ derived.mettle }}</strong></article><article><span>Ward</span><strong>{{ derived.ward }}</strong></article><article><span>Control</span><strong>{{ derived.control }}</strong></article><article><span>Power</span><strong>{{ derived.power }}</strong></article><article><span>Guts</span><strong>{{ reviewGuts }}</strong><small v-if="gearGutsBonus">Base {{ derived.guts }} + {{ gearGutsBonus }} gear</small></article><article><span>Mana</span><strong>{{ startingMana }}</strong><small>+{{ manaPerRound }} / round</small></article></div></section>
           <section class="review-section"><h2>Skills</h2><div class="review-skill-grid"><article v-for="(rank,skill) in skillRanks" :key="skill"><strong>{{ skill }}</strong><span>Rank {{ rank }}</span><small>Modifier +{{ skillModifier(rank) }}</small><small v-if="cultureRankForSkill(skill)" class="cultural-skill-pill">Cultural</small></article></div></section>
           <details v-if="form.path==='magic'" class="review-section review-collapsible"><summary><h2>Magic</h2><span>{{ form.loreAttunement||'Not selected' }} · {{ startingMana }} Mana</span></summary><div class="review-collapsible-body"><p><strong>Lore Attunement:</strong> {{ form.loreAttunement||'Not selected' }}</p><p v-if="signatureSpell"><strong>Signature:</strong> {{ signatureSpell }}</p><p v-for="spell in form.spells.filter(Boolean)" :key="spell"><strong>Lore Spell:</strong> {{ spell }}</p><p v-for="spell in form.invocationSpells.filter(Boolean)" :key="spell"><strong>Invocation:</strong> {{ spell }}</p></div></details>
           <details class="review-section review-collapsible"><summary><h2>Talents</h2><span>{{ form.talents.filter(Boolean).length }} selected</span></summary><div class="review-collapsible-body"><p v-for="talent in form.talents.filter(Boolean)" :key="talent"><strong>{{ talent }}</strong> · {{ talentCategory(talent) }}</p></div></details>
@@ -712,10 +745,10 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
     <div v-if="talentPickerOpen" class="modal-backdrop talent-picker-backdrop" @click.self="talentPickerOpen=false">
       <section class="modal-card talent-picker-modal" role="dialog" aria-modal="true" aria-label="Choose a Talent">
-        <div class="modal-head"><div><span class="eyebrow">TALENTS</span><h2>Choose Talent {{ activeTalentSlot+1 }}</h2></div><button type="button" class="icon-button" aria-label="Close Talent picker" @click="talentPickerOpen=false">×</button></div>
+        <div class="modal-head"><div><span class="eyebrow">TALENTS</span><h2>Choose Talents</h2><small>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</small></div><button type="button" class="icon-button" aria-label="Close Talent picker" @click="talentPickerOpen=false">×</button></div>
         <div class="talent-picker-tabs" role="tablist"><button v-for="tab in talentTabs" :key="tab" type="button" :class="{active:talentTab===tab}" @click="talentTab=tab">{{ tab }}</button></div>
         <label class="rules-search talent-picker-search"><span aria-hidden="true">⌕</span><input v-model="talentSearch" type="search" placeholder="Search Talents…" /></label>
-        <div class="talent-picker-list"><article v-for="talent in filteredTalentPicker" :key="talent" class="talent-detail-card talent-picker-card" :class="{invalid:!talentRequirementMet(talent)}"><div class="talent-detail-head"><div><small>{{ talentCategory(talent) }}</small><h2>{{ talent }}</h2></div><div class="talent-head-actions"><span v-if="manaCostFromText(talentText(talent))!==null" class="mana-badge">{{ manaCostFromText(talentText(talent)) }} Mana</span><span v-if="talentRequires(talent)" class="requirement-badge" :class="{invalid:!talentRequirementMet(talent)}">Requires {{ talentRequires(talent) }}</span></div></div><p v-if="structuredRule(talentText(talent)).intro" class="rule-flavor">{{ structuredRule(talentText(talent)).intro }}</p><div v-if="visibleRuleFields(talentText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="talent-picker-action"><button type="button" class="secondary-button" :disabled="form.talents.some((selected,index)=>selected===talent&&index!==activeTalentSlot)" @click="chooseTalent(talent)">Select</button></div></article></div>
+        <div class="talent-picker-list"><article v-for="talent in filteredTalentPicker" :key="talent" class="talent-detail-card talent-picker-card" :class="{invalid:!talentRequirementMet(talent)}"><div class="talent-detail-head"><div><small>{{ talentCategory(talent) }}</small><h2>{{ talent }}</h2></div><div class="talent-head-actions"><span v-if="manaCostFromText(talentText(talent))!==null" class="mana-badge">{{ manaCostFromText(talentText(talent)) }} Mana</span><span v-if="talentRequires(talent)" class="requirement-badge" :class="{invalid:!talentRequirementMet(talent)}">Requires {{ talentRequires(talent) }}</span></div></div><p v-if="structuredRule(talentText(talent)).intro" class="rule-flavor">{{ structuredRule(talentText(talent)).intro }}</p><div v-if="visibleRuleFields(talentText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="talent-picker-action"><button type="button" class="secondary-button" :class="{active:talentSelected(talent)}" :disabled="!talentSelected(talent)&&(form.talents.filter(Boolean).length>=requiredTalentCount()||!talentRequirementMet(talent))" @click="toggleTalentChoice(talent)">{{ talentSelected(talent)?'Selected':'Select' }}</button></div></article></div><div class="talent-picker-footer"><span>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</span><button type="button" class="primary-button" :disabled="!talentsValid()" @click="talentPickerOpen=false">Done</button></div>
       </section>
     </div>
 

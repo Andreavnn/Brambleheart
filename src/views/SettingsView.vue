@@ -14,6 +14,7 @@ const fontOptions:Array<{value:FontSize;label:string}>=[
   {value:'smaller',label:'Smaller'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Larger'},
 ]
 const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
+  {value:'default',label:'Default',description:'The standard Brambleheart parchment, moss, and woodland palette.'},
   {value:'warrior',label:'Warrior',description:'Iron, ember, and deep red tones for direct martial play.'},
   {value:'ranger',label:'Ranger',description:'Forest green and weathered earth tones for scouts and wanderers.'},
   {value:'spellcaster',label:'Spellcaster',description:'Violet, indigo, and arcane-blue tones for the Winds of Magic.'},
@@ -23,13 +24,9 @@ const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
 ]
 const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:string}>=[
   {value:'none',label:'Default',description:'Use the standard Brambleheart reader background.'},
-  {value:'crossway-hearth',label:'The Crossway Hearth',description:'A quiet hearthstead in the woods.'},
-  {value:'thornwick-market',label:'Thornwick Market',description:'A crowded Beastfolk market street.'},
-  {value:'leviathans-wreck',label:'Leviathan’s Wreck',description:'A shattered vessel and a colossal sea beast.'},
-  {value:'deepwood-ruins',label:'Deepwood Ruins',description:'Ancient stone hidden in the deep woods.'},
-  {value:'mushroom-isles',label:'Mushroom Isles',description:'A strange waterside landscape of giant mushrooms.'},
+  {value:'ready-for-adventure',label:'Ready For Adventure',description:'The Brambleheart adventuring party beneath the autumn ruins.'},
 ]
-const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Warrior')
+const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
 const currentBackgroundLabel=computed(()=>backgroundOptions.find(item=>item.value===backgroundImage.value)?.label||'Default')
 
 function clearKey(key:string,message:string){if(!confirm(message))return;localStorage.removeItem(key)}
@@ -40,7 +37,7 @@ function clearSimulatorAll(){if(!confirm('Clear all Rhythm Engine data, includin
 function clearAllLocalData(){
   if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, Rhythm Engine history, custom data, and welcome state. Display settings are preserved.'))return
   const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-rules-recent-v0.06','brambleheart-rules-recent-v0.07','brambleheart-rules-recent-v0.08','brambleheart-simulator-encounters-v0.05','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart-custom-data-v0.08','brambleheart-custom-data-name-v0.08','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.welcome.v0.06','brambleheart.welcome.v0.07','brambleheart.welcome.v0.08','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05','brambleheart.install-welcome-dismissed.v0.06','brambleheart.install-welcome-dismissed.v0.07','brambleheart.install-welcome-dismissed.v0.08']
-  keys.forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded'
+  keys.forEach(key=>localStorage.removeItem(key));customDataLabel.value='None loaded';void router.replace('/welcome')
 }
 function reportIssue(){window.open('https://github.com/Andreavnn/Brambleheart/issues','_blank','noopener,noreferrer')}
 function openDiscord(){window.open('https://discord.gg/NHf3YdueHE','_blank','noopener,noreferrer')}
@@ -56,7 +53,7 @@ function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data fi
 <template>
   <main class="page settings-page">
     <AppHeader />
-    <div class="page-title-block"><p class="eyebrow">SETTINGS</p><h1>Settings</h1><p>Access, community, display, donation, custom data, and local-storage controls.</p></div>
+    <div class="page-title-block"><h1>Settings</h1><p>Access, community, display, donation, custom data, and local-storage controls.</p></div>
 
     <section class="settings-group" aria-label="Access and community"><div class="settings-group-heading"><p class="eyebrow settings-group-title">ACCESS &amp; COMMUNITY</p></div><section class="settings-card">
       <div class="setting-row install-setting-row"><span><strong>Install Brambleheart</strong><small>{{ isInstalled?'Brambleheart is installed on this device.':canInstall?'Install the companion as an app on this phone, tablet, or computer.':'If the direct prompt is unavailable, use the browser menu and choose Install app or Add to Home Screen.' }}<template v-if="installMessage"> {{ installMessage }}</template></small></span><button class="secondary-button settings-compact-action" type="button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled?'Installed':'Install' }}</button></div>

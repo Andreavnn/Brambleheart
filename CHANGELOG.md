@@ -1,5 +1,14 @@
 # Site Changelog
 
+## Beta 0.11
+
+- Added always-visible Character List actions and Complete/Incomplete status treatment; simplified creator identity to Name, Campaign, and Appearance.
+- Split Rhythm Engine interaction into Attribute Check and Combat Encounter sheets, disabled Skills for non-Skill roll types, and rebuilt dedicated encounters around a clickable character sheet and weapon attacks.
+- Restored Default and strengthened Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster themes across full light/dark surfaces and controls.
+- Removed the redundant Brambleheart lore page, expanded previous/next navigation across rule categories, reduced FAQ typography, and flattened rule-card internals.
+- Seeded Rules with default Recent/Common access, tightened creator modals/languages/review, and applied explicit permanent equipment Guts to character-sheet stats.
+- Reduced header-to-navigation spacing, increased the logo one step, made Reset Data return to Welcome, hardened the splash install flow, and replaced selectable backgrounds with Ready For Adventure.
+
 ## Beta 0.10
 
 - Added Campaign Name to characters and the Character List.

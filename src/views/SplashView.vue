@@ -7,7 +7,7 @@ import { BUILD } from '../data/bramble'
 
 const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
 const continuePath=computed(()=>{const candidate=String(route.query.continue||'');return candidate.startsWith('/')&&!candidate.startsWith('/welcome')?candidate:'/characters'})
-async function installNow(){if(!canInstall.value)installHelp.value=true;await requestInstall();if(canInstall.value)installModalOpen.value=false}
+async function installNow(){if(!canInstall.value){installHelp.value=true;return}await requestInstall();if(isInstalled.value||!canInstall.value)installModalOpen.value=false}
 function dismissInstall(){installModalOpen.value=false}
 function dismissInstallPermanently(){dismissWelcomeInstallPromptPermanently();installModalOpen.value=false}
 function continueToBrambleheart(){markWelcomeSeen();void router.replace(continuePath.value)}

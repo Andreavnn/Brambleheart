@@ -6,7 +6,11 @@ import { loadRecentRuleSlugs } from '../services/ruleRecent'
 
 const query=ref('')
 const recentSlugs=ref(loadRecentRuleSlugs())
-const recentPages=computed(()=>recentSlugs.value.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,4))
+const defaultRecentSlugs=['dice-rules','attributes-skills','keywords-ability-types','character-creation','playable-species','spell-rules','to-strike','to-damage']
+const recentPages=computed(()=>{
+  const slugs=Array.from(new Set([...recentSlugs.value,...defaultRecentSlugs]))
+  return slugs.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,8)
+})
 const searchResults=computed(()=>{
   const q=query.value.trim().toLowerCase()
   if(!q)return[]
@@ -20,7 +24,6 @@ function clearSearch(){query.value=''}
     <AppHeader />
 
     <div class="page-title-block rules-title-block">
-      <p class="eyebrow">RULES</p>
       <h1>Rules</h1>
       <p>Search the Brambleheart rules, reopen a recent entry, or browse by chapter.</p>
     </div>
@@ -43,8 +46,8 @@ function clearSearch(){query.value=''}
     </section>
 
     <template v-else>
-      <section v-if="recentPages.length" class="rules-index-panel card-surface rules-recent-panel">
-        <header class="rules-index-heading"><span>Recently Viewed</span><small>Quick access</small></header>
+      <section class="rules-index-panel card-surface rules-recent-panel">
+        <header class="rules-index-heading"><span>Recent &amp; Common Rules</span><small>History + quick access</small></header>
         <div class="rules-recent-grid">
           <RouterLink v-for="recent in recentPages" :key="recent!.slug" class="recent-rule-box" :to="`/rules/read/${recent!.slug}`">
             <strong>{{ recent!.title }}</strong><small>{{ recent!.summary }}</small>

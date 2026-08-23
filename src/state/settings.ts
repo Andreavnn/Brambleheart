@@ -1,8 +1,8 @@
 import { reactive, toRef, watch } from 'vue'
 
 export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
-export type RoleTheme = 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
-export type BackgroundChoice = 'none' | 'crossway-hearth' | 'thornwick-market' | 'leviathans-wreck' | 'deepwood-ruins' | 'mushroom-isles'
+export type RoleTheme = 'default' | 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
+export type BackgroundChoice = 'none' | 'ready-for-adventure'
 
 type SettingsState = {
   darkMode:boolean
@@ -19,11 +19,11 @@ const defaults:SettingsState={
   compactRows:false,
   fontSize:'normal',
   boldText:false,
-  roleTheme:'warrior',
+  roleTheme:'default',
   backgroundImage:'none',
 }
-const roles:RoleTheme[]=['warrior','ranger','spellcaster','healer','thief','trickster']
-const backgrounds:BackgroundChoice[]=['none','crossway-hearth','thornwick-market','leviathans-wreck','deepwood-ruins','mushroom-isles']
+const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
+const backgrounds:BackgroundChoice[]=['none','ready-for-adventure']
 
 function normalizeFontSize(value:unknown):FontSize{
   if(['smaller','small','normal','large','larger'].includes(String(value)))return value as FontSize
@@ -32,8 +32,8 @@ function normalizeFontSize(value:unknown):FontSize{
 }
 function normalizeRole(value:unknown):RoleTheme{
   if(roles.includes(value as RoleTheme))return value as RoleTheme
-  const legacy:Record<string,RoleTheme>={default:'warrior',adventurer:'ranger',storyteller:'trickster',tactician:'warrior',mystic:'spellcaster'}
-  return legacy[String(value)]||'warrior'
+  const legacy:Record<string,RoleTheme>={adventurer:'ranger',storyteller:'trickster',tactician:'warrior',mystic:'spellcaster'}
+  return legacy[String(value)]||'default'
 }
 function normalizeBackground(value:unknown):BackgroundChoice{
   if(value==='default')return'none'
