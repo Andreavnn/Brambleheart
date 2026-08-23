@@ -1,45 +1,47 @@
-# Brambleheart Beta 0.11 — Character, Rhythm & Rules Patch
+# Brambleheart Beta 0.12 — Rules, Creator & Encounter Sheet Patch
 
-This full overlay starts from the working Beta 0.10 package and preserves the recovered Character Creation crash and page-boundary fixes.
+This full overlay starts from the working Beta 0.11 package and preserves the recovered Character Creation crash and page-boundary fixes.
 
-## Character List and Character Creation
+## Character Creation
 
-- Character cards show Name, Species, and Campaign with always-visible Edit, Lock/Unlock, Copy, and Delete controls.
-- Complete and Incomplete states use clear green/red status treatment; locked characters cannot be edited or deleted until unlocked.
-- Step 1 removes Age, Pronouns, and Kinship/Pack. Identity is now Character Name + Campaign with a larger Appearance field below.
-- Character Review uses one editable Name/Campaign row, displays the actual Path name, tightens empty space, and presents secondary stats as compact stat boxes.
-- Explicit permanent equipment Guts bonuses are included in Review/character-sheet Guts. Conditional Trait/Talent effects and temporary Spell effects are not folded into base stats.
-- Talent selection remains open for multi-selection, uses a roomier one-column list, and all creator popups use wider independently scrolling content areas.
-- Language cards are tightened to remove unnecessary vertical whitespace.
+- Removes the paper/background block behind the site logo when image-backed site backgrounds are active.
+- Reworks Culture Trait Skill choices into a clearer select-and-award layout.
+- Expands Spark guidance so Deeds are explained as small story actions that earn Experience, with a separate Deed example card.
+- Rebuilds Attribute rows so secondary stats remain visible, the Rank control stays compact, and the Modifier sits opposite the Attribute name without expandable cards.
+- Adds breathing room between Faith/Oath selectors and their descriptive panels.
+- Sorts the attuned Lore to the top of Lore Spell groups and normalizes spell title capitalization.
+- Rechecks creator popups for desktop, tablet, and mobile width/scroll containment.
+- Renames the Adventure Kit action to Sell.
+- Converts starting wealth and Equipment & Gear pricing to NP with the requested 25% reduction pass.
+- Tightens the Language step, renames the extra language selector, and gives Species/Common/Additional language cards distinct treatments.
+- Rebuilds Review toward a character sheet: one-row Attributes, secondary stats, Weapons, richer Magic and Talent boxes, Equipment balance in the heading, and no retained-package sentence.
+- Places Back beside a narrower Create Character button.
 
-## Rhythm Engine and Combat Encounters
+## Character List and Settings
 
-- Attribute Check and Combat Encounters are separate selectable sheets.
-- Attribute Check uses Roll Type → Character Stat → Character Skill dependency; Skill is visibly disabled for roll types that do not use Skills.
-- Dropdown labels are compact and remove decorative dashes between labels and values.
-- Dedicated Combat Encounter pages are rebuilt toward a character-sheet layout. Click Attributes or applicable secondary stats to roll them; click saved Weapons to make their associated Melee/Ranged Strike against the current Target Ward.
-- Weapon cards expose the saved profile and calculated damage basis while retaining the existing advanced encounter panels for later expansion.
+- Keeps Complete and Incomplete characters in separate lists for future advancement/level-up work.
+- Adds a Grayscale switch beside the selected optional Background.
+- Limits Rules Recent/Common access to a 2 × 2 set.
 
 ## Rules
 
-- The Lore of Anthro Mundas sequence begins with Anthro Mundas; the redundant Brambleheart page is removed.
-- Previous/next navigation is added across References and every rules category, in addition to Fundamentals and Anthro Mundas.
-- Main-page secondary eyebrow titles are removed where they duplicated the page title.
-- FAQ typography is reduced. Rule-card title separators span the full card width, inner boxed fragments are flattened, and spacing is reduced.
-- Rules Recent/Common access is seeded with a useful default set even before local history exists.
+- Orders The Fundamentals as Introduction; Attributes & Skills; Dice Rules; Keywords & Ability Types; Core Abilities.
+- Adds matching accent rails to both sides of Fundamental section headings.
+- Presents Skill Trees as colored tree cards.
+- Renders Building Selu examples from Step-by-Step source material in dedicated Building Selu boxes and aligns creator examples to the source where applicable.
+- Presents Species Traits, Culture Traits, Talents, Spells, Abilities, and comparable rule entries in structured rule boxes where the source permits.
+- Adds source-backed Encounter Rating guidance from The Woodlands encounter reference.
+- Adds a Watcher monster index and an individual local reader page for every monster/companion exposed by The Woodlands monster index. Missing external stat blocks are not fabricated.
 
-## Themes, Header, Welcome, and Settings
+## Rhythm Engine and Encounter Sheets
 
-- Default returns as the first Theme, followed by Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster.
-- Theme palettes are darker, more distinct, and control full-site surfaces, primary controls, and Dark Mode rather than only menu accents.
-- Site logo grows one step from Beta 0.10 while the gap between the logo/header and navigation is reduced by roughly half.
-- Reset All Local Data clears welcome/install dismissal state and immediately returns to the Welcome page.
-- Splash install handling no longer attempts a missing browser install prompt.
-- All previous selectable backgrounds are removed from Settings. The only optional artwork is the supplied Ready For Adventure image, alongside Default.
+- Compresses Attribute Check target controls so Conditions, Target Type, and the selected target value share a practical row.
+- Replaces Combined Bonus with a dynamic roll statement such as “Weighted Strike Roll: Mettle (6) + Conditions (1) = 7,” omitting unused components.
+- Refines Combat Encounter pages further toward a pen-and-paper sheet with stronger identity, stat, weapon, roll, and rules sections while retaining clickable roll fields.
 
 ## Compatibility
 
 - Character storage remains `brambleheart-characters-v0.01`.
 - Encounter storage remains `brambleheart-simulator-encounters-v0.05`.
 - Rhythm history remains `brambleheart-simulator-rhythm-v0.05`.
-- PWA shell cache advances to v0.11.
+- PWA shell cache advances to v0.12.

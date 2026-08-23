@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.11</strong><small>Character-sheet encounters, visible character actions, stronger themes, rule navigation, and Ready For Adventure</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.12</strong><small>Creator polish, structured Rules, source-backed Watcher references, roll summaries, and character-sheet encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Refined Culture Skill selection, Deed guidance, Attribute rows, Oath/Faith spacing, spell ordering/capitalization, NP wealth, Languages, and Review.</li>
+          <li>Added background grayscale control and removed the paper backing behind the logo on image-backed pages.</li>
+          <li>Reordered Fundamentals, boxed Skill Trees/Species Traits and comparable Rules entries, and synchronized source-backed Building Selu examples.</li>
+          <li>Added Encounter Rating guidance plus an indexed local Rules page for every creature exposed by the supplied Woodlands monster reference without fabricating unavailable statistics.</li>
+          <li>Tightened Attribute Check targeting and added a dynamic sentence-form roll formula.</li>
+          <li>Refined Combat Encounter pages further toward a clickable pen-and-paper character-sheet presentation.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.11</strong><small>Character-sheet encounters, visible character actions, stronger themes, rule navigation, and Ready For Adventure</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Made Character List Edit, Lock, Copy, and Delete controls always visible and added clear Complete/Incomplete status treatment.</li>
           <li>Simplified creator identity to Character Name, Campaign, and Appearance; tightened Review, Languages, Talents, and creator popup layouts.</li>

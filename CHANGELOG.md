@@ -1,5 +1,13 @@
 # Site Changelog
 
+## Beta 0.12
+
+- Refined Character Creation Culture Skill selection, Deed guidance, Attributes, Faith/Oath spacing, spell ordering/capitalization, NP wealth, Languages, and Review character-sheet layout.
+- Added Background grayscale control, removed image-background backing behind the site logo, preserved Complete/Incomplete Character List groups, and limited Rules recent access to 2 × 2.
+- Reordered The Fundamentals, boxed Skill Trees/Species Traits and comparable Rules content, synchronized Building Selu examples, and added source-backed Encounter Rating/monster index pages.
+- Tightened Attribute Check target controls and added a descriptive dynamic roll formula.
+- Refined dedicated Combat Encounter pages further toward a clickable pen-and-paper character sheet.
+
 ## Beta 0.11
 
 - Added always-visible Character List actions and Complete/Incomplete status treatment; simplified creator identity to Name, Campaign, and Appearance.

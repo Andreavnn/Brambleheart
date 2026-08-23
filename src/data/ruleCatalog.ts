@@ -1,5 +1,6 @@
 import { ruleSourceDocuments, type RuleSourceSection } from './rulesSource'
 import { speciesData } from './speciesData'
+import { externalMonsters, monsterSlug } from './externalMonsters'
 
 export interface RuleSourceSlice { document: string; sections?: string[] }
 export interface RulePageDefinition {
@@ -42,10 +43,8 @@ export const quickReferencePages: RulePageDefinition[] = [
 
 const fundamentalPages: RulePageDefinition[] = [
   page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
-  page('dice-rules','Dice Rules','The Rhythm Engine, Conditions, Fortune and Misfortune, Edged and Weighted rolls, and Half-Step rolls.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
-  page('dice-roll','Dice Roll','How to make the core 3d10 roll and add the required stat.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS']}],undefined,['3d10','Roll']),
-  page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, skill trees, expanded skills, and restricted skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
-  page('attribute-skill-examples','Attribute & Skill Roll Examples','Examples and reference material for Attribute and Skill rolls.',[{document:'fundamentals'}]),
+  page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, Skills, Skill Trees, expanded Skills, and restricted Skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
+  page('dice-rules','Dice Rules','The Rhythm Engine, Conditions, Fortune and Misfortune, Edged and Weighted rolls, Half-Step rolls, and worked roll examples.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
   page('keywords-ability-types','Keywords & Ability Types','How Ability types and Keywords determine when and how Abilities can be used.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES']}],undefined,['Keyword','Ability']),
   page('core-abilities','Core Abilities','The shared Ability framework available during encounters.',[{document:'core-abilities',sections:['CORE ABILITIES','ABILITIES']}],undefined,['Ability']),
 ]
@@ -131,10 +130,13 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'watcher', title:'The Watcher', summary:'Encounter design, Threat Levels, Critters, traps, environments, Monsters, and rewards.', pages:[
-      ...[
-        ['encounters-threat-level','Encounters & Threat Level'],['critters','Critters'],['traps-environments','Traps & Environments'],['monsters','Monsters'],['rewards','Rewards'],
-      ].map(([slug,title])=>page(slug,title,`${title} reference.`,undefined,'This section is listed in the supplied table of contents, but a standalone Watcher chapter was not included in the supplied rules files.')),
+    id:'watcher', title:'The Watcher', summary:'Encounter design, Encounter Ratings, creatures, Monsters, environments, and rewards.', pages:[
+      page('encounters-threat-level','Encounters & Threat Level','Encounter Rating guidance adapted from the Woodlands encounter reference.'),
+      page('critters','Critters & Companions','Companions and creature references from the Woodlands monster index.'),
+      page('traps-environments','Traps & Environments','Hazards and environments used when building encounters.',undefined,'Detailed standalone trap and environment source text has not yet been supplied.'),
+      page('monsters','Monsters','Monster categories and individual creature pages sourced from the Woodlands monster index.'),
+      ...externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`)),
+      page('rewards','Rewards','Rewards and post-encounter guidance.',undefined,'Detailed standalone Watcher reward source text has not yet been supplied.'),
     ],
   },
 ]

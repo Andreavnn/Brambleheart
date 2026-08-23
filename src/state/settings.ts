@@ -11,6 +11,7 @@ type SettingsState = {
   boldText:boolean
   roleTheme:RoleTheme
   backgroundImage:BackgroundChoice
+  backgroundGrayscale:boolean
 }
 
 const storageKey='brambleheart-settings-v0.01'
@@ -21,6 +22,7 @@ const defaults:SettingsState={
   boldText:false,
   roleTheme:'default',
   backgroundImage:'none',
+  backgroundGrayscale:false,
 }
 const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
 const backgrounds:BackgroundChoice[]=['none','ready-for-adventure']
@@ -52,6 +54,7 @@ function loadSettings():SettingsState{
       boldText:Boolean(saved.boldText),
       roleTheme:normalizeRole(saved.roleTheme),
       backgroundImage:normalizeBackground(saved.backgroundImage??saved.background),
+      backgroundGrayscale:Boolean(saved.backgroundGrayscale),
     }
   }catch{return{...defaults}}
 }
@@ -65,6 +68,7 @@ function applySettings(){
   document.documentElement.dataset.boldText=state.boldText?'true':'false'
   document.documentElement.dataset.roleTheme=state.roleTheme
   document.documentElement.dataset.background=state.backgroundImage
+  document.documentElement.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
   delete document.documentElement.dataset.speciesTheme
 }
 watch(state,()=>{
@@ -80,6 +84,7 @@ export function useSettings(){
     boldText:toRef(state,'boldText'),
     roleTheme:toRef(state,'roleTheme'),
     backgroundImage:toRef(state,'backgroundImage'),
+    backgroundGrayscale:toRef(state,'backgroundGrayscale'),
     toggleTheme:()=>{state.darkMode=!state.darkMode},
     reset:()=>Object.assign(state,defaults),
   }

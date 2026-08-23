@@ -6,10 +6,10 @@ import { loadRecentRuleSlugs } from '../services/ruleRecent'
 
 const query=ref('')
 const recentSlugs=ref(loadRecentRuleSlugs())
-const defaultRecentSlugs=['dice-rules','attributes-skills','keywords-ability-types','character-creation','playable-species','spell-rules','to-strike','to-damage']
+const defaultRecentSlugs=['attributes-skills','dice-rules','character-creation','to-strike']
 const recentPages=computed(()=>{
   const slugs=Array.from(new Set([...recentSlugs.value,...defaultRecentSlugs]))
-  return slugs.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,8)
+  return slugs.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,4)
 })
 const searchResults=computed(()=>{
   const q=query.value.trim().toLowerCase()

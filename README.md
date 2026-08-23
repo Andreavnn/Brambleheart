@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.11
+# Brambleheart TTRPG — Beta 0.12
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.11 builds on the stable Beta 0.10 package and preserves the recovered Character Creation crash and page-boundary fixes.
+Beta 0.12 builds on the stable Beta 0.11 package and continues the Rules, Character Creation, Rhythm Engine, Encounter sheet, and presentation refinement pass.
 
 ## Main views
 
@@ -15,13 +15,12 @@ Beta 0.11 builds on the stable Beta 0.10 package and preserves the recovered Cha
 - Settings
 - Site Changelog
 
-## Beta 0.11 focus
+## Beta 0.12 focus
 
-- Character List now keeps Edit, Lock, Copy, and Delete visible and clearly marks Complete/Incomplete characters.
-- Character Creation identity is reduced to Character Name, Campaign, and a larger Appearance field.
-- Attribute Check and Combat Encounters are separate Rhythm Engine sheets; Skills turn off for roll types that do not use them.
-- Combat Encounters use a character-sheet presentation with clickable Attributes, secondary stats, weapons, and spells for common rolls.
-- Default plus Warrior, Ranger, Spellcaster, Healer, Thief, and Trickster themes now use stronger full-site light/dark palettes.
-- Anthro Mundas starts the setting-lore sequence; all rule sections gain previous/next navigation and rule cards are flatter and denser.
-- Reset Local Data returns to the Welcome page, and the splash install flow is more defensive when the browser install prompt is unavailable.
-- Settings now offers only the standard background and the supplied Ready For Adventure artwork.
+- Refines Character Creation Species, Spark/Deed, Culture Skill, Attribute, Oath/Faith, Spell, Language, Equipment, and Review presentation.
+- Rebalances starting Equipment & Gear values into NP and improves the creator's character-sheet review.
+- Expands Rules presentation with boxed Species Traits, Skill Trees, abilities, spells, talents, Building Selu examples, and section navigation.
+- Adds source-backed Watcher Encounter Rating guidance and an indexed page for each creature listed by The Woodlands monster reference without inventing unavailable stat blocks.
+- Tightens Attribute Check controls and replaces the Combined Bonus readout with a descriptive roll formula.
+- Pushes Combat Encounter pages further toward a pen-and-paper character-sheet presentation.
+- Adds a grayscale switch for the optional site background and removes the paper backing behind the site logo.
