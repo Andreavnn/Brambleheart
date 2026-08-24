@@ -13,7 +13,7 @@ import { ruleSourceDocuments } from '../data/rulesSource'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
 import { armorProfile, derivedStats, equipmentGutsBonus, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
-import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord } from '../services/characters'
+import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 
 const router = useRouter()
