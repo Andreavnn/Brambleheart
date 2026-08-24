@@ -22,8 +22,13 @@ const skills=computed(()=>Object.entries(character.value?.skillRanks||{}).sort((
 function skillCost(rank:number){return 3+rank}
 function raiseSkill(){const c=character.value;if(!c||!skillName.value)return;const current=Number(c.skillRanks?.[skillName.value]||0);spend(skillCost(current),()=>{c.skillRanks={...(c.skillRanks||{}),[skillName.value]:current+1}},`${skillName.value} Rank ${current+1}`)}
 function addSkill(){const c=character.value;if(!c||!newSkill.value)return;if(c.skillRanks?.[newSkill.value]){message.value='That Skill is already known.';return}spend(6,()=>{c.skillRanks={...(c.skillRanks||{}),[newSkill.value]:1};c.skills=Array.from(new Set([...(c.skills||[]),newSkill.value]))},`${newSkill.value} Rank 1`);newSkill.value=''}
-const talentOptions=computed(()=>ruleSourceDocuments.talents.sections.map(section=>section.heading).filter(name=>name&&name!=='Overview'&&name!=='TALENTS'&&!name.startsWith('KEYWORDS')).filter(name=>!character.value?.talents?.includes(name)).sort())
-function addTalent(){const c=character.value;if(!c||!newTalent.value)return;const talent=newTalent.value;spend(10,()=>{c.talents=Array.from(new Set([...(c.talents||[]),talent]))},talent);newTalent.value=''}
+const talentSections=ruleSourceDocuments.talents.sections.filter(section=>section.heading&&section.heading!=='Overview'&&section.heading!=='TALENTS'&&!section.heading.startsWith('KEYWORDS'))
+function talentText(name:string){const section=talentSections.find(item=>item.heading===name);return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')||''}
+function talentRequires(name:string){const match=talentText(name).match(/\bREQUIRES:\s*([^|]+?)(?=\s+KEYWORDS?:|$)/i);return match?.[1]?.trim().replace(/\s+Talent$/i,'')||''}
+function normalizeTalent(name:string){return name.toLowerCase().replace(/[’']/g,"'").replace(/\s+talent$/,'').trim()}
+function talentRequirementMet(name:string){const required=talentRequires(name);if(!required)return true;return (character.value?.talents||[]).some(owned=>normalizeTalent(owned)===normalizeTalent(required))}
+const talentOptions=computed(()=>talentSections.map(section=>section.heading).filter(name=>!character.value?.talents?.includes(name)&&talentRequirementMet(name)).sort())
+function addTalent(){const c=character.value;if(!c||!newTalent.value)return;const talent=newTalent.value;if(!talentRequirementMet(talent)){message.value=`${talent} requires ${talentRequires(talent)}.`;return}spend(10,()=>{c.talents=Array.from(new Set([...(c.talents||[]),talent]))},talent);newTalent.value=''}
 const magicLevel=computed(()=>Number(character.value?.magicLevel??(character.value?.path==='magic'?1:0)))
 function raiseMagic(){const c=character.value;if(!c)return;const current=magicLevel.value;const cost=10+(4*current);spend(cost,()=>{c.magicLevel=current+1},`Magic Level ${current+1}`)}
 function finish(){void router.push('/characters')}
