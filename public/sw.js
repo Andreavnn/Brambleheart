@@ -10,10 +10,26 @@ self.addEventListener('activate',event=>{
   self.clients.claim()
 })
 self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET')return
-  event.respondWith(fetch(event.request).then(response=>{
-    const copy=response.clone()
-    caches.open(CACHE).then(cache=>cache.put(event.request,copy)).catch(()=>undefined)
+  const request=event.request
+  if(request.method!=='GET')return
+  if(new URL(request.url).origin!==self.location.origin)return
+
+  if(request.mode==='navigate'){
+    event.respondWith(fetch(request).then(response=>{
+      if(response.ok){
+        const copy=response.clone()
+        caches.open(CACHE).then(cache=>cache.put('/',copy)).catch(()=>undefined)
+      }
+      return response
+    }).catch(()=>caches.match('/').then(cached=>cached||caches.match(request))))
+    return
+  }
+
+  event.respondWith(fetch(request).then(response=>{
+    if(response.ok){
+      const copy=response.clone()
+      caches.open(CACHE).then(cache=>cache.put(request,copy)).catch(()=>undefined)
+    }
     return response
-  }).catch(()=>caches.match(event.request).then(cached=>cached||caches.match('/'))))
+  }).catch(()=>caches.match(request)))
 })
