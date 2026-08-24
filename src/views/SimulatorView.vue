@@ -7,17 +7,17 @@ import { loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
-import { rhythmResult } from '../rules/rulesEngine'
-import { loadCharacters, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { armorProfile, derivedStats, equipmentGutsBonus, normalizeSkillName, rankModifier, rhythmResult, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
+import { characterStatus, loadCharacters, type CharacterRecord } from '../services/characters'
+import { readLocalStorage, RHYTHM_STORE, writeLocalStorage } from '../services/storage'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem } from '../services/customData'
 
 type RhythmMode='normal'|'edged'|'weighted'
 type TargetMode='none'|'passive'|'active'
 type RhythmResultValue=ReturnType<typeof rhythmResult>
 interface RhythmHistoryEntry{id:string;createdAt:string;rollType:string;mode:RhythmMode;stat:number;skillName:string;skillBonus:number;conditions:number;target:number|null;targetLabel:string;result:RhythmResultValue;fortunes:number;misfortunes:number}
-const RHYTHM_STORE='brambleheart-simulator-rhythm-v0.05'
 const sheet=ref<'attribute'|'character'>('attribute')
-const characters=ref<CharacterRecord[]>(loadCharacters().filter(character=>!character.draft))
+const characters=ref<CharacterRecord[]>(loadCharacters().filter(character=>characterStatus(character)!=='incomplete'))
 const selectedCharacterId=ref(characters.value[0]?.id||'')
 const selectedCharacter=computed(()=>selectedCharacterId.value?characters.value.find(character=>character.id===selectedCharacterId.value)||null:null)
 const customData=loadCustomData()
@@ -30,13 +30,12 @@ function isCustomTalent(name:string){return customTalents.some(item=>item.name==
 
 function die(){const a=new Uint32Array(1);crypto.getRandomValues(a);return(a[0]%10)+1}
 function dice(count:number){return Array.from({length:count},die)}
-function readStore<T>(key:string,fallback:T):T{try{return JSON.parse(localStorage.getItem(key)||'') as T}catch{return fallback}}
-function writeStore(key:string,value:unknown){localStorage.setItem(key,JSON.stringify(value))}
+function readStore<T>(key:string,fallback:T):T{try{return JSON.parse(readLocalStorage(key)||'') as T}catch{return fallback}}
+function writeStore(key:string,value:unknown){return writeLocalStorage(key,JSON.stringify(value))}
 function stamp(){return new Date().toISOString()}
 function formatTime(value:string){return new Date(value).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
-function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 function rank(c:CharacterRecord,key:'agility'|'might'|'hide'|'lore'|'bravery'){return Number(c.attributes?.[key]||0)}
-function skillModifier(value:number){return Number(value||0)*2}
+const skillModifier=rankModifier
 
 const rollTypes=['Attribute Save','Compelled','Initiative','Other','Role-Play','Skill Check','Strike','Ward'] as const
 const rollType=ref<(typeof rollTypes)[number]>('Attribute Save')
@@ -49,19 +48,20 @@ const characterStatKey=ref('agility')
 
 const allCharacterStats=computed(()=>{
   const c=selectedCharacter.value;if(!c)return[] as Array<{key:string;label:string;value:number;attribute:string}>
+  const secondary=derivedStats(c.attributes)
   return[
-    {key:'agility',label:'Agility',value:rank(c,'agility')*2,attribute:'Agility'},
-    {key:'might',label:'Might',value:rank(c,'might')*2,attribute:'Might'},
-    {key:'hide',label:'Hide',value:rank(c,'hide')*2,attribute:'Hide'},
-    {key:'lore',label:'Lore',value:rank(c,'lore')*2,attribute:'Lore'},
-    {key:'bravery',label:'Bravery',value:rank(c,'bravery')*2,attribute:'Bravery'},
-    {key:'speed',label:'Speed',value:2+rank(c,'agility'),attribute:'Agility'},
-    {key:'aim',label:'Aim',value:rank(c,'agility')*2,attribute:'Agility'},
-    {key:'mettle',label:'Mettle',value:rank(c,'might')*2,attribute:'Might'},
-    {key:'ward',label:'Ward',value:rank(c,'hide')*2,attribute:'Hide'},
-    {key:'control',label:'Control',value:rank(c,'lore')*2,attribute:'Lore'},
-    {key:'power',label:'Power',value:rank(c,'might'),attribute:'Might'},
-    {key:'guts',label:'Guts',value:rank(c,'hide'),attribute:'Hide'},
+    {key:'agility',label:'Agility',value:rankModifier(rank(c,'agility')),attribute:'Agility'},
+    {key:'might',label:'Might',value:rankModifier(rank(c,'might')),attribute:'Might'},
+    {key:'hide',label:'Hide',value:rankModifier(rank(c,'hide')),attribute:'Hide'},
+    {key:'lore',label:'Lore',value:rankModifier(rank(c,'lore')),attribute:'Lore'},
+    {key:'bravery',label:'Bravery',value:rankModifier(rank(c,'bravery')),attribute:'Bravery'},
+    {key:'speed',label:'Speed',value:secondary.speed,attribute:'Agility'},
+    {key:'aim',label:'Aim',value:secondary.aim,attribute:'Agility'},
+    {key:'mettle',label:'Mettle',value:secondary.mettle,attribute:'Might'},
+    {key:'ward',label:'Ward',value:secondary.ward,attribute:'Hide'},
+    {key:'control',label:'Control',value:secondary.control,attribute:'Lore'},
+    {key:'power',label:'Power',value:secondary.power,attribute:'Might'},
+    {key:'guts',label:'Guts',value:secondary.guts,attribute:'Hide'},
   ]
 })
 function allowedStatKeys(type:string){
@@ -104,28 +104,16 @@ const rollSummary=computed(()=>{
 })
 const currentTarget=computed(()=>targetMode.value==='passive'?Number(passiveTarget.value):targetMode.value==='active'&&activeTarget.value!==null?Number(activeTarget.value):null)
 function targetLabel(){if(targetMode.value==='active')return'Active Target';if(targetMode.value==='passive')return passiveTargets.find(([,value])=>value===Number(passiveTarget.value))?.[0]||'Passive Target';return'No Target'}
-function rollAttributeCheck(){const result=rhythmResult(dice(rhythmMode.value==='normal'?3:4),rhythmMode.value,rhythmCombinedStat.value,rhythmConditions.value);const kept=result.kept||result.rolled;const entry:RhythmHistoryEntry={id:crypto.randomUUID(),createdAt:stamp(),rollType:rollType.value,mode:rhythmMode.value,stat:effectiveRhythmStat.value,skillName:rollUsesSkill.value?rhythmSkill.value:'',skillBonus:rollUsesSkill.value?Number(rhythmSkillBonus.value||0):0,conditions:Number(rhythmConditions.value||0),target:currentTarget.value,targetLabel:targetLabel(),result,fortunes:kept.filter(value=>value>=8).length,misfortunes:kept.filter(value=>value<=2).length};rhythmHistory.value=[entry,...rhythmHistory.value].slice(0,5);writeStore(RHYTHM_STORE,rhythmHistory.value)}
+function rollAttributeCheck(){const result=rhythmResult(dice(rhythmMode.value==='normal'?3:4),rhythmMode.value,rhythmCombinedStat.value,rhythmConditions.value);const kept=result.kept||result.rolled;const entry:RhythmHistoryEntry={id:crypto.randomUUID(),createdAt:stamp(),rollType:rollType.value,mode:rhythmMode.value,stat:effectiveRhythmStat.value,skillName:rollUsesSkill.value?rhythmSkill.value:'',skillBonus:rollUsesSkill.value?Number(rhythmSkillBonus.value||0):0,conditions:Number(rhythmConditions.value||0),target:currentTarget.value,targetLabel:targetLabel(),result,fortunes:kept.filter(value=>value>=8).length,misfortunes:kept.filter(value=>value<=2).length};rhythmHistory.value=[entry,...rhythmHistory.value].slice(0,5);const saved=writeStore(RHYTHM_STORE,rhythmHistory.value);if(!saved.ok)alert(saved.message)}
 function rollOutcome(entry:RhythmHistoryEntry){if(entry.target===null)return'';return entry.result.total>=entry.target?'SUCCESS':'FAILURE'}
 
-const gearGutsBonus=computed(()=>Math.max(0,...(selectedCharacter.value?.equipment||[]).map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0})))
-const secondaryStats=computed(()=>{const c=selectedCharacter.value;if(!c)return null;return{speed:2+rank(c,'agility'),aim:rank(c,'agility')*2,mettle:rank(c,'might')*2,ward:rank(c,'hide')*2,control:rank(c,'lore')*2,power:rank(c,'might'),guts:rank(c,'hide')}})
-const reviewGuts=computed(()=>Number(secondaryStats.value?.guts||0)+gearGutsBonus.value)
+const gearGutsBonus=computed(()=>equipmentGutsBonus(selectedCharacter.value?.equipment))
+const secondaryStats=computed(()=>selectedCharacter.value?derivedStats(selectedCharacter.value.attributes):null)
+const reviewGuts=computed(()=>selectedCharacter.value?derivedStats(selectedCharacter.value.attributes,gearGutsBonus.value).guts:0)
 const selectedSkills=computed(()=>{const c=selectedCharacter.value;if(!c)return[];const ranks=c.skillRanks&&Object.keys(c.skillRanks).length?c.skillRanks:Object.fromEntries((c.skills||[]).map(name=>[normalizeSkillName(name),1]));return Object.entries(ranks).map(([name,value])=>({name:normalizeSkillName(name),rank:Number(value)})).sort((a,b)=>a.name.localeCompare(b.name))})
 const weapons=computed(()=>selectedCharacter.value?.equipment?.filter(item=>item.category==='Weapon')||[])
 const armor=computed(()=>selectedCharacter.value?.equipment?.filter(item=>item.category==='Armor & Shield')||[])
 const otherGear=computed(()=>selectedCharacter.value?.equipment?.filter(item=>!['Weapon','Armor & Shield'].includes(item.category||''))||[])
-function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
-function labeledValue(detail:string,label:string){const part=profileParts(detail).find(value=>value.toLowerCase().startsWith(label.toLowerCase()));return part?part.slice(label.length).trim():'—'}
-function weaponProfile(item:PurchasedEquipment|undefined){
-  if(!item)return{name:'—',damage:'—',range:'—',properties:'—',weight:'—'}
-  const parts=profileParts(item.detail||'');const properties=parts.find(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))||'—'
-  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'—'
-  return{name:item.name,damage:labeledValue(item.detail||'','Damage'),range,properties,weight:labeledValue(item.detail||'','Weight')}
-}
-function armorProfile(item:PurchasedEquipment|undefined){
-  if(!item)return{name:'—',guts:'—',mana:'—',stealth:'—',might:'—',weight:'—'}
-  return{name:item.name,guts:labeledValue(item.detail||'','Guts Bonus'),mana:labeledValue(item.detail||'','Mana Syphon'),stealth:labeledValue(item.detail||'','Stealth Condition'),might:labeledValue(item.detail||'','Might Requirement'),weight:labeledValue(item.detail||'','Weight')}
-}
 const weaponSlots=computed(()=>Array.from({length:Math.max(3,weapons.value.length)},(_,index)=>weaponProfile(weapons.value[index])))
 const armorSlots=computed(()=>Array.from({length:Math.max(2,armor.value.length)},(_,index)=>armorProfile(armor.value[index])))
 
@@ -134,9 +122,6 @@ const talentSections=ruleSourceDocuments.talents.sections
 function talentText(name:string){const custom=customTalents.find(item=>item.name===name);if(custom)return custom.text;const section=talentSections.find(item=>talentNameMatches(item.heading,name));return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')||''}
 function talentKeywords(name:string){const custom=customTalents.find(item=>item.name===name);if(custom)return custom.keywords;const match=talentText(name).match(/\bKEYWORDS?:\s*(.+)$/i);return match?match[1].split('|').map(item=>item.trim()).filter(Boolean):[]}
 function talentCategory(name:string){const custom=customTalents.find(item=>item.name===name);if(custom&&custom.category&&custom.category!=='Combat')return custom.category;return classifyTalent(name,talentText(name),talentKeywords(name))}
-type StructuredField={label:string;value:string}
-function structuredRule(text:string):{intro:string;fields:StructuredField[]}{const labels=['COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTION','RESTRICTIONS','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS'];const rx=new RegExp(`\\b(${labels.join('|')}):\\s*`,'gi');const matches=Array.from(text.matchAll(rx));if(!matches.length)return{intro:text.trim(),fields:[]};const intro=text.slice(0,matches[0].index).trim();const fields=matches.map((match,index)=>({label:match[1].toUpperCase().replace('DECLEAR','DECLARE'),value:text.slice((match.index||0)+match[0].length,index+1<matches.length?matches[index+1].index:text.length).trim()}));return{intro,fields}}
-function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST'&&field.label!=='KEYWORDS')}
 function spellLoreClass(name:string){return `spell-lore-${String(spellDetail(name)?.lore||'invocation').toLowerCase()}`}
 const magicLevel=computed(()=>Number(selectedCharacter.value?.magicLevel??(selectedCharacter.value?.path==='magic'?1:0)))
 const manaPerRound=computed(()=>2+magicLevel.value)
@@ -147,7 +132,7 @@ function effectiveMana(name:string){const detail=spellDetail(name);if(!detail||d
 const loreCharacterSpells=computed(()=>characterSpells.value.filter(name=>!selectedCharacter.value?.invocationSpells?.includes(name)&&name!==selectedCharacter.value?.invocationSpell).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
 const invocationCharacterSpells=computed(()=>characterSpells.value.filter(name=>selectedCharacter.value?.invocationSpells?.includes(name)||name===selectedCharacter.value?.invocationSpell).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
 const selectedPathName=computed(()=>selectedCharacter.value?.path==='magic'?'Wind-Touched':'Gifted Heart')
-function attributeModifier(value:number){return Number(value||0)*2}
+const attributeModifier=rankModifier
 </script>
 
 <template>

@@ -2,8 +2,9 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import { attributes, homelands, sparks } from '../data/bramble'
+import { attributes, BUILD, homelands, sparks } from '../data/bramble'
 import { canonicalTalentName } from '../data/talentCategories'
+import { derivedStats, equipmentGutsBonus } from '../rules/rulesEngine'
 import { characterExportPayload, characterStatus, downloadJson, loadCharacters, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
 
 const router=useRouter()
@@ -25,7 +26,7 @@ function editCharacter(id:string){void router.push({path:'/characters/create',qu
 function copyCharacter(id:string){const previous=snapshot();const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,status:characterStatus(source)==='incomplete'?'incomplete':'unapproved',draft:characterStatus(source)==='incomplete',locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist(previous)}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c&&(characterStatus(c)==='approved'||c.locked)){alert(characterStatus(c)==='approved'?'Remove approval before deleting this character.':'Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;const previous=snapshot();characters.value=characters.value.filter(item=>item.id!==id);persist(previous)}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.19',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:BUILD,characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -45,8 +46,7 @@ async function importCharacter(event:Event){
 }
 function homelandSkills(name:string){return homelands.find(h=>h.name===name)?.skills.join(' · ')||'—'}
 function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
-function equipmentGuts(c:CharacterRecord){return Math.max(0,...(c.equipment||[]).map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0}))}
-function derived(c:CharacterRecord){return{speed:2+c.attributes.agility,aim:c.attributes.agility*2,mettle:c.attributes.might*2,ward:c.attributes.hide*2,control:c.attributes.lore*2,power:c.attributes.might,guts:c.attributes.hide+equipmentGuts(c)}}
+function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment))}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${Number(rank)*2}`).join(' · ')
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
@@ -75,7 +75,7 @@ function skillSummary(character:CharacterRecord){
       <details v-for="group in [{title:'Approved Characters',characters:approvedCharacters,tone:'approved'},{title:'Unapproved Characters',characters:unapprovedCharacters,tone:'complete'},{title:'Incomplete Characters',characters:incompleteCharacters,tone:'incomplete'}]" :key="group.title" class="character-list-group" :class="`character-list-group-${group.tone}`" open>
         <summary class="character-list-group-heading"><div><h2>{{ group.title }}</h2><small>{{ group.characters.length }} {{ group.characters.length===1?'character':'characters' }}</small></div><span class="character-group-chevron" aria-hidden="true">⌄</span></summary>
         <div v-if="group.characters.length" class="saved-list-stack character-list-stack">
-        <article v-for="character in group.characters" :key="character.id" class="saved-list-card card-surface character-card" :class="{pinned:character.pinned,locked:character.locked,draft:characterStatus(character)==='incomplete','character-status-incomplete':characterStatus(character)==='incomplete','character-status-complete':characterStatus(character)!=='incomplete'}">
+        <article v-for="character in group.characters" :key="character.id" class="saved-list-card card-surface character-card" :class="{pinned:character.pinned,locked:character.locked,approved:characterStatus(character)==='approved',draft:characterStatus(character)==='incomplete','character-status-incomplete':characterStatus(character)==='incomplete','character-status-complete':characterStatus(character)!=='incomplete'}">
           <div class="character-card-topline">
             <button class="saved-list-open-area character-open-area" type="button" @click="toggle(character.id)">
               <div>

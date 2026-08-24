@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { dismissWelcomeInstallPromptPermanently, hasDismissedWelcomeInstallPrompt, markWelcomeSeen } from '../services/welcome'
 import { canInstall, isInstalled, requestInstall } from '../state/install'
 import { BUILD } from '../data/bramble'
+import { externalLinks } from '../data/links'
 import { useSettings } from '../state/settings'
 
 const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
@@ -43,8 +44,8 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
       <section class="welcome-support-block">
         <div><p class="eyebrow">DONATION</p><h2>Support Brambleheart</h2><p>Voluntary support helps cover development, hosting, and the services used to keep Brambleheart available.</p></div>
         <div class="welcome-support-actions" aria-label="Brambleheart donation options">
-          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a>
-          <a class="secondary-button welcome-support-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a>
+          <a class="secondary-button welcome-support-button" :href="externalLinks.donation" target="_blank" rel="noopener noreferrer">Donation</a>
+          <a class="secondary-button welcome-support-button" :href="externalLinks.recurringSupport" target="_blank" rel="noopener noreferrer">Recurring Support</a>
         </div>
       </section>
 

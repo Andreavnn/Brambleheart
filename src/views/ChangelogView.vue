@@ -9,7 +9,32 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.19</strong><small>Theme depth, shared card styling, Rules parent pages, Ability Targeting, and responsive sheet cleanup</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.21</strong><small>Mobile Text Size repair, cumulative source normalization, route/status consistency, and repository integrity</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Fixed the mobile Text Size control at its canonical CSS definition by removing the fixed flex basis that became vertical height when Settings rows stack.</li>
+          <li>Rolled the source-normalization work forward cumulatively from the actual GitHub Beta 0.19 application baseline instead of layering another override on the contaminated stylesheet.</li>
+          <li>Kept obsolete Old.Dex/builder/game CSS, oversized Welcome tests, dead theme rules, and stale background references removed.</li>
+          <li>Canonicalized Ability Targeting to the <code>ability-targeting</code> route while preserving the former Area-of-Effect URL as a compatibility alias.</li>
+          <li>Removed the unused parallel rule-chapter catalog from <code>bramble.ts</code> so Rules navigation has one authoritative data source.</li>
+          <li>Removed unused encounter-era helpers/service exports and centralized Level Up XP prices through the shared advancement-cost calculator.</li>
+          <li>Centralized rank modifiers, derived statistics, equipment/Ability parsing, storage keys, and external support links instead of maintaining parallel view-specific implementations.</li>
+          <li>Unified Rhythm Engine character filtering with explicit character status, preserved Approved-only Level Up, and corrected Custom Data/roll-history failure handling.</li>
+          <li>Synchronized package, build, export, PWA cache, and release-document versions and documented replacement of the invalid two-byte <code>Banner_AnthroMundas.png</code> from the genuine historical artwork stored under the original <code>Banner_AthroMundas.png</code> filename.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.20</strong><small>Welcome repair, stylesheet decontamination, theme consolidation, and storage reliability cleanup</small></span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Removed the obsolete oversized Welcome-logo scale test and rebuilt responsive Welcome/header identity sizing without clipping or horizontal overflow.</li>
+          <li>Removed unrelated Old.Dex army-builder/game CSS and retired Brambleheart patch-layer selectors from the global stylesheet.</li>
+          <li>Consolidated active text-size, role-theme, surface, and background contracts and removed dead Species-theme/retired-background rules.</li>
+          <li>Centralized browser-storage operations behind the guarded storage service and simplified Reset Local Data while preserving Display settings.</li>
+          <li>Renamed the residual Old.Dex-derived Rule Reader implementation class and retained historical Old.Dex changelog references only as release history.</li>
+          <li>Retested legacy character migration, approval persistence, approval removal, and Approved-only Level Up behavior.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.19</strong><small>Theme depth, shared card styling, Rules parent pages, Ability Targeting, and responsive sheet cleanup</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Swapped Healer and Trickster palettes, corrected surface depth across themes, refined separator colors, and adjusted Skullfen Ruins positioning.</li>
           <li>Moved Donation detail text inside its panel, removed Clear Dice Rolls indentation, and refined Settings presentation.</li>

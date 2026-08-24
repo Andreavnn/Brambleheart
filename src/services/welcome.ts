@@ -1,15 +1,9 @@
-const welcomeKey = 'brambleheart.welcome.v0.05'
-const installDismissKey = 'brambleheart.install-welcome-dismissed.v0.04'
+import { readLocalStorage, STORAGE_KEYS, writeLocalStorage } from './storage'
 
-export function hasSeenWelcome() {
-  return typeof window !== 'undefined' && localStorage.getItem(welcomeKey) === 'true'
-}
-export function markWelcomeSeen() {
-  if (typeof window !== 'undefined') localStorage.setItem(welcomeKey, 'true')
-}
-export function hasDismissedWelcomeInstallPrompt() {
-  return typeof window !== 'undefined' && localStorage.getItem(installDismissKey) === 'true'
-}
-export function dismissWelcomeInstallPromptPermanently() {
-  if (typeof window !== 'undefined') localStorage.setItem(installDismissKey, 'true')
-}
+const welcomeKey=STORAGE_KEYS.welcomeSeen
+const installDismissKey=STORAGE_KEYS.installWelcomeDismissed
+
+export function hasSeenWelcome(){return readLocalStorage(welcomeKey)==='true'}
+export function markWelcomeSeen(){writeLocalStorage(welcomeKey,'true')}
+export function hasDismissedWelcomeInstallPrompt(){return readLocalStorage(installDismissKey)==='true'}
+export function dismissWelcomeInstallPromptPermanently(){writeLocalStorage(installDismissKey,'true')}

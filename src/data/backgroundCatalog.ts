@@ -4,15 +4,7 @@ export interface BackgroundOption {
   url:string
 }
 
-// Legacy images are excluded at import time so they are not emitted into production bundles
-// even if an older checkout still contains the files.
-const modules=import.meta.glob([
-  '../assets/backgrounds/*.{png,jpg,jpeg,webp}',
-  '!../assets/backgrounds/the-crossway-hearth.png',
-  '!../assets/backgrounds/deepwood-ruins.png',
-  '!../assets/backgrounds/mushroom-isles.png',
-  '!../assets/backgrounds/leviathans-wreck.png',
-],{
+const modules=import.meta.glob('../assets/backgrounds/*.{png,jpg,jpeg,webp}',{
   eager:true,
   query:'?url',
   import:'default',

@@ -1,4 +1,4 @@
-export function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
+function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
 
 export function rhythmResult(dice: number[], mode: 'normal'|'edged'|'weighted'='normal', stat=0, conditions=0) {
   const rolled = dice.map(Number)
@@ -13,36 +13,6 @@ export function rhythmResult(dice: number[], mode: 'normal'|'edged'|'weighted'='
   return { rolled, kept, dropped, natural, stat:Number(stat)||0, conditions:Number(conditions)||0, total:natural+(Number(stat)||0)+(Number(conditions)||0) }
 }
 
-export function opposedResult(strikeDice: number[], strikeStat=0, strikeConditions=0, wardDice: number[], wardStat=0, wardConditions=0) {
-  const strike = rhythmResult(strikeDice, 'normal', strikeStat, strikeConditions)
-  const ward = rhythmResult(wardDice, 'normal', wardStat, wardConditions)
-  return { strike, ward, hit: strike.total > ward.total }
-}
-
-export function effectiveGuts(category: 'standard'|'direct'|'lethal', hideRank=0, equipment=0, conditions=0) {
-  const base = Math.max(0, Number(hideRank)||0)
-  const gear = Math.max(0, Number(equipment)||0)
-  const cond = Number(conditions)||0
-  if (category === 'lethal') return Math.max(0, cond)
-  if (category === 'direct') return Math.max(0, Math.max(1, Math.ceil((base + gear) / 2)) + cond)
-  return Math.max(0, base + gear + cond)
-}
-
-export function damageResult(damage: number, category: 'standard'|'direct'|'lethal', hideRank: number, equipment: number, conditions: number) {
-  const incoming = Math.max(0, Number(damage)||0)
-  const guts = effectiveGuts(category, hideRank, equipment, conditions)
-  return { incoming, guts, suffered: Math.max(0, incoming - guts) }
-}
-
-export function healthPenalty(health: number) {
-  const value = Number(health)
-  if (value <= 0) return null
-  if (value <= 1) return -3
-  if (value <= 3) return -2
-  if (value <= 5) return -1
-  return 0
-}
-
 export function advancementCost(type: 'attribute'|'skill'|'new-skill'|'talent'|'magic', currentRank=1) {
   const rank = Math.max(0, Number(currentRank)||0)
   if (type === 'attribute') return 2 + (2 * rank)
@@ -52,3 +22,63 @@ export function advancementCost(type: 'attribute'|'skill'|'new-skill'|'talent'|'
   if (type === 'magic') return 10 + (4 * rank)
   return 0
 }
+
+export type CoreAttributeRanks = {
+  agility:number
+  might:number
+  hide:number
+  lore:number
+  bravery:number
+}
+
+export type EquipmentProfileSource = {
+  name:string
+  detail?:string
+}
+
+export function rankModifier(rank:number){return Number(rank||0)*2}
+
+export function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
+
+export function equipmentGutsBonus(items:Array<{detail?:string}>|undefined){
+  return Math.max(0,...(items||[]).map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0}))
+}
+
+export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0){
+  const agility=Number(attributes.agility||0),might=Number(attributes.might||0),hide=Number(attributes.hide||0),lore=Number(attributes.lore||0)
+  return{speed:2+agility,aim:rankModifier(agility),mettle:rankModifier(might),ward:rankModifier(hide),control:rankModifier(lore),power:might,guts:hide+Math.max(0,Number(gutsBonus)||0)}
+}
+
+function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
+function labeledProfileValue(detail:string,label:string){const part=profileParts(detail).find(value=>value.toLowerCase().startsWith(label.toLowerCase()));return part?part.slice(label.length).trim():'—'}
+
+export function weaponProfile(item:EquipmentProfileSource|undefined){
+  if(!item)return{name:'—',damage:'—',range:'—',properties:'—',weight:'—'}
+  const parts=profileParts(item.detail||'')
+  const properties=parts.find(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))||'—'
+  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'—'
+  return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range,properties,weight:labeledProfileValue(item.detail||'','Weight')}
+}
+
+export function armorProfile(item:EquipmentProfileSource|undefined){
+  if(!item)return{name:'—',guts:'—',mana:'—',stealth:'—',might:'—',weight:'—'}
+  return{name:item.name,guts:labeledProfileValue(item.detail||'','Guts Bonus'),mana:labeledProfileValue(item.detail||'','Mana Syphon'),stealth:labeledProfileValue(item.detail||'','Stealth Condition'),might:labeledProfileValue(item.detail||'','Might Requirement'),weight:labeledProfileValue(item.detail||'','Weight')}
+}
+
+export type StructuredRuleField={label:string;value:string}
+const STRUCTURED_RULE_LABELS=['OPEN DEFENCE','COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTION','RESTRICTIONS','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS'] as const
+
+export function structuredRule(text:string):{intro:string;fields:StructuredRuleField[]}{
+  const source=String(text||'')
+  const rx=new RegExp(`\\b(${STRUCTURED_RULE_LABELS.join('|')}):\\s*`,'gi')
+  const matches=Array.from(source.matchAll(rx))
+  if(!matches.length)return{intro:source.trim(),fields:[]}
+  const intro=source.slice(0,matches[0].index).trim()
+  const fields=matches.map((match,index)=>({
+    label:match[1].toUpperCase().replace('DECLEAR','DECLARE'),
+    value:source.slice((match.index||0)+match[0].length,index+1<matches.length?matches[index+1].index:source.length).trim(),
+  })).filter(field=>field.value)
+  return{intro,fields}
+}
+
+export function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST'&&field.label!=='KEYWORDS')}

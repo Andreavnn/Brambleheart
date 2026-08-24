@@ -1,7 +1,8 @@
 import { reactive, toRef, watch } from 'vue'
 import { backgroundIds, backgroundUrl } from '../data/backgroundCatalog'
+import { readLocalStorage, SETTINGS_STORE, writeLocalStorage } from '../services/storage'
 
-export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
+export type FontSize = 'smallest' | 'small' | 'normal' | 'large' | 'largest'
 export type RoleTheme = 'default' | 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
 export type BackgroundChoice = string
 
@@ -16,7 +17,6 @@ type SettingsState = {
   bootAudio:boolean
 }
 
-const storageKey='brambleheart-settings-v0.01'
 const defaults:SettingsState={
   darkMode:false,
   compactRows:false,
@@ -30,7 +30,9 @@ const defaults:SettingsState={
 const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
 
 function normalizeFontSize(value:unknown):FontSize{
-  if(['smaller','small','normal','large','larger'].includes(String(value)))return value as FontSize
+  if(['smallest','small','normal','large','largest'].includes(String(value)))return value as FontSize
+  if(value==='smaller')return'smallest'
+  if(value==='larger')return'largest'
   if(value==='medium')return'normal'
   return'normal'
 }
@@ -47,7 +49,7 @@ function normalizeBackground(value:unknown):BackgroundChoice{
 function loadSettings():SettingsState{
   if(typeof window==='undefined')return{...defaults}
   try{
-    const saved=JSON.parse(localStorage.getItem(storageKey)||'{}')
+    const saved=JSON.parse(readLocalStorage(SETTINGS_STORE)||'{}')
     const legacyTheme=saved.theme
     const inferredDark=typeof saved.darkMode==='boolean'?saved.darkMode:legacyTheme==='dark'
     return{
@@ -77,12 +79,11 @@ function applySettings(){
   root.dataset.bootAudio=state.bootAudio?'true':'false'
   const url=backgroundUrl(state.backgroundImage)
   root.style.setProperty('--bh-selected-background',url?`url(${JSON.stringify(url)})`:'none')
-  delete root.dataset.speciesTheme
 }
 watch(state,()=>{
   state.backgroundImage=normalizeBackground(state.backgroundImage)
   applySettings()
-  if(typeof window!=='undefined')localStorage.setItem(storageKey,JSON.stringify(state))
+  if(typeof window!=='undefined')writeLocalStorage(SETTINGS_STORE,JSON.stringify(state))
 },{deep:true,immediate:true})
 
 export function useSettings(){
@@ -99,4 +100,3 @@ export function useSettings(){
     reset:()=>Object.assign(state,defaults),
   }
 }
-export function resetSettings(){Object.assign(state,defaults)}

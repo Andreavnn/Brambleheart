@@ -1,4 +1,4 @@
-import { writeLocalStorage, type StorageWriteResult } from './storage'
+import { readLocalStorage, removeLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type CustomDataType='species'|'spell'|'talent'|'trait'
 export type CustomTraitKind='species'|'culture'
@@ -55,7 +55,7 @@ export interface CustomTraitItem extends CustomBase {
 }
 export type CustomDataItem=CustomSpeciesItem|CustomSpellItem|CustomTalentItem|CustomTraitItem
 
-export const CUSTOM_DATA_STORE='brambleheart-custom-data-v0.14'
+export const CUSTOM_DATA_STORE=STORAGE_KEYS.customData
 
 function text(value:unknown){return typeof value==='string'?value.trim():''}
 function stringList(value:unknown){return Array.isArray(value)?value.map(text).filter(Boolean):[]}
@@ -110,8 +110,7 @@ export function parseCustomDataText(raw:string):CustomDataParseResult{
   return{items,skipped:values.length-items.length,total:values.length}
 }
 export function loadCustomData():CustomDataItem[]{
-  if(typeof localStorage==='undefined')return[]
-  try{const raw=JSON.parse(localStorage.getItem(CUSTOM_DATA_STORE)||'[]');return Array.isArray(raw)?raw.map(normalizeOne).filter((item):item is CustomDataItem=>Boolean(item)):[]}
+  try{const raw=JSON.parse(readLocalStorage(CUSTOM_DATA_STORE)||'[]');return Array.isArray(raw)?raw.map(normalizeOne).filter((item):item is CustomDataItem=>Boolean(item)):[]}
   catch{return[]}
 }
 export function saveCustomData(items:CustomDataItem[]):StorageWriteResult{return writeLocalStorage(CUSTOM_DATA_STORE,JSON.stringify(items))}
@@ -120,7 +119,7 @@ export function mergeCustomData(existing:CustomDataItem[],incoming:CustomDataIte
   incoming.forEach(item=>map.set(item.id,item))
   return Array.from(map.values()).sort((a,b)=>a.type.localeCompare(b.type)||a.name.localeCompare(b.name))
 }
-export function clearCustomData(){if(typeof localStorage!=='undefined')localStorage.removeItem(CUSTOM_DATA_STORE)}
+export function clearCustomData():StorageWriteResult{return removeLocalStorage(CUSTOM_DATA_STORE)}
 export function customDataCounts(items:CustomDataItem[]){
   return items.reduce((out,item)=>{out[item.type]=(out[item.type]||0)+1;return out},{species:0,spell:0,talent:0,trait:0} as Record<CustomDataType,number>)
 }

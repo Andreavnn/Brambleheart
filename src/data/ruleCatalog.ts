@@ -104,7 +104,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
       page('encounter-setup','Encounter & Setup','Starting a combat encounter, positions, squares, measurements, and opposed Strike/Ward context.',[{document:'battle',sections:['THE BATTLES','COMBAT ENCOUNTER','DETERMINING POSITIONS','SQUARES & MEASUREMENTS','TO HIT','TO DEFEND']}]),
       page('rounds-turns','Rounds & Turns','Initiative Order, rounds, turns, turn timing, performing Abilities, and combat Mana.',[{document:'battle',sections:['INITIATIVE ORDER','ROUNDS & TURNS','TAKING YOUR TURN','PREFORMING ABILITIES','MANA']}],undefined,['Initiative','Round','Turn','Mana']),
       page('combat-abilities','Combat Abilities','Shared combat Abilities and the attack framework.',[{document:'battle',sections:['CORE ABILITIES','COMBAT ABILITIES']}],undefined,['Ability','Combat']),
-      page('area-of-effect','Ability Targeting','Combat Range, Direct, Line, Cone, Orb, and impassable collision on the battle grid.',undefined,'Targeting geometry begins in the supplied Winds of Magic rules and is organized here as a general Ability targeting reference for future combat use.',['Ability Targeting','Combat Range','Touch','Direct','Line','Cone','Orb','Targeting']),
+      page('ability-targeting','Ability Targeting','Combat Range, Direct, Line, Cone, Orb, and impassable collision on the battle grid.',undefined,'Targeting geometry begins in the supplied Winds of Magic rules and is organized here as a general Ability targeting reference for future combat use.',['Ability Targeting','Combat Range','Touch','Direct','Line','Cone','Orb','Targeting']),
       page('to-strike','To Strike','Melee, ranged, and magical Strike rolls.',[{document:'battle',sections:['TO HIT']}]),
       page('to-ward','To Ward','Ward rolls and opposed defense.',[{document:'battle',sections:['TO DEFEND']}]),
       page('to-damage','To Damage','Applying damage after a successful attack.',[{document:'battle',sections:['TO DAMAGE','TO SOAK','DAMAGE – GUTS = TOTAL DAMAGE']}]),
@@ -146,6 +146,7 @@ const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.na
 export const allRulePages = [referencesLanding, ...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => [category.landing,...category.pages]), ...monsterRulePages]
 export const fundamentalsNavigation = fundamentalPages.map(({slug,title})=>({slug,title}))
 const ruleAliases:Record<string,string>={
+  'area-of-effect':'ability-targeting',
   'initiative-order':'rounds-turns',
   'your-turn':'rounds-turns',
   'mana':'rounds-turns',

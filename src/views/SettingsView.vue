@@ -6,8 +6,10 @@ import { canInstall, installMessage, isInstalled, requestInstall } from '../stat
 import { useSettings, type FontSize, type RoleTheme } from '../state/settings'
 import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
+import { externalLinks } from '../data/links'
 import { characterStatus, loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
+import { localStorageKeys, removeLocalStorage, RHYTHM_STORE, SETTINGS_STORE } from '../services/storage'
 
 const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, backgroundGrayscale, bootAudio, reset } = useSettings()
@@ -18,7 +20,7 @@ const customCounts=computed(()=>customDataCounts(customData.value))
 const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'None loaded')
 
 const fontOptions:Array<{value:FontSize;label:string}>=[
-  {value:'smaller',label:'Smallest'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Largest'},
+  {value:'smallest',label:'Smallest'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'largest',label:'Largest'},
 ]
 const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
   {value:'default',label:'Default',description:'The standard Brambleheart parchment, moss, and woodland palette.'},
@@ -46,14 +48,18 @@ function clearCharacters(mode:CharacterClearMode){
   const current=loadCharacters();const next=current.filter(character=>!characterMatchesClearMode(character,mode))
   const saved=writeCharacters(next);if(!saved.ok)alert(saved.message)
 }
-function clearDiceRolls(){if(confirm('Clear the stored Dice Roller history?'))localStorage.removeItem('brambleheart-simulator-rhythm-v0.05')}
+function clearDiceRolls(){
+  if(!confirm('Clear the stored Dice Roller history?'))return
+  const removed=removeLocalStorage(RHYTHM_STORE);if(!removed.ok)alert(removed.message)
+}
 function clearAllLocalData(){
   if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, Dice Roller history, custom data, and welcome state. Display settings are preserved.'))return
-  const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-rules-recent-v0.06','brambleheart-rules-recent-v0.07','brambleheart-rules-recent-v0.08','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart-custom-data-v0.08','brambleheart-custom-data-name-v0.08','brambleheart-custom-data-v0.14','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.welcome.v0.06','brambleheart.welcome.v0.07','brambleheart.welcome.v0.08','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05','brambleheart.install-welcome-dismissed.v0.06','brambleheart.install-welcome-dismissed.v0.07','brambleheart.install-welcome-dismissed.v0.08']
-  keys.forEach(key=>localStorage.removeItem(key));customData.value=[];void router.replace('/welcome')
+  const keys=localStorageKeys().filter(key=>key.startsWith('brambleheart')&&key!==SETTINGS_STORE)
+  for(const key of keys){const removed=removeLocalStorage(key);if(!removed.ok){alert(removed.message);return}}
+  customData.value=[];void router.replace('/welcome')
 }
-function reportIssue(){window.open('https://github.com/Andreavnn/Brambleheart/issues','_blank','noopener,noreferrer')}
-function openDiscord(){window.open('https://discord.gg/NHf3YdueHE','_blank','noopener,noreferrer')}
+function reportIssue(){window.open(externalLinks.issues,'_blank','noopener,noreferrer')}
+function openDiscord(){window.open(externalLinks.discord,'_blank','noopener,noreferrer')}
 async function importCustomData(event:Event){
   const input=event.target as HTMLInputElement
   const files=Array.from(input.files||[])
@@ -76,7 +82,7 @@ async function importCustomData(event:Event){
   }catch(error){customImportMessage.value=error instanceof Error?error.message:'Custom Data must use a recognized Brambleheart JSON template.'}
   finally{input.value=''}
 }
-function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?'))return;clearCustomDataStore();customData.value=[]}
+function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?'))return;const cleared=clearCustomDataStore();if(!cleared.ok){alert(cleared.message);return}customData.value=[]}
 </script>
 
 <template>
@@ -102,7 +108,7 @@ function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?')
       <div class="setting-row reset-setting-row"><span><strong>Reset Local Settings</strong><small>Restore display, theme, and background preferences to their defaults.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reset">Reset</button></div>
     </section></section>
 
-    <section class="settings-group compact-donation-group" aria-label="Donation"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DONATION</p></div><section class="settings-card support-settings-card"><p class="donation-panel-detail">Support Brambleheart development with a one-time donation or recurring contribution.</p><div class="support-button-row compact-support-buttons"><a class="secondary-button support-action-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a><a class="secondary-button support-action-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a></div></section></section>
+    <section class="settings-group compact-donation-group" aria-label="Donation"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DONATION</p></div><section class="settings-card support-settings-card"><p class="donation-panel-detail">Support Brambleheart development with a one-time donation or recurring contribution.</p><div class="support-button-row compact-support-buttons"><a class="secondary-button support-action-button" :href="externalLinks.donation" target="_blank" rel="noopener noreferrer">Donation</a><a class="secondary-button support-action-button" :href="externalLinks.recurringSupport" target="_blank" rel="noopener noreferrer">Recurring Support</a></div></section></section>
 
     <section class="settings-group" aria-label="Data and content settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div><section class="settings-card">
       <details class="reset-data-settings-panel"><summary><span><strong>Reset Local Data</strong><small>Manage characters, recent rules, Dice Roller history, custom data, and local welcome state.</small></span><span class="value-chip">MANAGE</span></summary><div class="reset-data-option-list">

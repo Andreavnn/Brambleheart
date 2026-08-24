@@ -11,8 +11,9 @@ import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
+import { armorProfile, derivedStats, equipmentGutsBonus, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
-import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 
 const router = useRouter()
@@ -47,26 +48,6 @@ const customSpellItems=computed(()=>customData.value.filter((item):item is Custo
 const customTalentItems=computed(()=>customData.value.filter((item):item is CustomTalentItem=>item.type==='talent'))
 const customTraitItems=computed(()=>customData.value.filter((item):item is CustomTraitItem=>item.type==='trait'))
 
-interface StructuredField { label:string; value:string }
-const STRUCTURED_LABELS = ['OPEN DEFENCE','COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTIONS','RESTRICTION','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS']
-const STRUCTURED_RE = new RegExp(`\\b(${STRUCTURED_LABELS.join('|')}):`, 'gi')
-function structuredRule(text:string):{ intro:string; fields:StructuredField[] } {
-  const matches = [...text.matchAll(STRUCTURED_RE)]
-  if (!matches.length) return { intro:text.trim(), fields:[] }
-  const intro = text.slice(0, matches[0].index).trim()
-  const fields:StructuredField[] = []
-  for (let i=0;i<matches.length;i++) {
-    const match=matches[i]
-    const start=(match.index||0)+match[0].length
-    const end=i+1<matches.length?(matches[i+1].index||text.length):text.length
-    let label=match[1].toUpperCase()
-    if(label==='DECLEAR') label='DECLARE'
-    const value=text.slice(start,end).trim()
-    if(label!=='KEYWORDS'&&value) fields.push({label,value})
-  }
-  return {intro,fields}
-}
-function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST')}
 function manaCostFromText(text:string){const match=text.match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
 function singleKeywords(values:string[]|undefined){return Array.from(new Set((values||[]).flatMap(value=>String(value).split(/[|,;]+/).map(item=>item.trim()).filter(Boolean))))}
 const abilityCostKeywords=new Set(['Root','Move','Movement','Combat','Reaction','Reactive','Instinct','Passive'])
@@ -188,13 +169,12 @@ const remaining=computed(()=>5-spent.value)
 const STARTING_WEALTH_NP=188
 const ADVENTURE_KIT_SELL_NP=11
 function adjustedGearCostNp(item:{costSp:number}){return Math.max(1,Math.round(Number(item.costSp||0)*5*.75))}
-const startingWealth=computed(()=>form.adventureKit?STARTING_WEALTH_NP:STARTING_WEALTH_NP+ADVENTURE_KIT_SELL_NP)
-const spentWealth=computed(()=>form.equipment.reduce((sum,item)=>sum+Number(item.costNp??Math.max(1,Math.round(Number(item.costSp||0)*5*.75))),0))
+const startingWealth=computed(()=>STARTING_WEALTH_NP+(form.adventureKit?0:ADVENTURE_KIT_SELL_NP))
+const spentWealth=computed(()=>form.equipment.reduce((sum,item)=>sum+Number(item.costNp??adjustedGearCostNp(item)),0))
 const wealthRemaining=computed(()=>Math.max(0,startingWealth.value-spentWealth.value))
 const threadpieceBreakdown=computed(()=>{const total=Math.max(0,wealthRemaining.value);const bp=Math.floor(total/10);const remBp=total%10;const sp=Math.floor(remBp/5);const np=remBp%5;return{bp,sp,np,wp:0}})
 const isCustomHomeland=computed(()=>form.homeland==='__custom__')
 const homelandDetail=computed(()=>isCustomHomeland.value?null:homelandDetails[form.homeland])
-function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 const homelandCoreSkills=computed(()=>Array.from(new Set((homelandDetail.value?.skills||[]).map(normalizeSkillName))))
 const homelandOptionalSkills=computed(()=>Array.from(new Set((homelandDetail.value?.optionalReplacements||[]).map(normalizeSkillName))).filter(skill=>!homelandCoreSkills.value.includes(skill)))
 const homelandSkillPool=computed(()=>{
@@ -278,21 +258,13 @@ function loreDescription(name:string){return loreDescriptions[name]||`A custom L
 function isCustomSpell(name:string){return Boolean(form.allowCustomData&&customSpellItems.value.some(item=>item.name===name))}
 const invalidTalents=computed(()=>form.talents.filter(Boolean).filter(name=>!talentRequirementMet(name)))
 
-const derived=computed(()=>({
-  speed:2+form.attributes.agility,
-  aim:form.attributes.agility*2,
-  mettle:form.attributes.might*2,
-  ward:form.attributes.hide*2,
-  control:form.attributes.lore*2,
-  power:form.attributes.might,
-  guts:form.attributes.hide,
-}))
-const gearGutsBonus=computed(()=>Math.max(0,...form.equipment.map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0})))
-const reviewGuts=computed(()=>derived.value.guts+gearGutsBonus.value)
+const gearGutsBonus=computed(()=>equipmentGutsBonus(form.equipment))
+const derived=computed(()=>derivedStats(form.attributes))
+const reviewGuts=computed(()=>derivedStats(form.attributes,gearGutsBonus.value).guts)
 const selectedPathName=computed(()=>form.path==='magic'?'Wind-Touched':'Gifted Heart')
 const secondaryStats:Record<AttributeId,Array<{name:string;formula:string;description:string;slug?:string}>>={
   agility:[
-    {name:'Speed',formula:'2 + Agility Rank',description:'Speed contributes to movement and is used when determining Initiative.',slug:'initiative-order'},
+    {name:'Speed',formula:'2 + Agility Rank',description:'Speed contributes to movement and is used when determining Initiative.',slug:'rounds-turns'},
     {name:'Aim',formula:'Agility × 2',description:'Aim is the stat used by ranged Strike rolls.',slug:'to-strike'},
   ],
   might:[
@@ -306,8 +278,8 @@ const secondaryStats:Record<AttributeId,Array<{name:string;formula:string;descri
   lore:[{name:'Control',formula:'Lore × 2',description:'Control is used by magical Strike rolls and magical interactions.',slug:'to-strike'}],
   bravery:[],
 }
-function attributeModifier(rank:number){return rank*2}
-function skillModifier(rank:number){return rank*2}
+const attributeModifier=rankModifier
+const skillModifier=rankModifier
 function adjust(id:AttributeId,delta:number){const current=form.attributes[id];if(delta>0&&(current>=3||remaining.value<=0))return;if(delta<0&&current<=1)return;form.attributes[id]+=delta}
 
 function sourceParagraphs(documentKey:string,heading:string){
@@ -472,18 +444,6 @@ function addEquipment(item:typeof gearShopItems[number]){const costNp=adjustedGe
 function removeEquipment(index:number){form.equipment.splice(index,1)}
 const reviewWeapons=computed(()=>form.equipment.filter(item=>item.category==='Weapon'))
 const reviewArmor=computed(()=>form.equipment.filter(item=>item.category==='Armor & Shield'))
-function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
-function labeledValue(detail:string,label:string){const part=profileParts(detail).find(value=>value.toLowerCase().startsWith(label.toLowerCase()));return part?part.slice(label.length).trim():'—'}
-function weaponProfile(item:PurchasedEquipment|undefined){
-  if(!item)return{name:'—',damage:'—',range:'—',properties:'—',weight:'—'}
-  const parts=profileParts(item.detail||'');const properties=parts.find(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))||'—'
-  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'—'
-  return{name:item.name,damage:labeledValue(item.detail||'','Damage'),range,properties,weight:labeledValue(item.detail||'','Weight')}
-}
-function armorProfile(item:PurchasedEquipment|undefined){
-  if(!item)return{name:'—',guts:'—',mana:'—',stealth:'—',might:'—',weight:'—'}
-  return{name:item.name,guts:labeledValue(item.detail||'','Guts Bonus'),mana:labeledValue(item.detail||'','Mana Syphon'),stealth:labeledValue(item.detail||'','Stealth Condition'),might:labeledValue(item.detail||'','Might Requirement'),weight:labeledValue(item.detail||'','Weight')}
-}
 const weaponSlots=computed(()=>Array.from({length:Math.max(3,reviewWeapons.value.length)},(_,index)=>weaponProfile(reviewWeapons.value[index])))
 const armorSlots=computed(()=>Array.from({length:Math.max(2,reviewArmor.value.length)},(_,index)=>armorProfile(reviewArmor.value[index])))
 
@@ -607,7 +567,7 @@ function buildRecord(draft:boolean):CharacterRecord{
     invocationSpells:form.path==='magic'?[...form.invocationSpells.filter(Boolean)]:undefined,
     languages:[...languages.value], equipment:[...form.equipment], adventureKit:form.adventureKit,
     startingWealth:startingWealth.value, wealthRemaining:wealthRemaining.value, wealthCurrency:'NP',
-    attributes:{...form.attributes}, status:draft?'incomplete':(originalStatus.value==='approved'?'approved':'unapproved'), draft, locked:draft?false:false, creationStep:stepId.value,
+    attributes:{...form.attributes}, status:draft?'incomplete':(originalStatus.value==='approved'?'approved':'unapproved'), draft, locked:false, creationStep:stepId.value,
     createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
 }

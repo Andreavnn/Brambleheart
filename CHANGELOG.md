@@ -1,3 +1,29 @@
+# Brambleheart Beta 0.21
+
+- Fixed the mobile Settings Text Size control at its canonical definition: removed the fixed flex basis that became vertical height when Settings rows stack on narrow screens, so the five size buttons remain a compact single control.
+- Rolled the Beta 0.20 source-normalization work forward cumulatively because the current GitHub application source was still on the Beta 0.19 implementation baseline.
+- Kept the cleaned Brambleheart-only stylesheet as the authoritative source instead of adding another override layer; obsolete Old.Dex/builder/game selectors, oversized Welcome tests, dead theme rules, and superseded implementation blocks remain removed.
+- Canonicalized the Ability Targeting route slug to `ability-targeting` while retaining `area-of-effect` only as a backward-compatible URL alias.
+- Removed the unused legacy `ruleChapters` catalog from `bramble.ts` so Rules metadata has one authoritative catalog instead of a stale parallel definition.
+- Removed unused encounter-era rules helpers and unused service exports, and routed Level Up advancement prices through the shared `advancementCost` function so XP costs are not implemented twice.
+- Centralized rank modifiers, derived character statistics, equipment profile parsing, equipment Guts bonuses, and structured Ability-field parsing in the shared rules engine so Character Creation and Rhythm Engine do not maintain parallel implementations.
+- Unified Rhythm Engine completed-character filtering with the explicit Incomplete / Unapproved / Approved status model and preserved Approved-only Level Up behavior.
+- Centralized storage keys and external support/donation links, made Rhythm roll-history write failures visible, and corrected Custom Data clearing so the UI is updated only after browser storage confirms the deletion succeeded.
+- Applied the intended Approved visual state class to approved Character List cards.
+- Synchronized package, visible build, character export, character-list export, PWA cache, README, patch notes, and in-app changelog versions to Beta 0.21.
+- Identified the current GitHub `Banner_AnthroMundas.png` as a two-byte CRLF placeholder rather than a valid image; repository history confirms the genuine 2,696,927-byte artwork remains available in commit `0a5ddb56e9e3eaa5b4fe6301b150c59351ee547b` under the original typo filename `Banner_AthroMundas.png`, with restoration instructions isolated from uploadable patch files.
+
+# Brambleheart Beta 0.20
+
+- Removed the obsolete Beta 0.09 oversized Welcome-logo scale test that was overriding current responsive sizing and clipping the splash identity.
+- Purged unrelated Old.Dex/army-builder CSS and retired Brambleheart patch-layer selectors from the global stylesheet, then consolidated active text-size, theme, surface, header, and Welcome definitions.
+- Reduced the global stylesheet from roughly 3,900 lines to about 1,400 active Brambleheart lines while retaining currently used component selectors and responsive behavior.
+- Removed dead Species-theme CSS and obsolete background-asset exclusions/references, leaving one active role-theme and background contract.
+- Centralized browser-storage reads, writes, removals, and key enumeration behind the safe storage service; simplified Reset Local Data so it clears Brambleheart data without a hard-coded historical-key list while preserving Display settings.
+- Renamed the residual Old.Dex-derived Rule Reader CSS hook to a Brambleheart-neutral source rule section name.
+- Preserved the explicit Incomplete / Unapproved / Approved character status model and Approved-only Level Up behavior from the Beta 0.18 reliability hotfix.
+- Advanced the visible build, character export markers, and PWA shell cache to Beta 0.20.
+
 # Brambleheart Beta 0.19
 
 - Swapped the Healer and Trickster theme palettes, corrected foreground/background surface hierarchy across themes, and refined dark-theme separators.

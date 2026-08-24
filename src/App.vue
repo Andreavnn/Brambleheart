@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import { BUILD } from './data/bramble'
+import { externalLinks } from './data/links'
 import { isInstalled, requestInstall } from './state/install'
 import './state/settings'
 
@@ -9,9 +10,9 @@ const route = useRoute()
 const showGlobalPageTools = computed(() => route.name !== 'welcome')
 
 function reportIssue() {
-  if (typeof window !== 'undefined') window.open('https://github.com/Andreavnn/Brambleheart/issues', '_blank', 'noopener,noreferrer')
+  if (typeof window !== 'undefined') window.open(externalLinks.issues, '_blank', 'noopener,noreferrer')
 }
-function openDiscord(){if(typeof window!=='undefined')window.open('https://discord.gg/NHf3YdueHE','_blank','noopener,noreferrer')}
+function openDiscord(){if(typeof window!=='undefined')window.open(externalLinks.discord,'_blank','noopener,noreferrer')}
 
 </script>
 
