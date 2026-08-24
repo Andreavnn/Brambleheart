@@ -6,7 +6,6 @@ import LevelUpView from './views/LevelUpView.vue'
 import RulesView from './views/RulesView.vue'
 import RuleReaderView from './views/RuleReaderView.vue'
 import SimulatorView from './views/SimulatorView.vue'
-import EncounterView from './views/EncounterView.vue'
 import SettingsView from './views/SettingsView.vue'
 import ChangelogView from './views/ChangelogView.vue'
 import { hasSeenWelcome } from './services/welcome'
@@ -22,7 +21,6 @@ const router=createRouter({
     {path:'/characters/:id/level-up',name:'level-up-character',component:LevelUpView},
     {path:'/rules',name:'rules',component:RulesView},
     {path:'/rules/read/:slug',name:'rule-reader',component:RuleReaderView},
-    {path:'/simulator/encounters/:id',name:'encounter',component:EncounterView},
     {path:'/simulator',name:'simulator',component:SimulatorView},
     {path:'/settings',name:'settings',component:SettingsView},
     {path:'/changelog',name:'changelog',component:ChangelogView},

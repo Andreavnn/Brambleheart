@@ -1,26 +1,27 @@
-# Brambleheart TTRPG — Beta 0.13
+# Brambleheart TTRPG — Beta 0.14
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.13 builds on the current Beta 0.12 package and continues the Rules, Character Creation, Rhythm Engine, Encounter sheet, and presentation refinement pass.
+Beta 0.14 builds on the stable Beta 0.13 package and focuses on typed custom content, automatic background discovery, and consolidating the Rhythm Engine around saved-character tools.
 
 ## Main views
 
 - Welcome / Splash
 - Character List
 - Guided Character Creation
+- Character Level Up
 - Rules / Rule Reader
-- Rhythm Engine — Attribute Check
-- Combat Encounter sheets
+- Rhythm Engine — Attribute Check and Character Sheet
 - Settings
 - Site Changelog
 
-## Beta 0.13 focus
+## Beta 0.14 focus
 
-- Refines Character Creation Species, Spark/Deed, Culture Skill, Attribute, Oath/Faith, Spell, Language, Equipment, and Review presentation.
-- Rebalances starting Equipment & Gear values into NP and improves the creator's character-sheet review.
-- Expands Rules presentation with boxed Species Traits, Skill Trees, abilities, spells, talents, Building Selu examples, and section navigation.
-- Adds source-backed Watcher Encounter Rating guidance and an indexed page for each creature listed by The Woodlands monster reference without inventing unavailable stat blocks.
-- Tightens Attribute Check controls and replaces the Combined Bonus readout with a descriptive roll formula.
-- Pushes Combat Encounter pages further toward a pen-and-paper character-sheet presentation.
-- Adds a grayscale switch for the optional site background and removes the paper backing behind the site logo.
+- Adds a downloadable Custom Data template pack for Species, Spells, Talents, and Traits, with typed import recognition and clear Custom labeling.
+- Adds an Allow Custom Data switch to Character Creation so imported content remains opt-in per character.
+- Automatically discovers supported images placed in `src/assets/backgrounds` and exposes them in Settings after the next build.
+- Adds the supplied Skullfen Ruins and Blightbound Horror artwork to the background catalog while retaining Ready For Adventure and Thornwick Market.
+- Removes background-description copy from Settings and keeps background selection visually compact.
+- Labels Strike-oriented Attribute Check stats by attack use: Shooting, Melee, and Magic.
+- Replaces the former Combat Encounter section in the Rhythm Engine with a saved-character Character Sheet and moves character selection into a shared panel beneath the tool tabs.
+- Removes the active runtime route to the legacy Encounter view and cleans obsolete Simulator encounter dependencies from the live navigation path.

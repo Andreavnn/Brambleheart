@@ -1,8 +1,9 @@
 import { reactive, toRef, watch } from 'vue'
+import { backgroundIds, backgroundUrl } from '../data/backgroundCatalog'
 
 export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
 export type RoleTheme = 'default' | 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
-export type BackgroundChoice = 'none' | 'ready-for-adventure' | 'thornwick-market' | 'skullfen-ruins'
+export type BackgroundChoice = string
 
 type SettingsState = {
   darkMode:boolean
@@ -25,7 +26,6 @@ const defaults:SettingsState={
   backgroundGrayscale:false,
 }
 const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
-const backgrounds:BackgroundChoice[]=['none','ready-for-adventure','thornwick-market','skullfen-ruins']
 
 function normalizeFontSize(value:unknown):FontSize{
   if(['smaller','small','normal','large','larger'].includes(String(value)))return value as FontSize
@@ -39,7 +39,8 @@ function normalizeRole(value:unknown):RoleTheme{
 }
 function normalizeBackground(value:unknown):BackgroundChoice{
   if(value==='default')return'none'
-  return backgrounds.includes(value as BackgroundChoice)?value as BackgroundChoice:'none'
+  const id=String(value||'none')
+  return backgroundIds.includes(id)?id:'none'
 }
 function loadSettings():SettingsState{
   if(typeof window==='undefined')return{...defaults}
@@ -62,16 +63,20 @@ function loadSettings():SettingsState{
 const state=reactive<SettingsState>(loadSettings())
 function applySettings(){
   if(typeof document==='undefined')return
-  document.documentElement.dataset.theme=state.darkMode?'dark':'light'
-  document.documentElement.dataset.density=state.compactRows?'compact':'comfortable'
-  document.documentElement.dataset.fontSize=state.fontSize
-  document.documentElement.dataset.boldText=state.boldText?'true':'false'
-  document.documentElement.dataset.roleTheme=state.roleTheme
-  document.documentElement.dataset.background=state.backgroundImage
-  document.documentElement.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
-  delete document.documentElement.dataset.speciesTheme
+  const root=document.documentElement
+  root.dataset.theme=state.darkMode?'dark':'light'
+  root.dataset.density=state.compactRows?'compact':'comfortable'
+  root.dataset.fontSize=state.fontSize
+  root.dataset.boldText=state.boldText?'true':'false'
+  root.dataset.roleTheme=state.roleTheme
+  root.dataset.background=state.backgroundImage
+  root.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
+  const url=backgroundUrl(state.backgroundImage)
+  root.style.setProperty('--bh-selected-background',url?`url(${JSON.stringify(url)})`:'none')
+  delete root.dataset.speciesTheme
 }
 watch(state,()=>{
+  state.backgroundImage=normalizeBackground(state.backgroundImage)
   applySettings()
   if(typeof window!=='undefined')localStorage.setItem(storageKey,JSON.stringify(state))
 },{deep:true,immediate:true})

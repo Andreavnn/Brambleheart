@@ -10,6 +10,7 @@ import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 
 const router = useRouter()
 const route = useRoute()
@@ -26,10 +27,14 @@ const cultureReplaceIndex = ref(0)
 const talentPickerOpen = ref(false)
 const talentSearch = ref('')
 const talentTab = ref('All')
-const openAttribute = ref<AttributeId | null>(null)
 const draftId = ref<string | null>(null)
 const originalCreatedAt = ref<string | null>(null)
 const pathTouched = ref(false)
+const customData=ref(loadCustomData())
+const customSpeciesItems=computed(()=>customData.value.filter((item):item is CustomSpeciesItem=>item.type==='species'))
+const customSpellItems=computed(()=>customData.value.filter((item):item is CustomSpellItem=>item.type==='spell'))
+const customTalentItems=computed(()=>customData.value.filter((item):item is CustomTalentItem=>item.type==='talent'))
+const customTraitItems=computed(()=>customData.value.filter((item):item is CustomTraitItem=>item.type==='trait'))
 
 interface StructuredField { label:string; value:string }
 const STRUCTURED_LABELS = ['OPEN DEFENCE','COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTIONS','RESTRICTION','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS']
@@ -57,31 +62,41 @@ function singleKeywords(values:string[]|undefined){return Array.from(new Set((va
 const talentSections = ruleSourceDocuments.talents.sections.filter(section =>
   section.heading !== 'Overview' && section.heading !== 'TALENTS' && !section.heading.startsWith('KEYWORDS')
 )
+function customTalent(name:string){return form.allowCustomData?customTalentItems.value.find(item=>item.name===name):undefined}
 function talentText(name:string) {
+  const custom=customTalent(name)
+  if(custom)return custom.text
   const section=talentSections.find(item=>item.heading===name)
   return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ') || ''
 }
 function talentRequires(name:string) {
+  const custom=customTalent(name)
+  if(custom?.requires)return custom.requires
   const match=talentText(name).match(/\bREQUIRES:\s*([^|]+?)(?=\s+KEYWORDS?:|$)/i)
   return match?.[1]?.trim().replace(/\s+Talent$/i,'') || ''
 }
 function talentKeywords(name:string) {
+  const custom=customTalent(name)
+  if(custom)return custom.keywords
   const match=talentText(name).match(/\bKEYWORDS?:\s*(.+)$/i)
   return match ? match[1].split('|').map(item=>item.trim()).filter(Boolean) : []
 }
+function isCustomTalent(name:string){return Boolean(form.allowCustomData&&customTalentItems.value.some(item=>item.name===name))}
 function normalizeTalent(name:string){return name.toLowerCase().replace(/[’']/g,"'").replace(/\s+talent$/,'').trim()}
 function talentRequirementMet(name:string) {
   const required=talentRequires(name)
   if(!required) return true
   return form.talents.some(other=>other && other!==name && normalizeTalent(other)===normalizeTalent(required))
 }
-const talentNames = computed(() => [...talentSections.map(section=>section.heading)].sort((a,b)=>{
+const talentNames = computed(() => [...talentSections.map(section=>section.heading),...(form.allowCustomData?customTalentItems.value.map(item=>item.name):[])].filter((name,index,array)=>array.indexOf(name)===index).sort((a,b)=>{
   const ar=Boolean(talentRequires(a)), br=Boolean(talentRequires(b))
   if(ar!==br) return ar?1:-1
   return a.localeCompare(b)
 }))
 
 function talentCategory(name:string){
+  const custom=customTalent(name)
+  if(custom)return custom.category
   const hay=`${name} ${talentText(name)} ${talentKeywords(name).join(' ')}`.toLowerCase()
   if(/spell|mana|magic|lore|invocation/.test(hay))return'Magic'
   if(/strike|weapon|combat|attack|damage|ward/.test(hay))return'Combat'
@@ -96,16 +111,29 @@ const talentTabs=computed(()=>['All',...talentGroups.value.map(group=>group.cate
 const filteredTalentPicker=computed(()=>{const q=talentSearch.value.trim().toLowerCase();return talentNames.value.filter(name=>(talentTab.value==='All'||talentCategory(name)===talentTab.value)&&(!q||`${name} ${talentText(name)} ${talentKeywords(name).join(' ')}`.toLowerCase().includes(q)))})
 
 function cultureId(speciesName:string,name:string){return `${speciesName}::${name}`}
-function ownCultureIds(speciesName:string){return (speciesByName[speciesName]?.cultureTraits||[]).slice(0,2).map(trait=>cultureId(speciesName,trait.name))}
+function customSpecies(name:string){return form.allowCustomData?customSpeciesItems.value.find(item=>item.name===name):undefined}
+function speciesDataFor(name:string){
+  const custom=customSpecies(name)
+  if(custom)return{...custom,custom:true}
+  const builtin=speciesByName[name]
+  return builtin?{...builtin,custom:false}:null
+}
+const availableSpecies=computed(()=>Array.from(new Set([...species,...(form.allowCustomData?customSpeciesItems.value.map(item=>item.name):[])])).sort())
+const allAvailableCultureTraits=computed(()=>{
+  const builtin=allCultureTraits.map(trait=>({...trait,custom:false as const}))
+  if(!form.allowCustomData)return builtin
+  const embedded=customSpeciesItems.value.flatMap(item=>item.cultureTraits.map(trait=>({...trait,species:item.name,custom:true as const})))
+  const standalone=customTraitItems.value.filter(item=>item.traitKind==='culture').map(item=>({name:item.name,text:item.text,keywords:item.keywords,species:item.species,skillGrants:item.skillGrants,custom:true as const}))
+  return[...builtin,...embedded,...standalone]
+})
+function ownCultureIds(speciesName:string){return (speciesDataFor(speciesName)?.cultureTraits||[]).slice(0,2).map(trait=>cultureId(speciesName,trait.name))}
 function findCulture(id:string){
   const [speciesName,...rest]=id.split('::'); const name=rest.join('::')
-  const data=speciesByName[speciesName]
-  const trait=data?.cultureTraits.find(item=>item.name===name)
-  return trait?{...trait,species:speciesName}:null
+  return allAvailableCultureTraits.value.find(trait=>trait.species===speciesName&&trait.name===name)||null
 }
 
 const form = reactive({
-  name:'', campaignName:'', age:'', appearance:'', pronouns:'', kinship:'',
+  name:'', campaignName:'', age:'', appearance:'', pronouns:'', kinship:'', allowCustomData:false,
   species:'',
   cultureTraits:[] as string[],
   cultureSkillChoices:{} as Record<string,string>,
@@ -148,7 +176,8 @@ const stepId=computed(()=>stepDefs.value[stepIndex.value]?.id||'species')
 const stepNumber=computed(()=>stepIndex.value+1)
 const totalSteps=computed(()=>stepDefs.value.length)
 
-const selectedSpeciesData=computed(()=>form.species?speciesByName[form.species]:null)
+const selectedSpeciesData=computed(()=>form.species?speciesDataFor(form.species):null)
+const selectedSpeciesTraits=computed(()=>{const base=(selectedSpeciesData.value?.speciesTraits||[]).map(trait=>({...trait,custom:Boolean(selectedSpeciesData.value?.custom)}));if(!form.allowCustomData||!form.species)return base;const extra=customTraitItems.value.filter(item=>item.traitKind==='species'&&item.species===form.species).map(item=>({name:item.name,text:item.text,keywords:item.keywords,custom:true}));return[...base,...extra]})
 const selectedSpeciesImage=computed(()=>form.species?speciesImagePaths[form.species]||'':'')
 const selectedCultureTraits=computed(()=>form.cultureTraits.map(findCulture).filter((item):item is NonNullable<ReturnType<typeof findCulture>>=>Boolean(item)))
 const spent=computed(()=>Object.values(form.attributes).reduce((sum,rank)=>sum+rank-1,0))
@@ -205,30 +234,37 @@ const filteredGear=computed(()=>{
   const q=shopSearch.value.trim().toLowerCase()
   return gearShopItems.filter(item=>(gearTab.value==='All'||gearTabFor(item)===gearTab.value)&&(!q||`${item.name} ${item.category} ${item.detail} ${gearDescription(item)} ${gearEffect(item)}`.toLowerCase().includes(q))).slice(0,120)
 })
-const cultureTabs=computed(()=>['All',...Array.from(new Set(allCultureTraits.map(trait=>trait.species))).sort()])
+const cultureTabs=computed(()=>['All',...Array.from(new Set(allAvailableCultureTraits.value.map(trait=>trait.species))).sort()])
 const filteredCultureTraits=computed(()=>{
   const q=cultureSearch.value.trim().toLowerCase()
-  return allCultureTraits
+  return allAvailableCultureTraits.value
     .filter(trait=>cultureTab.value==='All'||trait.species===cultureTab.value)
     .filter(trait=>!form.cultureTraits.includes(cultureId(trait.species,trait.name)))
     .filter(trait=>!q||`${trait.name} ${trait.species} ${trait.text} ${(trait.keywords||[]).join(' ')}`.toLowerCase().includes(q))
 })
 const nativeLanguage=computed(()=>selectedSpeciesData.value?.language.split(',')[0]?.trim()||'Native Language')
-const languageOptions=computed(()=>Array.from(new Set(Object.values(speciesByName).map(entry=>entry.language.split(',')[0]?.trim()).filter(Boolean) as string[])).filter(language=>language!==nativeLanguage.value&&language!=='Commonspeak').sort())
+const languageOptions=computed(()=>Array.from(new Set([...Object.values(speciesByName).map(entry=>entry.language.split(',')[0]?.trim()),...(form.allowCustomData?customSpeciesItems.value.map(entry=>entry.language.split(',')[0]?.trim()):[])].filter(Boolean) as string[])).filter(language=>language!==nativeLanguage.value&&language!=='Commonspeak').sort())
 const languages=computed(()=>form.species?[nativeLanguage.value,'Commonspeak',form.additionalLanguage].filter(Boolean):['Commonspeak',form.additionalLanguage].filter(Boolean))
 function languageDescription(name:string){
   if(name==='Commonspeak')return'Every Species receives Commonspeak alongside its native tongue during character creation.'
-  for(const entry of Object.values(speciesByName)){const [language,...detail]=entry.language.split(',');if(language?.trim()===name)return detail.join(',').trim().replace(/,$/,'')}
+  for(const entry of [...Object.values(speciesByName),...(form.allowCustomData?customSpeciesItems.value:[])]){const [language,...detail]=entry.language.split(',');if(language?.trim()===name)return detail.join(',').trim().replace(/,$/,'')}
   return'This language is learned through travel, study, kinship, work, or another community.'
 }
 const magicLevel=computed(()=>form.path==='magic'&&pathTouched.value?1:0)
 const manaPerRound=computed(()=>2+magicLevel.value)
 const startingMana=computed(()=>manaPerRound.value)
 const manaTraitNotes=computed(()=>selectedCultureTraits.value.filter(trait=>/mana/i.test(trait.text)&&/(generate|regenerat|restore)/i.test(trait.text)).map(trait=>`${trait.name}: ${trait.text}`))
-const signatureSpell=computed(()=>form.loreAttunement?(loreSpells[form.loreAttunement]?.[0]||''):'')
-const signatureDetail=computed(()=>signatureSpell.value?spellDetails[signatureSpell.value]:undefined)
-const invocationOptions=computed(()=>loreSpells.Invocation||[])
-const regularSpellGroups=computed(()=>[...attunableLores].sort((a,b)=>Number(b===form.loreAttunement)-Number(a===form.loreAttunement)).map(lore=>({lore,spells:(loreSpells[lore]||[]).slice(1)})))
+function customSpell(name:string){return form.allowCustomData?customSpellItems.value.find(item=>item.name===name):undefined}
+function spellDetail(name:string){const custom=customSpell(name);return custom?{name:custom.name,lore:custom.lore,flavor:custom.flavor,rules:custom.rules,manaCost:custom.manaCost,keywords:custom.keywords}:spellDetails[name]}
+const availableLoreSpells=computed(()=>{const out:Record<string,string[]>={};for(const [lore,names] of Object.entries(loreSpells))out[lore]=[...names];if(form.allowCustomData)for(const spell of customSpellItems.value){out[spell.lore]=out[spell.lore]||[];if(!out[spell.lore].includes(spell.name))out[spell.lore].push(spell.name)}return out})
+const availableAttunableLores=computed(()=>Array.from(new Set([...attunableLores,...(form.allowCustomData?customSpellItems.value.map(item=>item.lore).filter(lore=>lore!=='Invocation'):[])])).sort())
+function signatureForLore(lore:string){const explicit=form.allowCustomData?customSpellItems.value.find(item=>item.lore===lore&&item.signature)?.name:'';return loreSpells[lore]?.[0]||explicit||availableLoreSpells.value[lore]?.[0]||''}
+const signatureSpell=computed(()=>form.loreAttunement?signatureForLore(form.loreAttunement):'')
+const signatureDetail=computed(()=>signatureSpell.value?spellDetail(signatureSpell.value):undefined)
+const invocationOptions=computed(()=>availableLoreSpells.value.Invocation||[])
+const regularSpellGroups=computed(()=>availableAttunableLores.value.sort((a,b)=>Number(b===form.loreAttunement)-Number(a===form.loreAttunement)).map(lore=>({lore,spells:(availableLoreSpells.value[lore]||[]).filter(name=>name!==signatureForLore(lore))})))
+function loreDescription(name:string){return loreDescriptions[name]||`A custom Lore of Magic shaped by the creator's rules.`}
+function isCustomSpell(name:string){return Boolean(form.allowCustomData&&customSpellItems.value.some(item=>item.name===name))}
 const invalidTalents=computed(()=>form.talents.filter(Boolean).filter(name=>!talentRequirementMet(name)))
 
 const derived=computed(()=>({
@@ -259,10 +295,8 @@ const secondaryStats:Record<AttributeId,Array<{name:string;formula:string;descri
   lore:[{name:'Control',formula:'Lore × 2',description:'Control is used by magical Strike rolls and magical interactions.',slug:'to-strike'}],
   bravery:[],
 }
-function secondaryLabel(id:AttributeId){const items=secondaryStats[id];return items.length?items.map(item=>item.name).join(', '):'No direct secondary stat listed'}
 function attributeModifier(rank:number){return rank*2}
 function skillModifier(rank:number){return rank*2}
-function toggleAttribute(id:AttributeId){openAttribute.value=openAttribute.value===id?null:id}
 function adjust(id:AttributeId,delta:number){const current=form.attributes[id];if(delta>0&&(current>=3||remaining.value<=0))return;if(delta<0&&current<=1)return;form.attributes[id]+=delta}
 
 function sourceDescription(documentKey:string,heading:string){
@@ -275,7 +309,7 @@ const faithDescription=computed(()=>sourceDescription('faith',form.faith))
 const oathDescription=computed(()=>sourceDescription('oath',form.oath))
 
 function cultureGrantKey(id:string){const trait=findCulture(id);return trait?`${trait.species}::${trait.name}`:''}
-function cultureGrant(id:string){return cultureSkillGrants[cultureGrantKey(id)]}
+function cultureGrant(id:string){const trait=findCulture(id);if(trait&&'skillGrants' in trait&&trait.skillGrants)return trait.skillGrants;return cultureSkillGrants[cultureGrantKey(id)]}
 function cultureChoiceKey(id:string,index:number){return `${id}::choice-${index}`}
 function cultureChoiceValue(id:string,index:number){return form.cultureSkillChoices[cultureChoiceKey(id,index)]||''}
 function setCultureChoice(id:string,index:number,value:string){form.cultureSkillChoices[cultureChoiceKey(id,index)]=normalizeSkillName(value)}
@@ -428,10 +462,10 @@ function toggleTalentChoice(name:string){
   while(next.length<requiredTalentCount())next.push('')
   form.talents=next.slice(0,requiredTalentCount())
 }
-function spellLore(name:string){return spellDetails[name]?.lore||''}
+function spellLore(name:string){return spellDetail(name)?.lore||''}
 function spellLoreClass(name:string){const lore=spellLore(name).toLowerCase().replace(/[^a-z0-9]+/g,'-');return lore?`spell-lore-${lore}`:'spell-lore-untyped'}
 function effectiveMana(name:string){
-  const detail=spellDetails[name]; if(!detail||detail.manaCost===null)return null
+  const detail=spellDetail(name); if(!detail||detail.manaCost===null)return null
   return Math.max(0,detail.manaCost-(detail.lore===form.loreAttunement?2:0))
 }
 function spellDisabled(name:string,current:string,kind:'regular'|'invocation'){
@@ -495,7 +529,7 @@ function buildRecord(draft:boolean):CharacterRecord{
   return {
     id:draftId.value||crypto.randomUUID(),
     name:form.name.trim()||(draft?'Unnamed Draft':'Unnamed Character'),
-    campaignName:form.campaignName.trim(), appearance:form.appearance.trim(),
+    campaignName:form.campaignName.trim(), appearance:form.appearance.trim(), allowCustomData:form.allowCustomData,
     species:form.species,
     cultureTraits:selectedCultureTraits.value.map(item=>`${item.name} (${item.species})`),
     cultureSkillChoices:{...form.cultureSkillChoices},
@@ -523,7 +557,7 @@ function finishCharacter(){
   const record=buildRecord(false); draftId.value=record.id; upsertCharacter(record); void router.push('/characters')
 }
 function resetForm(){
-  form.name='';form.campaignName='';form.appearance='';form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
+  form.name='';form.campaignName='';form.appearance='';form.allowCustomData=false;form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
   form.spark=sparks[0][0];form.homeland=homelands[0].name;form.customHomelandName='';form.customHomelandDetail='';form.skills=homelands[0].skills.map(normalizeSkillName);form.faith=faiths[0];form.oath=oaths[0][0];
   attributes.forEach(attribute=>form.attributes[attribute.id]=1);form.path='magic';pathTouched.value=false;form.loreAttunement='';form.spells=['',''];form.invocationSpells=['',''];form.talents=[''];form.adventureKit=true;form.equipment=[];form.additionalLanguage='';
   draftId.value=null;originalCreatedAt.value=null;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
@@ -564,7 +598,7 @@ onMounted(async()=>{
   const record=loadCharacters().find(item=>item.id===editId)
   if(!record)return
   draftId.value=record.id;originalCreatedAt.value=record.createdAt
-  form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||''
+  form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||'';form.allowCustomData=Boolean(record.allowCustomData)
   form.species=record.species||''
   await nextTick()
   form.cultureTraits=(record.cultureTraits||[]).map(label=>{const match=String(label).match(/^(.*) \(([^)]+)\)$/);return match?cultureId(match[2],match[1]):label}).filter(id=>Boolean(findCulture(id))).slice(0,2)
@@ -585,6 +619,16 @@ onBeforeUnmount(()=>{
     window.scrollTo(0,modalScrollY)
   }
   document.documentElement.classList.remove('modal-open');document.body.classList.remove('modal-open')
+})
+
+watch(()=>form.allowCustomData,(enabled:boolean)=>{
+  if(enabled)return
+  if(customSpeciesItems.value.some(item=>item.name===form.species))form.species=''
+  form.cultureTraits=form.cultureTraits.filter(id=>!findCulture(id)?.custom)
+  form.talents=form.talents.map(name=>customTalentItems.value.some(item=>item.name===name)?'':name)
+  form.spells=form.spells.map(name=>customSpellItems.value.some(item=>item.name===name)?'':name)
+  form.invocationSpells=form.invocationSpells.map(name=>customSpellItems.value.some(item=>item.name===name)?'':name)
+  if(customSpellItems.value.some(item=>item.lore===form.loreAttunement))form.loreAttunement=''
 })
 
 watch(()=>form.species,(next:string)=>{
@@ -618,18 +662,18 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <details class="creation-info-panel help-panel" open><summary>What is a Species?</summary><div class="creation-info-body"><p>Your Species describes the Beastfolk lineage your hero belongs to. Across Anthro Mundas, Beastfolk are peoples of fur, feather, scale, and many other forms, each carrying their own histories, languages, Species Traits, and cultural traditions.</p><p>Species Traits are inherent features of that lineage. Culture Traits reflect learned traditions and can be exchanged in the next step.</p></div></details>
 
           <div class="identity-fields creator-identity-fields">
-            <div class="field-grid two"><label class="field-label">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label><label class="field-label">Campaign<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label></div>
+            <div class="field-grid two creator-name-campaign-grid"><label class="field-label">Character Name<input v-model="form.name" class="field-control" placeholder="Character name" /></label><div class="campaign-custom-stack"><label class="custom-data-toggle"><span><strong>Allow Custom Data</strong><small>Show imported Species, Traits, Spells, and Talents.</small></span><span class="switch"><input v-model="form.allowCustomData" type="checkbox" /><span></span></span></label><label class="field-label">Campaign<input v-model="form.campaignName" class="field-control" placeholder="Campaign name" /></label></div></div>
             <label class="field-label creator-appearance-field">Appearance<textarea v-model="form.appearance" class="field-control appearance-textarea" rows="5" placeholder="Describe your character's appearance"></textarea></label>
           </div>
 
           <div class="species-choice-layout">
             <div class="species-choice-copy">
-              <label class="field-label">Species<select v-model="form.species" class="field-control"><option value="">Choose Your Species</option><option v-for="item in species" :key="item" :value="item">{{ item }}</option></select></label>
+              <label class="field-label">Species<select v-model="form.species" class="field-control"><option value="">Choose Your Species</option><option v-for="item in availableSpecies" :key="item" :value="item">{{ item }}{{ customSpecies(item)?' (Custom)':'' }}</option></select></label>
               <div v-if="selectedSpeciesImage" class="species-art-shell species-art-inline"><img :src="selectedSpeciesImage" :alt="`${form.species} character artwork`" /></div>
               <template v-if="selectedSpeciesData">
-                <details class="creation-info-panel species-lore-panel" open><summary>{{ selectedSpeciesData.name }} Lore</summary><div class="creation-info-body"><p class="species-quote">“{{ selectedSpeciesData.quote }}”</p><p>{{ selectedSpeciesData.lore }}</p><div class="keyword-pill-row"><span class="keyword-pill">{{ selectedSpeciesData.theme }}</span><span class="keyword-pill">{{ selectedSpeciesData.language.split(',')[0] }}</span></div></div></details>
-                <details class="creation-info-panel trait-panel species-trait-panel"><summary>Species Traits</summary><div class="creation-info-body trait-stack"><article v-for="trait in selectedSpeciesData.speciesTraits" :key="trait.name" class="trait-card species-trait-card"><div class="trait-card-head"><h3>{{ trait.name }}</h3><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
-                <details class="creation-info-panel trait-panel culture-trait-panel"><summary>Culture Traits</summary><div class="creation-info-body"><p>Your Species begins with these two Culture Traits. In Step 2 you may keep them or exchange them for Culture Traits from other peoples.</p><div class="trait-stack"><article v-for="trait in selectedSpeciesData.cultureTraits" :key="trait.name" class="trait-card culture-trait-card"><div class="trait-card-head"><h3>{{ trait.name }}</h3><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></div></details>
+                <details class="creation-info-panel species-lore-panel" open><summary>{{ selectedSpeciesData.name }} Lore <span v-if="selectedSpeciesData.custom" class="custom-content-badge">CUSTOM</span></summary><div class="creation-info-body"><p class="species-quote">“{{ selectedSpeciesData.quote }}”</p><p>{{ selectedSpeciesData.lore }}</p><div class="keyword-pill-row"><span class="keyword-pill">{{ selectedSpeciesData.theme }}</span><span class="keyword-pill">{{ selectedSpeciesData.language.split(',')[0] }}</span></div></div></details>
+                <details class="creation-info-panel trait-panel species-trait-panel"><summary>Species Traits</summary><div class="creation-info-body trait-stack"><article v-for="trait in selectedSpeciesTraits" :key="trait.name" class="trait-card species-trait-card"><div class="trait-card-head"><h3>{{ trait.name }} <small v-if="'custom' in trait&&trait.custom" class="custom-content-badge">CUSTOM</small></h3><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
+                <details class="creation-info-panel trait-panel culture-trait-panel"><summary>Culture Traits</summary><div class="creation-info-body"><p>Your Species begins with these two Culture Traits. In Step 2 you may keep them or exchange them for Culture Traits from other peoples.</p><div class="trait-stack"><article v-for="trait in selectedSpeciesData.cultureTraits" :key="trait.name" class="trait-card culture-trait-card"><div class="trait-card-head"><h3>{{ trait.name }} <small v-if="selectedSpeciesData.custom" class="custom-content-badge">CUSTOM</small></h3><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></div></details>
               </template>
             </div>
           </div>
@@ -638,7 +682,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
         <template v-else-if="stepId==='culture'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Culture Traits</h1></div></div>
           <details class="creation-info-panel help-panel" open><summary>What are Culture Traits?</summary><div class="creation-info-body"><p>Culture Traits represent traditions, training, and ways of living learned from a community rather than inherited from Species. Your Species provides two starting Culture Traits, but character creation allows you to exchange them for other Culture Traits.</p></div></details>
-          <section class="selected-culture-panel"><h2>Selected Culture Traits <span>{{ form.cultureTraits.length }}/2</span></h2><div class="trait-stack"><article v-for="trait in selectedCultureTraits" :key="`${trait.species}-${trait.name}`" class="trait-card culture-trait-card selected-trait-card"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ trait.species }}</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span><button type="button" class="secondary-button compact-action" @click="setCulture(cultureId(trait.species,trait.name),false)">Remove</button></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div><div v-if="cultureGrant(cultureId(trait.species,trait.name))" class="trait-skill-grants culture-skill-layout"><div class="culture-skill-award-column"><span v-for="skill in cultureGrant(cultureId(trait.species,trait.name))?.fixed||[]" :key="skill" class="culture-skill-award">+1 {{ normalizeSkillName(skill) }}</span><span v-for="(choices,index) in cultureGrant(cultureId(trait.species,trait.name))?.choices||[]" :key="`selected-${index}`" v-show="cultureChoiceValue(cultureId(trait.species,trait.name),index)" class="culture-skill-award selected">+1 {{ cultureChoiceValue(cultureId(trait.species,trait.name),index) }}</span></div><div class="culture-skill-select-column"><select v-for="(choices,index) in cultureGrant(cultureId(trait.species,trait.name))?.choices||[]" :key="index" class="field-control" :value="cultureChoiceValue(cultureId(trait.species,trait.name),index)" @change="setCultureChoiceFromEvent(cultureId(trait.species,trait.name),index,$event)"><option value="">Choose a Skill</option><option v-for="choice in Array.from(new Set(choices.map(normalizeSkillName)))" :key="choice" :value="choice">{{ choice }}</option></select></div></div></article></div></section>
+          <section class="selected-culture-panel"><h2>Selected Culture Traits <span>{{ form.cultureTraits.length }}/2</span></h2><div class="trait-stack"><article v-for="trait in selectedCultureTraits" :key="`${trait.species}-${trait.name}`" class="trait-card culture-trait-card selected-trait-card"><div class="trait-card-head"><div><h3>{{ trait.name }} <small v-if="trait.custom" class="custom-content-badge">CUSTOM</small></h3><small>{{ trait.species }}</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span><button type="button" class="secondary-button compact-action" @click="setCulture(cultureId(trait.species,trait.name),false)">Remove</button></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div><div v-if="cultureGrant(cultureId(trait.species,trait.name))" class="trait-skill-grants culture-skill-layout"><div class="culture-skill-award-column"><span v-for="skill in cultureGrant(cultureId(trait.species,trait.name))?.fixed||[]" :key="skill" class="culture-skill-award">+1 {{ normalizeSkillName(skill) }}</span><span v-for="(choices,index) in cultureGrant(cultureId(trait.species,trait.name))?.choices||[]" :key="`selected-${index}`" v-show="cultureChoiceValue(cultureId(trait.species,trait.name),index)" class="culture-skill-award selected">+1 {{ cultureChoiceValue(cultureId(trait.species,trait.name),index) }}</span></div><div class="culture-skill-select-column"><select v-for="(choices,index) in cultureGrant(cultureId(trait.species,trait.name))?.choices||[]" :key="index" class="field-control" :value="cultureChoiceValue(cultureId(trait.species,trait.name),index)" @change="setCultureChoiceFromEvent(cultureId(trait.species,trait.name),index,$event)"><option value="">Choose a Skill</option><option v-for="choice in Array.from(new Set(choices.map(normalizeSkillName)))" :key="choice" :value="choice">{{ choice }}</option></select></div></div></article></div></section>
           <section class="available-culture-panel culture-picker-launch-panel"><h2>Exchange / Add Culture Traits</h2><p class="muted">Open the Culture Trait picker to inspect traditions from every playable Species and exchange your starting Traits.</p><button type="button" class="secondary-button wide culture-picker-launch" @click="culturePickerOpen=true">Choose Culture Traits</button></section>
         </template>
 
@@ -691,8 +735,8 @@ watch(()=>form.path,()=>ensureTalentSlots())
         <template v-else-if="stepId==='lore'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Lore Attunement</h1></div></div>
           <details class="creation-info-panel help-panel" open><summary>Magic Level 1 &amp; Mana</summary><div class="creation-info-body"><p>Magic draws on Mana. At Magic Level 1, your hero gains magical spellcasting and attunes to one Lore. Spells from the attuned Lore reduce their Mana cost by 2, and the Lore’s Signature Spell is gained automatically without consuming a spell slot.</p><RouterLink to="/rules/read/lore-attunement" class="inline-rule-link">Read Lore Attunement →</RouterLink></div></details>
-          <label class="field-label">Lore Attunement<select v-model="form.loreAttunement" class="field-control"><option value="">Select Lore Attunement</option><option v-for="lore in attunableLores" :key="lore" :value="lore">{{ lore }}</option></select></label>
-          <template v-if="form.loreAttunement"><article class="choice-summary lore-fluff-card"><h2>Lore of {{ form.loreAttunement }}</h2><p>{{ loreDescriptions[form.loreAttunement] }}</p></article><article v-if="signatureDetail" class="spell-detail-card signature-spell-card" :class="spellLoreClass(signatureDetail.name)"><div class="spell-detail-head"><div><span class="eyebrow">SIGNATURE SPELL</span><h2>{{ signatureDetail.name }}</h2></div><span class="mana-badge">{{ effectiveMana(signatureDetail.name) ?? '—' }} Mana</span></div><p class="rule-flavor">{{ signatureDetail.flavor }}</p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(signatureDetail.rules)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(signatureDetail.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></template>
+          <label class="field-label">Lore Attunement<select v-model="form.loreAttunement" class="field-control"><option value="">Select Lore Attunement</option><option v-for="lore in availableAttunableLores" :key="lore" :value="lore">{{ lore }}</option></select></label>
+          <template v-if="form.loreAttunement"><article class="choice-summary lore-fluff-card"><h2>Lore of {{ form.loreAttunement }}</h2><p>{{ loreDescription(form.loreAttunement) }}</p></article><article v-if="signatureDetail" class="spell-detail-card signature-spell-card" :class="spellLoreClass(signatureDetail.name)"><div class="spell-detail-head"><div><span class="eyebrow">SIGNATURE SPELL</span><h2>{{ signatureDetail.name }}</h2></div><span class="mana-badge">{{ effectiveMana(signatureDetail.name) ?? '—' }} Mana</span></div><p class="rule-flavor">{{ signatureDetail.flavor }}</p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(signatureDetail.rules)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(signatureDetail.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></template>
         </template>
 
         <template v-else-if="stepId==='spells'">
@@ -700,7 +744,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <details class="creation-info-panel help-panel" open><summary>Magical Spells</summary><div class="creation-info-body"><p>Magical Spells are divided between the seven Lores of Magic and Invocation magic. Lore Attunement gives a free Signature Spell and reduces the Mana cost of spells from that Lore. Invocation Spells are dependable magical effects outside a Lore. For this creation build, your Magic Level 1 hero begins with the free Signature Spell, two different Lore Spells, and two different Invocation Spells; these selections are your starting spell slots, and a Spell cannot be selected twice.</p><p>When a Lore Spell belongs to your attuned Lore, its displayed Mana cost includes the Lore Attunement reduction of 2.</p></div></details>
           <section class="spell-selection-block"><h2>Lore Spells</h2><div class="field-grid two"><label v-for="index in 2" :key="`spell-${index}`" class="field-label">Spell {{ index }}<select v-model="form.spells[index-1]" class="field-control"><option value="">Choose a Spell</option><optgroup v-for="group in regularSpellGroups" :key="group.lore" :label="spellGroupLabel(group.lore)"><option v-for="spell in group.spells" :key="spell" :value="spell" :disabled="spellDisabled(spell,form.spells[index-1],'regular')">{{ spell }}</option></optgroup></select></label></div></section>
           <section class="spell-selection-block"><h2>Invocation Spells</h2><div class="field-grid two"><label v-for="index in 2" :key="`inv-${index}`" class="field-label">Invocation {{ index }}<select v-model="form.invocationSpells[index-1]" class="field-control"><option value="">Choose an Invocation Spell</option><option v-for="spell in invocationOptions" :key="spell" :value="spell" :disabled="spellDisabled(spell,form.invocationSpells[index-1],'invocation')">{{ spell }}</option></select></label></div></section>
-          <div class="selected-spell-stack"><article v-for="spell in [...form.spells,...form.invocationSpells].filter(Boolean)" :key="spell" class="spell-detail-card" :class="spellLoreClass(spell)"><div class="spell-detail-head"><div><span class="eyebrow">{{ spellLore(spell) }}</span><h2>{{ spell }}</h2></div><span class="mana-badge"><template v-if="spellDetails[spell]?.manaCost!==null">{{ effectiveMana(spell) }} Mana</template><template v-else>Variable</template></span></div><p class="rule-flavor">{{ spellDetails[spell]?.flavor }}</p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetails[spell]?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(spellDetails[spell]?.keywords||[])" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div>
+          <div class="selected-spell-stack"><article v-for="spell in [...form.spells,...form.invocationSpells].filter(Boolean)" :key="spell" class="spell-detail-card" :class="spellLoreClass(spell)"><div class="spell-detail-head"><div><span class="eyebrow">{{ spellLore(spell) }}</span><h2>{{ spell }} <small v-if="isCustomSpell(spell)" class="custom-content-badge">CUSTOM</small></h2></div><span class="mana-badge"><template v-if="spellDetail(spell)?.manaCost!==null">{{ effectiveMana(spell) }} Mana</template><template v-else>Variable</template></span></div><p class="rule-flavor">{{ spellDetail(spell)?.flavor }}</p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in singleKeywords(spellDetail(spell)?.keywords||[])" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div>
         </template>
 
         <template v-else-if="stepId==='talents'">
@@ -736,7 +780,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <section class="review-section review-weapons-section"><h2>Weapons</h2><div v-if="form.equipment.filter(item=>item.category==='Weapon').length" class="review-box-list"><article v-for="weapon in form.equipment.filter(item=>item.category==='Weapon')" :key="weapon.name" class="review-feature-box weapon"><strong>{{ weapon.name }}</strong><span>{{ weapon.detail||'Weapon' }}</span><small v-if="weapon.effect">{{ weapon.effect }}</small></article></div><p v-else class="empty-inline">No purchased weapons.</p></section>
           <section class="review-section review-armor-section"><h2>Armor &amp; Shields</h2><div v-if="form.equipment.filter(item=>item.category==='Armor & Shield').length" class="review-box-list"><article v-for="armor in form.equipment.filter(item=>item.category==='Armor & Shield')" :key="armor.name" class="review-feature-box armor"><strong>{{ armor.name }}</strong><span>{{ armor.detail||'Protective equipment' }}</span><small v-if="armor.effect">{{ armor.effect }}</small></article></div><p v-else class="empty-inline">No purchased armor or shields.</p></section>
           <section class="review-section"><h2>Skills</h2><div class="review-skill-grid"><article v-for="(rank,skill) in skillRanks" :key="skill" class="review-skill-sheet-row"><div><strong>{{ skill }}</strong><small v-if="cultureRankForSkill(skill)" class="cultural-skill-pill">Cultural · {{ cultureSourcesForSkill(skill) }}</small></div><div class="review-skill-values"><strong>Rank {{ rank }}</strong><small>Modifier +{{ skillModifier(rank) }}</small></div></article></div></section>
-          <details v-if="form.path==='magic'" class="review-section review-collapsible"><summary><h2>Magic</h2><span>{{ form.loreAttunement||'Not selected' }} · {{ startingMana }} Mana</span></summary><div class="review-collapsible-body review-box-list"><article class="review-feature-box lore"><strong>Lore of {{ form.loreAttunement||'—' }}</strong><span>{{ loreDescriptions[form.loreAttunement]||'No Lore selected.' }}</span></article><article v-if="signatureSpell" class="review-feature-box spell full-rule-entry" :class="spellLoreClass(signatureSpell)"><header><strong>{{ signatureSpell }}</strong><small v-if="effectiveMana(signatureSpell)!==null">{{ effectiveMana(signatureSpell) }} Mana</small></header><span>Signature Spell · {{ spellLore(signatureSpell) }}</span><p>{{ spellDetails[signatureSpell]?.flavor }}</p><div v-if="visibleRuleFields(spellDetails[signatureSpell]?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetails[signatureSpell]?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article><article v-for="spell in [...form.spells,...form.invocationSpells].filter(Boolean)" :key="spell" class="review-feature-box spell full-rule-entry" :class="spellLoreClass(spell)"><header><strong>{{ spell }}</strong><small v-if="effectiveMana(spell)!==null">{{ effectiveMana(spell) }} Mana</small></header><span>{{ spellLore(spell) }}</span><p>{{ spellDetails[spell]?.flavor }}</p><div v-if="visibleRuleFields(spellDetails[spell]?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetails[spell]?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article></div></details>
+          <details v-if="form.path==='magic'" class="review-section review-collapsible"><summary><h2>Magic</h2><span>{{ form.loreAttunement||'Not selected' }} · {{ startingMana }} Mana</span></summary><div class="review-collapsible-body review-box-list"><article class="review-feature-box lore"><strong>Lore of {{ form.loreAttunement||'—' }}</strong><span>{{ loreDescription(form.loreAttunement)||'No Lore selected.' }}</span></article><article v-if="signatureSpell" class="review-feature-box spell full-rule-entry" :class="spellLoreClass(signatureSpell)"><header><strong>{{ signatureSpell }}</strong><small v-if="effectiveMana(signatureSpell)!==null">{{ effectiveMana(signatureSpell) }} Mana</small></header><span>Signature Spell · {{ spellLore(signatureSpell) }}</span><p>{{ spellDetail(signatureSpell)?.flavor }}</p><div v-if="visibleRuleFields(spellDetail(signatureSpell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetail(signatureSpell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article><article v-for="spell in [...form.spells,...form.invocationSpells].filter(Boolean)" :key="spell" class="review-feature-box spell full-rule-entry" :class="spellLoreClass(spell)"><header><strong>{{ spell }}</strong><small v-if="effectiveMana(spell)!==null">{{ effectiveMana(spell) }} Mana</small></header><span>{{ spellLore(spell) }}</span><p>{{ spellDetail(spell)?.flavor }}</p><div v-if="visibleRuleFields(spellDetail(spell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article></div></details>
           <details class="review-section review-collapsible"><summary><h2>Talents</h2><span>{{ form.talents.filter(Boolean).length }} selected</span></summary><div class="review-collapsible-body review-box-list"><article v-for="talent in form.talents.filter(Boolean)" :key="talent" class="review-feature-box talent full-rule-entry"><header><strong>{{ talent }}</strong><small>{{ talentCategory(talent) }}</small></header><p>{{ structuredRule(talentText(talent)).intro }}</p><div v-if="visibleRuleFields(talentText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article><p v-if="!form.talents.filter(Boolean).length">No Talents selected.</p></div></details>
           <section class="review-section"><div class="review-section-heading-split"><h2>Equipment &amp; Gear</h2><strong>{{ wealthRemaining }} NP</strong></div><div v-if="form.equipment.filter(item=>item.category!=='Weapon'&&item.category!=='Armor & Shield').length" class="review-equipment-grid"><article v-for="(item,index) in form.equipment.filter(item=>item.category!=='Weapon'&&item.category!=='Armor & Shield')" :key="`${item.name}-${index}`"><strong>{{ item.name }}</strong><small>{{ item.category }} · {{ item.costNp ?? adjustedGearCostNp(item) }} NP</small><p v-if="item.detail">{{ item.detail }}</p><p v-if="item.effect">{{ item.effect }}</p><small v-if="item.choice">Choice: {{ item.choice }}</small><small v-if="item.attachedTo">Attached to: {{ item.attachedTo }}</small></article></div><p v-else class="muted">No additional equipment purchased.</p></section>
           <div class="review-finish-row"><button type="button" class="secondary-button" @click="back">Back</button><button type="button" class="primary-button review-create-button" :disabled="!canFinish" @click="finishCharacter">Create Character (Finished)</button></div>
@@ -755,7 +799,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
         <div class="culture-species-tabs" role="tablist"><button v-for="tab in cultureTabs" :key="tab" type="button" :class="{active:cultureTab===tab}" @click="cultureTab=tab">{{ tab }}</button></div><label class="rules-search culture-picker-search"><span aria-hidden="true">⌕</span><input v-model="cultureSearch" type="search" placeholder="Search Culture Traits or Species…" /></label>
         <div class="culture-picker-list">
           <article v-for="trait in filteredCultureTraits" :key="`${trait.species}-${trait.name}`" class="culture-picker-row">
-            <div class="culture-picker-row-head"><div><strong>{{ trait.name }}</strong><small>{{ trait.species }}</small></div><div class="culture-picker-row-actions"><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span><button type="button" class="secondary-button compact-action" @click="setCulture(cultureId(trait.species,trait.name),true)">Add</button></div></div>
+            <div class="culture-picker-row-head"><div><strong>{{ trait.name }} <small v-if="trait.custom" class="custom-content-badge">CUSTOM</small></strong><small>{{ trait.species }}</small></div><div class="culture-picker-row-actions"><span v-if="manaCostFromText(trait.text)!==null" class="mana-badge">{{ manaCostFromText(trait.text) }} Mana</span><button type="button" class="secondary-button compact-action" @click="setCulture(cultureId(trait.species,trait.name),true)">Add</button></div></div>
             <p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p>
             <div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div>
             <div class="keyword-pill-row"><span v-for="keyword in singleKeywords(trait.keywords)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div>
@@ -770,7 +814,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
         <div class="modal-head"><div><span class="eyebrow">TALENTS</span><h2>Choose Talents</h2><small>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</small></div><button type="button" class="icon-button" aria-label="Close Talent picker" @click="talentPickerOpen=false">×</button></div>
         <div class="talent-picker-tabs" role="tablist"><button v-for="tab in talentTabs" :key="tab" type="button" :class="{active:talentTab===tab}" @click="talentTab=tab">{{ tab }}</button></div>
         <label class="rules-search talent-picker-search"><span aria-hidden="true">⌕</span><input v-model="talentSearch" type="search" placeholder="Search Talents…" /></label>
-        <div class="talent-picker-list"><article v-for="talent in filteredTalentPicker" :key="talent" class="talent-detail-card talent-picker-card" :class="{invalid:!talentRequirementMet(talent)}"><div class="talent-detail-head"><div><small>{{ talentCategory(talent) }}</small><h2>{{ talent }}</h2></div><div class="talent-head-actions"><span v-if="manaCostFromText(talentText(talent))!==null" class="mana-badge">{{ manaCostFromText(talentText(talent)) }} Mana</span><span v-if="talentRequires(talent)" class="requirement-badge" :class="{invalid:!talentRequirementMet(talent)}">Requires {{ talentRequires(talent) }}</span></div></div><p v-if="structuredRule(talentText(talent)).intro" class="rule-flavor">{{ structuredRule(talentText(talent)).intro }}</p><div v-if="visibleRuleFields(talentText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="talent-picker-action"><button type="button" class="secondary-button" :class="{active:talentSelected(talent)}" :disabled="!talentSelected(talent)&&(form.talents.filter(Boolean).length>=requiredTalentCount()||!talentRequirementMet(talent))" @click="toggleTalentChoice(talent)">{{ talentSelected(talent)?'Selected':'Select' }}</button></div></article></div><div class="talent-picker-footer"><span>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</span><button type="button" class="primary-button" :disabled="!talentsValid()" @click="talentPickerOpen=false">Done</button></div>
+        <div class="talent-picker-list"><article v-for="talent in filteredTalentPicker" :key="talent" class="talent-detail-card talent-picker-card" :class="{invalid:!talentRequirementMet(talent)}"><div class="talent-detail-head"><div><small>{{ talentCategory(talent) }}<span v-if="isCustomTalent(talent)" class="custom-content-badge">CUSTOM</span></small><h2>{{ talent }}</h2></div><div class="talent-head-actions"><span v-if="manaCostFromText(talentText(talent))!==null" class="mana-badge">{{ manaCostFromText(talentText(talent)) }} Mana</span><span v-if="talentRequires(talent)" class="requirement-badge" :class="{invalid:!talentRequirementMet(talent)}">Requires {{ talentRequires(talent) }}</span></div></div><p v-if="structuredRule(talentText(talent)).intro" class="rule-flavor">{{ structuredRule(talentText(talent)).intro }}</p><div v-if="visibleRuleFields(talentText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="talent-picker-action"><button type="button" class="secondary-button" :class="{active:talentSelected(talent)}" :disabled="!talentSelected(talent)&&(form.talents.filter(Boolean).length>=requiredTalentCount()||!talentRequirementMet(talent))" @click="toggleTalentChoice(talent)">{{ talentSelected(talent)?'Selected':'Select' }}</button></div></article></div><div class="talent-picker-footer"><span>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</span><button type="button" class="primary-button" :disabled="!talentsValid()" @click="talentPickerOpen=false">Done</button></div>
       </section>
     </div>
 
@@ -819,4 +863,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 @media(max-width:680px){.mana-stat-line,.talent-slot-grid,.review-secondary-cards{grid-template-columns:1fr 1fr}.talent-picker-modal{width:100%;max-height:92vh;border-radius:14px 14px 0 0}.talent-picker-backdrop{align-items:flex-end}.wealth-equivalents{grid-template-columns:1fr 1fr}}
 
 .homeland-skill-copy{display:grid;gap:5px;margin-top:9px;padding-top:8px;border-top:1px solid var(--line);color:var(--ink-soft)}.homeland-skill-copy>strong,.homeland-skill-copy small strong{color:var(--ink)}.talent-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+
+.custom-data-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--paper-2)}.custom-data-toggle>span:first-child{display:grid;gap:2px}.custom-data-toggle small{color:var(--ink-soft);font-size:calc(8.5px + var(--font-offset))}.campaign-custom-stack{display:grid;gap:6px}.custom-content-badge{display:inline-flex!important;align-items:center!important;margin-left:5px;padding:2px 5px!important;border:1px solid #7b4f8d!important;border-radius:999px!important;background:#efe5f4!important;color:#60336f!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:8px!important;font-weight:900!important;letter-spacing:.06em!important;vertical-align:middle}.creator-name-campaign-grid{align-items:end}
+
 </style>

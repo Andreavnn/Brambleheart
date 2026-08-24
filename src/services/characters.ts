@@ -7,6 +7,7 @@ export interface CharacterRecord {
   name:string
   pronunciation?:string
   campaignName?:string
+  allowCustomData?:boolean
   age?:string
   appearance?:string
   pronouns?:string
@@ -60,7 +61,7 @@ export function upsertCharacter(record:CharacterRecord){
   if(index>=0)list[index]=record;else list.unshift(record)
   writeCharacters(list)
 }
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.13',character}}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.14',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)

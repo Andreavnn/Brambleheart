@@ -29,7 +29,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
       <section class="welcome-intro-grid">
         <article><h2>Character Creation</h2><p>Create a hero step by step through Species, Culture Traits, Spark, Homeland, Skills, Faith, Oath, Attributes, Talents or Magic, equipment, languages, and final character details.</p></article>
         <article><h2>Rules Reference</h2><p>Browse Brambleheart rules without leaving the companion. Related Fundamental rules link together, while References, Recent rules, FAQ, and Changes &amp; Updates keep common information close at hand.</p></article>
-        <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine, record why a roll was made, track recent results, manage ongoing encounters, and keep combat history available while play continues.</p></article>
+        <article><h2>Tabletop Tools</h2><p>Use the Rhythm Engine to make and review rolls, then open a saved character as a digital character sheet while play continues.</p></article>
       </section>
 
       <section class="welcome-support-block">

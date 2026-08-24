@@ -1,5 +1,14 @@
 # Site Changelog
 
+## Beta 0.14
+
+- Added typed downloadable JSON templates and import support for custom Species, Spells, Talents, and Traits, with explicit Custom labeling and a per-character Allow Custom Data switch.
+- Rebuilt Background selection around automatic image discovery from `src/assets/backgrounds`, removed option detail text, and added the supplied Skullfen Ruins and Blightbound Horror artwork.
+- Updated Attribute Check Strike stats to identify Shooting, Melee, and Magic use.
+- Replaced the Rhythm Engine Combat Encounter section with a saved-character Character Sheet and moved character selection into a shared panel beneath the tool tabs.
+- Removed the legacy Encounter route from active routing and cleaned obsolete Simulator encounter dependencies.
+- Advanced the visible build and PWA shell cache to Beta 0.14.
+
 ## Beta 0.13
 
 - Rebuilt Combat Encounters as a non-collapsible pen-and-paper character sheet with permanent Core Abilities, clickable combat/character fields, one event record, and corrected ongoing/history controls.

@@ -21,7 +21,7 @@ function editCharacter(id:string){void router.push({path:'/characters/create',qu
 function copyCharacter(id:string){const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist()}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.13',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.14',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{

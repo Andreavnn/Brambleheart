@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.13</strong><small>Advancement, creator cleanup, Rules boxing, backgrounds, popup repair, and encounter character sheets</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.14</strong><small>Typed Custom Data, automatic backgrounds, Attribute Check labels, and saved-character sheets</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Added a downloadable typed JSON template pack for custom Species, Spells, Talents, and Traits, plus recognized imports and visible Custom labeling.</li>
+          <li>Added an Allow Custom Data switch to Character Creation so imported options are explicitly enabled per character.</li>
+          <li>Made Background Settings discover supported images from the background asset folder automatically and added Skullfen Ruins plus Blightbound Horror.</li>
+          <li>Clarified Strike-related Attribute Check stats as Shooting, Melee, and Magic.</li>
+          <li>Replaced the Rhythm Engine Combat Encounter section with a saved-character Character Sheet and moved character selection directly below the tool tabs.</li>
+          <li>Removed the old Encounter route from active navigation and cleaned obsolete Simulator encounter dependencies.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.13</strong><small>Advancement, creator cleanup, Rules boxing, backgrounds, popup repair, and encounter character sheets</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Added Approved character progression and a source-cost Level Up page for Attributes, Skills, new Skills, and Magic Level.</li>
           <li>Refined Culture Skill awards, Spark-specific Deed examples, Homeland Skills, Attribute Rank/Modifier layout, Oath/Faith and Lore spacing, Languages, wealth, and Review.</li>

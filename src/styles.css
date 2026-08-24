@@ -3751,3 +3751,12 @@ html[data-background-grayscale="true"]:not([data-background="none"]) .app-shell{
 /* Character list approval treatment. */
 .character-card.locked,.character-card.approved{border-color:#507a48!important}.character-card .complete-status{background:#d7ead3;color:#244b22}.character-card .incomplete-status{background:#efd3cf;color:#7b2f28}
 .selected-homeland-skill-pills{margin:8px 0 3px!important}.review-attribute-cards article>strong{width:100%;padding-bottom:6px;border-bottom:1px solid var(--line-dark);margin-bottom:2px}
+
+/* Beta 0.14 — dynamic backgrounds and custom-data settings. */
+html[data-background]:not([data-background="none"]) body{background-image:linear-gradient(rgba(221,217,207,.62),rgba(221,217,207,.62)),var(--bh-selected-background)!important;background-position:center!important;background-repeat:no-repeat!important;background-size:cover!important;background-attachment:fixed!important}
+:root[data-theme="dark"][data-background]:not([data-background="none"]) body{background-image:linear-gradient(rgba(9,10,9,.68),rgba(9,10,9,.68)),var(--bh-selected-background)!important}
+html[data-background-grayscale="true"]:not([data-background="none"]) body{background-image:var(--page-gradient)!important;background-color:var(--page-bg)!important}
+html[data-background-grayscale="true"]:not([data-background="none"]) body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(221,217,207,.62),rgba(221,217,207,.62)),var(--bh-selected-background);background-position:center;background-repeat:no-repeat;background-size:cover;filter:grayscale(1)}
+:root[data-theme="dark"][data-background-grayscale="true"]:not([data-background="none"]) body::before{background-image:linear-gradient(rgba(9,10,9,.68),rgba(9,10,9,.68)),var(--bh-selected-background)}
+.background-option-row{padding-left:14px!important;min-height:54px!important}.background-option-row::before{display:none!important}.background-option-row>span{padding-left:0!important}.background-option-copy{display:flex!important;align-items:center!important;gap:10px!important}.background-thumb{width:72px;height:40px;flex:0 0 72px;border:1px solid var(--line-dark);border-radius:7px;background-position:center;background-size:cover;background-repeat:no-repeat}.background-thumb.empty{background:var(--page-gradient)}
+.custom-data-stack{display:grid!important;padding:0!important}.custom-data-stack>.setting-row+ .setting-row{border-top:1px solid var(--line)}.custom-data-stack .button-row{display:flex;gap:6px;flex-wrap:wrap}
