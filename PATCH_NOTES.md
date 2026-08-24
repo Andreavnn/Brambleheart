@@ -1,5 +1,14 @@
 # Brambleheart Beta 0.18 Patch Notes
 
+## Approval & Level Up Reliability Hotfix
+- Replaced the overloaded legacy `locked` approval flag with an explicit character status: Incomplete, Unapproved, or Approved.
+- Existing saved characters migrate automatically: completed legacy locked characters become Approved; completed unlocked characters become Unapproved; drafts remain Incomplete.
+- Removed `structuredClone()` from reactive character transaction paths that could throw before approval or Level Up mutations executed.
+- Approval now persists atomically through the character service and immediately reloads the Character List from saved data.
+- Approved characters move to Approved Characters, lose the Edit button, and gain the Level Up button. Removing approval reverses that state.
+- Level Up now accepts only Approved characters and commits changes from fresh plain persisted records.
+- Settings Clear Approved / Clear Unapproved now use explicit character status rather than the old lock flag.
+
 ## Settings & Local Data
 - Renamed the Text Size options to Smallest, Small, Normal, Large, and Largest.
 - Expanded Clear Characters into Clear All, Clear Incomplete, Clear Unapproved, and Clear Approved.

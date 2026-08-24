@@ -6,6 +6,7 @@
 - Corrected requested Talent names and category assignments, including Pouncer and Hearthwall.
 - Reworked Weapons and Armor into structured character-sheet slots and added collapsible Character Sheet sections.
 - Cleaned Threadpiece presentation and preserved grayscale while using View Background.
+- Hotfix: replaced lock-based approval with explicit Incomplete/Unapproved/Approved status, migrated legacy characters, removed reactive Proxy cloning from approval and Level Up transactions, and gated Level Up to Approved characters.
 
 # Brambleheart Beta 0.17
 

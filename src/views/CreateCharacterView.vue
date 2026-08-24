@@ -39,6 +39,7 @@ useFocusTrap(shopOpen,gearDialog,()=>{shopOpen.value=false})
 
 const draftId = ref<string | null>(null)
 const originalCreatedAt = ref<string | null>(null)
+const originalStatus = ref<'incomplete'|'unapproved'|'approved'>('incomplete')
 const pathTouched = ref(false)
 const customData=ref(loadCustomData())
 const customSpeciesItems=computed(()=>customData.value.filter((item):item is CustomSpeciesItem=>item.type==='species'))
@@ -606,7 +607,7 @@ function buildRecord(draft:boolean):CharacterRecord{
     invocationSpells:form.path==='magic'?[...form.invocationSpells.filter(Boolean)]:undefined,
     languages:[...languages.value], equipment:[...form.equipment], adventureKit:form.adventureKit,
     startingWealth:startingWealth.value, wealthRemaining:wealthRemaining.value, wealthCurrency:'NP',
-    attributes:{...form.attributes}, draft, creationStep:stepId.value,
+    attributes:{...form.attributes}, status:draft?'incomplete':(originalStatus.value==='approved'?'approved':'unapproved'), draft, locked:draft?false:false, creationStep:stepId.value,
     createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
 }
@@ -629,7 +630,7 @@ function resetForm(){
   form.name='';form.campaignName='';form.appearance='';form.allowCustomData=false;form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
   form.spark='';form.homeland='';form.customHomelandName='';form.customHomelandDetail='';form.skills=['',''];form.faith='';form.oath='';
   attributes.forEach(attribute=>form.attributes[attribute.id]=1);form.path='magic';pathTouched.value=false;form.loreAttunement='';form.spells=['',''];form.invocationSpells=['',''];form.talents=[''];form.adventureKit=true;form.equipment=[];form.additionalLanguage='';
-  draftId.value=null;originalCreatedAt.value=null;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
+  draftId.value=null;originalCreatedAt.value=null;originalStatus.value='incomplete';stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
 }
 function closeWithoutSave(){void router.push('/characters')}
 
@@ -666,7 +667,7 @@ onMounted(async()=>{
   if(!editId)return
   const record=loadCharacters().find(item=>item.id===editId)
   if(!record)return
-  draftId.value=record.id;originalCreatedAt.value=record.createdAt
+  draftId.value=record.id;originalCreatedAt.value=record.createdAt;originalStatus.value=record.status|| (record.draft?'incomplete':record.locked?'approved':'unapproved')
   form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||'';form.allowCustomData=Boolean(record.allowCustomData)
   form.species=record.species||''
   await nextTick()

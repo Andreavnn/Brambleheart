@@ -7,26 +7,25 @@ import { skillDefinitions } from '../data/characterOptions'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
 import { canonicalTalentName, talentNameMatches } from '../data/talentCategories'
-import { loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
+import { characterStatus, loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 
 const route=useRoute(),router=useRouter()
 const characters=ref<CharacterRecord[]>(loadCharacters())
-const character=computed(()=>characters.value.find(item=>item.id===String(route.params.id||''))||null)
+const selectedCharacter=computed(()=>characters.value.find(item=>item.id===String(route.params.id||''))||null)
+const character=computed(()=>selectedCharacter.value&&characterStatus(selectedCharacter.value)==='approved'?selectedCharacter.value:null)
 const xpAdd=ref(0),message=ref('')
 const skillName=ref(''),newSkill=ref(''),newTalent=ref('')
 
-function cloneRecord<T>(value:T):T{return typeof structuredClone==='function'?structuredClone(value):JSON.parse(JSON.stringify(value)) as T}
 function commit(mutator:(draft:CharacterRecord)=>void){
-  const current=character.value
-  if(!current)return false
-  const next=characters.value.map(item=>item.id===current.id?cloneRecord(item):item)
-  const draft=next.find(item=>item.id===current.id)
-  if(!draft)return false
+  const id=String(route.params.id||'')
+  const next=loadCharacters()
+  const draft=next.find(item=>item.id===id)
+  if(!draft||characterStatus(draft)!=='approved'){message.value='Approve this character before using Level Up.';return false}
   mutator(draft)
-  draft.updatedAt=new Date().toISOString()
+  draft.status='approved';draft.draft=false;draft.updatedAt=new Date().toISOString()
   const saved=writeCharacters(next)
   if(!saved.ok){message.value=saved.message;return false}
-  characters.value=next
+  characters.value=loadCharacters()
   return true
 }
 function xp(){return Number(character.value?.experience||0)}
@@ -83,7 +82,7 @@ function finish(){void router.push('/characters')}
       </section>
       <p v-if="message" class="creation-status-message">{{ message }}</p><div class="button-row end"><RouterLink class="secondary-button" to="/rules/read/beyond-character-creation">Read Beyond Character Creation</RouterLink><button class="primary-button" @click="finish">Done</button></div>
     </template>
-    <section v-else class="empty-state card-surface"><h2>Character Not Found</h2><p>This saved character is not available on this device.</p><RouterLink class="primary-button" to="/characters">Back to Character List</RouterLink></section>
+    <section v-else-if="selectedCharacter" class="empty-state card-surface"><h2>Approval Required</h2><p>Move this completed character to Approved Characters before using Level Up.</p><RouterLink class="primary-button" to="/characters">Back to Character List</RouterLink></section><section v-else class="empty-state card-surface"><h2>Character Not Found</h2><p>This saved character is not available on this device.</p><RouterLink class="primary-button" to="/characters">Back to Character List</RouterLink></section>
   </main>
 </template>
 <style scoped>

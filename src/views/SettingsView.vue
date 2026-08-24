@@ -6,7 +6,7 @@ import { canInstall, installMessage, isInstalled, requestInstall } from '../stat
 import { useSettings, type FontSize, type RoleTheme } from '../state/settings'
 import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
-import { loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
+import { characterStatus, loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
 
 const router=useRouter()
@@ -36,9 +36,9 @@ function confirmTwice(first:string,second:string){return confirm(first)&&confirm
 type CharacterClearMode='all'|'incomplete'|'unapproved'|'approved'
 function characterMatchesClearMode(character:CharacterRecord,mode:CharacterClearMode){
   if(mode==='all')return true
-  if(mode==='incomplete')return Boolean(character.draft)
-  if(mode==='approved')return !character.draft&&Boolean(character.locked)
-  return !character.draft&&!character.locked
+  if(mode==='incomplete')return characterStatus(character)==='incomplete'
+  if(mode==='approved')return characterStatus(character)==='approved'
+  return characterStatus(character)==='unapproved'
 }
 function clearCharacters(mode:CharacterClearMode){
   const labels={all:'all saved characters',incomplete:'all incomplete characters',unapproved:'all unapproved characters',approved:'all approved characters'} as const

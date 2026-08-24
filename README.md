@@ -25,6 +25,7 @@ Beta 0.18 is a rules-organization, character-creation, and character-sheet refin
 - Corrects requested Talent names and category assignments while preserving compatibility with older saved-character spellings.
 - Separates Adventuring Gear into Weapons, Armor, Tools, and related groups, with Weapon Qualities separated from weapon listings.
 - Reworks Character Sheet Weapons and Armor into structured slots and adds collapsible sheet sections.
+- Uses explicit character approval status with automatic legacy migration; Approved characters expose Level Up instead of Edit, and Level Up transactions avoid reactive Proxy cloning.
 - Cleans Threadpiece conversion presentation and keeps grayscale active in View Background mode.
 
 ## Runtime

@@ -17,6 +17,7 @@ import AppHeader from '../components/AppHeader.vue'
           <li>Corrected requested Talent names and category assignments, including Pouncer and Hearthwall.</li>
           <li>Rebuilt weapon and armor presentation as structured character-sheet slots and added collapsible sheet sections.</li>
           <li>Adjusted Threadpiece presentation and preserved grayscale when using View Background.</li>
+          <li>Rebuilt character approval around an explicit status model, migrated legacy lock-based approvals, removed Vue Proxy cloning from approval/Level Up transactions, and gated Level Up to Approved characters.</li>
         </ul></div>
       </details>
       <details class="changelog-entry card-surface" open>
