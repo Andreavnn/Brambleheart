@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { canInstall, installMessage, isInstalled, requestInstall } from '../state/install'
 import { useSettings, type BackgroundChoice, type FontSize, type RoleTheme } from '../state/settings'
+import { BUILD } from '../data/bramble'
 
 const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, backgroundGrayscale, reset } = useSettings()
@@ -25,6 +26,8 @@ const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
 const backgroundOptions:Array<{value:BackgroundChoice;label:string;description:string}>=[
   {value:'none',label:'Default',description:'Use the standard Brambleheart reader background.'},
   {value:'ready-for-adventure',label:'Ready For Adventure',description:'The Brambleheart adventuring party beneath the autumn ruins.'},
+  {value:'thornwick-market',label:'Thornwick Market',description:'A lively Beastfolk market of lanterns, traders, and autumn banners.'},
+  {value:'skullfen-ruins',label:'Skullfen Ruins',description:'A flooded ruinland beneath a blazing autumn sky.'},
 ]
 const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
 const currentBackgroundLabel=computed(()=>backgroundOptions.find(item=>item.value===backgroundImage.value)?.label||'Default')
@@ -82,7 +85,7 @@ function clearCustomData(){if(!confirm('Remove the locally loaded Custom Data fi
         <div class="setting-row local-clear-row"><span><strong>Clear Dice Rolls</strong><small>Remove the Attribute Check roll history.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearDiceRolls">Clear</button></div>
         <div class="setting-row local-clear-row"><span><strong>Clear Rhythm Engine All</strong><small>Remove Combat Encounter and Attribute Check local history together.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearSimulatorAll">Clear</button></div>
       </div></details>
-      <div class="setting-row static-row"><span><strong>Site Changelog</strong><small>Review changes to the Brambleheart companion site. Rules amendments are listed under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>
+      <div class="setting-row static-row"><span><strong>Site Changelog - Beta {{ BUILD }}</strong><small>Review changes to the Brambleheart companion site. Rules amendments are listed under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>
       <div class="setting-row static-row"><span><strong>Character Data</strong><small>Characters are stored locally and can be imported or exported as JSON.</small></span><span class="value-chip">LOCAL</span></div>
       <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Load an optional JSON data file into this browser for future custom-content support.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions setting-row"><span><strong>Local JSON data</strong><small>This build stores the validated file locally without replacing bundled system rules.</small></span><div class="button-row"><button class="secondary-button settings-compact-action" type="button" @click="customDataInput?.click()">Import</button><button class="secondary-button settings-compact-action" type="button" @click="clearCustomData">Clear</button><input ref="customDataInput" hidden type="file" accept="application/json,.json" @change="importCustomData" /></div></div></details>
     </section></section>

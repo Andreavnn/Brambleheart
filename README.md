@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.12
+# Brambleheart TTRPG — Beta 0.13
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.12 builds on the stable Beta 0.11 package and continues the Rules, Character Creation, Rhythm Engine, Encounter sheet, and presentation refinement pass.
+Beta 0.13 builds on the current Beta 0.12 package and continues the Rules, Character Creation, Rhythm Engine, Encounter sheet, and presentation refinement pass.
 
 ## Main views
 
@@ -15,7 +15,7 @@ Beta 0.12 builds on the stable Beta 0.11 package and continues the Rules, Charac
 - Settings
 - Site Changelog
 
-## Beta 0.12 focus
+## Beta 0.13 focus
 
 - Refines Character Creation Species, Spark/Deed, Culture Skill, Attribute, Oath/Faith, Spell, Language, Equipment, and Review presentation.
 - Rebalances starting Equipment & Gear values into NP and improves the creator's character-sheet review.

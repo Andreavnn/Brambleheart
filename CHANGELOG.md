@@ -1,5 +1,14 @@
 # Site Changelog
 
+## Beta 0.13
+
+- Rebuilt Combat Encounters as a non-collapsible pen-and-paper character sheet with permanent Core Abilities, clickable combat/character fields, one event record, and corrected ongoing/history controls.
+- Added Approved characters and a Beyond Character Creation Level Up page with source-backed XP costs.
+- Refined Cultural Skills, Spark Deed examples, Homeland/Starting Skills, Attributes, Oath/Faith, Lore, Languages, Equipment wealth, Talent popups, and Review Character.
+- Removed duplicate Attribute Check roll type, alphabetized Rhythm roll types, and simplified Fortune/Misfortune guidance.
+- Added Thornwick Market and Skullfen Ruins backgrounds and pinned the splash page to Ready For Adventure.
+- Added build number to Settings → Site Changelog and tightened header/navigation spacing and responsive popup layouts.
+
 ## Beta 0.12
 
 - Refined Character Creation Culture Skill selection, Deed guidance, Attributes, Faith/Oath spacing, spell ordering/capitalization, NP wealth, Languages, and Review character-sheet layout.

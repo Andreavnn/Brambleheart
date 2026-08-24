@@ -1,47 +1,33 @@
-# Brambleheart Beta 0.12 — Rules, Creator & Encounter Sheet Patch
-
-This full overlay starts from the working Beta 0.11 package and preserves the recovered Character Creation crash and page-boundary fixes.
+# Brambleheart Beta 0.13 — Character Sheet, Advancement & Rules Refinement
 
 ## Character Creation
+- Cultural Skill selections now sit with the trait’s granted Skill ranks instead of floating away from them.
+- Spark Deed examples change with the selected Spark and show individual keyword pills.
+- Homeland Skills use pills; Starting Skills removes the empty Choose a Skill option and reinforces Homeland/Cultural sources.
+- Attribute Rank, controls, Modifier, and secondary stats are reorganized for faster scanning.
+- Oath/Faith and Lore detail spacing is tightened.
+- Talent and other modal layouts receive stronger minimum sizes and independent scrolling.
+- Adventure Kit copy is corrected, Threadpiece Wealth again reports the character’s live remaining balance, and Language cards are tightened.
+- Review Character uses denser pen-and-paper presentation for Skills, secondary stats, weapons/armor, full Talent entries, and full Spell entries.
 
-- Removes the paper/background block behind the site logo when image-backed site backgrounds are active.
-- Reworks Culture Trait Skill choices into a clearer select-and-award layout.
-- Expands Spark guidance so Deeds are explained as small story actions that earn Experience, with a separate Deed example card.
-- Rebuilds Attribute rows so secondary stats remain visible, the Rank control stays compact, and the Modifier sits opposite the Attribute name without expandable cards.
-- Adds breathing room between Faith/Oath selectors and their descriptive panels.
-- Sorts the attuned Lore to the top of Lore Spell groups and normalizes spell title capitalization.
-- Rechecks creator popups for desktop, tablet, and mobile width/scroll containment.
-- Renames the Adventure Kit action to Sell.
-- Converts starting wealth and Equipment & Gear pricing to NP with the requested 25% reduction pass.
-- Tightens the Language step, renames the extra language selector, and gives Species/Common/Additional language cards distinct treatments.
-- Rebuilds Review toward a character sheet: one-row Attributes, secondary stats, Weapons, richer Magic and Talent boxes, Equipment balance in the heading, and no retained-package sentence.
-- Places Back beside a narrower Create Character button.
+## Character List & Advancement
+- Completed characters can be Approved. Approved characters replace Edit with Level Up.
+- Added a Level Up page using Beyond Character Creation costs: Attribute Rank 2 + 2×current Rank, Skill Rank 3 + current Rank, New Skill 6 XP, New Talent 10 XP, Magic Level 10 + 4×current level.
+- Character records now retain Experience and Magic Level fields.
 
-## Character List and Settings
-
-- Keeps Complete and Incomplete characters in separate lists for future advancement/level-up work.
-- Adds a Grayscale switch beside the selected optional Background.
-- Limits Rules Recent/Common access to a 2 × 2 set.
+## Rhythm Engine & Encounters
+- Attribute Check was removed from Roll Type because Attribute Save covers the same use; Roll Types are alphabetized.
+- Fortune/Misfortune copy is simplified as requested.
+- Combat Encounter view is rebuilt as a non-collapsible pen-and-paper character sheet. Core Abilities remain permanently visible above the sheet.
+- Weapons, Armor, Skills, Talents, Spells, other Gear, vitals, attacks, damage, and the single Encounter Record are sheet sections rather than tool accordions.
+- Ongoing encounter controls are Complete, Lock, Delete; completed history controls are View, Delete.
 
 ## Rules
+- Deeds & Spark presentation, long optional-rule notes, Faith Watcher notes, and boxed rules entries receive reader cleanup.
+- Equipment, Oaths, Faiths, Talents, Spells, and other suitable rule entries use bordered rule boxes.
 
-- Orders The Fundamentals as Introduction; Attributes & Skills; Dice Rules; Keywords & Ability Types; Core Abilities.
-- Adds matching accent rails to both sides of Fundamental section headings.
-- Presents Skill Trees as colored tree cards.
-- Renders Building Selu examples from Step-by-Step source material in dedicated Building Selu boxes and aligns creator examples to the source where applicable.
-- Presents Species Traits, Culture Traits, Talents, Spells, Abilities, and comparable rule entries in structured rule boxes where the source permits.
-- Adds source-backed Encounter Rating guidance from The Woodlands encounter reference.
-- Adds a Watcher monster index and an individual local reader page for every monster/companion exposed by The Woodlands monster index. Missing external stat blocks are not fabricated.
-
-## Rhythm Engine and Encounter Sheets
-
-- Compresses Attribute Check target controls so Conditions, Target Type, and the selected target value share a practical row.
-- Replaces Combined Bonus with a dynamic roll statement such as “Weighted Strike Roll: Mettle (6) + Conditions (1) = 7,” omitting unused components.
-- Refines Combat Encounter pages further toward a pen-and-paper sheet with stronger identity, stat, weapon, roll, and rules sections while retaining clickable roll fields.
-
-## Compatibility
-
-- Character storage remains `brambleheart-characters-v0.01`.
-- Encounter storage remains `brambleheart-simulator-encounters-v0.05`.
-- Rhythm history remains `brambleheart-simulator-rhythm-v0.05`.
-- PWA shell cache advances to v0.12.
+## Display & Settings
+- Splash page is pinned to Ready For Adventure artwork.
+- Thornwick Market and Skullfen Ruins are added to Backgrounds alongside Ready For Adventure.
+- Site Changelog in Settings displays the current Beta build.
+- Logo/navigation spacing and modal sizing receive another responsive pass.

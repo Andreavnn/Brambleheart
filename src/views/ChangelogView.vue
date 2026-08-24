@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.12</strong><small>Creator polish, structured Rules, source-backed Watcher references, roll summaries, and character-sheet encounters</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.13</strong><small>Advancement, creator cleanup, Rules boxing, backgrounds, popup repair, and encounter character sheets</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Added Approved character progression and a source-cost Level Up page for Attributes, Skills, new Skills, and Magic Level.</li>
+          <li>Refined Culture Skill awards, Spark-specific Deed examples, Homeland Skills, Attribute Rank/Modifier layout, Oath/Faith and Lore spacing, Languages, wealth, and Review.</li>
+          <li>Rebuilt Talent/Culture/Gear popup sizing so full cards remain visible on desktop, tablet, and mobile.</li>
+          <li>Reworked Deeds, Oaths, Faith, Homeland, Talents, Spells, and Equipment rule presentation into stronger individual boxes and corrected oversized narrative notes.</li>
+          <li>Added Thornwick Market and Skullfen Ruins backgrounds, kept Ready For Adventure on the splash page, and tightened logo/navigation spacing.</li>
+          <li>Further rebuilt Combat Encounters as a persistent pen-and-paper sheet with always-visible Core Abilities, boxed Talents/Spells, one log, and simplified encounter actions.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.12</strong><small>Creator polish, structured Rules, source-backed Watcher references, roll summaries, and character-sheet encounters</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Refined Culture Skill selection, Deed guidance, Attribute rows, Oath/Faith spacing, spell ordering/capitalization, NP wealth, Languages, and Review.</li>
           <li>Added background grayscale control and removed the paper backing behind the logo on image-backed pages.</li>

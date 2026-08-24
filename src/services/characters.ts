@@ -36,6 +36,8 @@ export interface CharacterRecord {
   attributes:AttributeRanks
   pinned?:boolean
   locked?:boolean
+  experience?:number
+  magicLevel?:number
   draft?:boolean
   creationStep?:string
   createdAt:string
@@ -58,7 +60,7 @@ export function upsertCharacter(record:CharacterRecord){
   if(index>=0)list[index]=record;else list.unshift(record)
   writeCharacters(list)
 }
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.12',character}}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.13',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)

@@ -5,6 +5,7 @@ export interface EncounterRecord{
   name:string
   status:'ongoing'|'completed'
   pinned:boolean
+  locked?:boolean
   round:number
   health:number
   fateMarks:number
@@ -37,6 +38,6 @@ export function writeEncounters(items:EncounterRecord[]){localStorage.setItem(EN
 export function encounterSort(a:EncounterRecord,b:EncounterRecord){if(a.pinned!==b.pinned)return a.pinned?-1:1;return b.updatedAt.localeCompare(a.updatedAt)}
 export function createEncounterRecord(character:CharacterRecord,name:string,index:number):EncounterRecord{
   const now=new Date().toISOString()
-  return{id:crypto.randomUUID(),name:name.trim()||`Encounter ${index+1}`,status:'ongoing',pinned:false,round:1,health:30,fateMarks:0,mana:2+(character.path==='magic'?1:0),createdAt:now,updatedAt:now,events:[],characterId:character.id}
+  return{id:crypto.randomUUID(),name:name.trim()||`Encounter ${index+1}`,status:'ongoing',pinned:false,locked:false,round:1,health:30,fateMarks:0,mana:2+(character.path==='magic'?1:0),createdAt:now,updatedAt:now,events:[],characterId:character.id}
 }
 export function upsertEncounter(record:EncounterRecord){const list=loadEncounters();const index=list.findIndex(item=>item.id===record.id);if(index>=0)list[index]=record;else list.unshift(record);writeEncounters(list)}

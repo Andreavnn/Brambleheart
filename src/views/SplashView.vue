@@ -14,7 +14,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
 </script>
 
 <template>
-  <main class="welcome-page bramble-welcome-page">
+  <main class="welcome-page bramble-welcome-page ready-adventure-splash">
     <section class="welcome-panel card-surface">
       <div class="wip-banner welcome-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div>
       <header class="welcome-brand-block bramble-welcome-brand">

@@ -16,11 +16,12 @@ function persist(){writeCharacters(characters.value)}
 function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.delete(id):next.add(id);openIds.value=next}
 function togglePin(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist()}
 function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}
+function levelUpCharacter(id:string){void router.push(`/characters/${id}/level-up`)}
 function editCharacter(id:string){void router.push({path:'/characters/create',query:{edit:id}})}
 function copyCharacter(id:string){const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist()}
 function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.12',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.13',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
@@ -72,14 +73,15 @@ function skillSummary(character:CharacterRecord){
           <div class="character-card-topline">
             <button class="saved-list-open-area character-open-area" type="button" @click="toggle(character.id)">
               <div>
-                <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="character.draft" class="character-status-badge incomplete">INCOMPLETE</span><span v-else class="character-status-badge complete">COMPLETE</span><span v-if="character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
+                <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="character.draft" class="character-status-badge incomplete">INCOMPLETE</span><span v-else class="character-status-badge complete">COMPLETE</span><span v-if="character.locked" class="row-badge lock-badge">{{ character.draft?'LOCKED':'APPROVED' }}</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
                 <div class="saved-list-labels character-list-summary"><span class="app-option-label">{{ character.species||'Species not selected' }}</span><span class="app-option-label">{{ character.campaignName||'No campaign assigned' }}</span></div>
               </div>
               <div class="saved-list-card-meta"><strong>{{ character.campaignName||'Independent' }}</strong><small>{{ character.species||'Species not selected' }}</small></div>
             </button>
             <div class="character-card-actions-visible">
-              <button class="secondary-button compact-action" type="button" :disabled="character.locked" @click="editCharacter(character.id)">Edit</button>
-              <button class="secondary-button compact-action character-lock-button" type="button" :class="{active:character.locked}" @click="toggleLock(character.id)">{{ character.locked?'Unlock':'Lock' }}</button>
+              <button v-if="character.draft||!character.locked" class="secondary-button compact-action" type="button" @click="editCharacter(character.id)">Edit</button>
+              <button v-else class="primary-button compact-action" type="button" @click="levelUpCharacter(character.id)">Level Up</button>
+              <button class="secondary-button compact-action character-lock-button" type="button" :class="{active:character.locked}" @click="toggleLock(character.id)">{{ character.draft?(character.locked?'Locked':'Lock'):(character.locked?'Approved':'Approve') }}</button>
               <button class="secondary-button compact-action" type="button" @click="copyCharacter(character.id)">Copy</button>
               <button class="danger-button compact-action" type="button" :disabled="character.locked" @click="removeCharacter(character.id)">Delete</button>
             </div>
@@ -93,7 +95,7 @@ function skillSummary(character:CharacterRecord){
             <div v-if="character.talents?.length" class="info-card"><strong>Talents{{ character.loreAttunement?` · ${character.loreAttunement} Attunement`:'' }}</strong><p>{{ character.talents.join(' · ') }}</p></div>
             <div v-if="character.spells?.length || character.invocationSpells?.length || character.invocationSpell" class="info-card"><strong>Magic</strong><p><template v-if="character.spells?.length">Spells: {{ character.spells.join(' · ') }}</template><template v-if="character.invocationSpells?.length"> · Invocations: {{ character.invocationSpells.join(' · ') }}</template><template v-else-if="character.invocationSpell"> · Invocation: {{ character.invocationSpell }}</template></p></div>
             <div v-if="character.equipment?.length" class="info-card"><strong>Purchased Equipment</strong><p>{{ character.equipment.map(item=>item.name).join(' · ') }}</p></div>
-            <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="toggleLock(character.id)">{{ character.locked?'Unlock':'Lock Character' }}</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" :disabled="character.locked" @click="removeCharacter(character.id)">Delete</button></div>
+            <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="toggleLock(character.id)">{{ character.draft?(character.locked?'Unlock':'Lock Character'):(character.locked?'Remove Approval':'Approve Character') }}</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" :disabled="character.locked" @click="removeCharacter(character.id)">Delete</button></div>
           </div>
         </article>
         </div>

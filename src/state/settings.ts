@@ -2,7 +2,7 @@ import { reactive, toRef, watch } from 'vue'
 
 export type FontSize = 'smaller' | 'small' | 'normal' | 'large' | 'larger'
 export type RoleTheme = 'default' | 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
-export type BackgroundChoice = 'none' | 'ready-for-adventure'
+export type BackgroundChoice = 'none' | 'ready-for-adventure' | 'thornwick-market' | 'skullfen-ruins'
 
 type SettingsState = {
   darkMode:boolean
@@ -25,7 +25,7 @@ const defaults:SettingsState={
   backgroundGrayscale:false,
 }
 const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
-const backgrounds:BackgroundChoice[]=['none','ready-for-adventure']
+const backgrounds:BackgroundChoice[]=['none','ready-for-adventure','thornwick-market','skullfen-ruins']
 
 function normalizeFontSize(value:unknown):FontSize{
   if(['smaller','small','normal','large','larger'].includes(String(value)))return value as FontSize

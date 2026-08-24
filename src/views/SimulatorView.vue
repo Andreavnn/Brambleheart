@@ -23,8 +23,8 @@ function stamp(){return new Date().toISOString()}
 function formatTime(value:string){return new Date(value).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
 function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 
-const rollTypes=['Attribute Check','Skill Check','Attribute Save','Initiative','Strike','Ward','Compelled','Role-Play','Other'] as const
-const rollType=ref<(typeof rollTypes)[number]>('Attribute Check')
+const rollTypes=['Attribute Save','Compelled','Initiative','Other','Role-Play','Skill Check','Strike','Ward'] as const
+const rollType=ref<(typeof rollTypes)[number]>('Attribute Save')
 const rhythmMode=ref<RhythmMode>('normal')
 const rhythmStat=ref(0),rhythmSkillBonus=ref(0),rhythmConditions=ref(0)
 const rhythmSkill=ref('')
@@ -57,7 +57,7 @@ function allowedStatKeys(type:string){
   if(type==='Initiative')return['speed']
   if(type==='Strike')return['mettle','aim','control']
   if(type==='Ward')return['ward']
-  if(['Attribute Check','Attribute Save','Compelled'].includes(type))return['agility','might','hide','lore','bravery']
+  if(['Attribute Save','Compelled'].includes(type))return['agility','might','hide','lore','bravery']
   if(['Skill Check','Role-Play'].includes(type))return['agility','might','hide','lore','bravery']
   return allCharacterStats.value.map(item=>item.key)
 }
@@ -72,7 +72,7 @@ const characterSkillOptions=computed(()=>{
 })
 const statFieldLabel=computed(()=>rollType.value==='Strike'?'Strike Stat':rollType.value==='Ward'?'Ward Stat':rollType.value==='Initiative'?'Initiative Stat':rollType.value==='Attribute Save'?'Save Attribute':rollType.value==='Skill Check'?'Skill Attribute':'Character Stat')
 const skillFieldLabel=computed(()=>selectedStat.value?`${selectedStat.value.attribute} Skill`:'Character Skill')
-const rollUsesSkill=computed(()=>['Attribute Check','Skill Check','Role-Play','Other'].includes(rollType.value))
+const rollUsesSkill=computed(()=>['Skill Check','Role-Play','Other'].includes(rollType.value))
 watch([rollType,attributeCharacterId],()=>{const first=attributeStatOptions.value[0];attributeCharacterStat.value=first?.key||'agility';rhythmSkill.value='';if(!rollUsesSkill.value)rhythmSkillBonus.value=0},{immediate:true})
 watch(attributeCharacterStat,()=>{rhythmSkill.value='';if(attributeCharacter.value)rhythmStat.value=selectedStat.value?.value||0},{immediate:true})
 watch(rhythmSkill,()=>{if(!rollUsesSkill.value){rhythmSkillBonus.value=0;return}if(attributeCharacter.value){const entry=characterSkillOptions.value.find(item=>item.name===rhythmSkill.value);rhythmSkillBonus.value=(entry?.rank||0)*2}})
@@ -103,7 +103,7 @@ function persist(){writeEncounters(encounters.value)}
 function newEncounter(){encounterStartError.value='';const character=characters.value.find(item=>item.id===newEncounterCharacterId.value);if(!character){encounterStartError.value='Select a saved character before starting a Combat Encounter.';return}const record=createEncounterRecord(character,encounterName.value,encounters.value.length);encounters.value=[record,...encounters.value];persist();void router.push(`/simulator/encounters/${record.id}`)}
 function togglePin(id:string){const item=encounters.value.find(entry=>entry.id===id);if(!item)return;item.pinned=!item.pinned;item.updatedAt=stamp();persist()}
 function complete(id:string){const item=encounters.value.find(entry=>entry.id===id);if(!item)return;item.status='completed';item.updatedAt=stamp();persist()}
-function reopen(id:string){const item=encounters.value.find(entry=>entry.id===id);if(!item)return;item.status='ongoing';item.updatedAt=stamp();persist();void router.push(`/simulator/encounters/${id}`)}
+function toggleEncounterLock(id:string){const item=encounters.value.find(entry=>entry.id===id);if(!item)return;item.locked=!item.locked;item.updatedAt=stamp();persist()}
 function remove(id:string){if(!confirm('Delete this encounter and its local history?'))return;encounters.value=encounters.value.filter(entry=>entry.id!==id);persist()}
 </script>
 
@@ -117,7 +117,7 @@ function remove(id:string){if(!confirm('Delete this encounter and its local hist
     <section v-if="sheet==='attribute'" class="tool-panel card-surface rhythm-tool-card">
       <div class="tool-heading"><div><p class="eyebrow">ATTRIBUTE CHECK</p><h2>3d10 + Stat + Skill</h2></div></div>
       <p class="tool-explainer">Choose a character, then narrow the roll from Roll Type to the appropriate Character Stat and finally to Skills governed by that Stat. You can still roll manually without selecting a character.</p>
-      <aside class="fortune-tip"><strong>Fortune &amp; Misfortune</strong><span>Natural kept dice of 8–10 create Fortune results and natural kept dice of 1–2 create Misfortune results. Fortune represents an advantageous twist and may create a +1 Condition where the rule allows; Misfortune represents a complication and may create a −1 Condition. These results are read from the natural dice before ordinary Conditions are added.</span></aside>
+      <aside class="fortune-tip"><strong>Fortune &amp; Misfortune</strong><span>Natural dice of 8–10 create Fortune results and natural dice of 1–2 create Misfortune results. Fortune represents an advantageous twist and may create a +1 Condition where the rule allows; Misfortune represents a complication and may create a −1 Condition.</span></aside>
       <label class="field-label attribute-character-picker">Character<select v-model="attributeCharacterId" class="field-control"><option value="">Manual / No Character</option><option v-for="character in characters" :key="character.id" :value="character.id">{{ character.name }} {{ character.species }}</option></select></label>
 
       <div class="rhythm-dependent-grid">
@@ -133,7 +133,7 @@ function remove(id:string){if(!confirm('Delete this encounter and its local hist
         <label v-else-if="targetMode==='active'" class="field-label target-value-field">Active Target<input v-model.number="activeTarget" class="field-control" type="number" min="0" placeholder="Enter Target" /></label>
       </div>
       <div class="roll-formula-summary"><strong>{{ rollSummary }}</strong><small>Dice are rolled separately; this line shows the bonuses and Conditions currently being added.</small></div>
-      <button class="primary-button wide" @click="rollAttributeCheck">Roll Attribute Check</button>
+      <button class="primary-button wide" @click="rollAttributeCheck">Roll {{ rollType }}</button>
       <div class="sim-history-heading"><div><strong>Recent Rolls</strong><small>The latest five rolls are kept on this device.</small></div></div>
       <div v-if="rhythmHistory.length" class="rhythm-history-list"><article v-for="(entry,index) in rhythmHistory" :key="entry.id" class="result-panel rhythm-history-entry" :class="{latest:index===0}"><div class="result-meta"><span>{{ formatTime(entry.createdAt) }}</span><span>{{ entry.rollType }}</span><span>{{ entry.mode }}</span><span v-if="entry.target!==null">{{ entry.targetLabel }} {{ entry.target }}</span></div><div class="dice-row"><span v-for="(value,dieIndex) in entry.result.rolled" :key="dieIndex" class="die" :class="{fortune:value>=8,misfortune:value<=2}">{{ value }}</span></div><div class="result-summary"><strong class="result-total">{{ entry.result.total }}</strong><span v-if="entry.target!==null" class="outcome" :class="entry.result.total>=entry.target?'pass':'fail'">{{ rollOutcome(entry) }}</span></div><div v-if="entry.fortunes||entry.misfortunes" class="special-result-row"><span v-if="entry.fortunes" class="special-result fortune-result">Fortune ×{{ entry.fortunes }}</span><span v-if="entry.misfortunes" class="special-result misfortune-result">Misfortune ×{{ entry.misfortunes }}</span></div><small>{{ entry.result.natural }} natural + {{ entry.stat }} Stat<template v-if="entry.skillName"> + {{ entry.skillBonus }} {{ entry.skillName }}</template> {{ entry.conditions>=0?'+':'−' }} {{ Math.abs(entry.conditions) }} Conditions</small></article></div>
       <div v-else class="empty-inline sim-empty-inline">No rolls yet.</div>
@@ -147,8 +147,8 @@ function remove(id:string){if(!confirm('Delete this encounter and its local hist
       <p v-if="encounterStartError" class="creation-status-message">{{ encounterStartError }}</p>
     </section>
 
-    <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">ONGOING</p><h2>Ongoing Encounters</h2></div></div><div v-if="!ongoingEncounters.length" class="empty-inline">No ongoing encounters.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in ongoingEncounters" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Round {{ encounter.round }} · Health {{ encounter.health }} · Fate {{ encounter.fateMarks }}/3</small></RouterLink><div class="sim-record-actions"><button class="pin-button" :class="{pinned:encounter.pinned}" @click="togglePin(encounter.id)">⌖</button><button class="secondary-button compact-action" @click="complete(encounter.id)">Complete</button><button class="icon-button compact-icon" @click="remove(encounter.id)">×</button></div></article></div></section>
-    <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">HISTORY</p><h2>Encounter History</h2></div></div><div v-if="!encounterHistory.length" class="empty-inline">Completed encounters will appear here.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in encounterHistory" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Completed · Round {{ encounter.round }}</small></RouterLink><div class="sim-record-actions"><button class="secondary-button compact-action" @click="reopen(encounter.id)">Reopen</button><button class="icon-button compact-icon" @click="remove(encounter.id)">×</button></div></article></div></section>
+    <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">ONGOING</p><h2>Ongoing Encounters</h2></div></div><div v-if="!ongoingEncounters.length" class="empty-inline">No ongoing encounters.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in ongoingEncounters" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Round {{ encounter.round }} · Health {{ encounter.health }} · Fate {{ encounter.fateMarks }}/3</small></RouterLink><div class="sim-record-actions"><button class="secondary-button compact-action" @click="complete(encounter.id)">Complete</button><button class="secondary-button compact-action" :class="{active:encounter.locked}" @click="toggleEncounterLock(encounter.id)">{{ encounter.locked?'Locked':'Lock' }}</button><button class="danger-button compact-action" @click="remove(encounter.id)">Delete</button></div></article></div></section>
+    <section class="tool-panel card-surface encounter-list-section"><div class="tool-heading"><div><p class="eyebrow">HISTORY</p><h2>Encounter History</h2></div></div><div v-if="!encounterHistory.length" class="empty-inline">Completed encounters will appear here.</div><div v-else class="sim-list-body standalone-list-body"><article v-for="encounter in encounterHistory" :key="encounter.id" class="sim-record-row"><RouterLink class="sim-record-main encounter-list-row-link" :to="`/simulator/encounters/${encounter.id}`"><strong>{{ encounter.name }}</strong><small>{{ characterName(encounter.characterId) }} · Completed · Round {{ encounter.round }}</small></RouterLink><div class="sim-record-actions"><RouterLink class="secondary-button compact-action" :to="`/simulator/encounters/${encounter.id}`">View</RouterLink><button class="danger-button compact-action" @click="remove(encounter.id)">Delete</button></div></article></div></section>
     </template>
   </main>
 </template>
