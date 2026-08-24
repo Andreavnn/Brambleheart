@@ -519,7 +519,16 @@ function allValidationErrors(){
 const finalErrors=computed(()=>allValidationErrors())
 const canFinish=computed(()=>finalErrors.value.length===0)
 
-function jumpTo(index:number){stepIndex.value=Math.max(0,Math.min(index,totalSteps.value-1));error.value='';window.scrollTo({top:0,behavior:'smooth'})}
+function jumpTo(index:number){
+  const target=Math.max(0,Math.min(index,totalSteps.value-1))
+  if(target>stepIndex.value){
+    for(let i=stepIndex.value;i<target;i++){
+      const message=validateStep(stepDefs.value[i].id)
+      if(message){stepIndex.value=i;error.value=message;window.scrollTo({top:0,behavior:'smooth'});return}
+    }
+  }
+  stepIndex.value=target;error.value='';window.scrollTo({top:0,behavior:'smooth'})
+}
 function next(){const message=validateStep();if(message){error.value=message;return}if(stepIndex.value<totalSteps.value-1)jumpTo(stepIndex.value+1)}
 function back(){if(stepIndex.value>0)jumpTo(stepIndex.value-1)}
 
