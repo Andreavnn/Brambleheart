@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
-import { findRulePage, fundamentalsNavigation, loreNavigation, quickFaq, quickReferencePages, resolveSourceSections, ruleCategories } from '../data/ruleCatalog'
+import { canonicalRuleSlug, findRuleCategory, findRulePage, findRuleParentPage, fundamentalsNavigation, loreNavigation, quickFaq, quickReferencePages, referencesLanding, resolveSourceSections, ruleCategories } from '../data/ruleCatalog'
 import { speciesData } from '../data/speciesData'
 import { faiths, homelands, oaths, sparks } from '../data/bramble'
 import { loreSpells } from '../data/magicOptions'
@@ -20,6 +20,7 @@ import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatch
 const route=useRoute()
 const slug=computed(()=>String(route.params.slug||''))
 const page=computed(()=>findRulePage(slug.value))
+const canonicalSlug=computed(()=>canonicalRuleSlug(slug.value))
 const rawSourceSections=computed(()=>page.value?resolveSourceSections(page.value):[])
 watch(slug,value=>{if(value)recordRecentRule(value)},{immediate:true})
 
@@ -72,7 +73,7 @@ const sourceSections=computed(()=>{
     const section:RuleSourceSection={heading:page.value.loreHeading,blocks:blocks.slice(start+1,end)}
     return[{...entry,section}]
   }
-  if(slug.value!=='introduction')return entries
+  if(canonicalSlug.value!=='introduction')return entries
   const filtered=entries.filter(entry=>entry.section.heading!=='WHAT YOU’LL NEED')
   const watcher=filtered.find(entry=>entry.section.heading==='THE WATCHER')
   const flow=filtered.find(entry=>entry.section.heading==='HOW THE GAME FLOWS')
@@ -84,26 +85,31 @@ const sourceSections=computed(()=>{
   return out
 })
 
-const fundamentalIndex=computed(()=>fundamentalsNavigation.findIndex(item=>item.slug===slug.value))
+const fundamentalIndex=computed(()=>fundamentalsNavigation.findIndex(item=>item.slug===canonicalSlug.value))
 const previousFundamental=computed(()=>fundamentalIndex.value>0?fundamentalsNavigation[fundamentalIndex.value-1]:null)
 const nextFundamental=computed(()=>fundamentalIndex.value>=0&&fundamentalIndex.value<fundamentalsNavigation.length-1?fundamentalsNavigation[fundamentalIndex.value+1]:null)
-const loreIndex=computed(()=>loreNavigation.findIndex(item=>item.slug===slug.value))
+const loreIndex=computed(()=>loreNavigation.findIndex(item=>item.slug===canonicalSlug.value))
 const previousLore=computed(()=>loreIndex.value>0?loreNavigation[loreIndex.value-1]:null)
 const nextLore=computed(()=>loreIndex.value>=0&&loreIndex.value<loreNavigation.length-1?loreNavigation[loreIndex.value+1]:null)
 const sectionPages=computed(()=>{
   if(fundamentalIndex.value>=0||loreIndex.value>=0)return[]
-  if(quickReferencePages.some(item=>item.slug===slug.value))return quickReferencePages
-  return ruleCategories.find(category=>category.pages.some(item=>item.slug===slug.value))?.pages||[]
+  if(quickReferencePages.some(item=>item.slug===canonicalSlug.value))return quickReferencePages
+  return findRuleCategory(canonicalSlug.value)?[findRuleCategory(canonicalSlug.value)!.landing,...findRuleCategory(canonicalSlug.value)!.pages]:[]
 })
-const sectionIndex=computed(()=>sectionPages.value.findIndex(item=>item.slug===slug.value))
+const sectionIndex=computed(()=>sectionPages.value.findIndex(item=>item.slug===canonicalSlug.value))
 const previousSection=computed(()=>sectionIndex.value>0?sectionPages.value[sectionIndex.value-1]:null)
 const nextSection=computed(()=>sectionIndex.value>=0&&sectionIndex.value<sectionPages.value.length-1?sectionPages.value[sectionIndex.value+1]:null)
 
 const breadcrumbSection=computed(()=>{
-  if(loreIndex.value>=0||quickReferencePages.some(item=>item.slug===slug.value))return'References'
-  if(findExternalMonster(slug.value))return'The Watcher'
-  return ruleCategories.find(category=>category.pages.some(item=>item.slug===slug.value))?.title||'Rules'
+  if(loreIndex.value>=0||quickReferencePages.some(item=>item.slug===canonicalSlug.value))return'References'
+  if(findExternalMonster(canonicalSlug.value))return'The Watcher'
+  return findRuleCategory(canonicalSlug.value)?.title||'Rules'
 })
+const breadcrumbParent=computed(()=>findRuleParentPage(canonicalSlug.value)||null)
+const currentCategoryLanding=computed(()=>ruleCategories.find(category=>category.landing.slug===canonicalSlug.value)||null)
+const currentReferencesLanding=computed(()=>canonicalSlug.value===referencesLanding.slug)
+const landingEntries=computed(()=>currentReferencesLanding.value?quickReferencePages:(currentCategoryLanding.value?.pages||[]))
+function speciesImageUrl(name:string){return`/assets/species/${name.toLowerCase()}.png`}
 function labeledParagraph(value:string){
   const text=displayText(value).trim()
   const match=text.match(/^([^:]{2,45}):\s+(.+)$/)
@@ -124,8 +130,8 @@ function structuredRule(text:string):{intro:string;fields:StructuredField[]}{
 }
 function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST'&&field.label!=='KEYWORDS')}
 
-const currentSpecies=computed(()=>slug.value.startsWith('species-')?speciesData.find(item=>`species-${item.name.toLowerCase()}`===slug.value)||null:null)
-const currentMonster=computed(()=>findExternalMonster(slug.value)||null)
+const currentSpecies=computed(()=>canonicalSlug.value.startsWith('species-')?speciesData.find(item=>`species-${item.name.toLowerCase()}`===canonicalSlug.value)||null:null)
+const currentMonster=computed(()=>findExternalMonster(canonicalSlug.value)||null)
 const monsterGroups=computed(()=>monsterCategories.map(category=>{
   const monsters=externalMonsters.filter(monster=>monster.category===category.name)
   const parents=monsters.filter(monster=>!monster.group)
@@ -140,14 +146,14 @@ function talentRuleKeywords(name:string){const match=talentRuleText(name).match(
 function talentCategory(name:string){return classifyTalent(name,talentRuleText(name),talentRuleKeywords(name))}
 const talentRuleGroups=computed(()=>TALENT_CATEGORIES.map(category=>({category,talents:talentSections.map(section=>canonicalTalentName(section.heading)).filter(name=>talentCategory(name)===category)})).filter(group=>group.talents.length))
 const spellLoreBySlug:Record<string,string>={'lore-invocation':'Invocation','lore-flames':'Flames','lore-frost':'Frost','lore-hallows':'Hallows','lore-harmony':'Harmony','lore-life':'Life','lore-oath':'Oath','lore-wilds':'Wilds'}
-const currentSpellLore=computed(()=>spellLoreBySlug[slug.value]||'')
+const currentSpellLore=computed(()=>spellLoreBySlug[canonicalSlug.value]||'')
 const currentLoreSpells=computed(()=>currentSpellLore.value?(loreSpells[currentSpellLore.value]||[]):[])
 function spellRuleDetail(name:string){return spellDetails[name]}
 function spellLoreClass(name:string){return `spell-lore-${String(spellDetails[name]?.lore||'invocation').toLowerCase()}`}
 const aoeRules=[
-  {title:'Line',keyword:'LINE[n]',image:aoeLineImage,text:'A line is always straight, never bending, and affects every square it touches along the way. The caster chooses the direction; it continues from the caster until it reaches its listed maximum length or an obstacle the spell cannot pass through.',example:'LINE[10] traces a straight line exactly ten squares long in a chosen cardinal direction. Every character, object, or terrain feature whose square falls along that path is affected.'},
-  {title:'Cone',keyword:'CONE[n]',image:aoeConeImage,text:'A cone begins adjacent to the caster and extends outward in a triangular pattern on the grid. Its width grows as it advances, matching the listed area size.',example:'CONE[6] starts in the square directly in front of the caster and expands to a roughly triangular shape six squares long and six squares wide at its farthest edge.'},
-  {title:'Orb',keyword:'ORB[n]',image:aoeOrbImage,text:'The caster chooses a valid point within the spell’s casting range. The orb expands from that square as a square-shaped area whose size is determined by the orb number. It ignores the caster’s facing.',example:'ORB[7] creates a 7×7 block of squares from the chosen point. Every character whose square lies inside that area, including the edges, is affected.'},
+  {title:'Line',keyword:'LINE[n]',image:aoeLineImage,text:'A Line ability creates a straight path that never bends and affects every square it touches. The user chooses the direction; the Line continues from the user until it reaches its listed maximum length or an obstacle the ability cannot pass through.',example:'LINE[10] traces a straight line exactly ten squares long in the chosen direction. Every valid character, object, or terrain feature whose square lies along that path is affected.'},
+  {title:'Cone',keyword:'CONE[n]',image:aoeConeImage,text:'A Cone ability begins adjacent to the user and extends outward in a triangular pattern on the grid. Its width grows as it advances, matching the listed area size.',example:'CONE[6] starts in the square directly in front of the user and expands to a roughly triangular shape six squares long and six squares wide at its farthest edge.'},
+  {title:'Orb',keyword:'ORB[n]',image:aoeOrbImage,text:'For an Orb ability, choose a valid point within the Ability’s range. The Orb expands from that square as a square-shaped area whose size is determined by the Orb number. It ignores the user’s facing.',example:'ORB[7] creates a 7×7 block of squares from the chosen point. Every valid target whose square lies inside that area, including the edges, is affected.'},
 ]
 
 function traitKeywords(values:string[]){return Array.from(new Set(values.flatMap(value=>String(value).split(/[|,;]+/).map(item=>item.trim()).filter(Boolean))))}
@@ -163,15 +169,15 @@ function bracketParts(value:string){
 function isLongNarrativeHeading(value:string){const t=displayText(value).trim();return t.startsWith('Packs, Herds, & Kinships (Optional Rule)')||t.startsWith('WATCHER’S NOTE')}
 function narrativeParts(value:string){const t=displayText(value).trim();if(t.startsWith('WATCHER’S NOTE'))return{title:'WATCHER’S NOTE',body:t.replace(/^WATCHER’S NOTE\s*/,'')};const title='Packs, Herds, & Kinships (Optional Rule)';return{title,body:t.replace(title,'').trim()}}
 const boxedRuleSlugs=new Set(['homeland','oath','faith','talents','adventuring-gear','lore-invocation','lore-flames','lore-frost','lore-hallows','lore-harmony','lore-life','lore-oath','lore-wilds'])
-function boxedRulePage(){return boxedRuleSlugs.has(slug.value)}
-function abilityBoxPage(){return slug.value==='talents'||Boolean(currentSpellLore.value)}
+function boxedRulePage(){return boxedRuleSlugs.has(canonicalSlug.value)}
+function abilityBoxPage(){return canonicalSlug.value==='talents'||Boolean(currentSpellLore.value)}
 function entryRuleText(entry:{section:RuleSourceSection}){return entry.section.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')}
 function entryKeywords(entry:{section:RuleSourceSection}){return Array.from(new Set<string>(entry.section.blocks.filter(block=>block.type==='paragraph').flatMap(block=>block.type==='paragraph'?keywordParts(block.text):[])))}
 function entryAbilityTypes(entry:{section:RuleSourceSection}){return entryKeywords(entry).filter(value=>abilityCostKeywords.has(value))}
 function entryDisplayKeywords(entry:{section:RuleSourceSection}){return entryKeywords(entry).filter(value=>!abilityCostKeywords.has(value))}
 function entryMana(entry:{section:RuleSourceSection}){return manaCostFromRule(entryRuleText(entry))}
 function equipmentTableRows(block:RuleSourceBlock){
-  if(slug.value!=='adventuring-gear'||block.type!=='table'||block.rows.length<2||block.rows[0].length<2)return[]
+  if(canonicalSlug.value!=='adventuring-gear'||block.type!=='table'||block.rows.length<2||block.rows[0].length<2)return[]
   const headers=block.rows[0].map(displayText);return block.rows.slice(1).filter(row=>row.some(cell=>String(cell).trim())).map(row=>({name:displayText(row[0]||'Item'),fields:row.slice(1).map((cell,index)=>({label:headers[index+1]||`Value ${index+1}`,value:displayText(cell||'—')}))}))
 }
 type DeedEntry={name:string;flavor:string;objective:string;reward:string;keywords:string[]}
@@ -231,17 +237,22 @@ const adventuringSectionGroups=computed(()=>[
     <AppHeader compact back-to="/rules" back-label="Back to Rules" prefer-back-to skip-back-prefix="/rules/read/" />
 
     <template v-if="page">
-      <nav class="rule-breadcrumb" aria-label="Breadcrumb"><RouterLink to="/rules">Rules</RouterLink><span>›</span><span>{{ breadcrumbSection }}</span><span>›</span><strong>{{ page.title }}</strong></nav>
+      <nav class="rule-breadcrumb" aria-label="Breadcrumb"><RouterLink to="/rules">Rules</RouterLink><span>›</span><template v-if="breadcrumbParent&&breadcrumbParent.slug!==page.slug"><RouterLink :to="`/rules/read/${breadcrumbParent.slug}`">{{ breadcrumbSection }}</RouterLink><span>›</span></template><strong>{{ page.title }}</strong></nav>
       <div class="page-title-block rule-reader-title">
         <h1>{{ page.title }}</h1>
         <p>{{ page.summary }}</p>
       </div>
-      <div class="rule-page-banner-placeholder" :class="{empty:!currentBanner}" :style="currentBanner?{backgroundImage:`url(${currentBanner})`}:undefined" aria-hidden="true"></div>
+      <div v-if="fundamentalIndex>=0||loreIndex>=0" class="rule-nav-scroll-shell"><button type="button" class="rule-nav-scroll-button left" aria-label="Scroll rule navigation left" @click="scrollRuleNav(-1)">‹</button><nav ref="ruleNavRef" v-if="fundamentalIndex>=0" class="fundamental-inner-links card-surface" aria-label="The Fundamentals pages"><RouterLink v-for="item in fundamentalsNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===canonicalSlug}">{{ item.title }}</RouterLink></nav>
+      <nav ref="ruleNavRef" v-else class="fundamental-inner-links lore-inner-links card-surface" aria-label="Lore of Anthro Mundas pages"><RouterLink v-for="item in loreNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===canonicalSlug}">{{ item.title }}</RouterLink></nav><button type="button" class="rule-nav-scroll-button right" aria-label="Scroll rule navigation right" @click="scrollRuleNav(1)">›</button></div>
 
-      <div v-if="fundamentalIndex>=0||loreIndex>=0" class="rule-nav-scroll-shell"><button type="button" class="rule-nav-scroll-button left" aria-label="Scroll rule navigation left" @click="scrollRuleNav(-1)">‹</button><nav ref="ruleNavRef" v-if="fundamentalIndex>=0" class="fundamental-inner-links card-surface" aria-label="The Fundamentals pages"><RouterLink v-for="item in fundamentalsNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav>
-      <nav ref="ruleNavRef" v-else class="fundamental-inner-links lore-inner-links card-surface" aria-label="Lore of Anthro Mundas pages"><RouterLink v-for="item in loreNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav><button type="button" class="rule-nav-scroll-button right" aria-label="Scroll rule navigation right" @click="scrollRuleNav(1)">›</button></div>
+      <template v-if="currentCategoryLanding||currentReferencesLanding">
+        <section class="rule-content-card card-surface chapter-landing-page">
+          <article class="rule-feature-box chapter-landing-intro"><header><h2>{{ page.title }}</h2></header><p>{{ page.summary }}</p></article>
+          <div class="chapter-landing-list"><RouterLink v-for="entry in landingEntries" :key="entry.slug" class="chapter-landing-link" :to="`/rules/read/${entry.slug}`"><span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span><span aria-hidden="true">›</span></RouterLink></div>
+        </section>
+      </template>
 
-      <template v-if="page.slug==='playable-species'">
+      <template v-else-if="page.slug==='playable-species'">
         <section class="rule-content-card card-surface playable-species-reader">
           <article class="rule-copy-card"><h2>Playable Species</h2><p>Choose a Species to read its lore, Heritage Traits, Culture Traits, and native language.</p></article>
           <RouterLink v-for="species in speciesData" :key="species.name" class="list-row" :to="`/rules/read/species-${species.name.toLowerCase()}`">
@@ -252,7 +263,10 @@ const adventuringSectionGroups=computed(()=>[
 
       <template v-else-if="currentSpecies">
         <section class="species-rule-sheet">
-          <article class="species-rule-lore card-surface"><header><h2>{{ currentSpecies.name }}</h2><small>{{ currentSpecies.pronunciation }}</small></header><p class="species-rule-quote">“{{ currentSpecies.quote }}”</p><p>{{ currentSpecies.lore }}</p><p><strong>Language:</strong> {{ currentSpecies.language }}</p></article>
+          <article class="species-rule-lore card-surface">
+            <div class="species-rule-hero"><div class="species-rule-identity"><header><h2>{{ currentSpecies.name }}</h2><small>{{ currentSpecies.pronunciation }}</small></header><p class="species-rule-quote">“{{ currentSpecies.quote }}”</p></div><div class="species-rule-art"><img :src="speciesImageUrl(currentSpecies.name)" :alt="`${currentSpecies.name} species artwork`" /></div></div>
+            <div class="species-rule-lore-copy"><p>{{ currentSpecies.lore }}</p><p><strong>Language:</strong> {{ currentSpecies.language }}</p></div>
+          </article>
           <details class="organized-rule-category species-rule-trait-section card-surface" open><summary><span><h2>Heritage Traits</h2><small>{{ currentSpecies.speciesTraits.length }} traits</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body rule-box-grid"><article v-for="trait in currentSpecies.speciesTraits" :key="trait.name" class="trait-card heritage-trait-card species-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ currentSpecies.name }} · Heritage</small></div><div class="trait-card-head-actions"><span v-for="type in abilityTypes(trait.keywords)" :key="type" class="ability-cost-pill">{{ type }}</span><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in remainingTraitKeywords(trait.keywords,'Heritage',currentSpecies.name)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
           <details class="organized-rule-category species-rule-trait-section card-surface" open><summary><span><h2>Cultural Traits</h2><small>{{ currentSpecies.cultureTraits.length }} traits</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body rule-box-grid"><article v-for="trait in currentSpecies.cultureTraits" :key="trait.name" class="trait-card culture-trait-card culture-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ currentSpecies.name }} · Cultural</small></div><div class="trait-card-head-actions"><span v-for="type in abilityTypes(trait.keywords)" :key="type" class="ability-cost-pill">{{ type }}</span><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in remainingTraitKeywords(trait.keywords,'Cultural',currentSpecies.name)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
         </section>
@@ -266,12 +280,25 @@ const adventuringSectionGroups=computed(()=>[
 
       <template v-else-if="currentSpellLore">
         <section class="organized-rule-stack">
-          <details class="organized-rule-category card-surface" open><summary><span><h2>{{ currentSpellLore==='Invocation'?'Invocation Spells':`Lore of ${currentSpellLore}` }}</h2><small>{{ currentLoreSpells.length }} spells</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body review-spell-column"><article v-for="spell in currentLoreSpells" :key="spell" class="spell-detail-card full-rule-entry" :class="spellLoreClass(spell)"><div class="spell-detail-head"><div><small>{{ spellRuleDetail(spell)?.lore }}</small><h2>{{ spell }}</h2></div><span v-if="spellRuleDetail(spell)?.manaCost!=null" class="mana-badge">{{ spellRuleDetail(spell)?.manaCost }} Mana</span></div><p v-if="spellRuleDetail(spell)?.flavor" class="rule-flavor"><em>{{ spellRuleDetail(spell)?.flavor }}</em></p><div v-if="visibleRuleFields(spellRuleDetail(spell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellRuleDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div v-if="spellRuleDetail(spell)?.keywords?.length" class="keyword-pill-row"><span v-for="keyword in spellRuleDetail(spell)?.keywords" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div><div v-if="loreDescriptions[currentSpellLore]" class="organized-category-note">{{ loreDescriptions[currentSpellLore] }}</div></details>
+          <details class="organized-rule-category card-surface" open><summary><span><h2>{{ currentSpellLore==='Invocation'?'Invocation Spells':`Lore of ${currentSpellLore}` }}</h2><small>{{ currentLoreSpells.length }} spells</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body review-spell-column"><article v-if="loreDescriptions[currentSpellLore]" class="rule-feature-box lore-fluff-rule-card"><header><h3>{{ currentSpellLore==='Invocation'?'Invocation':`Lore of ${currentSpellLore}` }}</h3></header><p>{{ loreDescriptions[currentSpellLore] }}</p></article><article v-for="spell in currentLoreSpells" :key="spell" class="spell-detail-card full-rule-entry" :class="spellLoreClass(spell)"><div class="spell-detail-head"><div><h2>{{ spell }}</h2></div><span v-if="spellRuleDetail(spell)?.manaCost!=null" class="mana-badge">{{ spellRuleDetail(spell)?.manaCost }} Mana</span></div><p v-if="spellRuleDetail(spell)?.flavor" class="rule-flavor"><em>{{ spellRuleDetail(spell)?.flavor }}</em></p><div v-if="visibleRuleFields(spellRuleDetail(spell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellRuleDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div v-if="spellRuleDetail(spell)?.keywords?.length" class="keyword-pill-row"><span v-for="keyword in spellRuleDetail(spell)?.keywords" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></details>
         </section>
       </template>
 
       <template v-else-if="page.slug==='area-of-effect'">
-        <section class="aoe-rule-page organized-rule-stack"><article class="rule-feature-box aoe-intro-card"><header><h2>Area of Effect</h2></header><p>There are three area-of-effect keywords used by spells that target an area: <strong>Line</strong>, <strong>Cone</strong>, and <strong>Orb</strong>. Each keyword is followed by a number representing the size of the effect. Any character or object within the area is affected.</p></article><article v-for="rule in aoeRules" :key="rule.title" class="rule-feature-box aoe-rule-card"><header><div><h2>{{ rule.title }}</h2><span class="keyword-pill">{{ rule.keyword }}</span></div></header><div class="aoe-rule-layout"><div><p>{{ rule.text }}</p><p class="rule-example-copy"><strong>Example:</strong> {{ rule.example }}</p></div><img :src="rule.image" :alt="`${rule.title} area-of-effect grid example`" /></div></article><article class="rule-feature-box aoe-rule-card"><header><h2>Direct Casting</h2></header><p>Any spell without an area-of-effect keyword is considered Direct. It affects only the chosen target and ignores everything between caster and target. The target must be within the spell’s listed range and valid for that spell. If a spell may target an ally or friendly character, the caster may choose themselves.</p></article><article class="rule-feature-box aoe-rule-card"><header><h2>Impassable Collision</h2></header><div class="aoe-rule-layout compact"><div><p>All area effects are stopped by impassable terrain such as solid walls, sealed doors, thick stone, reinforced structures, or another space the Watcher determines the effect cannot pass through.</p><p class="rule-example-copy"><strong>Example:</strong> When a cone touches an impassable wall, the blocked portion of the cone is removed while the rest of its shape remains intact.</p></div><img :src="aoeBlockedImage" alt="Cone area blocked by impassable terrain" /></div></article></section>
+        <section class="aoe-rule-page organized-rule-stack">
+          <article class="rule-feature-box aoe-intro-card"><header><h2>Combat Range</h2></header><p>Abilities use their listed range to determine which targets or points can be chosen. <strong>Touch</strong> requires the target to be within the weapon’s range. If no range is specified, Touch defaults to <strong>[1] square</strong>.</p><div class="keyword-pill-row"><span class="keyword-pill">TOUCH</span></div></article>
+          <article class="rule-feature-box aoe-rule-card"><header><div><h2>Direct</h2><span class="keyword-pill">DIRECT</span></div></header><div class="aoe-rule-layout compact"><div><p>A Direct ability affects one chosen valid target within the Ability’s range rather than creating an area. Intervening characters or objects do not change the target unless the Ability or another rule says otherwise. If an Ability can target an ally, the user may target themself unless its rules prohibit it.</p></div></div></article>
+          <article v-for="rule in aoeRules" :key="rule.title" class="rule-feature-box aoe-rule-card"><header><div><h2>{{ rule.title }}</h2><span class="keyword-pill">{{ rule.keyword }}</span></div></header><div class="aoe-rule-layout"><div><p>{{ rule.text }}</p><p class="rule-example-copy"><strong>Example:</strong> {{ rule.example }}</p></div><img :src="rule.image" :alt="`${rule.title} Ability targeting diagram`" /></div></article>
+          <article class="rule-feature-box aoe-rule-card"><header><h2>Impassable Collision</h2></header><div class="aoe-rule-layout compact"><div><p>Impassable terrain stops an Ability’s area unless that Ability explicitly says it can pass through the obstacle. Any portion beyond the blocking terrain is not affected; the remaining valid portion of the area stays intact.</p></div><img :src="aoeBlockedImage" alt="Cone Ability area blocked by impassable terrain" /></div></article>
+        </section>
+      </template>
+
+      <template v-else-if="page.slug==='rounds-turns'">
+        <section class="rounds-turns-page organized-rule-stack">
+          <article class="rule-feature-box turn-sequence-card"><header><h2>Encounter Start &amp; Initiative</h2></header><p>After starting positions are established, every character rolls <strong>3d10 + Speed + Conditions</strong>. Order characters from the highest Initiative result to the lowest. That order determines turns for the round unless a rule changes it.</p></article>
+          <article class="rule-feature-box turn-sequence-card"><header><h2>Round Sequence</h2></header><div class="turn-sequence-list"><div><strong>1. Start of the Round</strong><span>Resolve effects that explicitly trigger at the start of the round. Each character generates <strong>2 Mana</strong>, plus any additional regeneration granted by Magic Level, Talents, Abilities, or Conditions.</span></div><div><strong>2. Start of a Turn</strong><span>When a character’s Initiative is reached, resolve ongoing or triggered effects that state they occur at the start of that character’s turn.</span></div><div><strong>3. Perform Abilities</strong><span>The active character may perform Abilities in any order and may use as many as the rules allow. Follow each Ability’s Keywords, trigger, restrictions, target, and Mana cost.</span></div><div><strong>4. End the Turn</strong><span>When the character is finished acting, resolve any effect that explicitly says it occurs at the end of the turn, then move to the next character in Initiative Order.</span></div><div><strong>5. End the Round</strong><span>After every character has taken a turn, the round ends. Begin the next round with start-of-round effects and continue through Initiative Order again.</span></div></div></article>
+          <article class="rule-feature-box turn-sequence-card"><header><h2>Turns</h2></header><p>A turn is the point in the round when a character can perform Abilities and other permitted tasks. Start-of-turn effects resolve before the character performs Abilities. No additional end-of-turn action is assumed unless an Ability, Condition, or other rule specifically creates one.</p></article>
+        </section>
       </template>
 
       <template v-else-if="page.slug==='encounters-threat-level'">
@@ -279,7 +306,7 @@ const adventuringSectionGroups=computed(()=>[
       </template>
 
       <template v-else-if="page.slug==='monsters' || page.slug==='critters'">
-        <section class="monster-index-stack"><article class="rule-feature-box monster-source-intro"><header><h2>{{ page.slug==='critters'?'Critters & Companions':'Monsters of Anthro Mundas' }}</h2></header><p>The creature reference is organized first by parent category and then, for monsters with variants, by their monster type.</p></article><template v-for="group in monsterGroups" :key="group.category.name"><details v-if="group.monsters.length && (page.slug==='monsters'?group.category.name!=='Companions':group.category.name==='Companions')" class="monster-category-box organized-rule-category card-surface" open><summary><span><h2>{{ group.category.name }}</h2><small>{{ group.category.summary }}</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body monster-family-stack"><template v-for="family in group.families" :key="family.parent.name"><details v-if="page.slug==='monsters'&&family.children.length" class="monster-family-box"><summary><span><strong>{{ family.parent.name }}</strong><small>{{ family.children.length }} variants</small></span><span aria-hidden="true">⌄</span></summary><div class="monster-link-grid"><RouterLink :to="`/rules/read/${monsterSlug(family.parent.name)}`"><strong>{{ family.parent.name }}</strong><small>Base type</small></RouterLink><RouterLink v-for="monster in family.children" :key="monster.name" :to="`/rules/read/${monsterSlug(monster.name)}`"><strong>{{ monster.name }}</strong><small>{{ family.parent.name }}</small></RouterLink></div></details><div v-else class="monster-link-grid"><RouterLink :to="`/rules/read/${monsterSlug(family.parent.name)}`"><strong>{{ family.parent.name }}</strong><small v-if="family.parent.group">{{ family.parent.group }}</small></RouterLink></div></template></div></details></template><a class="secondary-button external-source-link" :href="WOODLANDS_MONSTERS_URL" target="_blank" rel="noopener noreferrer">Open Source Monster Reference</a></section>
+        <section class="monster-index-stack"><article class="rule-feature-box monster-source-intro"><header><h2>{{ page.slug==='critters'?'Critters & Companions':'Monsters of Anthro Mundas' }}</h2></header><p>The creature reference is organized first by parent category and then, for monsters with variants, by their monster type.</p></article><template v-for="group in monsterGroups" :key="group.category.name"><details v-if="group.monsters.length && (page.slug==='monsters'?group.category.name!=='Companions':group.category.name==='Companions')" class="monster-category-box organized-rule-category card-surface" open><summary><span><h2>{{ group.category.name }}</h2><small>{{ group.category.summary }}</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body monster-family-stack"><template v-for="family in group.families" :key="family.parent.name"><details v-if="family.children.length" class="monster-family-box"><summary><span><strong>{{ family.parent.name }}</strong><small>{{ family.children.length }} {{ family.children.length===1?'variant':'variants' }}</small></span><span aria-hidden="true">⌄</span></summary><div class="monster-link-grid"><RouterLink :to="`/rules/read/${monsterSlug(family.parent.name)}`"><strong>{{ family.parent.name }}</strong></RouterLink><RouterLink v-for="monster in family.children" :key="monster.name" :to="`/rules/read/${monsterSlug(monster.name)}`"><strong>{{ monster.name }}</strong></RouterLink></div></details><RouterLink v-else class="monster-family-link" :to="`/rules/read/${monsterSlug(family.parent.name)}`"><strong>{{ family.parent.name }}</strong></RouterLink></template></div></details></template><a class="secondary-button external-source-link" :href="WOODLANDS_MONSTERS_URL" target="_blank" rel="noopener noreferrer">Open Source Monster Reference</a></section>
       </template>
 
       <template v-else-if="currentMonster">
@@ -324,10 +351,10 @@ const adventuringSectionGroups=computed(()=>[
 
       <template v-else>
         <section v-if="page.note" class="info-card rule-source-note"><strong>Source Note</strong><p>{{ displayText(page.note) }}</p></section>
-        <section v-if="page.slug==='spell-rules'" class="rule-cross-reference card-surface"><strong>Area of Effect</strong><p>Line, Cone, Orb, Direct targeting, and impassable collision are organized under The Battles as general battle-grid targeting rules.</p><RouterLink class="secondary-button compact-action" to="/rules/read/area-of-effect">Open Area of Effect</RouterLink></section>
+        <section v-if="page.slug==='spell-rules'" class="rule-cross-reference card-surface"><strong>Ability Targeting</strong><p>Combat Range, Direct, Line, Cone, Orb, Touch, and impassable collision are organized under The Battles as general Ability targeting rules.</p><RouterLink class="secondary-button compact-action" to="/rules/read/area-of-effect">Open Ability Targeting</RouterLink></section>
         <section v-if="sourceSections.length" class="rule-content-card card-surface">
           <article v-for="(entry,index) in sourceSections" :key="`${entry.document}-${entry.section.heading}-${index}`" class="rule-copy-card source-section-card old-dex-rule-section" :class="{'example-source-card':isExampleHeading(entry.section.heading),'boxed-rule-entry':boxedRulePage()}">
-            <header v-if="entry.section.heading!=='Overview'&&abilityBoxPage()" class="boxed-rule-titlebar"><h2>{{ displayText(entry.section.heading) }}</h2><div class="rule-title-costs"><span v-for="type in entryAbilityTypes(entry)" :key="type" class="ability-cost-pill">{{ type }}</span><span v-if="entryMana(entry)!==null" class="mana-badge">{{ entryMana(entry) }} Mana</span></div></header><h2 v-else-if="entry.section.heading!=='Overview'">{{ displayText(entry.section.heading) }}</h2>
+            <header v-if="entry.section.heading!=='Overview'&&abilityBoxPage()" class="boxed-rule-titlebar"><h2>{{ displayText(entry.section.heading) }}</h2><div class="rule-title-costs"><span v-for="type in entryAbilityTypes(entry)" :key="type" class="ability-cost-pill">{{ type }}</span><span v-if="entryMana(entry)!==null" class="mana-badge">{{ entryMana(entry) }} Mana</span></div></header><h2 v-else-if="entry.section.heading!=='Overview'">{{ displayText(entry.section.heading) }}</h2><div v-if="loreIndex>=0&&index===0" class="rule-page-banner-placeholder anthro-rule-banner" :class="{empty:!currentBanner}" :style="currentBanner?{backgroundImage:`url(${currentBanner})`}:undefined" aria-hidden="true"></div>
             <template v-for="(block,blockIndex) in entry.section.blocks" :key="blockIndex">
               <div v-if="isKeywordBlock(block)&&abilityBoxPage()" class="keyword-pill-row"><span v-for="keyword in entryDisplayKeywords(entry)" :key="keyword" class="keyword-pill">{{ displayText(keyword) }}</span></div><p v-else-if="isKeywordBlock(block)" class="rule-keyword-line"><strong>Keywords:</strong> {{ keywordParts(block.type==='paragraph'?block.text:'').map(displayText).join(' · ') }}</p>
               <template v-else-if="block.type==='paragraph'">

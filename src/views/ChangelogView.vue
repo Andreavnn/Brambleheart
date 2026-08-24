@@ -9,7 +9,20 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.18</strong><small>Rules cleanup, character data controls, explicit creator choices, talent corrections, and equipment-sheet refinements</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.19</strong><small>Theme depth, shared card styling, Rules parent pages, Ability Targeting, and responsive sheet cleanup</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Swapped Healer and Trickster palettes, corrected surface depth across themes, refined separator colors, and adjusted Skullfen Ruins positioning.</li>
+          <li>Moved Donation detail text inside its panel, removed Clear Dice Rolls indentation, and refined Settings presentation.</li>
+          <li>Placed Character Sheet before Dice Roller, rebuilt the tab treatment, added Character Detail, removed Path subtext, improved field spacing, and contained narrow sheet sections.</li>
+          <li>Standardized reusable content boxes around the Species Trait card language.</li>
+          <li>Added Rules parent overview pages, corrected breadcrumb destinations, and limited Anthro Mundas banners to the body-title position.</li>
+          <li>Moved Lore fluff above spell lists, removed Lore names from spell title bars, and consolidated Movement, Survival, and Social Talents into Utility.</li>
+          <li>Standardized Watcher monster rows and rebuilt Species Rules intros with identity/art columns and lore below.</li>
+          <li>Renamed Area of Effect to Ability Targeting, added Combat Range and Touch, generalized targeting to Abilities, and combined Initiative/turn/Mana guidance into Rounds &amp; Turns.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.18</strong><small>Rules cleanup, character data controls, explicit creator choices, talent corrections, and equipment-sheet refinements</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Renamed Text Size endpoints to Smallest and Largest and added double-confirmed character clearing by All, Incomplete, Unapproved, or Approved status.</li>
           <li>Reorganized Sparks &amp; Deeds, Homelands, Oaths, Faiths, Talents, and Adventuring Gear into cleaner expandable rule groups using Character Creation card styling.</li>

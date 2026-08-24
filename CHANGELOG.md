@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.19
+
+- Swapped the Healer and Trickster theme palettes, corrected foreground/background surface hierarchy across themes, and refined dark-theme separators.
+- Adjusted Skullfen Ruins background positioning and tightened Settings Donation, Reset Local Data, and Clear Dice Rolls presentation.
+- Reversed the Rhythm Engine tabs so Character Sheet appears before Dice Roller, corrected the tab treatment, added Character Detail, removed Path subtext, improved Dice Roller spacing, and contained narrow Character Sheet sections.
+- Standardized content boxes around the Species Trait card language across Rules, Character Creation, character sheets, and comparable panels.
+- Added functional parent Rules overview pages for breadcrumb navigation and moved Anthro Mundas banner placeholders beneath each lore body title only.
+- Moved Lore fluff above spell lists, removed Lore names from spell title bars, and consolidated Movement, Survival, and Social Talents into Utility.
+- Normalized Watcher monster entry bars so variant families expand consistently and single entries are direct links.
+- Renamed Area of Effect to Ability Targeting, added Combat Range and Touch, generalized Direct/Line/Cone/Orb rules to Abilities, and placed targeting under Combat Abilities.
+- Combined Initiative Order, Rounds & Turns, Your Turn, and Mana into a single structured Rounds & Turns page.
+- Rebuilt Species Rules introductions with a two-column identity/art hero and lore beneath, and preserved explicit approval/Level Up status behavior from the 0.18 hotfix.
+
 # Brambleheart Beta 0.18
 
 - Renamed Settings Text Size endpoints to Smallest and Largest and added double-confirmed character clearing for All, Incomplete, Unapproved, and Approved characters.

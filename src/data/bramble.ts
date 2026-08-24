@@ -1,4 +1,4 @@
-export const BUILD = '0.18'
+export const BUILD = '0.19'
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },
@@ -145,7 +145,7 @@ export const ruleChapters: RuleChapter[] = [
       ['Mana Regeneration','Each Magic Level increases mana regeneration by +1.'],
       ['Lore Attunement','At Magic Level 1 choose one lore attunement. Spells from an attuned lore reduce their mana cost by 2.'],
       ['Signature Spells','Each lore has a signature spell gained for free when attuned; it does not consume a spell slot.'],
-      ['Area of Effect','The current magic chapter defines Line, Cone, and Orb area-of-effect keywords in squares.'],
+      ['Ability Targeting','The Battles organizes Combat Range, Touch, Direct, Line, Cone, and Orb as general Ability targeting rules.'],
     ]
   },
   {
@@ -153,8 +153,8 @@ export const ruleChapters: RuleChapter[] = [
     summary:'Encounter setup, initiative, mana, opposed combat rolls, damage, health, and defeat.',
     sections:[
       ['Squares & Measurements','Combat is designed for a grid. 1 square equals 1 yard, 3 feet, or 1 meter.'],
-      ['Initiative','Roll 3d10 + Speed + conditions. The current Battle chapter states Speed = +2 plus Agility rank.'],
-      ['Mana','Every character generates 2 mana at the start of each combat round, with possible additional regeneration from magic levels, talents, abilities, and conditions.'],
+      ['Rounds & Turns','At encounter start, Initiative is rolled with 3d10 + Speed + conditions. Turns proceed from highest to lowest Initiative each round, with start-of-round Mana generation and turn timing resolved in sequence.'],
+      ['Ability Targeting','Combat Abilities use Combat Range and the Touch, Direct, Line, Cone, and Orb targeting framework.'],
       ['Strike & Ward','Melee strike uses 3d10 + Mettle + conditions. Range uses 3d10 + Aim + conditions. Magical uses 3d10 + Control + conditions. Defense uses 3d10 + Ward + conditions. A strike hits only when it exceeds the Ward result.'],
       ['Damage & Guts','Standard damage applies Guts normally. Direct damage halves Guts, rounded up to a minimum of 1, before applicable conditions. Lethal damage bypasses Guts and equipment but not applicable conditions.'],
       ['Health','Player characters have 30 Health. At 5 or less, rolls suffer -1; at 3 or less, -2; at 1 Health, -3.'],

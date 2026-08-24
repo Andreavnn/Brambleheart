@@ -92,7 +92,7 @@ export function setCharacterApproval(id:string,approved:boolean):StorageWriteRes
   list[index]={...list[index],status:approved?'approved':'unapproved',draft:false,locked:false,updatedAt:new Date().toISOString()}
   return writeCharacters(list)
 }
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.18',character}}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.19',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)

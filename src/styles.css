@@ -3839,3 +3839,96 @@ html[data-background-view="true"][data-background-grayscale="true"]:not([data-ba
 .review-collapsible>summary>span{margin-left:auto!important;text-align:right!important;color:var(--ink-soft)}
 .review-collapsible>summary::after{content:'⌄';flex:0 0 auto;color:var(--ink-soft);font-size:18px;transition:transform .15s ease}
 .review-collapsible[open]>summary::after{transform:rotate(180deg)}
+
+/* Beta 0.19 — unified surface hierarchy, settings cleanup, theme swap, and responsive sheet/rules refinements. */
+:root{
+  --surface-front:var(--paper);
+  --surface-back:var(--paper-2);
+  --surface-title:color-mix(in srgb,var(--accent-wash) 32%,var(--paper-2));
+  --surface-line:color-mix(in srgb,var(--line-dark) 72%,var(--surface-back));
+}
+:root[data-theme="dark"]{
+  --surface-front:var(--paper-2);
+  --surface-back:var(--paper);
+  --surface-title:color-mix(in srgb,var(--accent-wash) 38%,var(--paper-2));
+  --surface-line:color-mix(in srgb,var(--line-dark) 62%,var(--surface-back));
+}
+/* Healer and Trickster palettes intentionally exchange identities. */
+:root[data-role-theme="healer"]{--accent:#b26a18;--accent-dark:#723d08;--accent-wash:#e0b06f;--paper:#f2e2cb;--paper-2:#e4c89f;--line:#c5a47c;--line-dark:#93734e;--page-bg:#d0bdab;--page-gradient:linear-gradient(180deg,#e8d6c1 0,#d0bdab 420px)}
+:root[data-role-theme="trickster"]{--accent:#30877a;--accent-dark:#16584f;--accent-wash:#98cec2;--paper:#dff0ec;--paper-2:#c7e2db;--line:#91b2aa;--line-dark:#668880;--page-bg:#b8cdc8;--page-gradient:linear-gradient(180deg,#d3e4df 0,#b8cdc8 420px)}
+:root[data-theme="dark"][data-role-theme="healer"]{--accent:#e49a3d;--accent-dark:#f5c278;--accent-wash:#41280d;--paper:#1d1811;--paper-2:#2b2115;--line:#57452d;--line-dark:#7b6040}
+:root[data-theme="dark"][data-role-theme="trickster"]{--accent:#68b6a7;--accent-dark:#9cddcf;--accent-wash:#173730;--paper:#121c1a;--paper-2:#1b2926;--line:#31514a;--line-dark:#47736a}
+/* Keep Skullfen's upper-left figure inside the viewport crop. */
+html[data-background="skullfen-ruins"] body{background-position:center 42%!important}
+html[data-background="skullfen-ruins"] body::before{background-position:center 42%!important}
+html[data-background-view="true"][data-background="skullfen-ruins"] body,
+html[data-background-view="true"][data-background="skullfen-ruins"] body::before{background-position:center 42%!important}
+
+/* Darker structural shells sit behind lighter interactive/content cards in every theme. */
+.settings-card,.review-character-sheet,.review-section,.rules-index-panel,.rule-content-card,.organized-rule-category,.character-selection-panel,.tool-panel,.species-rule-lore,.character-list-group{background:var(--surface-back)!important;border-color:var(--surface-line)!important}
+.settings-card .setting-row,.settings-card details,.rules-index-row,.recent-rule-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-feature-box,.review-equipment-grid article,.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.equipment-rule-card,.result-panel,.monster-family-box,.monster-family-link,.narrative-choice-card,.equipment-slot-row{background:var(--surface-front)!important;border-color:var(--surface-line)!important}
+.settings-card .setting-row,.settings-card details,.settings-card summary,.rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary,.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-color:var(--surface-line)!important}
+.rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary,.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{background:var(--surface-title)!important}
+
+/* Shared Brambleheart content-box language: rounded body, accent cap, divided title area. */
+.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.recent-rule-box,.result-panel,.equipment-rule-card,.narrative-choice-card{
+  border:1px solid var(--surface-line)!important;
+  border-top:5px solid var(--accent)!important;
+  border-radius:9px!important;
+  box-shadow:0 2px 7px rgba(0,0,0,.06)!important;
+  overflow:hidden;
+}
+.spell-detail-card{border-top-color:var(--spell-lore,var(--accent))!important}
+.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-bottom:1px solid var(--surface-line)!important}
+.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article{padding-top:9px!important}
+
+/* Settings cleanup shown in the 0.19 review screenshots. */
+.settings-page .settings-card>.setting-row+*{border-top-color:var(--surface-line)!important}
+.settings-page .theme-settings-panel,.settings-page .background-settings-panel,.settings-page .reset-data-settings-panel,.settings-page .character-clear-panel{border-color:var(--surface-line)!important}
+.settings-page .local-clear-row{padding-left:16px!important}
+.settings-page .donation-panel-detail{margin:0;padding:10px 14px 4px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));line-height:1.4;text-align:center}
+.settings-page .support-settings-card{padding:0 0 8px!important}
+.settings-page .compact-support-buttons{padding-top:3px!important}
+
+/* Rhythm Engine: two true tabs, consistent spacing, and contained Character Sheet. */
+.rhythm-sheet-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:5px!important;background:var(--surface-back)!important;border-color:var(--surface-line)!important}
+.rhythm-sheet-tabs .segment-tab{min-height:42px!important;border:1px solid transparent!important;border-radius:9px!important;background:var(--surface-front)!important;color:var(--ink-soft)!important}
+.rhythm-sheet-tabs .segment-tab.active{border-color:var(--accent)!important;background:var(--accent)!important;color:#fff!important}
+.review-character-sheet,.character-sheet-view,.digital-character-sheet{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.review-character-sheet>*{min-width:0!important;max-width:100%!important}
+.review-collapsible-body{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.equipment-slot-sheet{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-inline:contain}
+.character-detail-section{margin:0!important}.character-detail-body{display:grid;gap:10px;min-width:0}.character-detail-body .review-summary-grid{margin:0!important}
+.rhythm-tool-card .rhythm-dependent-grid,.rhythm-tool-card .rhythm-target-row{row-gap:12px!important}
+.rhythm-tool-card .rhythm-target-row{margin-top:12px!important}.rhythm-tool-card .roll-formula-summary{margin-top:12px!important}
+
+/* Rule reader chapter landing pages and species hero treatment. */
+.chapter-landing-page{display:grid;gap:10px;padding:10px}.chapter-landing-intro{margin:0!important}.chapter-landing-intro>p{margin:10px 12px;line-height:1.5}.chapter-landing-list{display:grid;gap:7px}.chapter-landing-link{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--surface-line);border-top:5px solid var(--accent);border-radius:9px;background:var(--surface-front);color:var(--ink);text-decoration:none}.chapter-landing-link>span:first-child{display:grid;gap:3px}.chapter-landing-link strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(15px + var(--font-offset))}.chapter-landing-link small{color:var(--ink-soft);line-height:1.35}.chapter-landing-link>span:last-child{font-size:24px;color:var(--accent-dark)}
+.species-rule-lore{padding:0!important;overflow:hidden!important}.species-rule-hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(190px,.65fr);align-items:stretch;min-width:0;background:var(--surface-front)}.species-rule-identity{display:grid;align-content:start;gap:8px;padding:14px;min-width:0}.species-rule-identity header{display:grid;gap:3px}.species-rule-identity h2{margin:0!important}.species-rule-identity small{color:var(--ink-soft)}.species-rule-quote{margin:0!important;font-style:italic;line-height:1.5}.species-rule-art{display:grid;place-items:center;min-width:0;padding:10px;border-left:1px solid var(--surface-line);background:color-mix(in srgb,var(--accent-wash) 22%,var(--surface-front))}.species-rule-art img{display:block;width:100%;height:100%;max-height:270px;object-fit:contain}.species-rule-lore-copy{padding:12px 14px;border-top:1px solid var(--surface-line);background:var(--surface-front)}.species-rule-lore-copy p{margin:0 0 9px;line-height:1.55}.species-rule-lore-copy p:last-child{margin-bottom:0}
+.anthro-rule-banner{width:calc(100% - 24px)!important;min-height:150px!important;margin:10px 12px 14px!important;box-sizing:border-box;background-position:center!important}.anthro-rule-banner.empty{border-style:dashed!important}
+.lore-fluff-rule-card{margin:0 0 9px!important}.lore-fluff-rule-card>p{margin:10px 12px;line-height:1.55}
+.rounds-turns-page{gap:10px}.turn-sequence-card>p{margin:10px 12px;line-height:1.55}.turn-sequence-list{display:grid}.turn-sequence-list>div{display:grid;gap:4px;padding:10px 12px;border-top:1px solid var(--surface-line)}.turn-sequence-list>div:first-child{border-top:0}.turn-sequence-list span{line-height:1.5;color:var(--ink-soft)}
+.monster-family-box,.monster-family-link{display:block;overflow:hidden;border:1px solid var(--surface-line);border-radius:8px;color:var(--ink);text-decoration:none}.monster-family-box>summary,.monster-family-link{min-height:46px;box-sizing:border-box;padding:9px 10px;background:var(--surface-front)!important}.monster-family-link{display:flex;align-items:center}.monster-family-box>summary{display:flex;align-items:center;justify-content:space-between;gap:10px}.monster-family-box>summary>span:first-child{display:flex!important;align-items:baseline;justify-content:space-between;gap:12px;min-width:0;flex:1}.monster-family-box>summary small{margin-left:auto;text-align:right}.monster-link-grid a{background:var(--surface-front)!important}.monster-link-grid a small{display:none!important}
+
+@media(max-width:680px){
+  .species-rule-hero{grid-template-columns:1fr}.species-rule-art{border-left:0;border-top:1px solid var(--surface-line);max-height:240px}.species-rule-art img{max-height:220px}
+  .review-character-sheet{padding:8px!important}.review-section{min-width:0!important}.review-summary-grid{grid-template-columns:1fr!important}.review-wide-field{grid-column:auto!important}
+  .weapon-slot-grid{min-width:620px!important}.armor-slot-grid{min-width:720px!important}
+  .settings-page .local-clear-row{padding-left:12px!important}
+}
+/* Skullfen crop override must outrank the generic selected-background position. */
+html[data-background="skullfen-ruins"]:not([data-background="none"]) body,
+:root[data-theme][data-background="skullfen-ruins"] body{background-position:center 42%!important}
+html[data-background="skullfen-ruins"][data-background-grayscale="true"] body::before,
+html[data-background-view="true"][data-background="skullfen-ruins"][data-background-grayscale="true"] body::before{background-position:center 42%!important}
+/* Extend the shared card treatment to creator/list boxes that do not use rule-feature classes. */
+.choice-summary,.creation-info-panel,.path-choice-card,.gear-shop-row,.culture-picker-row,.language-card,.info-card,.saved-list-card,.wealth-balance-field,.attribute-rank-display,.attribute-mod-display{
+  border-color:var(--surface-line)!important;
+  background:var(--surface-front)!important;
+  border-radius:9px!important;
+}
+.choice-summary,.path-choice-card,.gear-shop-row,.culture-picker-row,.language-card,.saved-list-card,.wealth-balance-field{
+  border-top:5px solid var(--accent)!important;
+  box-shadow:0 2px 7px rgba(0,0,0,.05)!important;
+}
+.creation-info-panel>summary{background:var(--surface-title)!important;border-color:var(--surface-line)!important}.creation-info-panel .creation-info-body{background:var(--surface-front)!important}

@@ -1,54 +1,42 @@
-# Brambleheart Beta 0.18 Patch Notes
+# Brambleheart Beta 0.19 Patch Notes
 
-## Approval & Level Up Reliability Hotfix
-- Replaced the overloaded legacy `locked` approval flag with an explicit character status: Incomplete, Unapproved, or Approved.
-- Existing saved characters migrate automatically: completed legacy locked characters become Approved; completed unlocked characters become Unapproved; drafts remain Incomplete.
-- Removed `structuredClone()` from reactive character transaction paths that could throw before approval or Level Up mutations executed.
-- Approval now persists atomically through the character service and immediately reloads the Character List from saved data.
-- Approved characters move to Approved Characters, lose the Edit button, and gain the Level Up button. Removing approval reverses that state.
-- Level Up now accepts only Approved characters and commits changes from fresh plain persisted records.
-- Settings Clear Approved / Clear Unapproved now use explicit character status rather than the old lock flag.
+## Themes, Backgrounds & Settings
+- Swapped the Healer and Trickster theme palettes.
+- Added consistent surface-depth tokens so darker structural panels sit behind lighter content cards in both light and dark themes.
+- Reduced overly bright separator lines in themed Settings panels.
+- Shifted Skullfen Ruins slightly downward so its upper-left character remains visible.
+- Moved Donation detail copy inside the Donation panel and removed the extra Clear Dice Rolls indentation.
 
-## Settings & Local Data
-- Renamed the Text Size options to Smallest, Small, Normal, Large, and Largest.
-- Expanded Clear Characters into Clear All, Clear Incomplete, Clear Unapproved, and Clear Approved.
-- Every destructive clear action requires a second confirmation before character data is removed.
+## Rhythm Engine & Character Sheet
+- Reversed the Rhythm Engine tab order: Character Sheet now appears before Dice Roller.
+- Rebuilt the Character Sheet / Dice Roller segmented control for consistent active/inactive presentation.
+- Added a collapsible Character Detail panel around identity, Species, Spark, Homeland, Oath, Faith, Path, and Languages on both the saved Character Sheet and Character Creation Review.
+- Removed the Magic Level/Talent subtext from the Path summary card.
+- Added spacing between Dice Roller field groups and the formula/detail content below them.
+- Hardened Character Sheet width containment and horizontal equipment-slot scrolling on narrow screens.
 
-## Rules Organization
-- Combined Sparks & Deeds “What is a Spark?” and “Keyword Library” into a single What is a Spark? section.
-- Moved example Deeds beneath Deed Resolution into an expandable Deed Cards group.
-- Grouped premade Homelands, Oaths, and Faiths into expandable Common Homelands, Common Oaths, and Common Faiths sections.
-- Moved the Faith Watcher’s Note into its own panel.
-- Made Talent categories expandable and aligned Talent cards with Character Creation/pop-up presentation.
-- Standardized acceptable ability references—Spells, Traits, Homelands, Oaths, Sparks, Faiths, Talents, and comparable abilities—to use Character Creation card styling where supported.
-- Reorganized Adventuring Gear into equipment subcategories such as Weapons, Armor, and Tools, with Weapon Qualities separated into their own Weapons subsection.
+## Shared Card Language
+- Extended the Species Trait card treatment—rounded bordered body, accent cap, divided title surface, and consistent foreground surface—to reusable Rules, Character Creation, character-sheet, list, and result cards.
+- Standardized darker parent shells behind lighter foreground cards across themes.
 
-## Character Creation
-- Standardized dropdown defaults to explicit Select… placeholders instead of silently selecting the first available option.
-- Expanded Step 7 Faith cards to include their full available detail, including Creed and supporting Faith information.
-- Refined Oath and Faith detail-panel spacing and empty-space handling.
-- Removed the Equipment & Gear “188 NP Remaining” display.
-- Corrected Threadpiece conversion display to 10 WP = 1 NP, 5 NP = 1 SP, and 2 SP = 1 BP; the BP box now displays BP only.
-- Reorganized Equipment & Gear into the same subcategories used by the Rules reference.
+## Rules Navigation & Anthro Mundas
+- Added dedicated parent overview pages for References and every major Rules chapter so breadcrumb parent links have real destinations.
+- Limited rule-banner placeholders to Lore of Anthro Mundas pages.
+- Moved each Anthro Mundas banner directly beneath the body section title rather than beneath the page title.
+- Rebuilt Species Rules introductions as a two-column identity/quote + Species artwork hero with lore and language below.
 
-## Talent Corrections
-- Utility: Beastgrasp, Breakgrip, Victory Roar, Fieldcart, Shadow Fang, Pack Tactics, Rooted Paws, Fang Break, Hare’s Luck, Second Chances, Warhowl, Blood Oath, Witch Hunter.
-- Survival: Foresight, Field Medic, Ironhide.
-- Offensive Combat: Pouncer (corrected from Pocuncer), Thunderous Charge, Hammerfall, Heartseeker, Heroic Surge, Hollowing Claw, Pair Shot, Ragebound, Stillroot, Turnstrike, Heavy Draw, Titan’s Wake, Twin-Linked, Warpath, Wildchain.
-- Defensive Combat: Hearthwall (corrected from Heartwall), Spell Breaker, Ramhorn.
-- Movement: Magebane, Snapstep.
-- Social: Oath Guard.
-- Compatibility handling preserves older saved-character references that used the previous Pocuncer or Heartwall spellings.
+## Magic, Talents & Watcher Organization
+- Moved each Lore of Magic description above its spell list.
+- Removed Lore-name eyebrow text from spell title bars while retaining Lore coloring and context elsewhere.
+- Consolidated Movement, Survival, and Social Talents into Utility; the visible Talent categories are now Offensive Combat, Defensive Combat, Magic, and Utility.
+- Legacy/custom Movement, Survival, and Social Talent categories normalize to Utility.
+- Standardized Watcher monster entries: families with variants expand with a variant count; creatures without variants are direct clickable rows with no unnecessary detail text.
 
-## Character Sheet
-- Reworked Weapons and Armor into structured equipment slots inspired by traditional tabletop character sheets while retaining Brambleheart statistics and rules.
-- Weapon slots expose Weapon, Damage, Range, Properties, and Weight.
-- Armor/Shield slots expose Armor/Shield, Guts, Mana Syphon, Stealth, Might, and Weight.
-- Added collapsible controls to Character Sheet sections where appropriate.
-- Corrected title/detail spacing and right-aligned section detail text where applicable.
-
-## Background Display
-- Preserved the selected grayscale treatment while View Background mode is active.
+## The Battles
+- Renamed Area of Effect to Ability Targeting and placed it immediately after Combat Abilities.
+- Added Combat Range and the Touch keyword: Touch uses the weapon's listed range, or [1] square when no range is specified.
+- Generalized Direct, Line, Cone, Orb, and Impassable Collision wording from spell-only targeting to reusable Ability targeting.
+- Combined Initiative Order, Rounds & Turns, Your Turn, performing Abilities, and Mana into one Rounds & Turns page with a clear encounter/round/turn sequence.
 
 ## Build
-- Advanced the visible build and PWA shell cache to Beta 0.18.
+- Advanced the visible build, character export markers, and PWA shell cache to Beta 0.19.

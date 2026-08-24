@@ -16,6 +16,7 @@ export interface RuleCategoryDefinition {
   id: string
   title: string
   summary: string
+  landing: RulePageDefinition
   pages: RulePageDefinition[]
 }
 
@@ -34,6 +35,8 @@ export const loreAnthroMundasPages: RulePageDefinition[] = [
   lorePage('lore-anthro-mundas-adventure','Age of Adventure','The hopeful age of rediscovery in which Brambleheart takes place.','AGE OF ADVENTURE'),
 ]
 export const loreNavigation = loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
+
+export const referencesLanding = page('references-overview','References','Quick references, Anthro Mundas lore, FAQ, and current rules updates.')
 
 export const quickReferencePages: RulePageDefinition[] = [
   loreAnthroMundasPages[0],
@@ -58,12 +61,14 @@ const speciesPages = speciesData.map(item=>page(
   ['Species','Trait','Culture']
 ))
 
+const playableSpeciesLanding=page('playable-species','Playable Species','Choose a playable Species and open its dedicated rules page.')
+
 export const ruleCategories: RuleCategoryDefinition[] = [
   {
-    id:'fundamentals', title:'The Fundamentals', summary:'Introduction, dice, targets, Conditions, Attributes, Skills, Keywords, and Core Abilities.', pages:fundamentalPages,
+    id:'fundamentals', title:'The Fundamentals', summary:'Introduction, dice, targets, Conditions, Attributes, Skills, Keywords, and Core Abilities.', landing:page('fundamentals-overview','The Fundamentals','Browse the core system rules that define checks, Attributes, Skills, Keywords, and Abilities.'), pages:fundamentalPages,
   },
   {
-    id:'character-creation', title:'Character Creation', summary:'Build a hero and reference the character-facing rules used during creation and growth.', pages:[
+    id:'character-creation', title:'Character Creation', summary:'Build a hero and reference the character-facing rules used during creation and growth.', landing:page('character-creation-overview','Character Creation','Build a hero step by step or open the character-facing rules used during creation and growth.'), pages:[
       page('character-creation','Step-by-Step','The character creation process.',[{document:'character-creation'}]),
       page('sparks-deeds','Sparks & Deeds','Personality archetypes, Deed-aligned play, and Experience rewards.',[{document:'sparks'},{document:'deeds'}],undefined,['Spark','Deed']),
       page('homeland','Homeland','Homelands, their Skills, and guidance for creating one.',[{document:'homeland'}]),
@@ -75,16 +80,15 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'playable-species', title:'Playable Species', summary:'Species lore, Heritage Traits, Culture Traits, and native languages.', pages:[
-      page('playable-species','Species Index','Choose a playable Species and open its dedicated rules page.'),
+    id:'playable-species', title:'Playable Species', summary:'Species lore, Heritage Traits, Culture Traits, and native languages.', landing:playableSpeciesLanding, pages:[
       ...speciesPages,
     ],
   },
   {
-    id:'winds-of-magic', title:'Winds of Magic', summary:'Magic Levels, spell slots, Lore Attunement, Spell Rules, Spells, and Lores of Magic.', pages:[
+    id:'winds-of-magic', title:'Winds of Magic', summary:'Magic Levels, spell slots, Lore Attunement, Spell Rules, Spells, and Lores of Magic.', landing:page('winds-of-magic-overview','Winds of Magic','Browse Magic Levels, Lore Attunement, Spell Rules, Invocations, and the Lores of Magic.'), pages:[
       page('magical-level','Magical Level','Magic Power, spell slots, and Mana regeneration.',[{document:'winds-of-magic',sections:['MAGIC POWER','SPELL SLOTS']}],undefined,['Magic','Mana']),
       page('lore-attunement','Lore Attunement','Attuning to a Lore and gaining its Signature Spell.',[{document:'winds-of-magic',sections:['LORE ATTUNEMENT','SIGNATURE']}],undefined,['Lore','Attunement']),
-      page('spell-rules','Spell Rules','Spell Keywords, Augments, Hexes, range, and a link to the battle-grid Area of Effect rules.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','AUGMENTS & HEXES','SPELL RANGE']}],undefined,['Spell']),
+      page('spell-rules','Spell Rules','Spell Keywords, Augments, Hexes, range, and a link to the battle-grid Ability Targeting rules.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','AUGMENTS & HEXES','SPELL RANGE']}],undefined,['Spell']),
       page('lore-invocation','Invocation','Invocation Spells.',[{document:'lore-invocation'}],undefined,['Lore','Spell','Invocation']),
       page('lore-flames','Flames','Lore of Flames.',[{document:'lore-flames'}],undefined,['Lore','Spell','Flames']),
       page('lore-frost','Frost','Lore of Frost.',[{document:'lore-frost'}],undefined,['Lore','Spell','Frost']),
@@ -96,14 +100,11 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'battles', title:'The Battles', summary:'Encounter setup, Initiative, turns, Mana, combat, damage, Health, and defeat.', pages:[
+    id:'battles', title:'The Battles', summary:'Encounter setup, Initiative, turns, Mana, combat, damage, Health, and defeat.', landing:page('battles-overview','The Battles','Browse encounter setup, rounds and turns, combat Abilities, targeting, damage, Health, and defeat.'), pages:[
       page('encounter-setup','Encounter & Setup','Starting a combat encounter, positions, squares, measurements, and opposed Strike/Ward context.',[{document:'battle',sections:['THE BATTLES','COMBAT ENCOUNTER','DETERMINING POSITIONS','SQUARES & MEASUREMENTS','TO HIT','TO DEFEND']}]),
-      page('area-of-effect','Area of Effect','Line, Cone, Orb, Direct targeting, and impassable collision on the battle grid.',undefined,'Area-of-effect geometry is defined by the supplied Winds of Magic rules and presented here as a general battle-grid targeting reference.',['Area of Effect','Line','Cone','Orb','Targeting']),
-      page('initiative-order','Initiative Order','How Initiative is determined and how turn order is established.',[{document:'battle',sections:['INITIATIVE ORDER']}]),
-      page('rounds-turns','Rounds & Turns','Rounds, turns, and start-of-turn timing.',[{document:'battle',sections:['ROUNDS & TURNS']}]),
-      page('your-turn','Your Turn','Taking a turn and performing Abilities.',[{document:'battle',sections:['TAKING YOUR TURN','PREFORMING ABILITIES']}]),
-      page('mana','Mana','Combat Mana generation and use.',[{document:'battle',sections:['MANA']}]),
+      page('rounds-turns','Rounds & Turns','Initiative Order, rounds, turns, turn timing, performing Abilities, and combat Mana.',[{document:'battle',sections:['INITIATIVE ORDER','ROUNDS & TURNS','TAKING YOUR TURN','PREFORMING ABILITIES','MANA']}],undefined,['Initiative','Round','Turn','Mana']),
       page('combat-abilities','Combat Abilities','Shared combat Abilities and the attack framework.',[{document:'battle',sections:['CORE ABILITIES','COMBAT ABILITIES']}],undefined,['Ability','Combat']),
+      page('area-of-effect','Ability Targeting','Combat Range, Direct, Line, Cone, Orb, and impassable collision on the battle grid.',undefined,'Targeting geometry begins in the supplied Winds of Magic rules and is organized here as a general Ability targeting reference for future combat use.',['Ability Targeting','Combat Range','Touch','Direct','Line','Cone','Orb','Targeting']),
       page('to-strike','To Strike','Melee, ranged, and magical Strike rolls.',[{document:'battle',sections:['TO HIT']}]),
       page('to-ward','To Ward','Ward rolls and opposed defense.',[{document:'battle',sections:['TO DEFEND']}]),
       page('to-damage','To Damage','Applying damage after a successful attack.',[{document:'battle',sections:['TO DAMAGE','TO SOAK','DAMAGE – GUTS = TOTAL DAMAGE']}]),
@@ -117,7 +118,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'role-play', title:'The Role-Play', summary:'Character portrayal, travel, survival, downtime, crafting, Trade Goods, and Transportation.', pages:[
+    id:'role-play', title:'The Role-Play', summary:'Character portrayal, travel, survival, downtime, crafting, Trade Goods, and Transportation.', landing:page('role-play-overview','The Role-Play','Browse character portrayal, travel, survival, downtime, Trade Goods, and Transportation.'), pages:[
       page('portraying-character','Portraying Your Character','Role-playing your hero in Anthro Mundas.',undefined,'This section is listed in the supplied table of contents, but a standalone Role-Play chapter was not included in the supplied rules files.'),
       page('interacting-world','Interacting with the World','Social and environmental interaction during role-play.',undefined,'This section is listed in the supplied table of contents, but a standalone Role-Play chapter was not included in the supplied rules files.'),
       page('time-traveling','Time & Traveling','Time, travel, routes, and movement between adventures.',[{document:'transportation'}]),
@@ -131,7 +132,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'watcher', title:'The Watcher', summary:'Encounter design, Encounter Ratings, creatures, Monsters, environments, and rewards.', pages:[
+    id:'watcher', title:'The Watcher', summary:'Encounter design, Encounter Ratings, creatures, Monsters, environments, and rewards.', landing:page('watcher-overview','The Watcher','Browse encounter design, Threat Level guidance, creatures, Monsters, environments, and rewards.'), pages:[
       page('encounters-threat-level','Encounters & Threat Level','Encounter Rating guidance adapted from the Woodlands encounter reference.'),
       page('critters','Critters & Companions','Companions and creature references from the Woodlands monster index.'),
       page('traps-environments','Traps & Environments','Hazards and environments used when building encounters.',undefined,'Detailed standalone trap and environment source text has not yet been supplied.'),
@@ -142,9 +143,18 @@ export const ruleCategories: RuleCategoryDefinition[] = [
 ]
 
 const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`))
-export const allRulePages = [...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => category.pages), ...monsterRulePages]
+export const allRulePages = [referencesLanding, ...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => [category.landing,...category.pages]), ...monsterRulePages]
 export const fundamentalsNavigation = fundamentalPages.map(({slug,title})=>({slug,title}))
-export function findRulePage(slug:string) { return allRulePages.find(item => item.slug === slug) }
+const ruleAliases:Record<string,string>={
+  'initiative-order':'rounds-turns',
+  'your-turn':'rounds-turns',
+  'mana':'rounds-turns',
+}
+export function canonicalRuleSlug(slug:string){return ruleAliases[slug]||slug}
+export function findRulePage(slug:string) { const canonical=canonicalRuleSlug(slug); return allRulePages.find(item => item.slug === canonical) }
+export function findRuleCategory(slug:string){const canonical=canonicalRuleSlug(slug);return ruleCategories.find(category=>category.landing.slug===canonical||category.pages.some(item=>item.slug===canonical))}
+export function findRuleParentPage(slug:string){const canonical=canonicalRuleSlug(slug);if(canonical===referencesLanding.slug||loreAnthroMundasPages.some(item=>item.slug===canonical)||quickReferencePages.some(item=>item.slug===canonical))return referencesLanding;if(monsterRulePages.some(item=>item.slug===canonical))return ruleCategories.find(category=>category.id==='watcher')?.landing;return findRuleCategory(canonical)?.landing}
+
 
 export function resolveSourceSections(page:RulePageDefinition): Array<{ document:string; sourceFile:string; section:RuleSourceSection }> {
   const out:Array<{ document:string; sourceFile:string; section:RuleSourceSection }>=[]

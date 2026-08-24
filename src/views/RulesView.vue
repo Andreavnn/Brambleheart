@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import AppHeader from '../components/AppHeader.vue'
-import { allRulePages, quickReferencePages, ruleCategories } from '../data/ruleCatalog'
+import { allRulePages, findRulePage, quickReferencePages, referencesLanding, ruleCategories } from '../data/ruleCatalog'
 import { loadRecentRuleSlugs } from '../services/ruleRecent'
 
 const query=ref('')
@@ -9,7 +9,7 @@ const recentSlugs=ref(loadRecentRuleSlugs())
 const defaultRecentSlugs=['attributes-skills','dice-rules','character-creation','to-strike']
 const recentPages=computed(()=>{
   const slugs=Array.from(new Set([...recentSlugs.value,...defaultRecentSlugs]))
-  return slugs.map(slug=>allRulePages.find(page=>page.slug===slug)).filter(Boolean).slice(0,4)
+  return slugs.map(slug=>findRulePage(slug)).filter(Boolean).slice(0,4)
 })
 const searchResults=computed(()=>{
   const q=query.value.trim().toLowerCase()
@@ -58,7 +58,7 @@ function clearSearch(){query.value=''}
       <section class="rules-index-panel card-surface">
         <header class="rules-index-heading"><span>References</span></header>
         <div class="rules-index-list">
-          <RouterLink v-for="entry in quickReferencePages" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
+          <RouterLink v-for="entry in [referencesLanding,...quickReferencePages]" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
             <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </RouterLink>
@@ -72,7 +72,7 @@ function clearSearch(){query.value=''}
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
           <div class="rules-index-list">
-            <RouterLink v-for="entry in category.pages" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
+            <RouterLink v-for="entry in [category.landing,...category.pages]" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
               <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
             </RouterLink>

@@ -25,9 +25,9 @@ const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
   {value:'warrior',label:'Warrior',description:'Iron, ember, and deep red tones for direct martial play.'},
   {value:'ranger',label:'Ranger',description:'Forest green and weathered earth tones for scouts and wanderers.'},
   {value:'spellcaster',label:'Spellcaster',description:'Violet, indigo, and arcane-blue tones for the Winds of Magic.'},
-  {value:'healer',label:'Healer',description:'Teal, sage, and restorative tones for support-focused play.'},
+  {value:'healer',label:'Healer',description:'Amber and plum contrast for restorative, hopeful play.'},
   {value:'thief',label:'Thief',description:'Shadowed slate and brass tones for subtle play.'},
-  {value:'trickster',label:'Trickster',description:'Amber and plum contrast for mischief and improvisation.'},
+  {value:'trickster',label:'Trickster',description:'Teal, sage, and shadowed woodland tones for mischief and improvisation.'},
 ]
 const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
 const currentBackgroundLabel=computed(()=>backgroundLabel(backgroundImage.value))
@@ -102,7 +102,7 @@ function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?')
       <div class="setting-row reset-setting-row"><span><strong>Reset Local Settings</strong><small>Restore display, theme, and background preferences to their defaults.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reset">Reset</button></div>
     </section></section>
 
-    <section class="settings-group compact-donation-group" aria-label="Donation"><div class="settings-group-heading"><div><p class="eyebrow settings-group-title">DONATION</p><small>Support Brambleheart development with a one-time donation or recurring contribution.</small></div></div><section class="settings-card support-settings-card"><div class="support-button-row compact-support-buttons"><a class="secondary-button support-action-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a><a class="secondary-button support-action-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a></div></section></section>
+    <section class="settings-group compact-donation-group" aria-label="Donation"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DONATION</p></div><section class="settings-card support-settings-card"><p class="donation-panel-detail">Support Brambleheart development with a one-time donation or recurring contribution.</p><div class="support-button-row compact-support-buttons"><a class="secondary-button support-action-button" href="https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04" target="_blank" rel="noopener noreferrer">Donation</a><a class="secondary-button support-action-button" href="https://donate.stripe.com/cNifZh4bIce6bQo5333Nm05" target="_blank" rel="noopener noreferrer">Recurring Support</a></div></section></section>
 
     <section class="settings-group" aria-label="Data and content settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div><section class="settings-card">
       <details class="reset-data-settings-panel"><summary><span><strong>Reset Local Data</strong><small>Manage characters, recent rules, Dice Roller history, custom data, and local welcome state.</small></span><span class="value-chip">MANAGE</span></summary><div class="reset-data-option-list">
