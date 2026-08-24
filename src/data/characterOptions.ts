@@ -169,7 +169,7 @@ export const homelandDetails: Record<string,HomelandDetail> = {
   "Gloommere": {
     "description": "Where the fog listens closer than the folk who walk it. In Gloommere, morning never truly comes — only paler shades of night. The air hums with unseen life, and the marsh grass sways even when the wind is still. Here, superstition is survival; every traveler carries charms against reflection and silence. You learned to move like a ghost among the reeds, to listen for what others can’t hear, and to never trust still water.",
     "skills": [
-      "Whisperstep",
+      "Whisperster",
       "Herbalry"
     ],
     "optionalReplacements": [
