@@ -54,12 +54,15 @@ export function loadCharacters():CharacterRecord[]{
     return Array.isArray(parsed)?parsed:[]
   }catch{return[]}
 }
-export function writeCharacters(characters:CharacterRecord[]){localStorage.setItem(CHARACTER_STORE,JSON.stringify(characters))}
-export function addCharacter(record:CharacterRecord){const list=loadCharacters();list.unshift(record);writeCharacters(list)}
+export function writeCharacters(characters:CharacterRecord[]):boolean{
+  try{localStorage.setItem(CHARACTER_STORE,JSON.stringify(characters));return true}
+  catch{return false}
+}
+export function addCharacter(record:CharacterRecord){const list=loadCharacters();list.unshift(record);return writeCharacters(list)}
 export function upsertCharacter(record:CharacterRecord){
   const list=loadCharacters();const index=list.findIndex(item=>item.id===record.id)
   if(index>=0)list[index]=record;else list.unshift(record)
-  writeCharacters(list)
+  return writeCharacters(list)
 }
 export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.14',character}}
 export function downloadJson(filename:string,value:unknown){

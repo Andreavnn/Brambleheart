@@ -12,7 +12,7 @@ const fileInput=ref<HTMLInputElement|null>(null)
 const sortedCharacters=computed(()=>[...characters.value].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||Date.parse(b.updatedAt||b.createdAt)-Date.parse(a.updatedAt||a.createdAt)))
 const completeCharacters=computed(()=>sortedCharacters.value.filter(character=>!character.draft))
 const incompleteCharacters=computed(()=>sortedCharacters.value.filter(character=>character.draft))
-function persist(){writeCharacters(characters.value)}
+function persist(){if(!writeCharacters(characters.value))alert('Could not save — your browser storage may be full. This change was not kept.')}
 function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.delete(id):next.add(id);openIds.value=next}
 function togglePin(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist()}
 function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}

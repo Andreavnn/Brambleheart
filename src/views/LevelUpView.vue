@@ -12,10 +12,23 @@ const characters=ref<CharacterRecord[]>(loadCharacters())
 const character=computed(()=>characters.value.find(item=>item.id===String(route.params.id||''))||null)
 const xpAdd=ref(0),message=ref('')
 const skillName=ref(''),newSkill=ref(''),newTalent=ref('')
-function persist(){writeCharacters(characters.value)}
+function persist(){return writeCharacters(characters.value)}
 function xp(){return Number(character.value?.experience||0)}
-function spend(cost:number,action:()=>void,label:string){const c=character.value;if(!c)return;if(xp()<cost){message.value=`${label} costs ${cost} XP; ${xp()} XP available.`;return}c.experience=xp()-cost;action();c.updatedAt=new Date().toISOString();persist();message.value=`${label} purchased for ${cost} XP.`}
-function addXp(){const c=character.value;if(!c)return;const amount=Math.max(0,Number(xpAdd.value||0));c.experience=xp()+amount;c.updatedAt=new Date().toISOString();persist();xpAdd.value=0;message.value=`Added ${amount} XP.`}
+function spend(cost:number,action:()=>void,label:string){
+  const c=character.value;if(!c)return
+  if(xp()<cost){message.value=`${label} costs ${cost} XP; ${xp()} XP available.`;return}
+  const snapshot=JSON.parse(JSON.stringify(c))
+  c.experience=xp()-cost;action();c.updatedAt=new Date().toISOString()
+  if(!persist()){Object.assign(c,snapshot);message.value=`Could not save — your browser storage may be full. ${label} was not purchased.`;return}
+  message.value=`${label} purchased for ${cost} XP.`
+}
+function addXp(){
+  const c=character.value;if(!c)return
+  const amount=Math.max(0,Number(xpAdd.value||0));const previous=xp()
+  c.experience=previous+amount;c.updatedAt=new Date().toISOString()
+  if(!persist()){c.experience=previous;message.value='Could not save — your browser storage may be full. XP was not added.';return}
+  xpAdd.value=0;message.value=`Added ${amount} XP.`
+}
 function attributeCost(rank:number){return 2+(2*rank)}
 function raiseAttribute(id:(typeof attributes)[number]['id']){const c=character.value;if(!c)return;const rank=Number(c.attributes[id]||0);spend(attributeCost(rank),()=>{c.attributes[id]=rank+1},`${attributes.find(a=>a.id===id)?.name} Rank ${rank+1}`)}
 const skills=computed(()=>Object.entries(character.value?.skillRanks||{}).sort(([a],[b])=>a.localeCompare(b)))

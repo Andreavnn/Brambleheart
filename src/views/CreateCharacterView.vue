@@ -549,12 +549,15 @@ function buildRecord(draft:boolean):CharacterRecord{
   }
 }
 function saveDraft(close=false){
-  const record=buildRecord(true); draftId.value=record.id; upsertCharacter(record)
+  const record=buildRecord(true); draftId.value=record.id
+  if(!upsertCharacter(record)){error.value='Could not save — your browser storage may be full. This draft was not saved.';return}
   if(close)void router.push('/characters'); else error.value='Draft saved.'
 }
 function finishCharacter(){
   if(!canFinish.value){error.value='This character cannot be finished yet. Resolve the errors shown in Review.';return}
-  const record=buildRecord(false); draftId.value=record.id; upsertCharacter(record); void router.push('/characters')
+  const record=buildRecord(false); draftId.value=record.id
+  if(!upsertCharacter(record)){error.value='Could not save — your browser storage may be full. This character was not created.';return}
+  void router.push('/characters')
 }
 function resetForm(){
   form.name='';form.campaignName='';form.appearance='';form.allowCustomData=false;form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
