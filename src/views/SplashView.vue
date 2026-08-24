@@ -4,13 +4,16 @@ import { useRoute, useRouter } from 'vue-router'
 import { dismissWelcomeInstallPromptPermanently, hasDismissedWelcomeInstallPrompt, markWelcomeSeen } from '../services/welcome'
 import { canInstall, isInstalled, requestInstall } from '../state/install'
 import { BUILD } from '../data/bramble'
+import { useFocusTrap } from '../composables/useFocusTrap'
 
 const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
+const installModalEl=ref<HTMLElement|null>(null)
 const continuePath=computed(()=>{const candidate=String(route.query.continue||'');return candidate.startsWith('/')&&!candidate.startsWith('/welcome')?candidate:'/characters'})
 async function installNow(){if(!canInstall.value){installHelp.value=true;return}await requestInstall();if(isInstalled.value||!canInstall.value)installModalOpen.value=false}
 function dismissInstall(){installModalOpen.value=false}
 function dismissInstallPermanently(){dismissWelcomeInstallPromptPermanently();installModalOpen.value=false}
 function continueToBrambleheart(){markWelcomeSeen();void router.replace(continuePath.value)}
+useFocusTrap(installModalEl,computed(()=>installModalOpen.value&&!isInstalled.value),dismissInstall)
 </script>
 
 <template>
@@ -44,7 +47,7 @@ function continueToBrambleheart(){markWelcomeSeen();void router.replace(continue
     </section>
 
     <div v-if="installModalOpen&&!isInstalled" class="welcome-install-backdrop" role="presentation">
-      <section class="welcome-install-dialog card-surface" role="dialog" aria-modal="true" aria-labelledby="welcome-install-title">
+      <section ref="installModalEl" tabindex="-1" class="welcome-install-dialog card-surface" role="dialog" aria-modal="true" aria-labelledby="welcome-install-title">
         <img src="/icons/favicon-64.png" alt="" aria-hidden="true" class="welcome-install-icon" />
         <div><p class="eyebrow">INSTALL BRAMBLEHEART</p><h2 id="welcome-install-title">Use Brambleheart like an app?</h2><p>Install Brambleheart on this phone, tablet, or computer for a home-screen or desktop icon and a standalone app window.</p><p v-if="installHelp" class="install-help-copy">Your browser has not exposed the direct install prompt yet. Open the browser menu and choose <strong>Install app</strong> or <strong>Add to Home Screen</strong>.</p></div>
         <div class="welcome-install-actions"><button type="button" class="primary-button" @click="installNow">{{ canInstall?'Install Brambleheart':'Install Options' }}</button><button type="button" class="secondary-button" @click="dismissInstall">Not Now</button><button type="button" class="secondary-button welcome-install-never" @click="dismissInstallPermanently">Do Not Show Again</button></div>

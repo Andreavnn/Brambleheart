@@ -11,6 +11,7 @@ import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
+import { useFocusTrap } from '../composables/useFocusTrap'
 
 const router = useRouter()
 const route = useRoute()
@@ -27,6 +28,12 @@ const cultureReplaceIndex = ref(0)
 const talentPickerOpen = ref(false)
 const talentSearch = ref('')
 const talentTab = ref('All')
+const shopModalEl = ref<HTMLElement | null>(null)
+const culturePickerModalEl = ref<HTMLElement | null>(null)
+const talentPickerModalEl = ref<HTMLElement | null>(null)
+useFocusTrap(shopModalEl, shopOpen, () => { shopOpen.value = false })
+useFocusTrap(culturePickerModalEl, culturePickerOpen, () => { culturePickerOpen.value = false })
+useFocusTrap(talentPickerModalEl, talentPickerOpen, () => { talentPickerOpen.value = false })
 const draftId = ref<string | null>(null)
 const originalCreatedAt = ref<string | null>(null)
 const pathTouched = ref(false)
@@ -794,7 +801,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
     </main>
 
     <div v-if="culturePickerOpen" class="modal-backdrop culture-picker-backdrop" @click.self="culturePickerOpen=false">
-      <section class="modal-card culture-picker-modal" role="dialog" aria-modal="true" aria-label="Choose Culture Traits">
+      <section ref="culturePickerModalEl" tabindex="-1" class="modal-card culture-picker-modal" role="dialog" aria-modal="true" aria-label="Choose Culture Traits">
         <div class="modal-head"><div><span class="eyebrow">CULTURE TRAITS</span><h2>Choose Culture Traits</h2><small>{{ form.cultureTraits.length }}/2 selected</small></div><button type="button" class="icon-button" aria-label="Close Culture Trait picker" @click="culturePickerOpen=false">×</button></div>
         <div class="culture-species-tabs" role="tablist"><button v-for="tab in cultureTabs" :key="tab" type="button" :class="{active:cultureTab===tab}" @click="cultureTab=tab">{{ tab }}</button></div><label class="rules-search culture-picker-search"><span aria-hidden="true">⌕</span><input v-model="cultureSearch" type="search" placeholder="Search Culture Traits or Species…" /></label>
         <div class="culture-picker-list">
@@ -810,7 +817,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
     </div>
 
     <div v-if="talentPickerOpen" class="modal-backdrop talent-picker-backdrop" @click.self="talentPickerOpen=false">
-      <section class="modal-card talent-picker-modal" role="dialog" aria-modal="true" aria-label="Choose a Talent">
+      <section ref="talentPickerModalEl" tabindex="-1" class="modal-card talent-picker-modal" role="dialog" aria-modal="true" aria-label="Choose a Talent">
         <div class="modal-head"><div><span class="eyebrow">TALENTS</span><h2>Choose Talents</h2><small>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</small></div><button type="button" class="icon-button" aria-label="Close Talent picker" @click="talentPickerOpen=false">×</button></div>
         <div class="talent-picker-tabs" role="tablist"><button v-for="tab in talentTabs" :key="tab" type="button" :class="{active:talentTab===tab}" @click="talentTab=tab">{{ tab }}</button></div>
         <label class="rules-search talent-picker-search"><span aria-hidden="true">⌕</span><input v-model="talentSearch" type="search" placeholder="Search Talents…" /></label>
@@ -818,7 +825,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
       </section>
     </div>
 
-    <div v-if="shopOpen" class="modal-backdrop gear-picker-backdrop" @click.self="shopOpen=false"><section class="modal-card gear-shop-modal" role="dialog" aria-modal="true" aria-label="Equipment and Gear"><div class="modal-head"><div><span class="eyebrow">EQUIPMENT &amp; GEAR</span><h2>Equipment &amp; Gear</h2></div><button type="button" class="icon-button" @click="shopOpen=false">×</button></div><div class="gear-shop-balance"><span>Remaining Wealth</span><strong>{{ wealthRemaining }} NP</strong></div><div class="gear-tabs" role="tablist"><button v-for="tab in gearTabs" :key="tab" type="button" :class="{active:gearTab===tab}" @click="gearTab=tab">{{ tab }}</button></div><div class="rules-search gear-search"><span aria-hidden="true">⌕</span><input v-model="shopSearch" placeholder="Search equipment…" /></div><div class="gear-shop-list"><article v-for="item in filteredGear" :key="`${item.category}-${item.name}`" class="gear-shop-row"><div class="gear-shop-copy"><div class="gear-shop-title"><strong>{{ item.name }}</strong><small>{{ gearShopSubtitle(item) }}</small></div><p class="gear-profile">{{ gearDisplayDetail(item) }}</p><label v-if="gearChoices(item).length" class="field-label gear-choice-field">Choose {{ item.name }} option<select v-model="gearChoice[item.name]" class="field-control"><option value="">Choose…</option><option v-for="choice in gearChoices(item)" :key="choice" :value="choice">{{ choice }}</option></select></label></div><button type="button" class="secondary-button compact-action" :disabled="adjustedGearCostNp(item)>wealthRemaining||(gearChoices(item).length>0&&!gearChoice[item.name])" @click="addEquipment(item)">Add</button></article></div></section></div>
+    <div v-if="shopOpen" class="modal-backdrop gear-picker-backdrop" @click.self="shopOpen=false"><section ref="shopModalEl" tabindex="-1" class="modal-card gear-shop-modal" role="dialog" aria-modal="true" aria-label="Equipment and Gear"><div class="modal-head"><div><span class="eyebrow">EQUIPMENT &amp; GEAR</span><h2>Equipment &amp; Gear</h2></div><button type="button" class="icon-button" @click="shopOpen=false">×</button></div><div class="gear-shop-balance"><span>Remaining Wealth</span><strong>{{ wealthRemaining }} NP</strong></div><div class="gear-tabs" role="tablist"><button v-for="tab in gearTabs" :key="tab" type="button" :class="{active:gearTab===tab}" @click="gearTab=tab">{{ tab }}</button></div><div class="rules-search gear-search"><span aria-hidden="true">⌕</span><input v-model="shopSearch" placeholder="Search equipment…" /></div><div class="gear-shop-list"><article v-for="item in filteredGear" :key="`${item.category}-${item.name}`" class="gear-shop-row"><div class="gear-shop-copy"><div class="gear-shop-title"><strong>{{ item.name }}</strong><small>{{ gearShopSubtitle(item) }}</small></div><p class="gear-profile">{{ gearDisplayDetail(item) }}</p><label v-if="gearChoices(item).length" class="field-label gear-choice-field">Choose {{ item.name }} option<select v-model="gearChoice[item.name]" class="field-control"><option value="">Choose…</option><option v-for="choice in gearChoices(item)" :key="choice" :value="choice">{{ choice }}</option></select></label></div><button type="button" class="secondary-button compact-action" :disabled="adjustedGearCostNp(item)>wealthRemaining||(gearChoices(item).length>0&&!gearChoice[item.name])" @click="addEquipment(item)">Add</button></article></div></section></div>
   </div>
 </template>
 
