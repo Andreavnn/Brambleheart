@@ -46,9 +46,15 @@ async function importCustomData(event:Event){
   if(!files.length)return
   try{
     let incoming:CustomDataItem[]=[]
-    for(const file of files)incoming=[...incoming,...parseCustomDataText(await file.text())]
+    let skippedCount=0
+    for(const file of files){
+      const result=parseCustomDataText(await file.text())
+      incoming=[...incoming,...result.items]
+      skippedCount+=result.skippedCount
+    }
     customData.value=mergeCustomData(customData.value,incoming)
     saveCustomData(customData.value)
+    if(skippedCount>0)alert(`Imported ${incoming.length} Custom Data entr${incoming.length===1?'y':'ies'}. ${skippedCount} entr${skippedCount===1?'y was':'ies were'} skipped because they didn't match a recognized Species, Spell, Talent, or Trait template.`)
   }catch(error){alert(error instanceof Error?error.message:'Custom Data must use a recognized Brambleheart JSON template.')}
   input.value=''
 }

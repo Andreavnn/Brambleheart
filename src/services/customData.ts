@@ -98,12 +98,13 @@ function normalizeOne(value:unknown):CustomDataItem|null{
   return{format:'brambleheart-custom',version:1,type,id:itemId(type,name,`${traitKind}-${species}`),name,custom:true,traitKind,species,text:text(raw.text),keywords:stringList(raw.keywords),skillGrants:skillGrants(raw.skillGrants)}
 }
 
-export function parseCustomDataText(raw:string):CustomDataItem[]{
+export interface CustomDataParseResult { items:CustomDataItem[]; skippedCount:number }
+export function parseCustomDataText(raw:string):CustomDataParseResult{
   const parsed=JSON.parse(raw) as unknown
   const values=Array.isArray(parsed)?parsed:(parsed&&typeof parsed==='object'&&Array.isArray((parsed as Record<string,unknown>).items)?(parsed as {items:unknown[]}).items:[parsed])
   const items=values.map(normalizeOne).filter((item):item is CustomDataItem=>Boolean(item))
   if(!items.length)throw new Error('No recognized Brambleheart custom Species, Spell, Talent, or Trait entries were found.')
-  return items
+  return{items,skippedCount:values.length-items.length}
 }
 export function loadCustomData():CustomDataItem[]{
   if(typeof localStorage==='undefined')return[]
