@@ -1,5 +1,18 @@
 # Site Changelog
 
+## Beta 0.15
+
+- Relaxed the Node engine ceiling while retaining Node 22 as the minimum supported runtime.
+- Hardened the service worker so it ignores cross-origin requests, never caches failed responses, and uses the cached shell only as an offline navigation fallback.
+- Added reusable focus trapping, Escape dismissal, and trigger-focus restoration to all current modal dialogs.
+- Added explicit character-storage failure handling and transactional Level Up persistence so failed local writes do not discard or falsely report saved work.
+- Prevented Character Creation progress-step jumps from bypassing required validation.
+- Unified Talent prerequisite enforcement between Character Creation and Level Up.
+- Added Custom Data import counts for recognized and skipped entries.
+- Corrected Gloommere's Whisperster Skill and made Attribute Check Skill filtering fail closed for unknown Skills.
+- Excluded retired background files before bundling and removed obsolete Old.Dex payload/migration files plus inactive Encounter source files from the v0.15 package.
+- Advanced the visible build and PWA shell cache to Beta 0.15.
+
 ## Beta 0.14
 
 - Added typed downloadable JSON templates and import support for custom Species, Spells, Talents, and Traits, with explicit Custom labeling and a per-character Allow Custom Data switch.

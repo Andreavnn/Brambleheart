@@ -12,6 +12,7 @@ const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, backgroundGrayscale, reset } = useSettings()
 const customDataInput=ref<HTMLInputElement|null>(null)
 const customData=ref<CustomDataItem[]>(loadCustomData())
+const customImportMessage=ref('')
 const customCounts=computed(()=>customDataCounts(customData.value))
 const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'None loaded')
 
@@ -46,11 +47,21 @@ async function importCustomData(event:Event){
   if(!files.length)return
   try{
     let incoming:CustomDataItem[]=[]
-    for(const file of files)incoming=[...incoming,...parseCustomDataText(await file.text())]
-    customData.value=mergeCustomData(customData.value,incoming)
-    saveCustomData(customData.value)
-  }catch(error){alert(error instanceof Error?error.message:'Custom Data must use a recognized Brambleheart JSON template.')}
-  input.value=''
+    let skipped=0
+    let total=0
+    for(const file of files){
+      const parsed=parseCustomDataText(await file.text())
+      incoming=[...incoming,...parsed.items]
+      skipped+=parsed.skipped
+      total+=parsed.total
+    }
+    const merged=mergeCustomData(customData.value,incoming)
+    const saved=saveCustomData(merged)
+    if(!saved.ok){customImportMessage.value=saved.message;return}
+    customData.value=merged
+    customImportMessage.value=skipped?`Imported ${incoming.length} of ${total} entries. Skipped ${skipped} malformed or unrecognized ${skipped===1?'entry':'entries'}.`:`Imported ${incoming.length} ${incoming.length===1?'entry':'entries'} successfully.`
+  }catch(error){customImportMessage.value=error instanceof Error?error.message:'Custom Data must use a recognized Brambleheart JSON template.'}
+  finally{input.value=''}
 }
 function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?'))return;clearCustomDataStore();customData.value=[]}
 </script>
@@ -90,7 +101,7 @@ function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?')
       <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Import custom Species, Spells, Talents, and Traits built from the supplied JSON templates.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions custom-data-stack">
         <div class="setting-row"><span><strong>Custom Data Templates</strong><small>Download one ZIP containing typed JSON templates for Species, Spell, Talent, and Trait entries.</small></span><a class="secondary-button settings-compact-action" href="/downloads/Brambleheart-Custom-Data-Templates.zip" download>Download Templates</a></div>
         <div class="setting-row"><span><strong>Imported Custom Content</strong><small>Species {{ customCounts.species }} · Spells {{ customCounts.spell }} · Talents {{ customCounts.talent }} · Traits {{ customCounts.trait }}</small></span><div class="button-row"><button class="secondary-button settings-compact-action" type="button" @click="customDataInput?.click()">Import JSON</button><button class="secondary-button settings-compact-action" type="button" :disabled="!customData.length" @click="clearCustomData">Clear</button><input ref="customDataInput" hidden multiple type="file" accept="application/json,.json" @change="importCustomData" /></div></div>
-      </div></details>
+      </div><p v-if="customImportMessage" class="creation-status-message custom-data-import-status">{{ customImportMessage }}</p></details>
     </section></section>
   </main>
 </template>

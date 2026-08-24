@@ -1,3 +1,5 @@
+import { writeLocalStorage, type StorageWriteResult } from './storage'
+
 export type CustomDataType='species'|'spell'|'talent'|'trait'
 export type CustomTraitKind='species'|'culture'
 export type CustomTalentCategory='Combat'|'Magic'|'Movement'|'Survival'|'Social'|'Utility'
@@ -98,19 +100,20 @@ function normalizeOne(value:unknown):CustomDataItem|null{
   return{format:'brambleheart-custom',version:1,type,id:itemId(type,name,`${traitKind}-${species}`),name,custom:true,traitKind,species,text:text(raw.text),keywords:stringList(raw.keywords),skillGrants:skillGrants(raw.skillGrants)}
 }
 
-export function parseCustomDataText(raw:string):CustomDataItem[]{
+export interface CustomDataParseResult { items:CustomDataItem[]; skipped:number; total:number }
+export function parseCustomDataText(raw:string):CustomDataParseResult{
   const parsed=JSON.parse(raw) as unknown
   const values=Array.isArray(parsed)?parsed:(parsed&&typeof parsed==='object'&&Array.isArray((parsed as Record<string,unknown>).items)?(parsed as {items:unknown[]}).items:[parsed])
   const items=values.map(normalizeOne).filter((item):item is CustomDataItem=>Boolean(item))
   if(!items.length)throw new Error('No recognized Brambleheart custom Species, Spell, Talent, or Trait entries were found.')
-  return items
+  return{items,skipped:values.length-items.length,total:values.length}
 }
 export function loadCustomData():CustomDataItem[]{
   if(typeof localStorage==='undefined')return[]
   try{const raw=JSON.parse(localStorage.getItem(CUSTOM_DATA_STORE)||'[]');return Array.isArray(raw)?raw.map(normalizeOne).filter((item):item is CustomDataItem=>Boolean(item)):[]}
   catch{return[]}
 }
-export function saveCustomData(items:CustomDataItem[]){if(typeof localStorage!=='undefined')localStorage.setItem(CUSTOM_DATA_STORE,JSON.stringify(items))}
+export function saveCustomData(items:CustomDataItem[]):StorageWriteResult{return writeLocalStorage(CUSTOM_DATA_STORE,JSON.stringify(items))}
 export function mergeCustomData(existing:CustomDataItem[],incoming:CustomDataItem[]){
   const map=new Map(existing.map(item=>[item.id,item]))
   incoming.forEach(item=>map.set(item.id,item))

@@ -5,6 +5,7 @@ import AppHeader from '../components/AppHeader.vue'
 import { attributes } from '../data/bramble'
 import { skillDefinitions } from '../data/characterOptions'
 import { ruleSourceDocuments } from '../data/rulesSource'
+import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
 import { loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 
 const route=useRoute(),router=useRouter()
@@ -12,20 +13,58 @@ const characters=ref<CharacterRecord[]>(loadCharacters())
 const character=computed(()=>characters.value.find(item=>item.id===String(route.params.id||''))||null)
 const xpAdd=ref(0),message=ref('')
 const skillName=ref(''),newSkill=ref(''),newTalent=ref('')
-function persist(){writeCharacters(characters.value)}
+
+function cloneRecord<T>(value:T):T{return typeof structuredClone==='function'?structuredClone(value):JSON.parse(JSON.stringify(value)) as T}
+function commit(mutator:(draft:CharacterRecord)=>void){
+  const current=character.value
+  if(!current)return false
+  const next=characters.value.map(item=>item.id===current.id?cloneRecord(item):item)
+  const draft=next.find(item=>item.id===current.id)
+  if(!draft)return false
+  mutator(draft)
+  draft.updatedAt=new Date().toISOString()
+  const saved=writeCharacters(next)
+  if(!saved.ok){message.value=saved.message;return false}
+  characters.value=next
+  return true
+}
 function xp(){return Number(character.value?.experience||0)}
-function spend(cost:number,action:()=>void,label:string){const c=character.value;if(!c)return;if(xp()<cost){message.value=`${label} costs ${cost} XP; ${xp()} XP available.`;return}c.experience=xp()-cost;action();c.updatedAt=new Date().toISOString();persist();message.value=`${label} purchased for ${cost} XP.`}
-function addXp(){const c=character.value;if(!c)return;const amount=Math.max(0,Number(xpAdd.value||0));c.experience=xp()+amount;c.updatedAt=new Date().toISOString();persist();xpAdd.value=0;message.value=`Added ${amount} XP.`}
+function spend(cost:number,action:(draft:CharacterRecord)=>void,label:string){
+  if(!character.value)return
+  if(xp()<cost){message.value=`${label} costs ${cost} XP; ${xp()} XP available.`;return}
+  if(!commit(draft=>{draft.experience=Number(draft.experience||0)-cost;action(draft)}))return
+  message.value=`${label} purchased for ${cost} XP.`
+}
+function addXp(){
+  if(!character.value)return
+  const amount=Math.max(0,Number(xpAdd.value||0))
+  if(!commit(draft=>{draft.experience=Number(draft.experience||0)+amount}))return
+  xpAdd.value=0
+  message.value=`Added ${amount} XP.`
+}
 function attributeCost(rank:number){return 2+(2*rank)}
-function raiseAttribute(id:(typeof attributes)[number]['id']){const c=character.value;if(!c)return;const rank=Number(c.attributes[id]||0);spend(attributeCost(rank),()=>{c.attributes[id]=rank+1},`${attributes.find(a=>a.id===id)?.name} Rank ${rank+1}`)}
+function raiseAttribute(id:(typeof attributes)[number]['id']){const c=character.value;if(!c)return;const rank=Number(c.attributes[id]||0);spend(attributeCost(rank),draft=>{draft.attributes[id]=rank+1},`${attributes.find(a=>a.id===id)?.name} Rank ${rank+1}`)}
 const skills=computed(()=>Object.entries(character.value?.skillRanks||{}).sort(([a],[b])=>a.localeCompare(b)))
 function skillCost(rank:number){return 3+rank}
-function raiseSkill(){const c=character.value;if(!c||!skillName.value)return;const current=Number(c.skillRanks?.[skillName.value]||0);spend(skillCost(current),()=>{c.skillRanks={...(c.skillRanks||{}),[skillName.value]:current+1}},`${skillName.value} Rank ${current+1}`)}
-function addSkill(){const c=character.value;if(!c||!newSkill.value)return;if(c.skillRanks?.[newSkill.value]){message.value='That Skill is already known.';return}spend(6,()=>{c.skillRanks={...(c.skillRanks||{}),[newSkill.value]:1};c.skills=Array.from(new Set([...(c.skills||[]),newSkill.value]))},`${newSkill.value} Rank 1`);newSkill.value=''}
-const talentOptions=computed(()=>ruleSourceDocuments.talents.sections.map(section=>section.heading).filter(name=>name&&name!=='Overview'&&name!=='TALENTS'&&!name.startsWith('KEYWORDS')).filter(name=>!character.value?.talents?.includes(name)).sort())
-function addTalent(){const c=character.value;if(!c||!newTalent.value)return;const talent=newTalent.value;spend(10,()=>{c.talents=Array.from(new Set([...(c.talents||[]),talent]))},talent);newTalent.value=''}
+function raiseSkill(){const c=character.value;if(!c||!skillName.value)return;const current=Number(c.skillRanks?.[skillName.value]||0);const selected=skillName.value;spend(skillCost(current),draft=>{draft.skillRanks={...(draft.skillRanks||{}),[selected]:current+1}},`${selected} Rank ${current+1}`)}
+function addSkill(){const c=character.value;if(!c||!newSkill.value)return;if(c.skillRanks?.[newSkill.value]){message.value='That Skill is already known.';return}const selected=newSkill.value;spend(6,draft=>{draft.skillRanks={...(draft.skillRanks||{}),[selected]:1};draft.skills=Array.from(new Set([...(draft.skills||[]),selected]))},`${selected} Rank 1`);if(message.value.endsWith('purchased for 6 XP.'))newSkill.value=''}
+
+const talentSections=ruleSourceDocuments.talents.sections
+function talentText(name:string){const section=talentSections.find(item=>item.heading===name);return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')||''}
+function talentRequires(name:string){return talentRequirementFromText(talentText(name))}
+function talentAvailable(name:string){return talentRequirementSatisfied(talentRequires(name),character.value?.talents||[],name)}
+const talentOptions=computed(()=>talentSections.map(section=>section.heading).filter(name=>name&&name!=='Overview'&&name!=='TALENTS'&&!name.startsWith('KEYWORDS')).filter(name=>!character.value?.talents?.includes(name)&&talentAvailable(name)).sort())
+function addTalent(){
+  const c=character.value
+  if(!c||!newTalent.value)return
+  const talent=newTalent.value
+  const required=talentRequires(talent)
+  if(!talentRequirementSatisfied(required,c.talents||[],talent)){message.value=required?`${talent} requires ${required}.`:'That Talent is not currently available.';return}
+  spend(10,draft=>{draft.talents=Array.from(new Set([...(draft.talents||[]),talent]))},talent)
+  if(message.value.endsWith('purchased for 10 XP.'))newTalent.value=''
+}
 const magicLevel=computed(()=>Number(character.value?.magicLevel??(character.value?.path==='magic'?1:0)))
-function raiseMagic(){const c=character.value;if(!c)return;const current=magicLevel.value;const cost=10+(4*current);spend(cost,()=>{c.magicLevel=current+1},`Magic Level ${current+1}`)}
+function raiseMagic(){const c=character.value;if(!c)return;const current=magicLevel.value;const cost=10+(4*current);spend(cost,draft=>{draft.magicLevel=current+1},`Magic Level ${current+1}`)}
 function finish(){void router.push('/characters')}
 </script>
 <template>

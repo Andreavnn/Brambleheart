@@ -4,14 +4,15 @@ export interface BackgroundOption {
   url:string
 }
 
-const hiddenLegacyBackgrounds=new Set([
-  'the-crossway-hearth',
-  'deepwood-ruins',
-  'mushroom-isles',
-  'leviathans-wreck',
-])
-
-const modules=import.meta.glob('../assets/backgrounds/*.{png,jpg,jpeg,webp}',{
+// Legacy images are excluded at import time so they are not emitted into production bundles
+// even if an older checkout still contains the files.
+const modules=import.meta.glob([
+  '../assets/backgrounds/*.{png,jpg,jpeg,webp}',
+  '!../assets/backgrounds/the-crossway-hearth.png',
+  '!../assets/backgrounds/deepwood-ruins.png',
+  '!../assets/backgrounds/mushroom-isles.png',
+  '!../assets/backgrounds/leviathans-wreck.png',
+],{
   eager:true,
   query:'?url',
   import:'default',
@@ -28,7 +29,7 @@ function labelFromSlug(slug:string){
 
 const discovered=Object.entries(modules)
   .map(([path,url])=>{const value=slugFromPath(path);return{value,label:labelFromSlug(value),url}})
-  .filter(item=>item.value&&!hiddenLegacyBackgrounds.has(item.value))
+  .filter(item=>item.value)
   .sort((a,b)=>{
     const preferred=['ready-for-adventure','thornwick-market','skullfen-ruins','blightbound-horror']
     const ai=preferred.indexOf(a.value),bi=preferred.indexOf(b.value)

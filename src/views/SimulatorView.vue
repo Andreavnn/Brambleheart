@@ -83,7 +83,7 @@ const characterSkillOptions=computed(()=>{
   const c=selectedCharacter.value,stat=selectedStat.value;if(!c||!stat||!rollUsesSkill.value)return[] as Array<{name:string;rank:number}>
   return Object.entries(c.skillRanks||{}).map(([name,value])=>({name:normalizeSkillName(name),rank:Number(value)})).filter(entry=>{
     const def=skillDefinitions.find(item=>normalizeSkillName(item.name)===entry.name)
-    return !def||def.attribute===stat.attribute
+    return Boolean(def)&&def?.attribute===stat.attribute
   }).sort((a,b)=>a.name.localeCompare(b.name))
 })
 const statFieldLabel=computed(()=>rollType.value==='Strike'?'Strike Stat':rollType.value==='Ward'?'Ward Stat':rollType.value==='Initiative'?'Initiative Stat':rollType.value==='Attribute Save'?'Save Attribute':rollType.value==='Skill Check'?'Skill Attribute':'Character Stat')

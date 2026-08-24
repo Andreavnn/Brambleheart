@@ -12,27 +12,30 @@ const fileInput=ref<HTMLInputElement|null>(null)
 const sortedCharacters=computed(()=>[...characters.value].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||Date.parse(b.updatedAt||b.createdAt)-Date.parse(a.updatedAt||a.createdAt)))
 const completeCharacters=computed(()=>sortedCharacters.value.filter(character=>!character.draft))
 const incompleteCharacters=computed(()=>sortedCharacters.value.filter(character=>character.draft))
-function persist(){writeCharacters(characters.value)}
+function snapshot(){return typeof structuredClone==='function'?structuredClone(characters.value):JSON.parse(JSON.stringify(characters.value)) as CharacterRecord[]}
+function persist(previous?:CharacterRecord[]){const saved=writeCharacters(characters.value);if(saved.ok)return true;if(previous)characters.value=previous;alert(saved.message);return false}
 function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.delete(id):next.add(id);openIds.value=next}
-function togglePin(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist()}
-function toggleLock(id:string){const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist()}
+function togglePin(id:string){const previous=snapshot();const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist(previous)}
+function toggleLock(id:string){const previous=snapshot();const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist(previous)}
 function levelUpCharacter(id:string){void router.push(`/characters/${id}/level-up`)}
 function editCharacter(id:string){void router.push({path:'/characters/create',query:{edit:id}})}
-function copyCharacter(id:string){const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist()}
-function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;characters.value=characters.value.filter(item=>item.id!==id);persist()}
+function copyCharacter(id:string){const previous=snapshot();const source=characters.value.find(item=>item.id===id);if(!source)return;const now=new Date().toISOString();const copy:CharacterRecord={...source,id:crypto.randomUUID(),name:`${source.name} Copy`,locked:false,pinned:false,createdAt:now,updatedAt:now};characters.value=[copy,...characters.value];persist(previous)}
+function removeCharacter(id:string){const c=characters.value.find(item=>item.id===id);if(c?.locked){alert('Unlock this character before deleting it.');return}if(!confirm('Delete this character from this device?'))return;const previous=snapshot();characters.value=characters.value.filter(item=>item.id!==id);persist(previous)}
 function downloadCharacter(character:CharacterRecord){downloadJson(`${character.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()||'character'}.bramble.json`,characterExportPayload(character))}
-function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.14',characters:characters.value})}
+function exportCharacters(){if(!characters.value.length)return;downloadJson('brambleheart-characters.json',{format:'brambleheart-characters',version:'0.15',characters:characters.value})}
 async function importCharacter(event:Event){
   const input=event.target as HTMLInputElement;const file=input.files?.[0];if(!file)return
   try{
     const parsed=JSON.parse(await file.text())
     if(Array.isArray(parsed.characters)){
+      const previous=snapshot()
       const imported=parsed.characters.filter((raw:CharacterRecord)=>raw?.name&&raw?.attributes).map((raw:CharacterRecord)=>({...raw,id:crypto.randomUUID(),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),pinned:Boolean(raw.pinned),locked:Boolean(raw.locked)}))
-      characters.value=[...imported,...characters.value];persist()
+      characters.value=[...imported,...characters.value];persist(previous)
     }else{
+      const previous=snapshot()
       const raw=parsed.character??parsed
       if(!raw?.name||!raw?.attributes)throw new Error('Invalid Brambleheart character JSON.')
-      characters.value.unshift({...raw,id:crypto.randomUUID(),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),pinned:Boolean(raw.pinned),locked:Boolean(raw.locked)});persist()
+      characters.value.unshift({...raw,id:crypto.randomUUID(),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),pinned:Boolean(raw.pinned),locked:Boolean(raw.locked)});persist(previous)
     }
   }catch(e){alert(e instanceof Error?e.message:'Could not import this character.')}
   input.value=''

@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
+import { useFocusTrap } from '../composables/useFocusTrap'
 import { attributes, faiths, homelands, oaths, sparks, species, type AttributeId } from '../data/bramble'
 import { allCultureTraits, speciesByName } from '../data/speciesData'
 import { gearShopItems, homelandDetails, skillDefinitions, sparkDetails } from '../data/characterOptions'
@@ -9,6 +10,7 @@ import { cultureSkillGrants, speciesImagePaths } from '../data/creationRules'
 import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
+import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
 import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 
@@ -27,6 +29,13 @@ const cultureReplaceIndex = ref(0)
 const talentPickerOpen = ref(false)
 const talentSearch = ref('')
 const talentTab = ref('All')
+const cultureDialog=ref<HTMLElement|null>(null)
+const talentDialog=ref<HTMLElement|null>(null)
+const gearDialog=ref<HTMLElement|null>(null)
+useFocusTrap(culturePickerOpen,cultureDialog,()=>{culturePickerOpen.value=false})
+useFocusTrap(talentPickerOpen,talentDialog,()=>{talentPickerOpen.value=false})
+useFocusTrap(shopOpen,gearDialog,()=>{shopOpen.value=false})
+
 const draftId = ref<string | null>(null)
 const originalCreatedAt = ref<string | null>(null)
 const pathTouched = ref(false)
@@ -72,8 +81,7 @@ function talentText(name:string) {
 function talentRequires(name:string) {
   const custom=customTalent(name)
   if(custom?.requires)return custom.requires
-  const match=talentText(name).match(/\bREQUIRES:\s*([^|]+?)(?=\s+KEYWORDS?:|$)/i)
-  return match?.[1]?.trim().replace(/\s+Talent$/i,'') || ''
+  return talentRequirementFromText(talentText(name))
 }
 function talentKeywords(name:string) {
   const custom=customTalent(name)
@@ -82,11 +90,8 @@ function talentKeywords(name:string) {
   return match ? match[1].split('|').map(item=>item.trim()).filter(Boolean) : []
 }
 function isCustomTalent(name:string){return Boolean(form.allowCustomData&&customTalentItems.value.some(item=>item.name===name))}
-function normalizeTalent(name:string){return name.toLowerCase().replace(/[’']/g,"'").replace(/\s+talent$/,'').trim()}
 function talentRequirementMet(name:string) {
-  const required=talentRequires(name)
-  if(!required) return true
-  return form.talents.some(other=>other && other!==name && normalizeTalent(other)===normalizeTalent(required))
+  return talentRequirementSatisfied(talentRequires(name),form.talents,name)
 }
 const talentNames = computed(() => [...talentSections.map(section=>section.heading),...(form.allowCustomData?customTalentItems.value.map(item=>item.name):[])].filter((name,index,array)=>array.indexOf(name)===index).sort((a,b)=>{
   const ar=Boolean(talentRequires(a)), br=Boolean(talentRequires(b))
@@ -519,8 +524,20 @@ function allValidationErrors(){
 const finalErrors=computed(()=>allValidationErrors())
 const canFinish=computed(()=>finalErrors.value.length===0)
 
-function jumpTo(index:number){stepIndex.value=Math.max(0,Math.min(index,totalSteps.value-1));error.value='';window.scrollTo({top:0,behavior:'smooth'})}
-function next(){const message=validateStep();if(message){error.value=message;return}if(stepIndex.value<totalSteps.value-1)jumpTo(stepIndex.value+1)}
+function jumpTo(index:number){
+  const target=Math.max(0,Math.min(index,totalSteps.value-1))
+  if(target>stepIndex.value){
+    for(let cursor=stepIndex.value;cursor<target;cursor++){
+      stepIndex.value=cursor
+      const message=validateStep()
+      if(message){error.value=message;window.scrollTo({top:0,behavior:'smooth'});return}
+    }
+  }
+  stepIndex.value=target
+  error.value=''
+  window.scrollTo({top:0,behavior:'smooth'})
+}
+function next(){if(stepIndex.value<totalSteps.value-1)jumpTo(stepIndex.value+1)}
 function back(){if(stepIndex.value>0)jumpTo(stepIndex.value-1)}
 
 function buildRecord(draft:boolean):CharacterRecord{
@@ -549,12 +566,19 @@ function buildRecord(draft:boolean):CharacterRecord{
   }
 }
 function saveDraft(close=false){
-  const record=buildRecord(true); draftId.value=record.id; upsertCharacter(record)
+  const record=buildRecord(true)
+  const saved=upsertCharacter(record)
+  if(!saved.ok){error.value=saved.message;return}
+  draftId.value=record.id
   if(close)void router.push('/characters'); else error.value='Draft saved.'
 }
 function finishCharacter(){
   if(!canFinish.value){error.value='This character cannot be finished yet. Resolve the errors shown in Review.';return}
-  const record=buildRecord(false); draftId.value=record.id; upsertCharacter(record); void router.push('/characters')
+  const record=buildRecord(false)
+  const saved=upsertCharacter(record)
+  if(!saved.ok){error.value=saved.message;return}
+  draftId.value=record.id
+  void router.push('/characters')
 }
 function resetForm(){
   form.name='';form.campaignName='';form.appearance='';form.allowCustomData=false;form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
@@ -794,7 +818,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
     </main>
 
     <div v-if="culturePickerOpen" class="modal-backdrop culture-picker-backdrop" @click.self="culturePickerOpen=false">
-      <section class="modal-card culture-picker-modal" role="dialog" aria-modal="true" aria-label="Choose Culture Traits">
+      <section ref="cultureDialog" class="modal-card culture-picker-modal" role="dialog" aria-modal="true" aria-label="Choose Culture Traits">
         <div class="modal-head"><div><span class="eyebrow">CULTURE TRAITS</span><h2>Choose Culture Traits</h2><small>{{ form.cultureTraits.length }}/2 selected</small></div><button type="button" class="icon-button" aria-label="Close Culture Trait picker" @click="culturePickerOpen=false">×</button></div>
         <div class="culture-species-tabs" role="tablist"><button v-for="tab in cultureTabs" :key="tab" type="button" :class="{active:cultureTab===tab}" @click="cultureTab=tab">{{ tab }}</button></div><label class="rules-search culture-picker-search"><span aria-hidden="true">⌕</span><input v-model="cultureSearch" type="search" placeholder="Search Culture Traits or Species…" /></label>
         <div class="culture-picker-list">
@@ -810,7 +834,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
     </div>
 
     <div v-if="talentPickerOpen" class="modal-backdrop talent-picker-backdrop" @click.self="talentPickerOpen=false">
-      <section class="modal-card talent-picker-modal" role="dialog" aria-modal="true" aria-label="Choose a Talent">
+      <section ref="talentDialog" class="modal-card talent-picker-modal" role="dialog" aria-modal="true" aria-label="Choose a Talent">
         <div class="modal-head"><div><span class="eyebrow">TALENTS</span><h2>Choose Talents</h2><small>{{ form.talents.filter(Boolean).length }} / {{ requiredTalentCount() }} selected</small></div><button type="button" class="icon-button" aria-label="Close Talent picker" @click="talentPickerOpen=false">×</button></div>
         <div class="talent-picker-tabs" role="tablist"><button v-for="tab in talentTabs" :key="tab" type="button" :class="{active:talentTab===tab}" @click="talentTab=tab">{{ tab }}</button></div>
         <label class="rules-search talent-picker-search"><span aria-hidden="true">⌕</span><input v-model="talentSearch" type="search" placeholder="Search Talents…" /></label>
@@ -818,7 +842,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
       </section>
     </div>
 
-    <div v-if="shopOpen" class="modal-backdrop gear-picker-backdrop" @click.self="shopOpen=false"><section class="modal-card gear-shop-modal" role="dialog" aria-modal="true" aria-label="Equipment and Gear"><div class="modal-head"><div><span class="eyebrow">EQUIPMENT &amp; GEAR</span><h2>Equipment &amp; Gear</h2></div><button type="button" class="icon-button" @click="shopOpen=false">×</button></div><div class="gear-shop-balance"><span>Remaining Wealth</span><strong>{{ wealthRemaining }} NP</strong></div><div class="gear-tabs" role="tablist"><button v-for="tab in gearTabs" :key="tab" type="button" :class="{active:gearTab===tab}" @click="gearTab=tab">{{ tab }}</button></div><div class="rules-search gear-search"><span aria-hidden="true">⌕</span><input v-model="shopSearch" placeholder="Search equipment…" /></div><div class="gear-shop-list"><article v-for="item in filteredGear" :key="`${item.category}-${item.name}`" class="gear-shop-row"><div class="gear-shop-copy"><div class="gear-shop-title"><strong>{{ item.name }}</strong><small>{{ gearShopSubtitle(item) }}</small></div><p class="gear-profile">{{ gearDisplayDetail(item) }}</p><label v-if="gearChoices(item).length" class="field-label gear-choice-field">Choose {{ item.name }} option<select v-model="gearChoice[item.name]" class="field-control"><option value="">Choose…</option><option v-for="choice in gearChoices(item)" :key="choice" :value="choice">{{ choice }}</option></select></label></div><button type="button" class="secondary-button compact-action" :disabled="adjustedGearCostNp(item)>wealthRemaining||(gearChoices(item).length>0&&!gearChoice[item.name])" @click="addEquipment(item)">Add</button></article></div></section></div>
+    <div v-if="shopOpen" class="modal-backdrop gear-picker-backdrop" @click.self="shopOpen=false"><section ref="gearDialog" class="modal-card gear-shop-modal" role="dialog" aria-modal="true" aria-label="Equipment and Gear"><div class="modal-head"><div><span class="eyebrow">EQUIPMENT &amp; GEAR</span><h2>Equipment &amp; Gear</h2></div><button type="button" class="icon-button" @click="shopOpen=false">×</button></div><div class="gear-shop-balance"><span>Remaining Wealth</span><strong>{{ wealthRemaining }} NP</strong></div><div class="gear-tabs" role="tablist"><button v-for="tab in gearTabs" :key="tab" type="button" :class="{active:gearTab===tab}" @click="gearTab=tab">{{ tab }}</button></div><div class="rules-search gear-search"><span aria-hidden="true">⌕</span><input v-model="shopSearch" placeholder="Search equipment…" /></div><div class="gear-shop-list"><article v-for="item in filteredGear" :key="`${item.category}-${item.name}`" class="gear-shop-row"><div class="gear-shop-copy"><div class="gear-shop-title"><strong>{{ item.name }}</strong><small>{{ gearShopSubtitle(item) }}</small></div><p class="gear-profile">{{ gearDisplayDetail(item) }}</p><label v-if="gearChoices(item).length" class="field-label gear-choice-field">Choose {{ item.name }} option<select v-model="gearChoice[item.name]" class="field-control"><option value="">Choose…</option><option v-for="choice in gearChoices(item)" :key="choice" :value="choice">{{ choice }}</option></select></label></div><button type="button" class="secondary-button compact-action" :disabled="adjustedGearCostNp(item)>wealthRemaining||(gearChoices(item).length>0&&!gearChoice[item.name])" @click="addEquipment(item)">Add</button></article></div></section></div>
   </div>
 </template>
 

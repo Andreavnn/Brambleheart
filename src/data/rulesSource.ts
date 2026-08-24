@@ -1797,7 +1797,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Skills: Whisperstep, Herbalry Optional Replacements: Awareness, Bondcraft"
+            "text": "Skills: Whisperster, Herbalry Optional Replacements: Awareness, Bondcraft"
           }
         ]
       },

@@ -1,4 +1,5 @@
 import type { AttributeId } from '../data/bramble'
+import { writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks = Record<AttributeId, number>
 export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string }
@@ -54,14 +55,14 @@ export function loadCharacters():CharacterRecord[]{
     return Array.isArray(parsed)?parsed:[]
   }catch{return[]}
 }
-export function writeCharacters(characters:CharacterRecord[]){localStorage.setItem(CHARACTER_STORE,JSON.stringify(characters))}
-export function addCharacter(record:CharacterRecord){const list=loadCharacters();list.unshift(record);writeCharacters(list)}
-export function upsertCharacter(record:CharacterRecord){
+export function writeCharacters(characters:CharacterRecord[]):StorageWriteResult{return writeLocalStorage(CHARACTER_STORE,JSON.stringify(characters))}
+export function addCharacter(record:CharacterRecord):StorageWriteResult{const list=loadCharacters();list.unshift(record);return writeCharacters(list)}
+export function upsertCharacter(record:CharacterRecord):StorageWriteResult{
   const list=loadCharacters();const index=list.findIndex(item=>item.id===record.id)
   if(index>=0)list[index]=record;else list.unshift(record)
-  writeCharacters(list)
+  return writeCharacters(list)
 }
-export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.14',character}}
+export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:'0.15',character}}
 export function downloadJson(filename:string,value:unknown){
   const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)
