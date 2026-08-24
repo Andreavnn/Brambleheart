@@ -9,7 +9,38 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.14</strong><small>Typed Custom Data, automatic backgrounds, Attribute Check labels, and saved-character sheets</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.17</strong><small>Rules organization, Dice Roller, character-sheet parity, AoE targeting, approval fixes, and background controls</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Renamed Rhythm Engine Attribute Check to Dice Roller and rebuilt the saved Character Sheet to match the final Character Creation Review layout.</li>
+          <li>Reorganized Traits, Talents, Spells, and Watcher creature references into expandable parent categories using the Character Creation card language.</li>
+          <li>Added The Battles → Area of Effect with the supplied Line, Cone, Orb, Direct Casting, and Impassable Collision rules and diagrams.</li>
+          <li>Fixed completed-character approval movement and rebuilt Approved, Unapproved, and Incomplete lists as expandable panels without floating empty messages.</li>
+          <li>Corrected false Mana pills and Mana COST parsing, and hardened automatic rule-banner filename matching.</li>
+          <li>Added Donation detail text, consolidated footer tools/build detail, corrected Dark Mode background treatment, and added a background-only viewing control.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.16</strong><small>Creator refinement, Heritage terminology, rule banners, launch audio, and interface alignment</small></span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Added optional installed-app launch fanfare and a Launch Audio setting.</li>
+          <li>Corrected splash-page containment, responsive Text Size controls, and Settings Background disclosure styling.</li>
+          <li>Renamed visible Species Trait terminology to Heritage Trait and refined Character Creation cards, defaults, Attributes, Threadpieces, Languages, and Review.</li>
+          <li>Added Offensive Combat and Defensive Combat Talent categories and split completed characters into Approved and Unapproved lists.</li>
+          <li>Added rule-banner placeholders/navigation, Discord access, and Character Sheet alignment work.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface">
+        <summary><span><strong>Beta Build 0.15</strong><small>Reliability, accessibility, persistence safety, validation, and repository cleanup</small></span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Hardened the service worker, local persistence, and Level Up transactions against failed writes and bad cached responses.</li>
+          <li>Added modal focus trapping, Escape dismissal, and focus restoration.</li>
+          <li>Prevented Character Creation progress jumps from bypassing required validation and unified Talent prerequisite enforcement.</li>
+          <li>Improved Custom Data import feedback and corrected Gloommere's Whisperster Skill handling.</li>
+          <li>Removed retired background/payload material and advanced the visible build and PWA shell cache.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.14</strong><small>Typed Custom Data, automatic backgrounds, Attribute Check labels, and saved-character sheets</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Added a downloadable typed JSON template pack for custom Species, Spells, Talents, and Traits, plus recognized imports and visible Custom labeling.</li>
           <li>Added an Allow Custom Data switch to Character Creation so imported options are explicitly enabled per character.</li>

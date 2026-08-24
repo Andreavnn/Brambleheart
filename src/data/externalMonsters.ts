@@ -22,6 +22,7 @@ export const externalMonsters:ExternalMonsterEntry[]=[
 export function monsterSlug(name:string){return `monster-${name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`}
 export function findExternalMonster(slug:string){return externalMonsters.find(monster=>monsterSlug(monster.name)===slug)}
 export const monsterCategories=[
+  {name:'Companions',summary:categorySummary['Companions']},
   {name:'Arcane Automata',summary:'Enchanted machines and mystical constructs brought to life by ancient forces.'},
   {name:'Eldritch Abominations',summary:'Nightmarish beings from beyond the veil of ordinary reality.'},
   {name:'Epic Legends and Tall-Tale Terrors',summary:'Celebrated and legendary creatures whose stories echo through the ages.'},

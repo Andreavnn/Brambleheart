@@ -84,7 +84,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     id:'winds-of-magic', title:'Winds of Magic', summary:'Magic Levels, spell slots, Lore Attunement, Spell Rules, Spells, and Lores of Magic.', pages:[
       page('magical-level','Magical Level','Magic Power, spell slots, and Mana regeneration.',[{document:'winds-of-magic',sections:['MAGIC POWER','SPELL SLOTS']}],undefined,['Magic','Mana']),
       page('lore-attunement','Lore Attunement','Attuning to a Lore and gaining its Signature Spell.',[{document:'winds-of-magic',sections:['LORE ATTUNEMENT','SIGNATURE']}],undefined,['Lore','Attunement']),
-      page('spell-rules','Spell Rules','Spell Keywords, Augments, Hexes, range, area effects, Direct Casting, and impassable collision.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','AUGMENTS & HEXES','SPELL RANGE','LINE','LINE[10]','CONE','CONE[6]','ORB','ORB[7]','DIRECT CASTING','IMPASSABLE COLLISION']}],undefined,['Spell']),
+      page('spell-rules','Spell Rules','Spell Keywords, Augments, Hexes, range, and a link to the battle-grid Area of Effect rules.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','AUGMENTS & HEXES','SPELL RANGE']}],undefined,['Spell']),
       page('lore-invocation','Invocation','Invocation Spells.',[{document:'lore-invocation'}],undefined,['Lore','Spell','Invocation']),
       page('lore-flames','Flames','Lore of Flames.',[{document:'lore-flames'}],undefined,['Lore','Spell','Flames']),
       page('lore-frost','Frost','Lore of Frost.',[{document:'lore-frost'}],undefined,['Lore','Spell','Frost']),
@@ -98,6 +98,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
   {
     id:'battles', title:'The Battles', summary:'Encounter setup, Initiative, turns, Mana, combat, damage, Health, and defeat.', pages:[
       page('encounter-setup','Encounter & Setup','Starting a combat encounter, positions, squares, measurements, and opposed Strike/Ward context.',[{document:'battle',sections:['THE BATTLES','COMBAT ENCOUNTER','DETERMINING POSITIONS','SQUARES & MEASUREMENTS','TO HIT','TO DEFEND']}]),
+      page('area-of-effect','Area of Effect','Line, Cone, Orb, Direct targeting, and impassable collision on the battle grid.',undefined,'Area-of-effect geometry is defined by the supplied Winds of Magic rules and presented here as a general battle-grid targeting reference.',['Area of Effect','Line','Cone','Orb','Targeting']),
       page('initiative-order','Initiative Order','How Initiative is determined and how turn order is established.',[{document:'battle',sections:['INITIATIVE ORDER']}]),
       page('rounds-turns','Rounds & Turns','Rounds, turns, and start-of-turn timing.',[{document:'battle',sections:['ROUNDS & TURNS']}]),
       page('your-turn','Your Turn','Taking a turn and performing Abilities.',[{document:'battle',sections:['TAKING YOUR TURN','PREFORMING ABILITIES']}]),
@@ -135,13 +136,13 @@ export const ruleCategories: RuleCategoryDefinition[] = [
       page('critters','Critters & Companions','Companions and creature references from the Woodlands monster index.'),
       page('traps-environments','Traps & Environments','Hazards and environments used when building encounters.',undefined,'Detailed standalone trap and environment source text has not yet been supplied.'),
       page('monsters','Monsters','Monster categories and individual creature pages sourced from the Woodlands monster index.'),
-      ...externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`)),
       page('rewards','Rewards','Rewards and post-encounter guidance.',undefined,'Detailed standalone Watcher reward source text has not yet been supplied.'),
     ],
   },
 ]
 
-export const allRulePages = [...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => category.pages)]
+const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`))
+export const allRulePages = [...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => category.pages), ...monsterRulePages]
 export const fundamentalsNavigation = fundamentalPages.map(({slug,title})=>({slug,title}))
 export function findRulePage(slug:string) { return allRulePages.find(item => item.slug === slug) }
 

@@ -47,7 +47,7 @@ function clearSearch(){query.value=''}
 
     <template v-else>
       <section class="rules-index-panel card-surface rules-recent-panel">
-        <header class="rules-index-heading"><span>Recent &amp; Common Rules</span><small>History + quick access</small></header>
+        <header class="rules-index-heading"><span>Recent</span></header>
         <div class="rules-recent-grid">
           <RouterLink v-for="recent in recentPages" :key="recent!.slug" class="recent-rule-box" :to="`/rules/read/${recent!.slug}`">
             <strong>{{ recent!.title }}</strong><small>{{ recent!.summary }}</small>

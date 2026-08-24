@@ -1,3 +1,13 @@
+# Brambleheart Beta 0.17
+
+- Renamed Rhythm Engine Attribute Check to Dice Roller and matched the saved Character Sheet to the Character Creation Review layout.
+- Reorganized Traits, Talents, Spells, and Watcher creature references into expandable parent categories matching Character Creation conventions.
+- Added The Battles → Area of Effect with the supplied Line, Cone, Orb, and collision diagrams; Winds of Magic now cross-references it.
+- Fixed character approval movement and rebuilt Approved, Unapproved, and Incomplete lists as connected expandable panels.
+- Removed false Mana pills, corrected Mana COST parsing, and hardened rule-banner matching for uploaded banner files.
+- Added Donation detail text, consolidated the page-tool/build footer, corrected Dark Mode background treatment, and added a background-only viewing control.
+- Updated repository documentation/changelog state, removed inactive Encounter source files, and advanced the app/PWA/export markers to Beta 0.17.
+
 # Brambleheart Beta 0.16
 
 

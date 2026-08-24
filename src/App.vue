@@ -25,10 +25,7 @@ function openDiscord(){if(typeof window!=='undefined')window.open('https://disco
         <button type="button" class="secondary-button footer-tool-button" @click="openDiscord">Discord</button>
         <button type="button" class="secondary-button footer-tool-button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled ? 'Installed' : 'Install Brambleheart' }}</button>
       </div>
+      <span class="page-utility-build">Brambleheart Beta Build {{ BUILD }}</span>
     </section>
-
-    <footer v-if="showGlobalPageTools" class="app-footer">
-      <span>Brambleheart Beta Build {{ BUILD }}</span>
-    </footer>
   </div>
 </template>
