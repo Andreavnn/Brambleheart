@@ -1,0 +1,1 @@
+Optional rule-page banners are auto-discovered by filename suffix. Examples: banner_Introduction.png, banner_AttributesSkills.png, banner_WindsOfMagic.png, banner_TheAncients.png. If no matching image exists, the page keeps an empty banner placeholder.

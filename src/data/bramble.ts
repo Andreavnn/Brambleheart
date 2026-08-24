@@ -1,4 +1,4 @@
-export const BUILD = '0.15'
+export const BUILD = '0.16'
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },
@@ -84,7 +84,7 @@ export const ruleChapters: RuleChapter[] = [
     id:'character-creation', title:'Character Creation', eyebrow:'CHARACTERS', status:'interactive',
     summary:'Eight steps from species and Spark through attributes, talents or magic, equipment, and details.',
     sections:[
-      ['1. Choose Your Species','Choose a playable species. The current creation chapter grants 3 Species Traits, 2 Culture Traits, a native language, and Commonspeak.'],
+      ['1. Choose Your Species','Choose a playable species. The current creation chapter grants 3 Heritage Traits, 2 Culture Traits, a native language, and Commonspeak.'],
       ['2. Choose Your Spark','A Spark defines the hero’s personality archetype. Completing a deed that shares a Spark keyword grants +3 additional XP for that deed.'],
       ['3. Select Your Homeland','A Homeland grants 2 skills at rank 1 and is not restricted by species.'],
       ['4. Choose Faith & Oath','Faith describes what the hero reveres or trusts; Oath describes the principle they act upon.'],

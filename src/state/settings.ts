@@ -13,6 +13,7 @@ type SettingsState = {
   roleTheme:RoleTheme
   backgroundImage:BackgroundChoice
   backgroundGrayscale:boolean
+  bootAudio:boolean
 }
 
 const storageKey='brambleheart-settings-v0.01'
@@ -24,6 +25,7 @@ const defaults:SettingsState={
   roleTheme:'default',
   backgroundImage:'none',
   backgroundGrayscale:false,
+  bootAudio:true,
 }
 const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
 
@@ -56,6 +58,7 @@ function loadSettings():SettingsState{
       roleTheme:normalizeRole(saved.roleTheme),
       backgroundImage:normalizeBackground(saved.backgroundImage??saved.background),
       backgroundGrayscale:Boolean(saved.backgroundGrayscale),
+      bootAudio:saved.bootAudio!==false,
     }
   }catch{return{...defaults}}
 }
@@ -71,6 +74,7 @@ function applySettings(){
   root.dataset.roleTheme=state.roleTheme
   root.dataset.background=state.backgroundImage
   root.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
+  root.dataset.bootAudio=state.bootAudio?'true':'false'
   const url=backgroundUrl(state.backgroundImage)
   root.style.setProperty('--bh-selected-background',url?`url(${JSON.stringify(url)})`:'none')
   delete root.dataset.speciesTheme
@@ -90,6 +94,7 @@ export function useSettings(){
     roleTheme:toRef(state,'roleTheme'),
     backgroundImage:toRef(state,'backgroundImage'),
     backgroundGrayscale:toRef(state,'backgroundGrayscale'),
+    bootAudio:toRef(state,'bootAudio'),
     toggleTheme:()=>{state.darkMode=!state.darkMode},
     reset:()=>Object.assign(state,defaults),
   }

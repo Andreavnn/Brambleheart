@@ -1143,7 +1143,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "[3] Species Traits — Innate gifts bound to instinct and heritage."
+            "text": "[3] Heritage Traits — Innate gifts bound to instinct and heritage."
           },
           {
             "type": "paragraph",

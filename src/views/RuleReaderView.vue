@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { findRulePage, fundamentalsNavigation, loreNavigation, quickFaq, quickReferencePages, resolveSourceSections, ruleCategories } from '../data/ruleCatalog'
@@ -13,6 +13,16 @@ const slug=computed(()=>String(route.params.slug||''))
 const page=computed(()=>findRulePage(slug.value))
 const rawSourceSections=computed(()=>page.value?resolveSourceSections(page.value):[])
 watch(slug,value=>{if(value)recordRecentRule(value)},{immediate:true})
+
+const bannerModules=import.meta.glob('../assets/rule-banners/*.{png,jpg,jpeg,webp}',{eager:true,query:'?url',import:'default'}) as Record<string,string>
+function bannerKey(value:string){return value.replace(/[^a-z0-9]+/gi,'').toLowerCase()}
+const currentBanner=computed(()=>{if(!page.value)return'';const wanted=new Set([bannerKey(page.value.title),bannerKey(page.value.slug),bannerKey(page.value.title.replace(/^Lore of /i,''))]);const entry=Object.entries(bannerModules).find(([path])=>wanted.has(bannerKey((path.split('/').pop()||'').replace(/\.[^.]+$/,'').split('_').pop()||'')));return entry?.[1]||''})
+const ruleNavRef=ref<HTMLElement|null>(null)
+function scrollRuleNav(direction:number){ruleNavRef.value?.scrollBy({left:direction*320,behavior:'smooth'})}
+const abilityCostKeywords=new Set(['Root','Move','Movement','Combat','Reaction','Reactive','Instinct','Passive'])
+function abilityTypes(values:string[]){return traitKeywords(values).filter(value=>abilityCostKeywords.has(value))}
+function remainingTraitKeywords(values:string[],kind:string,speciesName:string){const speciesNames=new Set(speciesData.map(item=>item.name.toLowerCase()));return traitKeywords(values).filter(value=>!abilityCostKeywords.has(value)&&!['Trait','Heritage','Cultural','Culture'].includes(value)&&!speciesNames.has(value.toLowerCase())).concat([kind,speciesName])}
+function manaCostFromRule(text:string){const match=text.match(/COST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):0}
 
 function displayText(value:string){
   return value.replace(/\bProwess\b/g,'Agility').replace(/\bprowess\b/g,'agility')
@@ -104,6 +114,12 @@ function isLongNarrativeHeading(value:string){const t=displayText(value).trim();
 function narrativeParts(value:string){const t=displayText(value).trim();if(t.startsWith('WATCHER’S NOTE'))return{title:'WATCHER’S NOTE',body:t.replace(/^WATCHER’S NOTE\s*/,'')};const title='Packs, Herds, & Kinships (Optional Rule)';return{title,body:t.replace(title,'').trim()}}
 const boxedRuleSlugs=new Set(['homeland','oath','faith','talents','adventuring-gear','lore-invocation','lore-flames','lore-frost','lore-hallows','lore-harmony','lore-life','lore-oath','lore-wilds'])
 function boxedRulePage(){return boxedRuleSlugs.has(slug.value)}
+function abilityBoxPage(){return slug.value==='talents'||slug.value.startsWith('lore-')}
+function entryRuleText(entry:{section:RuleSourceSection}){return entry.section.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')}
+function entryKeywords(entry:{section:RuleSourceSection}){return Array.from(new Set(entry.section.blocks.filter(block=>block.type==='paragraph').flatMap(block=>block.type==='paragraph'?keywordParts(block.text):[])))}
+function entryAbilityTypes(entry:{section:RuleSourceSection}){return entryKeywords(entry).filter(value=>abilityCostKeywords.has(value))}
+function entryDisplayKeywords(entry:{section:RuleSourceSection}){return entryKeywords(entry).filter(value=>!abilityCostKeywords.has(value))}
+function entryMana(entry:{section:RuleSourceSection}){return manaCostFromRule(entryRuleText(entry))}
 function equipmentTableRows(block:RuleSourceBlock){
   if(slug.value!=='adventuring-gear'||block.type!=='table'||block.rows.length<2||block.rows[0].length<2)return[]
   const headers=block.rows[0].map(displayText);return block.rows.slice(1).filter(row=>row.some(cell=>String(cell).trim())).map(row=>({name:displayText(row[0]||'Item'),fields:row.slice(1).map((cell,index)=>({label:headers[index+1]||`Value ${index+1}`,value:displayText(cell||'—')}))}))
@@ -131,13 +147,14 @@ const deedEntries=computed<DeedEntry[]>(()=>{
         <h1>{{ page.title }}</h1>
         <p>{{ page.summary }}</p>
       </div>
+      <div class="rule-page-banner-placeholder" :class="{empty:!currentBanner}" :style="currentBanner?{backgroundImage:`url(${currentBanner})`}:undefined" aria-hidden="true"></div>
 
-      <nav v-if="fundamentalIndex>=0" class="fundamental-inner-links card-surface" aria-label="The Fundamentals pages"><RouterLink v-for="item in fundamentalsNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav>
-      <nav v-else-if="loreIndex>=0" class="fundamental-inner-links lore-inner-links card-surface" aria-label="Lore of Anthro Mundas pages"><RouterLink v-for="item in loreNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav>
+      <div v-if="fundamentalIndex>=0||loreIndex>=0" class="rule-nav-scroll-shell"><button type="button" class="rule-nav-scroll-button left" aria-label="Scroll rule navigation left" @click="scrollRuleNav(-1)">‹</button><nav ref="ruleNavRef" v-if="fundamentalIndex>=0" class="fundamental-inner-links card-surface" aria-label="The Fundamentals pages"><RouterLink v-for="item in fundamentalsNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav>
+      <nav ref="ruleNavRef" v-else class="fundamental-inner-links lore-inner-links card-surface" aria-label="Lore of Anthro Mundas pages"><RouterLink v-for="item in loreNavigation" :key="item.slug" :to="`/rules/read/${item.slug}`" :class="{active:item.slug===slug}">{{ item.title }}</RouterLink></nav><button type="button" class="rule-nav-scroll-button right" aria-label="Scroll rule navigation right" @click="scrollRuleNav(1)">›</button></div>
 
       <template v-if="page.slug==='playable-species'">
         <section class="rule-content-card card-surface playable-species-reader">
-          <article class="rule-copy-card"><h2>Playable Species</h2><p>Choose a Species to read its lore, Species Traits, Culture Traits, and native language.</p></article>
+          <article class="rule-copy-card"><h2>Playable Species</h2><p>Choose a Species to read its lore, Heritage Traits, Culture Traits, and native language.</p></article>
           <RouterLink v-for="species in speciesData" :key="species.name" class="list-row" :to="`/rules/read/species-${species.name.toLowerCase()}`">
             <span class="list-row-copy"><span class="list-row-title">{{ species.name }}</span><span class="list-row-subtitle">{{ species.theme }}</span></span><svg class="row-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </RouterLink>
@@ -147,8 +164,8 @@ const deedEntries=computed<DeedEntry[]>(()=>{
       <template v-else-if="currentSpecies">
         <section class="species-rule-sheet">
           <article class="species-rule-lore card-surface"><header><h2>{{ currentSpecies.name }}</h2><small>{{ currentSpecies.pronunciation }}</small></header><p class="species-rule-quote">“{{ currentSpecies.quote }}”</p><p>{{ currentSpecies.lore }}</p><p><strong>Language:</strong> {{ currentSpecies.language }}</p></article>
-          <section class="species-rule-trait-section"><h2>Species Traits</h2><div class="rule-box-grid"><article v-for="trait in currentSpecies.speciesTraits" :key="trait.name" class="rule-feature-box species-trait-rule"><header><h3>{{ trait.name }}</h3></header><p>{{ trait.text }}</p><small v-if="traitKeywords(trait.keywords).length"><strong>Keywords:</strong> {{ traitKeywords(trait.keywords).join(' · ') }}</small></article></div></section>
-          <section class="species-rule-trait-section"><h2>Culture Traits</h2><div class="rule-box-grid"><article v-for="trait in currentSpecies.cultureTraits" :key="trait.name" class="rule-feature-box culture-trait-rule"><header><h3>{{ trait.name }}</h3></header><p>{{ trait.text }}</p><small v-if="traitKeywords(trait.keywords).length"><strong>Keywords:</strong> {{ traitKeywords(trait.keywords).join(' · ') }}</small></article></div></section>
+          <section class="species-rule-trait-section"><h2>Heritage Traits</h2><div class="rule-box-grid"><article v-for="trait in currentSpecies.speciesTraits" :key="trait.name" class="rule-feature-box species-trait-rule"><header><h3>{{ trait.name }}</h3><div class="rule-title-costs"><span v-for="type in abilityTypes(trait.keywords)" :key="type" class="ability-cost-pill">{{ type }}</span><span class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></header><p>{{ trait.text }}</p><div class="keyword-pill-row"><span v-for="keyword in remainingTraitKeywords(trait.keywords,'Heritage',currentSpecies.name)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></section>
+          <section class="species-rule-trait-section"><h2>Cultural Traits</h2><div class="rule-box-grid"><article v-for="trait in currentSpecies.cultureTraits" :key="trait.name" class="rule-feature-box culture-trait-rule"><header><h3>{{ trait.name }}</h3><div class="rule-title-costs"><span v-for="type in abilityTypes(trait.keywords)" :key="type" class="ability-cost-pill">{{ type }}</span><span class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></header><p>{{ trait.text }}</p><div class="keyword-pill-row"><span v-for="keyword in remainingTraitKeywords(trait.keywords,'Cultural',currentSpecies.name)" :key="keyword" class="keyword-pill">{{ keyword }}</span></div></article></div></section>
         </section>
       </template>
 
@@ -185,9 +202,9 @@ const deedEntries=computed<DeedEntry[]>(()=>{
         <section v-if="page.note" class="info-card rule-source-note"><strong>Source Note</strong><p>{{ displayText(page.note) }}</p></section>
         <section v-if="sourceSections.length" class="rule-content-card card-surface">
           <article v-for="(entry,index) in sourceSections" :key="`${entry.document}-${entry.section.heading}-${index}`" class="rule-copy-card source-section-card old-dex-rule-section" :class="{'example-source-card':isExampleHeading(entry.section.heading),'boxed-rule-entry':boxedRulePage()}">
-            <h2 v-if="entry.section.heading!=='Overview'">{{ displayText(entry.section.heading) }}</h2>
+            <header v-if="entry.section.heading!=='Overview'&&abilityBoxPage()" class="boxed-rule-titlebar"><h2>{{ displayText(entry.section.heading) }}</h2><div class="rule-title-costs"><span v-for="type in entryAbilityTypes(entry)" :key="type" class="ability-cost-pill">{{ type }}</span><span class="mana-badge">{{ entryMana(entry) }} Mana</span></div></header><h2 v-else-if="entry.section.heading!=='Overview'">{{ displayText(entry.section.heading) }}</h2>
             <template v-for="(block,blockIndex) in entry.section.blocks" :key="blockIndex">
-              <p v-if="isKeywordBlock(block)" class="rule-keyword-line"><strong>Keywords:</strong> {{ keywordParts(block.type==='paragraph'?block.text:'').map(displayText).join(' · ') }}</p>
+              <div v-if="isKeywordBlock(block)&&abilityBoxPage()" class="keyword-pill-row"><span v-for="keyword in entryDisplayKeywords(entry)" :key="keyword" class="keyword-pill">{{ displayText(keyword) }}</span></div><p v-else-if="isKeywordBlock(block)" class="rule-keyword-line"><strong>Keywords:</strong> {{ keywordParts(block.type==='paragraph'?block.text:'').map(displayText).join(' · ') }}</p>
               <template v-else-if="block.type==='paragraph'">
                 <div v-if="isDialogue(block.text)" class="dialogue-example-box">
                   <p v-for="part in dialogueParts(block.text)" :key="`${part.actor}-${part.text}`"><strong>{{ part.actor }}:</strong> <em>{{ displayText(part.text) }}</em></p>

@@ -35,7 +35,7 @@ import AppHeader from '../components/AppHeader.vue'
         <div class="changelog-entry-body"><ul>
           <li>Refined Culture Skill selection, Deed guidance, Attribute rows, Oath/Faith spacing, spell ordering/capitalization, NP wealth, Languages, and Review.</li>
           <li>Added background grayscale control and removed the paper backing behind the logo on image-backed pages.</li>
-          <li>Reordered Fundamentals, boxed Skill Trees/Species Traits and comparable Rules entries, and synchronized source-backed Building Selu examples.</li>
+          <li>Reordered Fundamentals, boxed Skill Trees/Heritage Traits and comparable Rules entries, and synchronized source-backed Building Selu examples.</li>
           <li>Added Encounter Rating guidance plus an indexed local Rules page for every creature exposed by the supplied Woodlands monster reference without fabricating unavailable statistics.</li>
           <li>Tightened Attribute Check targeting and added a dynamic sentence-form roll formula.</li>
           <li>Refined Combat Encounter pages further toward a clickable pen-and-paper character-sheet presentation.</li>

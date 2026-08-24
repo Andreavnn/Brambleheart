@@ -52,7 +52,7 @@ const fundamentalPages: RulePageDefinition[] = [
 const speciesPages = speciesData.map(item=>page(
   `species-${item.name.toLowerCase()}`,
   item.name,
-  `${item.name} lore, Species Traits, Culture Traits, and language.`,
+  `${item.name} lore, Heritage Traits, Culture Traits, and language.`,
   [{document:`species-${item.name.toLowerCase()}`}],
   undefined,
   ['Species','Trait','Culture']
@@ -75,7 +75,7 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'playable-species', title:'Playable Species', summary:'Species lore, Species Traits, Culture Traits, and native languages.', pages:[
+    id:'playable-species', title:'Playable Species', summary:'Species lore, Heritage Traits, Culture Traits, and native languages.', pages:[
       page('playable-species','Species Index','Choose a playable Species and open its dedicated rules page.'),
       ...speciesPages,
     ],

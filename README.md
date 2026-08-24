@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.15
+# Brambleheart TTRPG — Beta 0.16
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.15 is a reliability and accessibility pass built from the Beta 0.14 source snapshot. It concentrates on safe persistence, service-worker behavior, modal keyboard support, Character Creation validation, Talent prerequisites, Custom Data feedback, and repository cleanup.
+Beta 0.16 is a reliability and accessibility pass built from the Beta 0.14 source snapshot. It concentrates on safe persistence, service-worker behavior, modal keyboard support, Character Creation validation, Talent prerequisites, Custom Data feedback, and repository cleanup.
 
 ## Main views
 
@@ -15,7 +15,7 @@ Beta 0.15 is a reliability and accessibility pass built from the Beta 0.14 sourc
 - Settings
 - Site Changelog
 
-## Beta 0.15 focus
+## Beta 0.16 focus
 
 - Keeps Node 22 as the minimum runtime without capping future Node releases.
 - Prevents the service worker from caching bad responses or intercepting cross-origin traffic and uses the shell only as a true offline navigation fallback.

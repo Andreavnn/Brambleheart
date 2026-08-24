@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useFocusTrap } from '../composables/useFocusTrap'
 import { useRoute, useRouter } from 'vue-router'
 import { dismissWelcomeInstallPromptPermanently, hasDismissedWelcomeInstallPrompt, markWelcomeSeen } from '../services/welcome'
 import { canInstall, isInstalled, requestInstall } from '../state/install'
 import { BUILD } from '../data/bramble'
+import { useSettings } from '../state/settings'
 
 const route=useRoute();const router=useRouter();const installModalOpen=ref(!hasDismissedWelcomeInstallPrompt());const installHelp=ref(false)
+const { bootAudio }=useSettings()
+function installedMode(){return typeof window!=='undefined'&&(window.matchMedia?.('(display-mode: standalone)').matches||Boolean((navigator as Navigator&{standalone?:boolean}).standalone))}
+function playLaunchAudio(){if(!bootAudio.value||!installedMode())return;const audio=new Audio('/audio/brambleheart-launch.wav');audio.volume=.55;void audio.play().catch(()=>{const retry=()=>{void audio.play().catch(()=>undefined);window.removeEventListener('pointerdown',retry)};window.addEventListener('pointerdown',retry,{once:true})})}
+onMounted(playLaunchAudio)
 const installDialog=ref<HTMLElement|null>(null)
 useFocusTrap(installModalOpen,installDialog,()=>{installModalOpen.value=false})
 const continuePath=computed(()=>{const candidate=String(route.query.continue||'');return candidate.startsWith('/')&&!candidate.startsWith('/welcome')?candidate:'/characters'})
