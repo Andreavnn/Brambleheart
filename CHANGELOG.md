@@ -1,3 +1,12 @@
+# Brambleheart Beta 0.18
+
+- Renamed Settings Text Size endpoints to Smallest and Largest and added double-confirmed character clearing for All, Incomplete, Unapproved, and Approved characters.
+- Reorganized Sparks & Deeds, Homelands, Oaths, Faiths, Talents, and Adventuring Gear into expandable rule groups using the same card language as Character Creation.
+- Expanded Faith detail in Character Creation, removed implicit dropdown choices, and standardized default Select placeholders.
+- Corrected requested Talent names and category assignments, including Pouncer and Hearthwall.
+- Reworked Weapons and Armor into structured character-sheet slots and added collapsible Character Sheet sections.
+- Cleaned Threadpiece presentation and preserved grayscale while using View Background.
+
 # Brambleheart Beta 0.17
 
 - Renamed Rhythm Engine Attribute Check to Dice Roller and matched the saved Character Sheet to the Character Creation Review layout.

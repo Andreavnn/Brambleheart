@@ -6,6 +6,7 @@ import { canInstall, installMessage, isInstalled, requestInstall } from '../stat
 import { useSettings, type FontSize, type RoleTheme } from '../state/settings'
 import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
+import { loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
 
 const router=useRouter()
@@ -17,7 +18,7 @@ const customCounts=computed(()=>customDataCounts(customData.value))
 const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'None loaded')
 
 const fontOptions:Array<{value:FontSize;label:string}>=[
-  {value:'smaller',label:'Smaller'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Larger'},
+  {value:'smaller',label:'Smallest'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'larger',label:'Largest'},
 ]
 const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
   {value:'default',label:'Default',description:'The standard Brambleheart parchment, moss, and woodland palette.'},
@@ -31,9 +32,21 @@ const roleOptions:Array<{value:RoleTheme;label:string;description:string}>=[
 const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleTheme.value)?.label||'Default')
 const currentBackgroundLabel=computed(()=>backgroundLabel(backgroundImage.value))
 
-function clearKey(key:string,message:string){if(!confirm(message))return;localStorage.removeItem(key)}
-function clearCharacters(){clearKey('brambleheart-characters-v0.01','Clear all saved Brambleheart characters from this device? This cannot be undone.')}
-function clearDiceRolls(){clearKey('brambleheart-simulator-rhythm-v0.05','Clear the stored Dice Roller history?')}
+function confirmTwice(first:string,second:string){return confirm(first)&&confirm(second)}
+type CharacterClearMode='all'|'incomplete'|'unapproved'|'approved'
+function characterMatchesClearMode(character:CharacterRecord,mode:CharacterClearMode){
+  if(mode==='all')return true
+  if(mode==='incomplete')return Boolean(character.draft)
+  if(mode==='approved')return !character.draft&&Boolean(character.locked)
+  return !character.draft&&!character.locked
+}
+function clearCharacters(mode:CharacterClearMode){
+  const labels={all:'all saved characters',incomplete:'all incomplete characters',unapproved:'all unapproved characters',approved:'all approved characters'} as const
+  if(!confirmTwice(`Clear ${labels[mode]} from this device?`,`Confirm again: permanently delete ${labels[mode]}? This cannot be undone.`))return
+  const current=loadCharacters();const next=current.filter(character=>!characterMatchesClearMode(character,mode))
+  const saved=writeCharacters(next);if(!saved.ok)alert(saved.message)
+}
+function clearDiceRolls(){if(confirm('Clear the stored Dice Roller history?'))localStorage.removeItem('brambleheart-simulator-rhythm-v0.05')}
 function clearAllLocalData(){
   if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, Dice Roller history, custom data, and welcome state. Display settings are preserved.'))return
   const keys=['brambleheart-characters-v0.01','brambleheart-rules-recent-v0.03','brambleheart-rules-recent-v0.04','brambleheart-rules-recent-v0.05','brambleheart-rules-recent-v0.06','brambleheart-rules-recent-v0.07','brambleheart-rules-recent-v0.08','brambleheart-simulator-rhythm-v0.05','brambleheart-custom-data-v0.05','brambleheart-custom-data-name-v0.05','brambleheart-custom-data-v0.06','brambleheart-custom-data-name-v0.06','brambleheart-custom-data-v0.07','brambleheart-custom-data-name-v0.07','brambleheart-custom-data-v0.08','brambleheart-custom-data-name-v0.08','brambleheart-custom-data-v0.14','brambleheart.welcome.v0.04','brambleheart.welcome.v0.05','brambleheart.welcome.v0.06','brambleheart.welcome.v0.07','brambleheart.welcome.v0.08','brambleheart.install-welcome-dismissed.v0.04','brambleheart.install-welcome-dismissed.v0.05','brambleheart.install-welcome-dismissed.v0.06','brambleheart.install-welcome-dismissed.v0.07','brambleheart.install-welcome-dismissed.v0.08']
@@ -94,7 +107,7 @@ function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?')
     <section class="settings-group" aria-label="Data and content settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div><section class="settings-card">
       <details class="reset-data-settings-panel"><summary><span><strong>Reset Local Data</strong><small>Manage characters, recent rules, Dice Roller history, custom data, and local welcome state.</small></span><span class="value-chip">MANAGE</span></summary><div class="reset-data-option-list">
         <div class="setting-row reset-data-row"><span><strong>Reset All Local Data</strong><small>Remove all locally stored app data while preserving Display settings.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearAllLocalData">Reset Data</button></div>
-        <div class="setting-row local-clear-row"><span><strong>Clear Characters</strong><small>Remove all locally saved characters.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters">Clear</button></div>
+        <details class="character-clear-panel"><summary><span><strong>Clear Characters</strong><small>Delete characters by completion and approval status. Every action requires two confirmations.</small></span><span class="value-chip">MANAGE</span></summary><div class="character-clear-actions"><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('all')">Clear All</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('incomplete')">Clear Incomplete</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('unapproved')">Clear Unapproved</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('approved')">Clear Approved</button></div></details>
         <div class="setting-row local-clear-row"><span><strong>Clear Dice Rolls</strong><small>Remove the Dice Roller roll history.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearDiceRolls">Clear</button></div>
       </div></details>
       <div class="setting-row static-row"><span><strong>Site Changelog - Beta {{ BUILD }}</strong><small>Review changes to the Brambleheart companion site. Rules amendments are listed under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>

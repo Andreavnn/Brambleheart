@@ -3799,3 +3799,43 @@ html[data-background-view="true"] body::before{display:none!important}html[data-
 /* Beta 0.17 Settings group detail text. */
 .settings-page .settings-group-heading>div{display:grid;gap:2px}
 .settings-page .settings-group-heading>div>small{display:block;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:600;line-height:1.35;letter-spacing:0;text-transform:none}
+
+/* Beta 0.18 — settings, creator detail cards, equipment slots, and background-view refinements. */
+.settings-page .character-clear-panel{border-top:1px solid var(--line)}
+.settings-page .character-clear-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;padding:11px 12px}
+.settings-page .character-clear-panel>summary::-webkit-details-marker{display:none}
+.settings-page .character-clear-panel>summary>span:first-child{display:grid;gap:2px;min-width:0}
+.settings-page .character-clear-panel>summary small{color:var(--ink-soft);line-height:1.4}
+.settings-page .character-clear-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 12px}
+.settings-page .character-clear-actions button{width:100%}
+.currency-grid-three{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.faith-oath-detail-card{display:grid;gap:9px;margin-top:12px!important;padding:0!important;overflow:hidden}
+.faith-oath-detail-card>header{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--paper)}
+.faith-oath-detail-card>header h2{margin:0;font-family:Georgia,'Times New Roman',serif}
+.faith-oath-detail-card>header small{margin-left:auto;color:var(--ink-soft);font-weight:900;letter-spacing:.08em}
+.faith-oath-detail-card>p{margin:0!important;padding:0 12px;color:var(--ink-soft);line-height:1.55}
+.narrative-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 12px}
+.narrative-detail-grid>div{display:grid;gap:4px;align-content:start;padding:8px 9px;border:1px solid var(--line);border-radius:7px;background:var(--paper)}
+.narrative-detail-grid small{color:var(--accent-dark);font-size:calc(8px + var(--font-offset));font-weight:900;letter-spacing:.08em}
+.narrative-detail-grid span,.narrative-detail-grid li{line-height:1.45;color:var(--ink)}
+.narrative-detail-grid ul{margin:0;padding-left:18px}
+.equipment-slot-sheet{display:grid;gap:0!important;overflow-x:auto}
+.weapon-slot-grid{display:grid;grid-template-columns:minmax(150px,1.4fr) minmax(70px,.55fr) minmax(70px,.55fr) minmax(210px,2fr) minmax(70px,.55fr);min-width:720px}
+.armor-slot-grid{display:grid;grid-template-columns:minmax(160px,1.45fr) repeat(5,minmax(82px,.7fr));min-width:720px}
+.equipment-slot-header{border:1px solid var(--line-dark);border-bottom:0;border-radius:7px 7px 0 0;background:var(--ink);color:var(--paper)}
+.equipment-slot-header span{padding:6px 8px;border-right:1px solid color-mix(in srgb,var(--paper) 28%,transparent);font-size:calc(8px + var(--font-offset));font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.equipment-slot-row{border:1px solid var(--line);border-top:0;background:var(--paper)}
+.equipment-slot-row:last-child{border-radius:0 0 7px 7px}
+.equipment-slot-row>*{min-height:32px;padding:7px 8px;border-right:1px solid var(--line);display:flex;align-items:center}
+.equipment-slot-row>*:last-child,.equipment-slot-header>*:last-child{border-right:0}
+.equipment-slot-row strong{font-family:Georgia,'Times New Roman',serif}
+html[data-background-view="true"][data-background-grayscale="true"]:not([data-background="none"]) body{background-image:var(--page-gradient)!important;background-color:var(--page-bg)!important}
+html[data-background-view="true"][data-background-grayscale="true"]:not([data-background="none"]) body::before{display:block!important;background-image:var(--bh-selected-background)!important;background-position:center!important;background-repeat:no-repeat!important;background-size:cover!important;filter:grayscale(1)!important}
+@media(max-width:680px){.settings-page .character-clear-actions,.narrative-detail-grid{grid-template-columns:1fr}.currency-grid-three{grid-template-columns:1fr 1fr 1fr!important}}
+/* Character-sheet expandable section headers. */
+.review-collapsible>summary{display:flex!important;align-items:center!important;gap:10px!important;list-style:none!important;cursor:pointer!important}
+.review-collapsible>summary::-webkit-details-marker{display:none!important}
+.review-collapsible>summary h2{margin:0!important}
+.review-collapsible>summary>span{margin-left:auto!important;text-align:right!important;color:var(--ink-soft)}
+.review-collapsible>summary::after{content:'⌄';flex:0 0 auto;color:var(--ink-soft);font-size:18px;transition:transform .15s ease}
+.review-collapsible[open]>summary::after{transform:rotate(180deg)}

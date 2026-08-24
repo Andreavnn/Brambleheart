@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.17
+# Brambleheart TTRPG — Beta 0.18
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.17 is a rules-organization and interface-consistency pass built on Beta 0.16. It concentrates on the Rhythm Engine, character-sheet parity, Rules organization, Watcher creature hierarchy, area-of-effect targeting, character approval, background presentation, and rule-banner discovery.
+Beta 0.18 is a rules-organization, character-creation, and character-sheet refinement pass built on Beta 0.17. It concentrates on cleaner Rules grouping, explicit Character Creation choices, complete Faith presentation, Talent corrections, local-character data controls, Adventuring Gear organization, structured weapon/armor slots, and background display consistency.
 
 ## Main views
 
@@ -15,17 +15,17 @@ Beta 0.17 is a rules-organization and interface-consistency pass built on Beta 0
 - Settings
 - Site Changelog
 
-## Beta 0.17 focus
+## Beta 0.18 focus
 
-- Renames Attribute Check to Dice Roller and makes the saved Character Sheet match the final Character Creation Review layout.
-- Organizes Traits, Talents, and Spells into reusable expandable categories matching Character Creation presentation.
-- Moves detailed Line, Cone, Orb, Direct Casting, and Impassable Collision targeting to The Battles → Area of Effect using supplied rulebook diagrams.
-- Reorganizes Watcher creatures by parent category and monster family/type.
-- Fixes Approved/Unapproved character movement and groups character lists into expandable panels.
-- Removes false Mana pills from rules that do not define a Mana cost.
-- Improves rule-banner filename detection, including `Banner_AthroMundas.png`.
-- Keeps selected background artwork consistent between light and Dark Mode and adds a background-only viewing control.
-- Consolidates the global page tools/build detail and refines Donation Settings copy.
+- Renames Text Size endpoints to Smallest and Largest and adds status-specific character clearing with a second confirmation.
+- Reorganizes Sparks & Deeds, Homelands, Oaths, Faiths, Talents, and Adventuring Gear into expandable Rules groups.
+- Uses Character Creation-style cards for reusable ability/rule entries where supported.
+- Removes implicit creator choices so applicable dropdowns begin with Select… placeholders.
+- Expands Faith detail and refines Oath/Faith presentation in Character Creation.
+- Corrects requested Talent names and category assignments while preserving compatibility with older saved-character spellings.
+- Separates Adventuring Gear into Weapons, Armor, Tools, and related groups, with Weapon Qualities separated from weapon listings.
+- Reworks Character Sheet Weapons and Armor into structured slots and adds collapsible sheet sections.
+- Cleans Threadpiece conversion presentation and keeps grayscale active in View Background mode.
 
 ## Runtime
 

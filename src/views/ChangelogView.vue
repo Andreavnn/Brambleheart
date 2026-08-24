@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.17</strong><small>Rules organization, Dice Roller, character-sheet parity, AoE targeting, approval fixes, and background controls</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.18</strong><small>Rules cleanup, character data controls, explicit creator choices, talent corrections, and equipment-sheet refinements</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Renamed Text Size endpoints to Smallest and Largest and added double-confirmed character clearing by All, Incomplete, Unapproved, or Approved status.</li>
+          <li>Reorganized Sparks &amp; Deeds, Homelands, Oaths, Faiths, Talents, and Adventuring Gear into cleaner expandable rule groups using Character Creation card styling.</li>
+          <li>Expanded Faith detail in Character Creation, removed implicit dropdown choices, and standardized Select placeholders.</li>
+          <li>Corrected requested Talent names and category assignments, including Pouncer and Hearthwall.</li>
+          <li>Rebuilt weapon and armor presentation as structured character-sheet slots and added collapsible sheet sections.</li>
+          <li>Adjusted Threadpiece presentation and preserved grayscale when using View Background.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.17</strong><small>Rules organization, Dice Roller, character-sheet parity, AoE targeting, approval fixes, and background controls</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Renamed Rhythm Engine Attribute Check to Dice Roller and rebuilt the saved Character Sheet to match the final Character Creation Review layout.</li>
           <li>Reorganized Traits, Talents, Spells, and Watcher creature references into expandable parent categories using the Character Creation card language.</li>

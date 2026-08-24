@@ -6,6 +6,7 @@ import { attributes } from '../data/bramble'
 import { skillDefinitions } from '../data/characterOptions'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
+import { canonicalTalentName, talentNameMatches } from '../data/talentCategories'
 import { loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
 
 const route=useRoute(),router=useRouter()
@@ -50,14 +51,15 @@ function raiseSkill(){const c=character.value;if(!c||!skillName.value)return;con
 function addSkill(){const c=character.value;if(!c||!newSkill.value)return;if(c.skillRanks?.[newSkill.value]){message.value='That Skill is already known.';return}const selected=newSkill.value;spend(6,draft=>{draft.skillRanks={...(draft.skillRanks||{}),[selected]:1};draft.skills=Array.from(new Set([...(draft.skills||[]),selected]))},`${selected} Rank 1`);if(message.value.endsWith('purchased for 6 XP.'))newSkill.value=''}
 
 const talentSections=ruleSourceDocuments.talents.sections
-function talentText(name:string){const section=talentSections.find(item=>item.heading===name);return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')||''}
+function talentText(name:string){const section=talentSections.find(item=>talentNameMatches(item.heading,name));return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'').join(' ')||''}
 function talentRequires(name:string){return talentRequirementFromText(talentText(name))}
 function talentAvailable(name:string){return talentRequirementSatisfied(talentRequires(name),character.value?.talents||[],name)}
-const talentOptions=computed(()=>talentSections.map(section=>section.heading).filter(name=>name&&name!=='Overview'&&name!=='TALENTS'&&!name.startsWith('KEYWORDS')).filter(name=>!character.value?.talents?.includes(name)&&talentAvailable(name)).sort())
+function talentKnown(name:string){return (character.value?.talents||[]).some(existing=>talentNameMatches(existing,name))}
+const talentOptions=computed(()=>Array.from(new Set(talentSections.map(section=>canonicalTalentName(section.heading)).filter(name=>name&&name!=='Overview'&&name!=='TALENTS'&&!name.startsWith('KEYWORDS')))).filter(name=>!talentKnown(name)&&talentAvailable(name)).sort())
 function addTalent(){
   const c=character.value
   if(!c||!newTalent.value)return
-  const talent=newTalent.value
+  const talent=canonicalTalentName(newTalent.value)
   const required=talentRequires(talent)
   if(!talentRequirementSatisfied(required,c.talents||[],talent)){message.value=required?`${talent} requires ${required}.`:'That Talent is not currently available.';return}
   spend(10,draft=>{draft.talents=Array.from(new Set([...(draft.talents||[]),talent]))},talent)
@@ -77,7 +79,7 @@ function finish(){void router.push('/characters')}
         <article class="level-up-card card-surface"><h2>Attributes</h2><p>Cost: 2 + (2 × current Rank) XP.</p><div class="level-up-list"><div v-for="attribute in attributes" :key="attribute.id"><span><strong>{{ attribute.name }}</strong><small>Rank {{ character.attributes[attribute.id] }} · Mod +{{ character.attributes[attribute.id]*2 }}</small></span><button class="secondary-button compact-action" @click="raiseAttribute(attribute.id)">Raise · {{ attributeCost(character.attributes[attribute.id]) }} XP</button></div></div></article>
         <article class="level-up-card card-surface"><h2>Skills</h2><p>Raise Skill: 3 + current Rank XP. New Skill: 6 XP at Rank 1.</p><label>Known Skill<select v-model="skillName" class="field-control"><option value="">Select Skill</option><option v-for="([name,rank]) in skills" :key="name" :value="name">{{ name }} · Rank {{ rank }}</option></select></label><button class="secondary-button wide" :disabled="!skillName" @click="raiseSkill">Raise Selected Skill</button><label>New Skill<select v-model="newSkill" class="field-control"><option value="">Select New Skill</option><option v-for="skill in skillDefinitions.filter(item=>!character?.skillRanks?.[item.name])" :key="skill.name" :value="skill.name">{{ skill.name }}</option></select></label><button class="secondary-button wide" :disabled="!newSkill" @click="addSkill">Learn New Skill · 6 XP</button></article>
         <article class="level-up-card card-surface"><h2>Magic Level</h2><p>Cost: 10 + (4 × current Magic Level) XP.</p><div class="level-up-metric"><span>Current</span><strong>{{ magicLevel }}</strong></div><button class="secondary-button wide" @click="raiseMagic">Raise Magic Level · {{ 10+(4*magicLevel) }} XP</button><small>This advancement changes Magic Level only. New spell choices from gained slots can be handled in a later spell-management pass.</small></article>
-        <article class="level-up-card card-surface"><h2>Talents</h2><p>New Talent: 10 XP.</p><label>New Talent<select v-model="newTalent" class="field-control"><option value="">Select Talent</option><option v-for="talent in talentOptions" :key="talent" :value="talent">{{ talent }}</option></select></label><button class="secondary-button wide" :disabled="!newTalent" @click="addTalent">Learn New Talent · 10 XP</button><div v-if="character.talents?.length" class="level-up-known-list"><small v-for="talent in character.talents" :key="talent">{{ talent }}</small></div></article>
+        <article class="level-up-card card-surface"><h2>Talents</h2><p>New Talent: 10 XP.</p><label>New Talent<select v-model="newTalent" class="field-control"><option value="">Select Talent</option><option v-for="talent in talentOptions" :key="talent" :value="talent">{{ talent }}</option></select></label><button class="secondary-button wide" :disabled="!newTalent" @click="addTalent">Learn New Talent · 10 XP</button><div v-if="character.talents?.length" class="level-up-known-list"><small v-for="talent in character.talents" :key="talent">{{ canonicalTalentName(talent) }}</small></div></article>
       </section>
       <p v-if="message" class="creation-status-message">{{ message }}</p><div class="button-row end"><RouterLink class="secondary-button" to="/rules/read/beyond-character-creation">Read Beyond Character Creation</RouterLink><button class="primary-button" @click="finish">Done</button></div>
     </template>

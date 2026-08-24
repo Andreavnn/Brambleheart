@@ -1,32 +1,45 @@
-# Brambleheart Beta 0.17 Patch Notes
+# Brambleheart Beta 0.18 Patch Notes
 
-## Rhythm Engine & Character Sheet
-- Renamed Attribute Check to Dice Roller throughout the Rhythm Engine and local-data Settings copy.
-- Rebuilt the Rhythm Engine Character Sheet with the same Review/Character Sheet layout used by the final Character Creation step, including Attributes, secondary statistics, Weapons, Armor & Shields, Skills, Magic, Talents, and Equipment & Gear.
+## Settings & Local Data
+- Renamed the Text Size options to Smallest, Small, Normal, Large, and Largest.
+- Expanded Clear Characters into Clear All, Clear Incomplete, Clear Unapproved, and Clear Approved.
+- Every destructive clear action requires a second confirmation before character data is removed.
 
 ## Rules Organization
-- Renamed Recent & Common Rules to Recent and removed the History + quick access subtitle.
-- Reorganized Heritage Traits, Cultural Traits, Talents, and Spells into the same card language used during Character Creation, with expandable/collapsible categories.
-- Talent rules now use the Character Creation categories: Offensive Combat, Defensive Combat, Magic, Movement, Survival, Social, and Utility.
-- Reorganized The Watcher so Critters & Companions live in their own parent category and Monsters are grouped by category, then by base monster type and variants.
-- Added The Battles → Area of Effect as the authoritative battle-grid reference for Line, Cone, Orb, Direct Casting, and Impassable Collision using the supplied rulebook diagrams.
-- Winds of Magic → Spell Rules now links to the Area of Effect page rather than duplicating the full geometry rules.
-- Removed false Mana cost pills from non-mana rule cards and corrected Mana COST parsing.
+- Combined Sparks & Deeds “What is a Spark?” and “Keyword Library” into a single What is a Spark? section.
+- Moved example Deeds beneath Deed Resolution into an expandable Deed Cards group.
+- Grouped premade Homelands, Oaths, and Faiths into expandable Common Homelands, Common Oaths, and Common Faiths sections.
+- Moved the Faith Watcher’s Note into its own panel.
+- Made Talent categories expandable and aligned Talent cards with Character Creation/pop-up presentation.
+- Standardized acceptable ability references—Spells, Traits, Homelands, Oaths, Sparks, Faiths, Talents, and comparable abilities—to use Character Creation card styling where supported.
+- Reorganized Adventuring Gear into equipment subcategories such as Weapons, Armor, and Tools, with Weapon Qualities separated into their own Weapons subsection.
 
-## Character List
-- Fixed character approval so completed characters reliably move between Unapproved and Approved lists after persistence.
-- Converted Approved, Unapproved, and Incomplete lists into connected expandable panels.
-- Removed empty floating group messages such as “No approved characters yet.”
+## Character Creation
+- Standardized dropdown defaults to explicit Select… placeholders instead of silently selecting the first available option.
+- Expanded Step 7 Faith cards to include their full available detail, including Creed and supporting Faith information.
+- Refined Oath and Faith detail-panel spacing and empty-space handling.
+- Removed the Equipment & Gear “188 NP Remaining” display.
+- Corrected Threadpiece conversion display to 10 WP = 1 NP, 5 NP = 1 SP, and 2 SP = 1 BP; the BP box now displays BP only.
+- Reorganized Equipment & Gear into the same subcategories used by the Rules reference.
 
-## Display, Backgrounds & Navigation
-- Added detail text to the Donation Settings section.
-- Combined the global page-tool buttons and build detail into one footer bar with tighter spacing.
-- Corrected Dark Mode so it no longer darkens the selected background artwork.
-- Added a View Background / Show Page button beside the WIP banner to temporarily hide page content and expose the selected background.
-- Hardened rule-banner discovery so files such as `Banner_AthroMundas.png` are matched by normalized page title/slug naming.
+## Talent Corrections
+- Utility: Beastgrasp, Breakgrip, Victory Roar, Fieldcart, Shadow Fang, Pack Tactics, Rooted Paws, Fang Break, Hare’s Luck, Second Chances, Warhowl, Blood Oath, Witch Hunter.
+- Survival: Foresight, Field Medic, Ironhide.
+- Offensive Combat: Pouncer (corrected from Pocuncer), Thunderous Charge, Hammerfall, Heartseeker, Heroic Surge, Hollowing Claw, Pair Shot, Ragebound, Stillroot, Turnstrike, Heavy Draw, Titan’s Wake, Twin-Linked, Warpath, Wildchain.
+- Defensive Combat: Hearthwall (corrected from Heartwall), Spell Breaker, Ramhorn.
+- Movement: Magebane, Snapstep.
+- Social: Oath Guard.
+- Compatibility handling preserves older saved-character references that used the previous Pocuncer or Heartwall spellings.
 
-## Baseline Cleanup
-- Updated the in-app Site Changelog through Beta 0.17 and removed the stale Beta 0.14 CURRENT marker.
-- Corrected README version/focus drift.
-- Removed inactive legacy Encounter source files that were already absent from active routing.
-- Advanced visible build, character export, character-list export, and PWA shell cache markers to Beta 0.17.
+## Character Sheet
+- Reworked Weapons and Armor into structured equipment slots inspired by traditional tabletop character sheets while retaining Brambleheart statistics and rules.
+- Weapon slots expose Weapon, Damage, Range, Properties, and Weight.
+- Armor/Shield slots expose Armor/Shield, Guts, Mana Syphon, Stealth, Might, and Weight.
+- Added collapsible controls to Character Sheet sections where appropriate.
+- Corrected title/detail spacing and right-aligned section detail text where applicable.
+
+## Background Display
+- Preserved the selected grayscale treatment while View Background mode is active.
+
+## Build
+- Advanced the visible build and PWA shell cache to Beta 0.18.
