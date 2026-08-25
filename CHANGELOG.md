@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.23
+
+- Required Character Name before leaving Species; streamlined Culture Trait exchange and moved Passive into the Culture Trait keyword row.
+- Moved custom-Homeland Skill selection into Homeland using the supplied skill-tree constraints, and removed premade-Homeland selection behavior from Starting Skills for custom Homelands.
+- Reworked Attribute rows so Rank/Modifier controls are larger and right-aligned while Secondary Stats use the smaller panel.
+- Made Wind-Touched and Gifted Heart path cards advance directly into their respective creation path.
+- Classified Anchor Spirit and Battlebane as Utility.
+- Corrected Threadpiece presentation, removed Weapon Qualities from purchasable categories, converted weapon properties to pill UI, restored the complete Armor & Shields catalog, and surfaced source-backed equipment effects/options.
+- Applied Armor/Shield Guts bonuses cumulatively and Mana Syphon to spell costs, with Might requirements enforced on newly purchased armor.
+- Equalized Starting Language cards, added the selected-language pill, locked Review identity fields by default with Change/Lock controls, and replaced narrow-screen equipment scrollbars with arrow controls.
+- Restored category/lore color identity and standard rule-box title treatment to Review rule boxes across site themes.
+- Synchronized package, visible build, exports, PWA cache, README, patch notes, and in-app changelog to Beta 0.23.
+
 # Brambleheart Beta 0.22
 
 - Replaced the previous Brambleheart role palettes with the supplied Old.dex palettes: Default → Default, Powers of Chaos → The Warrior, Forces of Fantasy → The Healer, Ravening Hordes → The Ranger, and Legions of Undead → The Thief. Removed Spellcaster and Trickster from the active theme model while isolating legacy saved-value migration at the Settings boundary.

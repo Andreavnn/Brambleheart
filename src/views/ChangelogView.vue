@@ -9,7 +9,19 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.22</strong><small>Old.dex theme migration, background/view controls, stable detail colors, and interface alignment</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.23</strong><small>Character Creation flow, Homeland skills, equipment rules, and Review-sheet reliability</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Requires a Character Name before leaving Species, streamlines Culture Trait exchange, moves Passive into Culture Trait keyword pills, and makes both Body &amp; Spirit path cards advance directly to their respective next step.</li>
+          <li>Moves custom-Homeland Skill selection into the Homeland step using the supplied Homeland skill-tree rules and prevents the Starting Skills step from treating custom Homelands like premade ones.</li>
+          <li>Rebalances Attribute-row layout so Rank/Modifier controls are larger and right-aligned while Secondary Stats occupy the smaller panel.</li>
+          <li>Corrects Threadpiece presentation, removes Weapon Qualities from the purchase categories, renders weapon qualities as pills, restores the complete Armor &amp; Shields catalog, and shows source-backed gear effects/options in the purchase window.</li>
+          <li>Applies purchased Armor/Shield Guts bonuses cumulatively and Mana Syphon to spell costs on the character sheet, while enforcing Might requirements on new armor purchases.</li>
+          <li>Equalizes Starting Language cards, adds the selected additional-language pill, locks Review identity fields by default with Change/Lock controls, and replaces narrow-screen equipment scrollbars with left/right controls.</li>
+          <li>Restores rule-category color identity and standard title-bar treatment to Review rule boxes across themes.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.22</strong><small>Old.dex theme migration, background/view controls, stable detail colors, and interface alignment</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Replaced Brambleheart's former role palettes with the supplied Old.dex Default, Powers of Chaos, Forces of Fantasy, Ravening Hordes, and Legions of Undead palettes mapped to Default, The Warrior, The Healer, The Ranger, and The Thief.</li>
           <li>Kept spell-lore, Trait, Talent, Spark, Homeland, Oath, Faith, and Equipment/Gear detail colors independent from the selected site theme.</li>

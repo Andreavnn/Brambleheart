@@ -23,7 +23,7 @@ assign('Offensive Combat',[
 ])
 assign('Defensive Combat',['Heartwall','Hearthwall','Spell Breaker','Ramhorn'])
 assign('Utility',['Magebane','Snapstep'])
-assign('Utility',['Oath Guard'])
+assign('Utility',['Oath Guard','Anchor Spirit','Battlebane'])
 
 export function talentCategoryOverride(name:string){return categoryOverrides.get(key(name))}
 

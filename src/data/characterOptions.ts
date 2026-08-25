@@ -1,7 +1,8 @@
 export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
-export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string }
+export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Spellcasting Implements'|'Accessories'|'Tools'
+export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[] }
 
 export const sparkDetails: Record<string,SparkDetail> = {
   "Courageous": {
@@ -484,6 +485,27 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "5 · 5 lb. · Projectile (10), Penetration, Skyfire"
   },
   {
+    "name": "Leafsitch",
+    "category": "Armor & Shield",
+    "costText": "5sp",
+    "costSp": 5.0,
+    "detail": "0 · +1 · +0 · 0 · 4lb"
+  },
+  {
+    "name": "Barkskin Vest",
+    "category": "Armor & Shield",
+    "costText": "20sp",
+    "costSp": 20.0,
+    "detail": "0 · +1 · +0 · -1 · 6lb"
+  },
+  {
+    "name": "Briarhide",
+    "category": "Armor & Shield",
+    "costText": "45sp",
+    "costSp": 45.0,
+    "detail": "1+ · +2 · +1 · -2 · 9lb"
+  },
+  {
     "name": "Roughscale",
     "category": "Armor & Shield",
     "costText": "30sp",
@@ -512,325 +534,485 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "4+ · +4 · +3 · -5 · 36lb"
   },
   {
+    "name": "Toughscale",
+    "category": "Armor & Shield",
+    "costText": "300sp",
+    "costSp": 300.0,
+    "detail": "4+ · +4 · +2 · -5 · 32lb"
+  },
+  {
+    "name": "Durtlehide",
+    "category": "Armor & Shield",
+    "costText": "800sp",
+    "costSp": 800.0,
+    "detail": "5+ · +5 · +3 · -5 · 40lb"
+  },
+  {
+    "name": "Runeforged Plate",
+    "category": "Armor & Shield",
+    "costText": "1,500sp",
+    "costSp": 1500.0,
+    "detail": "5+ · +6 · +4 · -6 · 65lb"
+  },
+  {
+    "name": "Sapguard",
+    "category": "Armor & Shield",
+    "costText": "10sp",
+    "costSp": 10.0,
+    "detail": "1+ · +1 · +1 · -1 · 4lb",
+    "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Stealth effects still apply."
+  },
+  {
+    "name": "Vinegrip",
+    "category": "Armor & Shield",
+    "costText": "50sp",
+    "costSp": 50.0,
+    "detail": "2+ · +3 · +2 · -2 · 10lb"
+  },
+  {
+    "name": "Ironwood Bulwark",
+    "category": "Armor & Shield",
+    "costText": "300sp",
+    "costSp": 300.0,
+    "detail": "3+ · +4 · +3 · -3 · 18lb"
+  },
+  {
     "name": "Bedroll & Groundsheet",
     "category": "Adventuring Gear",
     "costText": "8 np",
     "costSp": 1.6,
-    "detail": "4 lb."
+    "detail": "4 lb.",
+    "description": "A compact treated bedroll and moisture-resistant groundsheet for reliable rest in unpredictable conditions.",
+    "effect": "Using it during rest prevents the effects of a restless night.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Traveler’s Cloak",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "description": "A heavy weather-ready cloak that protects against wind and cold while helping careful movement and concealment.",
+    "effect": "While worn, gain +1 to Whisperstep Skill checks.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Torch (each)",
     "category": "Adventuring Gear",
     "costText": "2 wp",
     "costSp": 0.04,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A wrapped-cloth torch that requires a Fire-Starting Kit or another open flame to ignite.",
+    "effect": "Illuminates an Orb [4] area.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Travel Lantern",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "A sturdy shuttered oil lantern that requires fuel and a Fire-Starting Kit.",
+    "effect": "Illuminates a Cone [4] area.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Glowfruit Cage",
     "category": "Adventuring Gear",
     "costText": "3 np",
     "costSp": 0.6,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A wicker cage holding naturally bioluminescent fruit that glows steadily without ignition.",
+    "effect": "Illuminates an Orb [3] area.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Waterskin",
     "category": "Adventuring Gear",
     "costText": "8 np",
     "costSp": 1.6,
-    "detail": "2 lb. (full)"
+    "detail": "2 lb. (full)",
+    "description": "A tightly sealed hide container for carrying water on extended travel.",
+    "effect": "Carries roughly two days of water.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Reed Flask",
     "category": "Adventuring Gear",
     "costText": "4 np",
     "costSp": 0.8,
-    "detail": "1 lb. (full)"
+    "detail": "1 lb. (full)",
+    "description": "A lightweight reed-wrapped water container that is easy to refill and carry.",
+    "effect": "Carries roughly one day of water.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Travel Meal (2 day)",
     "category": "Adventuring Gear",
     "costText": "6 np",
     "costSp": 1.2,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "A prepared bundle of preserved food intended for travel.",
+    "effect": "Enough prepared food for two days.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Trail Rations (1 day)",
     "category": "Adventuring Gear",
     "costText": "3 np",
     "costSp": 0.6,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "Dry, compact preserved food suited for long journeys.",
+    "effect": "Enough trail food for one day.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Traveler’s Pack",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "A durable pack designed for extended travel and awkward expedition gear.",
+    "effect": "Carries up to 40 lb. of equipment.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Forager’s Satchel",
     "category": "Adventuring Gear",
     "costText": "5 np",
     "costSp": 1.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A divided satchel for herbs, fungi, and other small natural materials.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Fire-Starting Kit",
     "category": "Adventuring Gear",
     "costText": "6 np",
     "costSp": 1.2,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "Flint, striker, resin tinder, and ember fungus for lighting torches, lanterns, and campfires.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Traveler’s Rope (20 ft)",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "description": "Strong flexible rope for climbing, securing loads, and solving terrain problems.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Glow-Moss Chalk",
     "category": "Adventuring Gear",
     "costText": "1 wp",
     "costSp": 0.02,
-    "detail": "—"
+    "detail": "—",
+    "description": "Marking tools for walls, stones, trail features, navigation, and warnings.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Rootwalker Bundle",
     "category": "Adventuring Gear",
     "costText": "5 np",
     "costSp": 1.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "Bark strips, resin, rope, and stakes for securing footing, bracing unstable surfaces, and marking safe crossings.",
+    "shopGroup": "Traveler’s Gear"
   },
   {
     "name": "Artisan",
     "category": "Adventuring Gear",
     "costText": "3 sp",
     "costSp": 3.0,
-    "detail": "5 lb."
+    "detail": "5 lb.",
+    "description": "A compact collection of crafting, repair, and camp-cooking tools.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Climber",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "4 lb."
+    "detail": "4 lb.",
+    "description": "Hooks, pitons, straps, and line supports used to scale stone, wood, and ruins.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Disguise",
     "category": "Adventuring Gear",
     "costText": "3 sp",
     "costSp": 3.0,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "description": "Pigments, powders, cloth wraps, and shaping tools used to alter appearance and roles.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Forgery",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "Ink, seals, imitation stamps, paper scraps, and precision tools for recreating documents and markings.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Navigator",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "description": "Charts, parchment, measuring cords, charcoal, and a sighting tool for navigation and mapmaking.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Poisoner",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "Vials, gloves, clamps, and tools for safely creating, refining, or applying simple poisons.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Herbalist",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A divided pouch with bandages, dried leaves, bark, binding fibers, and storage for gathered herbs.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Infusion",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "description": "A small alchemical setup for tinctures, distillations, and other non-herbal mixtures.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Thieves’",
     "category": "Adventuring Gear",
     "costText": "3 sp",
     "costSp": 3.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "Slim picks, soft pads, wedges, and tension tools for quiet entry and delicate manipulation.",
+    "shopGroup": "Field Kits"
   },
   {
     "name": "Antivenin",
     "category": "Adventuring Gear",
     "costText": "3 sp",
     "costSp": 3.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A neutralizing mixture designed to counter common natural toxins.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Aroma",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A potent scent used to mask odors, soothe beasts, or confuse creatures that hunt by smell.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Black Water",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A murky Ancient-site liquid whose properties vary with source and preparation.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Blessed Water",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "Ritually prepared water used in cleansing, warding, and symbolic acts.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Liquid Fire",
     "category": "Adventuring Gear",
     "costText": "4 sp",
     "costSp": 4.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A volatile mixture that clings to surfaces when ignited and is useful for clearing obstacles or dispersing threats.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Potion of Healing",
     "category": "Adventuring Gear",
     "costText": "5 sp",
     "costSp": 5.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A restorative mixture that speeds recovery and helps stabilize the wounded.",
+    "shopGroup": "Consumables"
   },
   {
     "name": "Scriptweave Book",
     "category": "Adventuring Gear",
     "costText": "5 np",
     "costSp": 1.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A sturdy book that can be inscribed and prepared as the required Spellbook focus for a caster.",
+    "effect": "When prepared as a Spellbook, it is required for that caster’s spellcasting. Each known spell may be cast only once per encounter; spell Mana cost is −1, non-lethal spell damage is +1, and Spell Strike is +1.",
+    "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Totem",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A crafted bone, wood, metal, or woven charm that can be designated as a caster’s arcane focus.",
+    "effect": "May be designated as an arcane focus. While held or worn as the required focus, gain +1 to Strike rolls for spells.",
+    "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Charm",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A small enchanted emblem worn or carried to reinforce spell damage.",
+    "effect": "Once per round, increase the damage of one spell by +1.",
+    "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Len-stone Arcanum",
     "category": "Adventuring Gear",
     "costText": "3 sp",
     "costSp": 3.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A polished crystal lens bound in cord that alters a compelled Renew the Heart target once per encounter.",
+    "effect": "Once per encounter, when a spell compels Renew the Heart, adjust the passive target by one category up or down.",
+    "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Cloak of Windweave",
     "category": "Adventuring Gear",
     "costText": "6 sp",
     "costSp": 6.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "description": "A shimmering mantle infused with subtle harmonic currents.",
+    "effect": "Gain +1 Guts against damaging magical abilities and Resistance +1 against one chosen damage type.",
+    "choices": [
+      "Bludgeoning",
+      "Slashing",
+      "Piercing",
+      "Fire",
+      "Frost",
+      "Lightning",
+      "Poison",
+      "Radiant",
+      "Shadow"
+    ],
+    "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Quickdraw Quiver",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A rigid quiver designed for rapid arrow retrieval.",
+    "effect": "Gain +1 Strike with bows using Shoot.",
+    "shopGroup": "Accessories"
   },
   {
     "name": "Featherwind Bolt-Case",
     "category": "Adventuring Gear",
     "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A smooth-lined case that keeps crossbow bolts from snagging.",
+    "effect": "Gain +1 Accuracy with crossbows.",
+    "shopGroup": "Accessories"
   },
   {
     "name": "Wristloop",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A fitted wrist strap that improves the release of thrown weapons.",
+    "effect": "Gain +1 Strike with thrown weapons.",
+    "shopGroup": "Accessories"
   },
   {
     "name": "Sharpening Stone",
     "category": "Adventuring Gear",
     "costText": "3 np",
     "costSp": 0.6,
-    "detail": "1 lb."
+    "detail": "1 lb.",
+    "description": "A compact whetstone used to prepare slashing or piercing weapons before a fight.",
+    "effect": "After preparation, a physical nonmagical weapon deals +1 damage until the end of the next combat encounter.",
+    "shopGroup": "Accessories"
   },
   {
     "name": "Journey Knot",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "—"
+    "detail": "—",
+    "description": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb.",
+    "effect": "Once per round, add +1 damage to one attack made with the attached weapon.",
+    "shopGroup": "Accessories"
   },
   {
     "name": "Shovel",
     "category": "Adventuring Gear",
     "costText": "6 np",
     "costSp": 1.2,
-    "detail": "3 lb."
+    "detail": "3 lb.",
+    "shopGroup": "Tools"
   },
   {
     "name": "Mallet",
     "category": "Adventuring Gear",
     "costText": "4 np",
     "costSp": 0.8,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "shopGroup": "Tools"
   },
   {
     "name": "Hatchet",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "shopGroup": "Tools"
   },
   {
     "name": "Hand Saw",
     "category": "Adventuring Gear",
     "costText": "1 sp",
     "costSp": 1.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "shopGroup": "Tools"
   },
   {
     "name": "Trowel",
     "category": "Adventuring Gear",
     "costText": "2 np",
     "costSp": 0.4,
-    "detail": "—"
+    "detail": "—",
+    "shopGroup": "Tools"
   },
   {
     "name": "Pry Bar",
     "category": "Adventuring Gear",
     "costText": "5 np",
     "costSp": 1.0,
-    "detail": "2 lb."
+    "detail": "2 lb.",
+    "shopGroup": "Tools"
   }
 ]

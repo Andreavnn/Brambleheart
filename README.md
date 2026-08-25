@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.22
+# Brambleheart TTRPG — Beta 0.23
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.22 is a presentation and theme-consistency release built from the working Beta 0.21 source. It replaces Brambleheart's previous role themes with the supplied Old.dex palettes, keeps rules/detail-card color identity independent from the site theme, normalizes background viewing, and corrects several Settings, Rules, header, and Character List presentation issues.
+Beta 0.23 is a Character Creation reliability and equipment-rules release built directly on the current Beta 0.22 GitHub implementation. It keeps the 0.22 theme/background work intact while tightening creation flow, custom Homeland skills, equipment data, armor effects, currencies, Languages, and the Review sheet.
 
 ## Main views
 
@@ -15,14 +15,15 @@ Beta 0.22 is a presentation and theme-consistency release built from the working
 - Settings
 - Site Changelog
 
-## Beta 0.22 focus
+## Beta 0.23 focus
 
-- Uses Old.dex Default, Powers of Chaos, Forces of Fantasy, Ravening Hordes, and Legions of Undead palette values for Brambleheart's five supported themes.
-- Keeps Spells, Traits, Talents, Sparks, Homelands, Oaths, Faiths, and Equipment/Gear visually color-coded independently of the site theme.
-- Doubles the desktop header logo and keeps it centered on a wider header canvas.
-- Normalizes background positioning, corrects View Background grayscale behavior in dark mode, and adds background cycling.
-- Aligns Donation with normal Settings rows, restores theme-aware separators, enlarges Settings category labels, and centers shared button text.
-- Indents Rules child pages, equalizes Recent Rules cards, and removes the duplicate native Character import control.
+- Requires a Character Name before advancing from Species and streamlines Culture Trait exchange.
+- Moves custom-Homeland Skill selection into the Homeland step using the supplied Homeland rules.
+- Makes Wind-Touched and Gifted Heart advance directly to their path-specific next step.
+- Restores the full Armor & Shields purchase catalog and source-backed equipment effects/options.
+- Removes Weapon Qualities as a purchasable category and shows weapon properties as pill UI.
+- Applies Armor/Shield Guts bonuses and Mana Syphon consistently on Review and spell costs.
+- Corrects Threadpiece display order/equivalency, equalizes Language cards, and improves Review identity/equipment presentation.
 - Preserves the explicit Incomplete / Unapproved / Approved character status model and Approved-only Level Up behavior.
 
 ## Runtime

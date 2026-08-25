@@ -40,8 +40,12 @@ export function rankModifier(rank:number){return Number(rank||0)*2}
 
 export function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 
-export function equipmentGutsBonus(items:Array<{detail?:string}>|undefined){
-  return Math.max(0,...(items||[]).map(item=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return match?Number(match[1]):0}))
+export function equipmentGutsBonus(items:Array<{detail?:string;category?:string}>|undefined){
+  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return sum+(match?Number(match[1]):0)},0)
+}
+
+export function equipmentManaSyphon(items:Array<{detail?:string;category?:string}>|undefined){
+  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>{const match=String(item.detail||'').match(/Mana Syphon\s*\+?(\d+)/i);return sum+(match?Number(match[1]):0)},0)
 }
 
 export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0){
