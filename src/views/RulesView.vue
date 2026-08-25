@@ -88,13 +88,13 @@ function clearSearch(){query.value=''}
 .rules-index-panel{overflow:hidden;margin-bottom:12px;border-radius:13px}
 .rules-index-heading{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--paper-2);font-weight:900}
 .rules-index-heading>small{color:var(--ink-soft);font-weight:650}
-.rules-index-list{display:grid}
+.rules-index-list{display:grid}.rules-chapter .rules-index-list{padding-left:14px}
 .rules-index-row{min-height:58px;display:grid;grid-template-columns:minmax(0,1fr) 20px;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none}
 .rules-index-row:last-child{border-bottom:0}.rules-index-row:hover{background:var(--paper-2)}
 .rules-index-row>span{display:grid;gap:3px;min-width:0}.rules-index-row strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(15px + var(--font-offset))}.rules-index-row small{color:var(--ink-soft);line-height:1.35}
 .rules-index-row svg,.rules-chapter-heading>svg{width:18px;height:18px;fill:none;stroke:var(--ink-soft);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .rules-recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
-.recent-rule-box{display:grid;gap:4px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;background:var(--paper);color:var(--ink);text-decoration:none}.recent-rule-box:hover{background:var(--paper-2)}.recent-rule-box strong{font-family:Georgia,'Times New Roman',serif}.recent-rule-box small{color:var(--ink-soft);line-height:1.35}
+.recent-rule-box{display:grid;grid-template-rows:auto minmax(0,1fr);align-content:start;gap:4px;min-width:0;height:76px;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;background:var(--paper);color:var(--ink);text-decoration:none;overflow:hidden}.recent-rule-box:hover{background:var(--paper-2)}.recent-rule-box strong{font-family:Georgia,'Times New Roman',serif}.recent-rule-box small{display:-webkit-box;overflow:hidden;color:var(--ink-soft);line-height:1.35;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .rules-chapter-stack{display:grid;gap:10px}.rules-chapter{margin:0}.rules-chapter-heading{list-style:none;cursor:pointer;border-bottom:0}.rules-chapter-heading::-webkit-details-marker{display:none}.rules-chapter-heading>span{display:grid;gap:3px}.rules-chapter-heading>span>small{color:var(--ink-soft);font-weight:600}.rules-chapter[open] .rules-chapter-heading{border-bottom:1px solid var(--line)}.rules-chapter[open] .rules-chapter-heading>svg{transform:rotate(180deg)}
 @media(max-width:620px){.rules-recent-grid{grid-template-columns:1fr}.rules-index-heading{align-items:flex-start}}
 </style>

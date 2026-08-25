@@ -67,7 +67,7 @@ function skillSummary(character:CharacterRecord){
         <RouterLink class="primary-button" to="/characters/create">Create a Character</RouterLink>
         <button class="secondary-button" type="button" @click="fileInput?.click()">Import Character</button>
         <button class="secondary-button" type="button" :disabled="!characters.length" @click="exportCharacters">Export Characters</button>
-        <input ref="fileInput" class="file-import-input" type="file" accept="application/json,.json" @change="importCharacter" />
+        <input ref="fileInput" class="file-import-input" hidden type="file" accept="application/json,.json" @change="importCharacter" />
       </div>
     </section>
 

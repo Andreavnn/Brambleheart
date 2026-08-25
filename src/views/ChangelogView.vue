@@ -9,7 +9,18 @@ import AppHeader from '../components/AppHeader.vue'
 
     <div class="changelog-stack">
       <details class="changelog-entry card-surface" open>
-        <summary><span><strong>Beta Build 0.21</strong><small>Mobile Text Size repair, cumulative source normalization, route/status consistency, and repository integrity</small></span><span class="value-chip">CURRENT</span></summary>
+        <summary><span><strong>Beta Build 0.22</strong><small>Old.dex theme migration, background/view controls, stable detail colors, and interface alignment</small></span><span class="value-chip">CURRENT</span></summary>
+        <div class="changelog-entry-body"><ul>
+          <li>Replaced Brambleheart's former role palettes with the supplied Old.dex Default, Powers of Chaos, Forces of Fantasy, Ravening Hordes, and Legions of Undead palettes mapped to Default, The Warrior, The Healer, The Ranger, and The Thief.</li>
+          <li>Kept spell-lore, Trait, Talent, Spark, Homeland, Oath, Faith, and Equipment/Gear detail colors independent from the selected site theme.</li>
+          <li>Doubled the desktop header-logo scale and expanded the header canvas so the larger identity remains centered instead of being squeezed by the normal page width.</li>
+          <li>Normalized all background images to the same centered cover position, removed the Skullfen-specific offset, restored full-color artwork in View Background even when grayscale is enabled, and added a next-background arrow.</li>
+          <li>Rebuilt Donation as a normal Settings row, restored theme-safe separator lines around expandable Settings panels, generalized the Backgrounds help text, and enlarged Settings category labels.</li>
+          <li>Centered shared button labels, indented Rules chapter child rows, normalized Recent Rules card heights, and removed the visible native Character import control so Character List has one import action.</li>
+        </ul></div>
+      </details>
+      <details class="changelog-entry card-surface" open>
+        <summary><span><strong>Beta Build 0.21</strong><small>Mobile Text Size repair, cumulative source normalization, route/status consistency, and repository integrity</small></span></summary>
         <div class="changelog-entry-body"><ul>
           <li>Fixed the mobile Text Size control at its canonical CSS definition by removing the fixed flex basis that became vertical height when Settings rows stack.</li>
           <li>Rolled the source-normalization work forward cumulatively from the actual GitHub Beta 0.19 application baseline instead of layering another override on the contaminated stylesheet.</li>

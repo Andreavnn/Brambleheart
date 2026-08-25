@@ -1,3 +1,13 @@
+# Brambleheart Beta 0.22
+
+- Replaced the previous Brambleheart role palettes with the supplied Old.dex palettes: Default → Default, Powers of Chaos → The Warrior, Forces of Fantasy → The Healer, Ravening Hordes → The Ranger, and Legions of Undead → The Thief. Removed Spellcaster and Trickster from the active theme model while isolating legacy saved-value migration at the Settings boundary.
+- Restored fixed content-category color identity for spell lore, Heritage/Cultural Traits, Talents, Sparks, Homelands, Oaths, Faiths, and Equipment/Gear so these detail cards do not inherit a different identity when the site theme changes.
+- Doubled the desktop header logo scale and expanded the header canvas so the larger logo remains centered without altering normal content width.
+- Normalized all backgrounds to the same centered cover positioning, removed the Skullfen Ruins special offset, made View Background always show the full-color artwork regardless of grayscale/dark-mode display settings, and added a right-arrow background cycler.
+- Rebuilt Donation as a standard Settings row, replaced repository-oriented Backgrounds help copy with user-facing text, restored theme-aware separator lines around expandable Settings controls, and increased Settings category labels by two pixels.
+- Centered shared button labels, indented Rules category child rows, made Recent Rules cards equal height, and hid the native file input so Character List exposes only the intended Import Character action.
+- Synchronized package, visible build, exports, PWA cache, README, patch notes, and in-app changelog to Beta 0.22.
+
 # Brambleheart Beta 0.21
 
 - Fixed the mobile Settings Text Size control at its canonical definition: removed the fixed flex basis that became vertical height when Settings rows stack on narrow screens, so the five size buttons remain a compact single control.

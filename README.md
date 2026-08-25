@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.21
+# Brambleheart TTRPG — Beta 0.22
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.21 is a cumulative source-normalization and reliability release built from the actual GitHub Beta 0.19 application baseline. It rolls forward the intended Beta 0.20 cleanup, fixes the mobile Text Size layout defect at its source, and tightens routing, persistence, character-status, and repository integrity without adding another override layer.
+Beta 0.22 is a presentation and theme-consistency release built from the working Beta 0.21 source. It replaces Brambleheart's previous role themes with the supplied Old.dex palettes, keeps rules/detail-card color identity independent from the site theme, normalizes background viewing, and corrects several Settings, Rules, header, and Character List presentation issues.
 
 ## Main views
 
@@ -15,19 +15,15 @@ Beta 0.21 is a cumulative source-normalization and reliability release built fro
 - Settings
 - Site Changelog
 
-## Beta 0.21 focus
+## Beta 0.22 focus
 
-- Fixes the mobile Text Size control by removing the desktop flex basis that became vertical height in stacked Settings rows.
-- Uses the cleaned Brambleheart-only stylesheet as the authoritative implementation instead of appending CSS patches over obsolete rules.
-- Keeps obsolete Old.Dex/game/builder CSS, oversized Welcome tests, dead theme code, and stale background references removed.
-- Keeps browser persistence centralized behind guarded storage helpers.
-- Preserves explicit character approval status and Approved-only Level Up behavior across Character List and Rhythm Engine.
-- Uses `ability-targeting` as the canonical Rules route while retaining the former URL as a compatibility alias.
-- Removes the unused parallel `ruleChapters` metadata block so Rules organization has a single authoritative catalog.
-- Removes unused encounter-era helpers and centralizes Level Up XP prices through the shared advancement-cost calculator.
-- Centralizes shared rank/derived-stat/equipment parsing, storage keys, and external support links instead of maintaining parallel view-specific implementations.
-- Synchronizes build/export/PWA/package release markers.
-- Flags the invalid two-byte `Banner_AnthroMundas.png` for replacement from the genuine historical artwork stored in commit `0a5ddb56e9e3eaa5b4fe6301b150c59351ee547b` as `Banner_AthroMundas.png`; restore instructions are kept under `DO NOT UPLOAD`.
+- Uses Old.dex Default, Powers of Chaos, Forces of Fantasy, Ravening Hordes, and Legions of Undead palette values for Brambleheart's five supported themes.
+- Keeps Spells, Traits, Talents, Sparks, Homelands, Oaths, Faiths, and Equipment/Gear visually color-coded independently of the site theme.
+- Doubles the desktop header logo and keeps it centered on a wider header canvas.
+- Normalizes background positioning, corrects View Background grayscale behavior in dark mode, and adds background cycling.
+- Aligns Donation with normal Settings rows, restores theme-aware separators, enlarges Settings category labels, and centers shared button text.
+- Indents Rules child pages, equalizes Recent Rules cards, and removes the duplicate native Character import control.
+- Preserves the explicit Incomplete / Unapproved / Approved character status model and Approved-only Level Up behavior.
 
 ## Runtime
 

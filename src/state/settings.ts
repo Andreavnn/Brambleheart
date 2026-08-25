@@ -3,7 +3,7 @@ import { backgroundIds, backgroundUrl } from '../data/backgroundCatalog'
 import { readLocalStorage, SETTINGS_STORE, writeLocalStorage } from '../services/storage'
 
 export type FontSize = 'smallest' | 'small' | 'normal' | 'large' | 'largest'
-export type RoleTheme = 'default' | 'warrior' | 'ranger' | 'spellcaster' | 'healer' | 'thief' | 'trickster'
+export type RoleTheme = 'default' | 'warrior' | 'healer' | 'ranger' | 'thief'
 export type BackgroundChoice = string
 
 type SettingsState = {
@@ -27,7 +27,7 @@ const defaults:SettingsState={
   backgroundGrayscale:false,
   bootAudio:true,
 }
-const roles:RoleTheme[]=['default','warrior','ranger','spellcaster','healer','thief','trickster']
+const roles:RoleTheme[]=['default','warrior','healer','ranger','thief']
 
 function normalizeFontSize(value:unknown):FontSize{
   if(['smallest','small','normal','large','largest'].includes(String(value)))return value as FontSize
@@ -38,7 +38,14 @@ function normalizeFontSize(value:unknown):FontSize{
 }
 function normalizeRole(value:unknown):RoleTheme{
   if(roles.includes(value as RoleTheme))return value as RoleTheme
-  const legacy:Record<string,RoleTheme>={adventurer:'ranger',storyteller:'trickster',tactician:'warrior',mystic:'spellcaster'}
+  const legacy:Record<string,RoleTheme>={
+    adventurer:'ranger',
+    tactician:'warrior',
+    storyteller:'default',
+    mystic:'default',
+    spellcaster:'default',
+    trickster:'default',
+  }
   return legacy[String(value)]||'default'
 }
 function normalizeBackground(value:unknown):BackgroundChoice{

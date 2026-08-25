@@ -1,38 +1,29 @@
-# Brambleheart Beta 0.21 Patch Notes
+# Brambleheart Beta 0.22 Patch Notes
 
-## Mobile Text Size Repair
-- Removed the old `flex: 0 1 390px` behavior from the canonical Text Size control.
-- The control now uses explicit width/height sizing and `flex: none`, so changing Settings rows to a vertical mobile layout cannot turn a desktop width basis into hundreds of pixels of empty vertical space.
-- Removed superseded Text Size declarations instead of adding a later CSS override.
-- Canonicalized the internal Text Size values to Smallest, Small, Normal, Large, and Largest while migrating legacy `smaller`, `larger`, and `medium` saved values.
-- Verified the control at phone, tablet, and desktop widths with no horizontal overflow.
+## Themes
+- Replaces all former Brambleheart role palettes with theme values taken from the supplied Old.dex repository.
+- Mapping: Old.dex Default → Brambleheart Default; Powers of Chaos → The Warrior; Forces of Fantasy → The Healer; Ravening Hordes → The Ranger; Legions of Undead → The Thief.
+- Removes Spellcaster and Trickster from active theme choices. Legacy saved values are normalized only when Settings data is loaded.
+- Detail-card identity colors for Spells, Heritage/Cultural Traits, Talents, Sparks, Homelands, Oaths, Faiths, and Equipment/Gear remain stable when the site theme changes.
 
-## Source Normalization
-- This patch is cumulative from the current GitHub Beta 0.19 source and includes the source-cleanup work intended for Beta 0.20.
-- Replaces the contaminated global stylesheet with the cleaned Brambleheart-only stylesheet rather than stacking additional patch rules.
-- Removes obsolete Old.Dex/army-builder/game selectors, retired Welcome scale tests, dead Species-theme styling, stale background references, and superseded CSS implementation layers.
-- Keeps one active role-theme/background contract and one authoritative responsive Welcome/header identity implementation.
-- All active CSS class selectors correspond to current Brambleheart source or intentional dynamic class names.
+## Header & Backgrounds
+- Doubles the desktop header-logo scale and gives the header a wider centered canvas so the larger logo is not constrained by the normal 760px content column.
+- Removes the Skullfen Ruins-specific background position. Every background now uses the same centered `cover` presentation.
+- View Background now suppresses grayscale in both light and dark mode, matching the intended full-art viewing behavior.
+- Adds a small right-arrow control beside View Background to cycle through all discovered background images.
 
-## Data & Persistence Reliability
-- Keeps browser-storage reads/writes/removals behind the guarded storage service.
-- Keeps Reset Local Data dynamic rather than maintaining a brittle list of historical storage keys.
-- Corrects Custom Data clearing so a failed storage removal does not falsely clear the visible UI.
-- Preserves explicit Incomplete / Unapproved / Approved character status, legacy migration, atomic approval persistence, and Approved-only Level Up.
-- Rhythm Engine character filtering now uses the same explicit character-status helper instead of legacy draft-only checks.
-- Centralizes Brambleheart storage keys in the storage service and centralizes support/donation URLs in one data module instead of repeating literals across views.
-- Rhythm Engine roll-history writes now surface a storage failure instead of silently presenting an unsaved history entry.
+## Settings & Common UI
+- Rebuilds Donation as a standard Settings row with its description and support actions aligned like the rest of the page.
+- Replaces developer-facing Backgrounds repository instructions with normal user-facing copy.
+- Restores separator borders for expandable Settings controls using the active theme line color.
+- Increases Settings category labels by two pixels.
+- Ensures shared primary/secondary button labels are centered horizontally and vertically.
 
-## Rules & Routing Integrity
-- Makes `ability-targeting` the canonical Ability Targeting route slug.
-- Preserves old `/rules/read/area-of-effect` links through a compatibility alias without retaining two internal representations.
-- Keeps the existing source-backed Ability Targeting content, Anthro Mundas organization, parent landing pages, and Rules navigation intact.
-- Removes the unused legacy `ruleChapters` data block from `bramble.ts`; active Rules structure now comes from the dedicated Rule Catalog rather than two competing catalogs.
-- Removes unused encounter-era combat helpers and unused service exports identified by the repository audit.
-- Level Up now consumes the shared advancement-cost calculator for Attribute, Skill, New Skill, Talent, and Magic costs instead of maintaining parallel formulas in the view.
-- Centralizes rank modifiers, derived character statistics, equipment profile parsing, equipment Guts bonuses, and structured Ability-field parsing in the shared rules engine so Character Creation, Character Sheet, and Rhythm Engine no longer carry separate copies of the same calculations.
+## Rules & Character List
+- Indents Rules child rows beneath each chapter heading so parent/child hierarchy is visually clear.
+- Makes Recent Rules cards equal height regardless of summary length.
+- Hides the native file input on Character List; Import Character remains the single visible import control.
 
-## Repository Integrity
-- Synchronizes the package version (`0.21.0`), visible build, character exports, character-list exports, service-worker cache, README, patch notes, and in-app changelog.
-- The current GitHub file `src/assets/rule-banners/Banner_AnthroMundas.png` was found to contain only a CRLF sequence (2 bytes), not image data. Repository history confirms the genuine 2,696,927-byte artwork still exists in commit `0a5ddb56e9e3eaa5b4fe6301b150c59351ee547b` under its original typo filename `Banner_AthroMundas.png`. Restoration instructions are isolated under `DO NOT UPLOAD` because a direct-upload patch ZIP cannot recover that historical binary automatically.
-- No temporary test pages, verification reports, or unchanged binary assets are included as uploadable patch files.
+## Release Integrity
+- Beta/build/package/PWA markers are synchronized to 0.22 / 0.22.0.
+- The patch is based on current GitHub main commit `356b2bb3cfd0894eb03791f98ae8d74e3896eb36` and the complete current-repository ZIP supplied with the request.

@@ -3,13 +3,20 @@ import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import PrimaryNav from './PrimaryNav.vue'
 import { useSettings } from '../state/settings'
+import { backgroundOptions } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
 
 const props=defineProps<{compact?:boolean;backTo?:string;backLabel?:string;preferBackTo?:boolean;skipBackPrefix?:string}>()
 const router=useRouter()
-const {darkMode,toggleTheme}=useSettings()
+const {darkMode,toggleTheme,backgroundImage}=useSettings()
 const backgroundOnly=ref(typeof document!=='undefined'&&document.documentElement.dataset.backgroundView==='true')
 function toggleBackgroundOnly(){backgroundOnly.value=!backgroundOnly.value;if(typeof document!=='undefined')document.documentElement.dataset.backgroundView=backgroundOnly.value?'true':'false'}
+function cycleBackground(){
+  const available=backgroundOptions.filter(option=>option.url)
+  if(!available.length)return
+  const current=available.findIndex(option=>option.value===backgroundImage.value)
+  backgroundImage.value=available[(current+1+available.length)%available.length]!.value
+}
 function goBack(){
   const previous=typeof window!=='undefined'?String(window.history.state?.back||''):''
   if(props.backTo&&props.skipBackPrefix&&previous.startsWith(props.skipBackPrefix))void router.push(props.backTo)
@@ -21,7 +28,7 @@ function goBack(){
 
 <template>
   <header class="app-header-wrap bramble-site-header">
-    <div class="site-wip-toolbar"><div class="wip-banner site-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div><button type="button" class="secondary-button background-view-button" :aria-pressed="backgroundOnly" @click="toggleBackgroundOnly">{{ backgroundOnly?'Show Page':'View Background' }}</button></div>
+    <div class="site-wip-toolbar"><div class="wip-banner site-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div><div class="background-toolbar-actions"><button type="button" class="secondary-button background-view-button" :aria-pressed="backgroundOnly" @click="toggleBackgroundOnly">{{ backgroundOnly?'Show Page':'View Background' }}</button><button type="button" class="icon-button background-cycle-button" aria-label="Next background" title="Next background" @click="cycleBackground"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 5 7 7-7 7"/></svg></button></div></div>
     <div class="app-header" :class="{compact}">
       <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
       <div v-else class="header-spacer"></div>
