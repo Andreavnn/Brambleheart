@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.26',summary:'Creator title bars, starting economy, Shields, spell Mana Syphon, weight, and Settings corrections',open:true,items:[
+    'Repairs shared Heritage/Cultural Trait, Talent, and Spell title bars so compatible colored headers reach both card edges without conflicting width overrides.',
+    'Matches Attribute Rank and Modifier labels to Secondary Stats and shows the Homeland pill for every Homeland-granted Starting Skill.',
+    'Corrects starting wealth to 2 SP, changes the Adventure Kit return to 1 SP, and separates Shields into their own Equipment & Gear purchase tab.',
+    'Makes Thrown-only weapons display Touch in Review while retaining Thrown(x) under Properties / Notes.',
+    'Totals Armor/Shield Mana Syphon across equipped gear and adds it to every known spell Mana cost, including legacy positional armor profiles.',
+    'Removes the hidden Adventure Kit weight from Review totals so carried weight reflects only listed purchased equipment.',
+    'Adds the requested Review `(Change)` spacing and keeps all three Reset Local Data actions in one row while removing the display-settings sentence.',
+    'Synchronizes Beta 0.26 release markers while preserving the Node runtime pin at 22.x.',
+  ]},
   {version:'Beta Build 0.25',summary:'Character data backup, creator/equipment reliability, spell parsing, and Lore attunement preview',open:true,items:[
     'Adds a complete local Character Data Backup and consolidates Data & Content reset actions into Reset Custom, Reset Characters, and Reset Data while removing Clear Dice Rolls.',
     'Reworks Attribute rows and adds Homeland source pills when a Homeland selection increases an already-granted Skill rank.',

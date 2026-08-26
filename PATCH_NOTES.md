@@ -1,26 +1,22 @@
-# Brambleheart Beta 0.25 Patch Notes
+# Brambleheart Beta 0.26 Patch Notes
 
-## Data & Content
-- Added Data Backup above reset controls. It downloads one JSON payload containing every locally stored character regardless of Incomplete, Unapproved, or Approved status.
-- Removed Clear Dice Rolls from Settings.
-- Replaced the former nested Reset Local Data / Reset All Local Data / character-management controls with one row containing Reset Custom, Reset Characters, and Reset Data.
-- Reset Data preserves Display settings while removing other Brambleheart local data.
+## Character Creation & Review
+- Shared Heritage/Cultural Trait, Talent, and Spell title bars now use one full-width layout authority. The conflicting width rules that caused the right edge to stop short were removed, and the generic content-width clamp no longer constrains Trait title bars.
+- Rank and Modifier labels in Distribute Attributes now use the same label treatment as Secondary Stats.
+- Starting Skills shows a Homeland source pill for every Skill granted by the selected Homeland, whether the Homeland creates Rank 1 or raises an existing Cultural rank.
+- Starting wealth is 2 SP. Returning the Adventure Kit adds 1 SP.
+- Equipment & Gear separates Shields into their own purchase tab. Armor and Shields remain compatible with existing saved characters.
+- Both Review Character `(Change)` controls include the requested two-space separation.
+- Weapon Review range ignores Thrown(x) when determining range; a weapon with only Thrown(x) displays Touch while Thrown(x) remains under Properties / Notes.
+- Armor/Shield profile parsing supports both current labeled profiles and legacy positional profiles. Total Mana Syphon from equipped armor/shields is added to the Mana cost of every known spell.
+- Review Equipment & Gear weight now totals only purchased Weapons, Armor/Shields, and other items in the Equipment & Gear list; the Adventure Kit no longer contributes an additional hidden 15 lb.
 
-## Character Creation
-- Secondary Stats now sit beneath their related Attribute description. Rank and Modifier use the same visual stat-box language and the +/- control is centered beneath them.
-- Starting Skills adds a Homeland pill when a selected Homeland Skill increases a Skill already granted by Culture.
-- Currency of Anthro Mundas now shows WP, NP, SP, and BP using 10 WP = 1 NP, 5 NP = 1 SP, and 5 SP = 1 BP. Starting wealth is 50 SP. Selling the Adventure Kit adds 3 SP.
-- Adventure Kit is contained by a new Starting Equipment parent panel.
-- Repeatable purchased gear is quantity-aware. Duplicate purchases consolidate and +/- controls update quantity, cost, and carried weight.
-- Additional Language identifies the Species associated with the selected language.
-- Review Species no longer repeats the native language. Weapon ranges default to Touch when no range is listed; weapon qualities remain in Properties / Notes; attached Journey Knot is listed and adds +1 to displayed damage.
-- Weapons, Armor & Shields, Skills, Magic, and Talents summaries no longer show counts/detail text. Equipment & Gear shows current Threadpieces and total carried weight.
-
-## Rules & Magic
-- Fixed the Thunder’s Fury spillover at the parser boundary. Power Word: Reinforcement was missing from the Oath spell index, so the parser treated its source paragraphs as a continuation of Thunder’s Fury; greedy keyword extraction then surfaced that appended text as a pill. The missing spell is registered and parsing now also stops at standalone source headings, with bounded keyword extraction.
-- Every non-Invocation Lore page now has a temporary Attuned switch in its top panel. Enabling it previews the Lore Attunement reduction of 2 Mana for all spells on that page. Navigating away resets the switch.
+## Settings
+- Removed `Display settings are preserved by Reset Data` from the Reset Local Data menu text.
+- Reset Custom, Reset Characters, and Reset Data remain in one action row; the row stacks beneath its descriptive text on narrow screens without splitting the three buttons.
 
 ## Release Integrity
-- Visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog are synchronized to Beta 0.25 / 0.25.0.
-- This patch is based on GitHub main commit `28d8ff96ff2fa113bda986c461737f0fe1386f68` (Beta 0.24).
-- Static source-integrity checks are included in packaging. A production Vite build and live browser responsive/persistence test are not claimed unless explicitly reported separately.
+- Visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog are synchronized to Beta 0.26 / 0.26.0.
+- This patch is based on current GitHub `main` commit `f319aaa0be0d17b3131348cb7602de9f89b4fd88` (Beta 0.25 plus the Node runtime correction).
+- `package.json` retains the exact runtime constraint `"node": "22.x"`.
+- Static source-integrity checks were performed during packaging. A production Vite/vue-tsc build and live browser responsive/persistence test are not claimed because repository dependencies are not installed in the available runtime.

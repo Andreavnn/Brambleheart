@@ -40,12 +40,29 @@ export function rankModifier(rank:number){return Number(rank||0)*2}
 
 export function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 
+function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
+function labeledProfileValue(detail:string,label:string){const part=profileParts(detail).find(value=>value.toLowerCase().startsWith(label.toLowerCase()));return part?part.slice(label.length).trim():'—'}
+function armorProfileValues(detail:string){
+  const labeled={
+    guts:labeledProfileValue(detail,'Guts Bonus'),
+    mana:labeledProfileValue(detail,'Mana Syphon'),
+    stealth:labeledProfileValue(detail,'Stealth Condition'),
+    might:labeledProfileValue(detail,'Might Requirement'),
+    weight:labeledProfileValue(detail,'Weight'),
+  }
+  if(Object.values(labeled).some(value=>value!=='—'))return labeled
+  const parts=profileParts(detail)
+  if(parts.length>=5)return{might:parts[0],guts:parts[1],mana:parts[2],stealth:parts[3],weight:parts[4]}
+  return labeled
+}
+function numericProfileBonus(value:string){const match=String(value||'').match(/[+-]?(\d+)/);return match?Math.max(0,Number(match[1])):0}
+
 export function equipmentGutsBonus(items:Array<{detail?:string;category?:string}>|undefined){
-  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>{const match=String(item.detail||'').match(/Guts Bonus\s*\+?(\d+)/i);return sum+(match?Number(match[1]):0)},0)
+  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
 }
 
 export function equipmentManaSyphon(items:Array<{detail?:string;category?:string}>|undefined){
-  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>{const match=String(item.detail||'').match(/Mana Syphon\s*\+?(\d+)/i);return sum+(match?Number(match[1]):0)},0)
+  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
 }
 
 export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0){
@@ -53,21 +70,19 @@ export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0){
   return{speed:2+agility,aim:rankModifier(agility),mettle:rankModifier(might),ward:rankModifier(hide),control:rankModifier(lore),power:might,guts:hide+Math.max(0,Number(gutsBonus)||0)}
 }
 
-function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
-function labeledProfileValue(detail:string,label:string){const part=profileParts(detail).find(value=>value.toLowerCase().startsWith(label.toLowerCase()));return part?part.slice(label.length).trim():'—'}
-
 export function weaponProfile(item:EquipmentProfileSource|undefined){
   if(!item)return{name:'—',damage:'—',range:'—',properties:'—',weight:'—'}
   const parts=profileParts(item.detail||'')
   const propertyParts=parts.filter(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))
   const properties=propertyParts.join(', ')||'—'
-  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'Touch'
+  const range=properties.match(/(?:Projectile|Reach)\s*\(([^)]+)\)/i)?.[1]||'Touch'
   return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range,properties,weight:labeledProfileValue(item.detail||'','Weight')}
 }
 
 export function armorProfile(item:EquipmentProfileSource|undefined){
   if(!item)return{name:'—',guts:'—',mana:'—',stealth:'—',might:'—',weight:'—'}
-  return{name:item.name,guts:labeledProfileValue(item.detail||'','Guts Bonus'),mana:labeledProfileValue(item.detail||'','Mana Syphon'),stealth:labeledProfileValue(item.detail||'','Stealth Condition'),might:labeledProfileValue(item.detail||'','Might Requirement'),weight:labeledProfileValue(item.detail||'','Weight')}
+  const values=armorProfileValues(item.detail||'')
+  return{name:item.name,...values}
 }
 
 export type StructuredRuleField={label:string;value:string}

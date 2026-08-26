@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.26
+
+- Corrected shared Trait/Talent/Spell title-bar geometry so eligible colored title bands reach both card edges; removed conflicting width/margin rules and excluded title bars from the generic content-width clamp.
+- Matched Attribute Rank and Modifier labels to the Secondary Stat label treatment in Character Creation.
+- Applied the Homeland source pill to every Homeland-granted Starting Skill, including newly gained Rank 1 Skills.
+- Corrected Character Creation starting wealth to 2 SP and reduced the Adventure Kit return to 1 SP.
+- Split Shields into their own Equipment & Gear purchase tab while preserving Armor & Shield as the saved equipment/rules category used by existing characters.
+- Added two spaces before both Review Character `(Change)` controls.
+- Changed Review weapon range parsing so Thrown(x) remains a property and a weapon with no Projectile/Reach range displays Touch.
+- Consolidated Armor/Shield profile parsing for labeled and legacy positional data, totals Mana Syphon across equipped armor/shields, and adds the total to every known spell Mana cost.
+- Removed the fixed Adventure Kit weight from Review totals so Equipment & Gear weight is calculated only from purchased Weapons, Armor/Shields, and other listed equipment.
+- Removed the Reset Data display-settings sentence from Settings and kept Reset Custom, Reset Characters, and Reset Data in one action row, including narrow layouts.
+- Synchronized visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog to Beta 0.26 while preserving the Node runtime pin at `22.x`.
+
 # Brambleheart Beta 0.25
 
 - Rebuilt Settings → Data & Content around Data Backup, Reset Custom, Reset Characters, and Reset Data; removed the obsolete nested character/reset managers and Clear Dice Rolls action.

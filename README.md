@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.25
+# Brambleheart TTRPG — Beta 0.26
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.25 is a Character Creation, local-data, equipment, and magic-reader reliability release built directly on the current Beta 0.24 GitHub implementation.
+Beta 0.26 is a Character Creation, equipment, Review-sheet, and Settings correction release built directly on current GitHub main after Beta 0.25.
 
 ## Main views
 
@@ -15,16 +15,16 @@ Beta 0.25 is a Character Creation, local-data, equipment, and magic-reader relia
 - Settings
 - Site Changelog
 
-## Beta 0.25 focus
+## Beta 0.26 focus
 
-- Adds full-character Data Backup and consolidates local reset actions into Reset Custom, Reset Characters, and Reset Data.
-- Reworks Attribute presentation and makes Homeland-vs-Cultural Skill rank sources explicit.
-- Hardens the spell parser against cross-spell source bleed and restores Power Word: Reinforcement to the Oath spell index.
-- Corrects Threadpiece denominations and starting wealth, adds a dedicated Adventure Kit parent panel, and supports quantity-aware repeatable equipment.
-- Improves Language and Review summaries, including Touch weapon ranges, complete weapon qualities, Journey Knot damage, current currency, and carried weight.
-- Adds a temporary Attuned preview switch to Lore reader pages; it reduces displayed spell Mana costs by 2 and resets on navigation.
+- Repairs shared Trait/Talent/Spell title bars so compatible card headers reach both edges without stacked CSS overrides.
+- Aligns Attribute Rank/Modifier typography with Secondary Stats and makes Homeland Skill source pills complete.
+- Corrects starting wealth to 2 SP and the Adventure Kit return to 1 SP, and separates Shields in the gear shop.
+- Corrects Review weapon range, Armor/Shield Mana Syphon, and carried-weight calculations.
+- Tightens Review `(Change)` spacing and keeps all three Reset Local Data actions in one row.
+- Preserves the Node runtime pin at `22.x`.
 
 ## Runtime
 
-- Node.js 22 or newer
+- Node.js 22.x
 - Vue 3 / TypeScript / Vite
