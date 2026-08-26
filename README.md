@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.26
+# Brambleheart TTRPG — Beta 0.27
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.26 is a Character Creation, equipment, Review-sheet, and Settings correction release built directly on current GitHub main after Beta 0.25.
+Beta 0.27 is a focused Google Drive character-sync release built directly on current GitHub main after Beta 0.26.
 
 ## Main views
 
@@ -15,14 +15,20 @@ Beta 0.26 is a Character Creation, equipment, Review-sheet, and Settings correct
 - Settings
 - Site Changelog
 
-## Beta 0.26 focus
+## Beta 0.27 focus
 
-- Repairs shared Trait/Talent/Spell title bars so compatible card headers reach both edges without stacked CSS overrides.
-- Aligns Attribute Rank/Modifier typography with Secondary Stats and makes Homeland Skill source pills complete.
-- Corrects starting wealth to 2 SP and the Adventure Kit return to 1 SP, and separates Shields in the gear shop.
-- Corrects Review weapon range, Armor/Shield Mana Syphon, and carried-weight calculations.
-- Tightens Review `(Change)` spacing and keeps all three Reset Local Data actions in one row.
+- Adds local-first, manually triggered Google Drive Character Sync under Settings → Data & Content → Character Data.
+- Links one exact Google Workspace Shared Drive folder through a server-side service account; Google credentials never enter browser storage or repository source.
+- Searches only direct files in the linked folder and only `_BH.json` character files; subfolders are not scanned.
+- Updates local characters by stable internal character ID, replacing exact matches and adding new Drive records while retaining unmatched local records.
+- Uploads local characters as human-readable `CharacterName_BH.json` files, updating the existing Drive file when the internal ID already matches.
+- Adds a downloadable plain-text setup and troubleshooting guide directly inside the Character Data menu.
+- Keeps synchronization explicit: there is no automatic polling or background Drive access.
 - Preserves the Node runtime pin at `22.x`.
+
+## Google Drive deployment configuration
+
+The site owner must configure `BH_DRIVE_SERVICE_ACCOUNT_EMAIL`, `BH_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY`, and `BH_DRIVE_LINK_SECRET` as private Vercel environment variables. Two-way service-account sync requires a folder inside a Google Workspace Shared Drive. The complete setup procedure is available from Settings → Data & Content → Character Data.
 
 ## Runtime
 

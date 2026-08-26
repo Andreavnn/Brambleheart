@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.27',summary:'Manual Google Drive character sync with exact-folder scope and local-first storage',open:true,items:[
+    'Adds an expandable Character Data menu with explicit Link Folder, Update from Drive, Upload Local, and Disconnect actions; normal character editing remains entirely local.',
+    'Keeps service-account credentials server-side in Vercel; a temporary BH-LINK folder-description proof establishes pairing, then a private Drive app property and signed local token validate later sync operations.',
+    'Restricts two-way synchronization to one linked Google Workspace Shared Drive folder, scans no subfolders, and considers only direct files ending in _BH.json.',
+    'Matches characters by stable internal ID: Drive exact-ID matches replace local copies during Update, new Drive characters are added, and unmatched local records remain untouched.',
+    'Uploads local characters as sanitized CharacterName_BH.json files, updating and renaming an existing remote file when its internal ID already matches.',
+    'Skips invalid remote character JSON and stops on duplicate same-ID files rather than allowing ambiguous replacement.',
+    'Adds a downloadable plain-text setup/troubleshooting guide and a same-origin serverless sync endpoint without changing the existing SPA rewrite.',
+    'Synchronizes Beta 0.27 release markers while preserving the Node runtime pin at 22.x and adding no new npm dependencies.',
+  ]},
   {version:'Beta Build 0.26',summary:'Creator title bars, starting economy, Shields, spell Mana Syphon, weight, and Settings corrections',open:true,items:[
     'Repairs shared Heritage/Cultural Trait, Talent, and Spell title bars so compatible colored headers reach both card edges without conflicting width overrides.',
     'Matches Attribute Rank and Modifier labels to Secondary Stats and shows the Homeland pill for every Homeland-granted Starting Skill.',

@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.27
+
+- Added local-first, manually triggered Google Drive Character Sync under Settings → Data & Content → Character Data with Link Folder, Update from Drive, Upload Local, and Disconnect controls.
+- Added a server-side service-account Drive endpoint; Google credentials remain in private Vercel environment variables and are never stored in browser state or repository source.
+- Added an explicit `BH-LINK` folder-description proof and signed linked-folder token that are revalidated before each synchronization operation.
+- Restricted two-way sync to one explicitly linked Google Workspace Shared Drive folder; ordinary My Drive folders are rejected, folder searches are non-recursive, and only direct `_BH.json` files are considered.
+- Made stable internal character IDs authoritative for synchronization: Drive exact-ID matches replace local records during Update, new Drive IDs are added, and unmatched local characters are retained.
+- Added Upload Local behavior that updates same-ID remote files or creates sanitized `CharacterName_BH.json` files, including filename updates after a character rename.
+- Added explicit handling for invalid remote JSON and duplicate same-ID Drive files so malformed or ambiguous data cannot silently replace local character data.
+- Added a downloadable plain-text Google Drive setup guide covering site-owner Vercel configuration, Shared Drive folder setup, manual sync behavior, revocation, and troubleshooting.
+- Added the canonical Character Drive local-storage key and the serverless endpoint without adding a second storage implementation or npm dependency; the existing SPA rewrite remains unchanged.
+- Synchronized visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog to Beta 0.27 while preserving the Node runtime pin at `22.x`.
+
 # Brambleheart Beta 0.26
 
 - Corrected shared Trait/Talent/Spell title-bar geometry so eligible colored title bands reach both card edges; removed conflicting width/margin rules and excluded title bars from the generic content-width clamp.
