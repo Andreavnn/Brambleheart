@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.24
+
+- Realigned the header Back and Dark Mode controls to the normal content width while preserving the enlarged centered logo.
+- Restored content-driven Recent Rules card height so titles and summaries no longer clip.
+- Removed the active References parent page and linked Anthro Mundas, FAQ, and Changes & Updates directly from Rules; retained the former References URL only as a compatibility alias.
+- Renamed Keywords & Ability Types to Keyword Abilities and combined the source-backed Core Abilities into that page as individual rule boxes; retained the former keyword/core page URLs as aliases.
+- Repaired the Fundamental/Lore arrow controls so they navigate to previous/next pages and added a bottom-right Back to Rules action on ending pages.
+- Boxed Melee, Ranged, and Magical To Strike rules separately; moved the Touch pill directly beneath Combat Range; added a black outline around playable Species artwork.
+- Consolidated Damage Category, Damage Type, and Resistance & Weakness into To Damage, and Healing, Defeated, and Encounter End into Health; isolated the former URLs as aliases.
+- Removed duplicated To Hit/To Defend and Core Ability source ownership from Encounter & Setup / Combat Abilities so each rule concept has one canonical page.
+- Added a dedicated Rules surface token scope so role themes no longer recolor rule-panel backgrounds while Dark Mode still supplies the corresponding dark surfaces.
+- Verified Brambleheart's five Text Size offsets already match Old.dex exactly, so no duplicate font-size implementation was added.
+- Synchronized package, visible build, exports, PWA cache, README, patch notes, and in-app changelog to Beta 0.24.
+
 # Brambleheart Beta 0.23
 
 - Required Character Name before leaving Species; streamlined Culture Trait exchange and moved Passive into the Culture Trait keyword row.
@@ -82,7 +96,6 @@
 
 # Brambleheart Beta 0.16
 
-
 - Added optional installed-app launch fanfare and a Launch Audio setting.
 - Corrected splash-page width containment and responsive Text Size controls.
 - Renamed visible Species Trait terminology to Heritage Trait throughout the companion.
@@ -114,7 +127,7 @@
 
 - Added typed downloadable JSON templates and import support for custom Species, Spells, Talents, and Traits, with explicit Custom labeling and a per-character Allow Custom Data switch.
 - Rebuilt Background selection around automatic image discovery from `src/assets/backgrounds`, removed option detail text, and added the supplied Skullfen Ruins and Blightbound Horror artwork.
-- Updated Attribute Check Strike stats to identify Shooting, Melee, and Magic use.
+- Updated Attribute Check Strike stats to identify Shooting, Melee, and Magic.
 - Replaced the Rhythm Engine Combat Encounter section with a saved-character Character Sheet and moved character selection into a shared panel beneath the tool tabs.
 - Removed the legacy Encounter route from active routing and cleaned obsolete Simulator encounter dependencies.
 - Advanced the visible build and PWA shell cache to Beta 0.14.

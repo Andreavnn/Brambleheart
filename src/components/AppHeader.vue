@@ -30,18 +30,40 @@ function goBack(){
   <header class="app-header-wrap bramble-site-header">
     <div class="site-wip-toolbar"><div class="wip-banner site-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div><div class="background-toolbar-actions"><button type="button" class="secondary-button background-view-button" :aria-pressed="backgroundOnly" @click="toggleBackgroundOnly">{{ backgroundOnly?'Show Page':'View Background' }}</button><button type="button" class="icon-button background-cycle-button" aria-label="Next background" title="Next background" @click="cycleBackground"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 5 7 7-7 7"/></svg></button></div></div>
     <div class="app-header" :class="{compact}">
-      <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
-      <div v-else class="header-spacer"></div>
+      <div class="header-control-row">
+        <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
+        <div v-else class="header-spacer"></div>
+
+        <button class="icon-button theme-button" type="button" :aria-label="darkMode?'Switch to light mode':'Switch to dark mode'" @click="toggleTheme">
+          <svg v-if="darkMode" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+          <svg v-else viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"/></svg>
+        </button>
+      </div>
 
       <RouterLink to="/characters" class="brand-stack brand-logo-link" aria-label="Brambleheart Character List">
         <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="brand-logo" />
       </RouterLink>
-
-      <button class="icon-button theme-button" type="button" :aria-label="darkMode?'Switch to light mode':'Switch to dark mode'" @click="toggleTheme">
-        <svg v-if="darkMode" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
-        <svg v-else viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"/></svg>
-      </button>
     </div>
     <PrimaryNav />
   </header>
 </template>
+
+<style scoped>
+.header-control-row{
+  grid-column:1/-1;
+  grid-row:1;
+  z-index:3;
+  width:min(760px,calc(100vw - 28px));
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  pointer-events:none;
+}
+.header-control-row>*{pointer-events:auto}
+.header-control-row .header-spacer{pointer-events:none}
+.brand-logo-link{grid-column:1/-1;grid-row:1;z-index:1}
+@media(max-width:680px){
+  .header-control-row{width:min(760px,calc(100vw - 20px))}
+}
+</style>

@@ -36,8 +36,6 @@ export const loreAnthroMundasPages: RulePageDefinition[] = [
 ]
 export const loreNavigation = loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
 
-export const referencesLanding = page('references-overview','References','Quick references, Anthro Mundas lore, FAQ, and current rules updates.')
-
 export const quickReferencePages: RulePageDefinition[] = [
   loreAnthroMundasPages[0],
   page('faq','FAQ','Common questions answered from the currently loaded rules.'),
@@ -48,8 +46,7 @@ const fundamentalPages: RulePageDefinition[] = [
   page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
   page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, Skills, Skill Trees, expanded Skills, and restricted Skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
   page('dice-rules','Dice Rules','The Rhythm Engine, Conditions, Fortune and Misfortune, Edged and Weighted rolls, Half-Step rolls, and worked roll examples.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
-  page('keywords-ability-types','Keywords & Ability Types','How Ability types and Keywords determine when and how Abilities can be used.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES']}],undefined,['Keyword','Ability']),
-  page('core-abilities','Core Abilities','The shared Ability framework available during encounters.',[{document:'core-abilities',sections:['CORE ABILITIES','ABILITIES']}],undefined,['Ability']),
+  page('keyword-abilities','Keyword Abilities','How Ability types and Keywords determine when and how Abilities can be used, including the shared Core Abilities available during encounters.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES','CORE ABILITIES']}],undefined,['Keyword','Ability','Core Ability']),
 ]
 
 const speciesPages = speciesData.map(item=>page(
@@ -65,7 +62,7 @@ const playableSpeciesLanding=page('playable-species','Playable Species','Choose 
 
 export const ruleCategories: RuleCategoryDefinition[] = [
   {
-    id:'fundamentals', title:'The Fundamentals', summary:'Introduction, dice, targets, Conditions, Attributes, Skills, Keywords, and Core Abilities.', landing:page('fundamentals-overview','The Fundamentals','Browse the core system rules that define checks, Attributes, Skills, Keywords, and Abilities.'), pages:fundamentalPages,
+    id:'fundamentals', title:'The Fundamentals', summary:'Introduction, dice, targets, Conditions, Attributes, Skills, Keywords, and Abilities.', landing:page('fundamentals-overview','The Fundamentals','Browse the core system rules that define checks, Attributes, Skills, Keywords, and Abilities.'), pages:fundamentalPages,
   },
   {
     id:'character-creation', title:'Character Creation', summary:'Build a hero and reference the character-facing rules used during creation and growth.', landing:page('character-creation-overview','Character Creation','Build a hero step by step or open the character-facing rules used during creation and growth.'), pages:[
@@ -101,20 +98,14 @@ export const ruleCategories: RuleCategoryDefinition[] = [
   },
   {
     id:'battles', title:'The Battles', summary:'Encounter setup, Initiative, turns, Mana, combat, damage, Health, and defeat.', landing:page('battles-overview','The Battles','Browse encounter setup, rounds and turns, combat Abilities, targeting, damage, Health, and defeat.'), pages:[
-      page('encounter-setup','Encounter & Setup','Starting a combat encounter, positions, squares, measurements, and opposed Strike/Ward context.',[{document:'battle',sections:['THE BATTLES','COMBAT ENCOUNTER','DETERMINING POSITIONS','SQUARES & MEASUREMENTS','TO HIT','TO DEFEND']}]),
+      page('encounter-setup','Encounter & Setup','Starting a combat encounter, positions, squares, and measurements.',[{document:'battle',sections:['THE BATTLES','COMBAT ENCOUNTER','DETERMINING POSITIONS','SQUARES & MEASUREMENTS']}]),
       page('rounds-turns','Rounds & Turns','Initiative Order, rounds, turns, turn timing, performing Abilities, and combat Mana.',[{document:'battle',sections:['INITIATIVE ORDER','ROUNDS & TURNS','TAKING YOUR TURN','PREFORMING ABILITIES','MANA']}],undefined,['Initiative','Round','Turn','Mana']),
-      page('combat-abilities','Combat Abilities','Shared combat Abilities and the attack framework.',[{document:'battle',sections:['CORE ABILITIES','COMBAT ABILITIES']}],undefined,['Ability','Combat']),
+      page('combat-abilities','Combat Abilities','Shared combat Abilities and the attack framework.',[{document:'battle',sections:['COMBAT ABILITIES']}],undefined,['Ability','Combat']),
       page('ability-targeting','Ability Targeting','Combat Range, Direct, Line, Cone, Orb, and impassable collision on the battle grid.',undefined,'Targeting geometry begins in the supplied Winds of Magic rules and is organized here as a general Ability targeting reference for future combat use.',['Ability Targeting','Combat Range','Touch','Direct','Line','Cone','Orb','Targeting']),
       page('to-strike','To Strike','Melee, ranged, and magical Strike rolls.',[{document:'battle',sections:['TO HIT']}]),
       page('to-ward','To Ward','Ward rolls and opposed defense.',[{document:'battle',sections:['TO DEFEND']}]),
-      page('to-damage','To Damage','Applying damage after a successful attack.',[{document:'battle',sections:['TO DAMAGE','TO SOAK','DAMAGE – GUTS = TOTAL DAMAGE']}]),
-      page('damage-category','Damage Category','Damage categories used by combat and Abilities.',[{document:'battle',sections:['DAMAGE CATEGORY']}]),
-      page('damage-type','Damage Type','Standard, Direct, Lethal, and related damage handling.',[{document:'battle',sections:['DAMAGE CATEGORY','TO SOAK']}]),
-      page('resistance-weakness','Resistance & Weakness','Resistance and Weakness interactions.',[{document:'battle',sections:['RESISTANCES & WEAKNESS']}]),
-      page('health','Health','Health and Health-based penalties.',[{document:'battle',sections:['HEALTH']}]),
-      page('healing','Healing','Healing during and after an encounter.',[{document:'battle',sections:['HEALING']}]),
-      page('defeated','Defeated','Defeat, Hallows saves, Fate Marks, and death.',[{document:'battle',sections:['DEFEATED']}]),
-      page('encounter-end','Encounter End','How a combat encounter ends.',[{document:'battle',sections:['ENCOUNTER ENDS']}]),
+      page('to-damage','To Damage','Damage, Damage Categories, soaking, Resistance, and Weakness.',[{document:'battle',sections:['TO DAMAGE','DAMAGE CATEGORY','TO SOAK','DAMAGE – GUTS = TOTAL DAMAGE','RESISTANCES & WEAKNESS']}]),
+      page('health','Health','Health, healing, defeat, Hallows saves, Fate Marks, and encounter-end rules.',[{document:'battle',sections:['HEALTH','HEALING','DEFEATED','ENCOUNTER ENDS']}]),
     ],
   },
   {
@@ -143,9 +134,18 @@ export const ruleCategories: RuleCategoryDefinition[] = [
 ]
 
 const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`))
-export const allRulePages = [referencesLanding, ...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => [category.landing,...category.pages]), ...monsterRulePages]
+export const allRulePages = [...quickReferencePages, ...loreAnthroMundasPages.slice(1), ...ruleCategories.flatMap(category => [category.landing,...category.pages]), ...monsterRulePages]
 export const fundamentalsNavigation = fundamentalPages.map(({slug,title})=>({slug,title}))
 const ruleAliases:Record<string,string>={
+  'references-overview':'lore-anthro-mundas',
+  'keywords-ability-types':'keyword-abilities',
+  'core-abilities':'keyword-abilities',
+  'damage-category':'to-damage',
+  'damage-type':'to-damage',
+  'resistance-weakness':'to-damage',
+  'healing':'health',
+  'defeated':'health',
+  'encounter-end':'health',
   'area-of-effect':'ability-targeting',
   'initiative-order':'rounds-turns',
   'your-turn':'rounds-turns',
@@ -154,8 +154,12 @@ const ruleAliases:Record<string,string>={
 export function canonicalRuleSlug(slug:string){return ruleAliases[slug]||slug}
 export function findRulePage(slug:string) { const canonical=canonicalRuleSlug(slug); return allRulePages.find(item => item.slug === canonical) }
 export function findRuleCategory(slug:string){const canonical=canonicalRuleSlug(slug);return ruleCategories.find(category=>category.landing.slug===canonical||category.pages.some(item=>item.slug===canonical))}
-export function findRuleParentPage(slug:string){const canonical=canonicalRuleSlug(slug);if(canonical===referencesLanding.slug||loreAnthroMundasPages.some(item=>item.slug===canonical)||quickReferencePages.some(item=>item.slug===canonical))return referencesLanding;if(monsterRulePages.some(item=>item.slug===canonical))return ruleCategories.find(category=>category.id==='watcher')?.landing;return findRuleCategory(canonical)?.landing}
-
+export function findRuleParentPage(slug:string){
+  const canonical=canonicalRuleSlug(slug)
+  if(loreAnthroMundasPages.some(item=>item.slug===canonical)||quickReferencePages.some(item=>item.slug===canonical))return undefined
+  if(monsterRulePages.some(item=>item.slug===canonical))return ruleCategories.find(category=>category.id==='watcher')?.landing
+  return findRuleCategory(canonical)?.landing
+}
 
 export function resolveSourceSections(page:RulePageDefinition): Array<{ document:string; sourceFile:string; section:RuleSourceSection }> {
   const out:Array<{ document:string; sourceFile:string; section:RuleSourceSection }>=[]

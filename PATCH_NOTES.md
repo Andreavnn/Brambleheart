@@ -1,34 +1,27 @@
-# Brambleheart Beta 0.23 Patch Notes
+# Brambleheart Beta 0.24 Patch Notes
 
-## Character Creation Flow
-- Character Name is required before leaving Choose Your Species.
-- Culture Traits no longer use a separate Exchange/Add panel. Each selected Culture Trait has an Exchange action that opens the existing picker at that slot.
-- Passive is presented with the lower keyword pills on Culture Trait cards rather than in the title actions.
-- Empty Spark detail cards remain hidden until a Spark is selected.
-- Wind-Touched and Gifted Heart now act as forward-navigation choices and immediately continue into the appropriate path flow.
+## Header & Rules Landing
+- Back and Dark Mode controls now share a normal-width header control row while the enlarged Brambleheart logo remains centered independently.
+- Recent Rules cards use content-driven height again; summaries are no longer clipped by the fixed-height/line-clamp combination introduced in the previous layout adjustment.
+- The References parent page is removed from active Rules navigation. Anthro Mundas, FAQ, and Changes & Updates open directly; `/rules/read/references-overview` remains an isolated compatibility alias to Anthro Mundas.
+- Brambleheart Text Size values were compared with Old.dex and already match exactly: Smallest -2px, Small -1px, Normal 0px, Large +1px, Largest +2px. No second font-size system was added.
 
-## Homeland & Attributes
-- Custom Homelands now collect their name, description, and two Skills directly on the Homeland step.
-- Skill #1 follows the supplied Lore/Might/Prowess grouping (Prowess maps to the current Agility tree); Skill #2 follows Courage/Lore (Courage maps to Bravery).
-- The Starting Skills step no longer exposes premade-Homeland replacement controls for custom Homelands.
-- Attribute rows now give Rank/Modifier controls the larger panel and right-align Rank, Modifier, and +/- controls; Secondary Stats use the smaller panel.
+## Rule Navigation & Organization
+- The top Fundamental/Lore arrow controls now navigate to the previous or next rule page instead of merely scrolling the horizontal page strip.
+- Ending pages now expose a bottom-right Back to Rules action instead of an empty navigation slot.
+- `Keywords & Ability Types` is now `Keyword Abilities`; the standalone Core Abilities page is retired and its source-backed abilities are shown as individual rule boxes on the combined page.
+- Legacy `keywords-ability-types` and `core-abilities` URLs resolve through explicit aliases to `keyword-abilities`.
+- To Damage now contains Damage Category, Damage Type/Soak handling, and Resistances & Weakness. The former child-page URLs resolve to To Damage.
+- Health now contains Health, Healing, Defeated, and Encounter End. The former child-page URLs resolve to Health.
+- Encounter & Setup and Combat Abilities no longer duplicate To Hit/To Defend or Core Ability source sections that have their own canonical destinations.
 
-## Talents, Gear & Currency
-- Anchor Spirit and Battlebane are explicitly classified as Utility Talents.
-- Threadpiece equivalencies now show `1 BP = 2 SP`; current balances are ordered WP → NP → SP → BP and always show the BP amount, including 0.
-- Weapon Qualities are removed from Equipment & Gear purchase categories and are displayed as pill UI on weapons.
-- Armor & Shields now includes the full supplied list: Leafsitch, Barkskin Vest, Briarhide, Roughscale, Root Weave, Heartguard, Earthforged Plate, Toughscale, Durtlehide, Runeforged Plate, Sapguard, Vinegrip, and Ironwood Bulwark.
-- Equipment descriptions, mechanical effects, and supported purchase choices are carried by the equipment data model and shown in the purchase window.
-- Armor Might requirements are enforced when adding new armor.
-
-## Review & Rules Application
-- Armor/Shield Guts bonuses are cumulative and appear in Review-derived Guts.
-- Armor Mana Syphon is included in displayed spell Mana costs.
-- Review Character Name and Campaign are readonly by default with per-field `(Change)` / `(Lock)` controls.
-- Weapon/Armor tables are reduced on wider screens; narrow screens use left/right scroll buttons with hidden scrollbars.
-- Review Talents, Lore/Spells, and other rule boxes retain their category/lore colors and standard title-bar treatment across themes.
-- Starting Language cards remain equal height; the selected additional Language receives a pill.
+## Rule Presentation
+- Ability Targeting places the Touch pill directly beneath the Combat Range title.
+- To Strike presents Melee, Ranged, and Magical Strike rules as separate rule boxes.
+- Playable Species artwork receives a black outline that follows the upper-right artwork-panel curve on wider layouts and squares off on narrow layouts.
+- Rules pages are wrapped in a dedicated rule-surface token boundary so role themes continue to change accents without recoloring rule panel backgrounds; Dark Mode still supplies the corresponding dark rule surfaces.
 
 ## Release Integrity
-- Beta/build/package/PWA markers are synchronized to 0.23 / 0.23.0.
-- This patch is based on current GitHub main commit `a0ef8c507e1ebda7404018ce63026f8327225ad2` (Beta 0.22).
+- Visible build, package version, character export version source, PWA cache marker, README, patch notes, repository changelog, and in-app changelog are synchronized to Beta 0.24 / 0.24.0.
+- This patch is based on current GitHub main commit `5fc61aac73c895a8081435ba5c7d1ce6a4401609` (Beta 0.23).
+- Static TypeScript syntax and Vue template tag-balance checks were performed on the synthesized Rule Reader changes. A production Vite/vue-tsc build and live responsive/browser test could not be performed in the available runtime because the repository dependencies are not installed here.
