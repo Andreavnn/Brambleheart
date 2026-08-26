@@ -3,6 +3,14 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.25',summary:'Character data backup, creator/equipment reliability, spell parsing, and Lore attunement preview',open:true,items:[
+    'Adds a complete local Character Data Backup and consolidates Data & Content reset actions into Reset Custom, Reset Characters, and Reset Data while removing Clear Dice Rolls.',
+    'Reworks Attribute rows and adds Homeland source pills when a Homeland selection increases an already-granted Skill rank.',
+    'Corrects Threadpiece scaling and 50 SP starting wealth, groups the Adventure Kit under Starting Equipment, and adds quantity-aware repeatable purchases with combined cost and weight.',
+    'Updates Language and Character Review presentation, including Touch weapon ranges, complete qualities, Journey Knot damage, simplified section summaries, current currency, and carried weight.',
+    'Fixes Thunder’s Fury by registering Power Word: Reinforcement and hardening spell/keyword parser boundaries so one spell cannot bleed into another.',
+    'Adds a temporary Attuned switch to non-Invocation Lore pages; displayed Mana costs drop by 2 while enabled and reset on navigation.',
+  ]},
   {version:'Beta Build 0.24',summary:'Rules-reader consolidation, navigation repair, stable panels, and header alignment',open:true,items:[
     'Realigns Back and Dark Mode controls to the normal content width without shifting the enlarged centered logo.',
     'Restores content-driven Recent Rules card height so titles and summaries are no longer clipped.',

@@ -44,6 +44,7 @@ export const loreSpells: Record<string,string[]> = {
     "Oath Of Protection",
     "Word Of Challenge",
     "Thunder’s Fury",
+    "Power Word: Reinforcement",
     "Vow Of Elements",
     "Wind Scaring",
     "Earth Grasp",

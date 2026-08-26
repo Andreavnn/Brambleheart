@@ -3,7 +3,7 @@ import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteRes
 
 export type AttributeRanks = Record<AttributeId, number>
 export type CharacterStatus = 'incomplete'|'unapproved'|'approved'
-export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string }
+export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string; quantity?:number }
 export interface CharacterRecord {
   id:string
   name:string
@@ -57,9 +57,12 @@ export function characterStatus(record:Pick<CharacterRecord,'status'|'draft'|'lo
   if(record.draft)return'incomplete'
   return record.locked?'approved':'unapproved'
 }
+function normalizeEquipment(items:PurchasedEquipment[]|undefined){
+  return (items||[]).map(item=>({...item,quantity:Math.max(1,Math.floor(Number(item.quantity)||1))}))
+}
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const status=characterStatus(record)
-  return{...record,status,draft:status==='incomplete',locked:status==='incomplete'?Boolean(record.locked):false}
+  return{...record,equipment:normalizeEquipment(record.equipment),status,draft:status==='incomplete',locked:status==='incomplete'?Boolean(record.locked):false}
 }
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{
   return (JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)
@@ -69,7 +72,7 @@ export function loadCharacters():CharacterRecord[]{
     const parsed=JSON.parse(readLocalStorage(CHARACTER_STORE)||'[]')
     if(!Array.isArray(parsed))return[]
     const normalized=(parsed as CharacterRecord[]).map(normalizeCharacterRecord)
-    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.locked)!==Boolean(normalized[index]?.locked))){
+    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
       writeLocalStorage(CHARACTER_STORE,JSON.stringify(normalized))
     }
     return normalized

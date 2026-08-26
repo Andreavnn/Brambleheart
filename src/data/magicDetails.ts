@@ -34,8 +34,15 @@ function paragraphText(documentKey:string){
 function looksStructured(value:string){
   return /\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|EFFECT|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):/i.test(value)
 }
+function looksLikeStandaloneHeading(value:string){
+  const text=value.trim()
+  if(!text||text.length>80||looksStructured(text))return false
+  const letters=text.replace(/[^A-Za-z]+/g,'')
+  return letters.length>=3&&text===text.toUpperCase()
+}
 function parseKeywords(value:string){
-  const match=value.match(/\bKEYWORDS?:\s*(.+)$/i)
+  const matches=Array.from(value.matchAll(/\bKEYWORDS?:\s*([^]*?)(?=\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|EFFECT|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):|$)/gi))
+  const match=matches.at(-1)
   return match ? match[1].split('|').map(item=>item.trim()).filter(Boolean) : []
 }
 function parseMana(value:string){
@@ -67,7 +74,7 @@ for(const [lore,spellNames] of Object.entries(loreSpells)){
     const collected:string[]=[]
     for(let i=index+1;i<texts.length;i++){
       const text=texts[i]
-      if(spellTokens.has(normalize(text)))break
+      if(spellTokens.has(normalize(text))||looksLikeStandaloneHeading(text))break
       collected.push(text)
     }
     const flavor=collected.length&&!looksStructured(collected[0])?collected.shift()||'':''

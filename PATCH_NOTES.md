@@ -1,27 +1,26 @@
-# Brambleheart Beta 0.24 Patch Notes
+# Brambleheart Beta 0.25 Patch Notes
 
-## Header & Rules Landing
-- Back and Dark Mode controls now share a normal-width header control row while the enlarged Brambleheart logo remains centered independently.
-- Recent Rules cards use content-driven height again; summaries are no longer clipped by the fixed-height/line-clamp combination introduced in the previous layout adjustment.
-- The References parent page is removed from active Rules navigation. Anthro Mundas, FAQ, and Changes & Updates open directly; `/rules/read/references-overview` remains an isolated compatibility alias to Anthro Mundas.
-- Brambleheart Text Size values were compared with Old.dex and already match exactly: Smallest -2px, Small -1px, Normal 0px, Large +1px, Largest +2px. No second font-size system was added.
+## Data & Content
+- Added Data Backup above reset controls. It downloads one JSON payload containing every locally stored character regardless of Incomplete, Unapproved, or Approved status.
+- Removed Clear Dice Rolls from Settings.
+- Replaced the former nested Reset Local Data / Reset All Local Data / character-management controls with one row containing Reset Custom, Reset Characters, and Reset Data.
+- Reset Data preserves Display settings while removing other Brambleheart local data.
 
-## Rule Navigation & Organization
-- The top Fundamental/Lore arrow controls now navigate to the previous or next rule page instead of merely scrolling the horizontal page strip.
-- Ending pages now expose a bottom-right Back to Rules action instead of an empty navigation slot.
-- `Keywords & Ability Types` is now `Keyword Abilities`; the standalone Core Abilities page is retired and its source-backed abilities are shown as individual rule boxes on the combined page.
-- Legacy `keywords-ability-types` and `core-abilities` URLs resolve through explicit aliases to `keyword-abilities`.
-- To Damage now contains Damage Category, Damage Type/Soak handling, and Resistances & Weakness. The former child-page URLs resolve to To Damage.
-- Health now contains Health, Healing, Defeated, and Encounter End. The former child-page URLs resolve to Health.
-- Encounter & Setup and Combat Abilities no longer duplicate To Hit/To Defend or Core Ability source sections that have their own canonical destinations.
+## Character Creation
+- Secondary Stats now sit beneath their related Attribute description. Rank and Modifier use the same visual stat-box language and the +/- control is centered beneath them.
+- Starting Skills adds a Homeland pill when a selected Homeland Skill increases a Skill already granted by Culture.
+- Currency of Anthro Mundas now shows WP, NP, SP, and BP using 10 WP = 1 NP, 5 NP = 1 SP, and 5 SP = 1 BP. Starting wealth is 50 SP. Selling the Adventure Kit adds 3 SP.
+- Adventure Kit is contained by a new Starting Equipment parent panel.
+- Repeatable purchased gear is quantity-aware. Duplicate purchases consolidate and +/- controls update quantity, cost, and carried weight.
+- Additional Language identifies the Species associated with the selected language.
+- Review Species no longer repeats the native language. Weapon ranges default to Touch when no range is listed; weapon qualities remain in Properties / Notes; attached Journey Knot is listed and adds +1 to displayed damage.
+- Weapons, Armor & Shields, Skills, Magic, and Talents summaries no longer show counts/detail text. Equipment & Gear shows current Threadpieces and total carried weight.
 
-## Rule Presentation
-- Ability Targeting places the Touch pill directly beneath the Combat Range title.
-- To Strike presents Melee, Ranged, and Magical Strike rules as separate rule boxes.
-- Playable Species artwork receives a black outline that follows the upper-right artwork-panel curve on wider layouts and squares off on narrow layouts.
-- Rules pages are wrapped in a dedicated rule-surface token boundary so role themes continue to change accents without recoloring rule panel backgrounds; Dark Mode still supplies the corresponding dark rule surfaces.
+## Rules & Magic
+- Fixed the Thunder’s Fury spillover at the parser boundary. Power Word: Reinforcement was missing from the Oath spell index, so the parser treated its source paragraphs as a continuation of Thunder’s Fury; greedy keyword extraction then surfaced that appended text as a pill. The missing spell is registered and parsing now also stops at standalone source headings, with bounded keyword extraction.
+- Every non-Invocation Lore page now has a temporary Attuned switch in its top panel. Enabling it previews the Lore Attunement reduction of 2 Mana for all spells on that page. Navigating away resets the switch.
 
 ## Release Integrity
-- Visible build, package version, character export version source, PWA cache marker, README, patch notes, repository changelog, and in-app changelog are synchronized to Beta 0.24 / 0.24.0.
-- This patch is based on current GitHub main commit `5fc61aac73c895a8081435ba5c7d1ce6a4401609` (Beta 0.23).
-- Static TypeScript syntax and Vue template tag-balance checks were performed on the synthesized Rule Reader changes. A production Vite/vue-tsc build and live responsive/browser test could not be performed in the available runtime because the repository dependencies are not installed here.
+- Visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog are synchronized to Beta 0.25 / 0.25.0.
+- This patch is based on GitHub main commit `28d8ff96ff2fa113bda986c461737f0fe1386f68` (Beta 0.24).
+- Static source-integrity checks are included in packaging. A production Vite build and live browser responsive/persistence test are not claimed unless explicitly reported separately.

@@ -7,9 +7,9 @@ import { useSettings, type FontSize, type RoleTheme } from '../state/settings'
 import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
 import { externalLinks } from '../data/links'
-import { characterStatus, loadCharacters, writeCharacters, type CharacterRecord } from '../services/characters'
+import { downloadJson, loadCharacters, writeCharacters } from '../services/characters'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
-import { localStorageKeys, removeLocalStorage, RHYTHM_STORE, SETTINGS_STORE } from '../services/storage'
+import { localStorageKeys, removeLocalStorage, SETTINGS_STORE } from '../services/storage'
 
 const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, backgroundGrayscale, bootAudio, reset } = useSettings()
@@ -33,25 +33,22 @@ const currentRoleLabel=computed(()=>roleOptions.find(item=>item.value===roleThem
 const currentBackgroundLabel=computed(()=>backgroundLabel(backgroundImage.value))
 
 function confirmTwice(first:string,second:string){return confirm(first)&&confirm(second)}
-type CharacterClearMode='all'|'incomplete'|'unapproved'|'approved'
-function characterMatchesClearMode(character:CharacterRecord,mode:CharacterClearMode){
-  if(mode==='all')return true
-  if(mode==='incomplete')return characterStatus(character)==='incomplete'
-  if(mode==='approved')return characterStatus(character)==='approved'
-  return characterStatus(character)==='unapproved'
+function downloadCharacterBackup(){
+  const characters=loadCharacters()
+  downloadJson(`brambleheart-character-backup-${new Date().toISOString().slice(0,10)}.json`,{
+    format:'brambleheart-character-backup',version:BUILD,exportedAt:new Date().toISOString(),characters,
+  })
 }
-function clearCharacters(mode:CharacterClearMode){
-  const labels={all:'all saved characters',incomplete:'all incomplete characters',unapproved:'all unapproved characters',approved:'all approved characters'} as const
-  if(!confirmTwice(`Clear ${labels[mode]} from this device?`,`Confirm again: permanently delete ${labels[mode]}? This cannot be undone.`))return
-  const current=loadCharacters();const next=current.filter(character=>!characterMatchesClearMode(character,mode))
-  const saved=writeCharacters(next);if(!saved.ok)alert(saved.message)
+function resetCustomData(){
+  if(!confirmTwice('Reset all imported Custom Data on this device?','Confirm again: permanently remove all imported Custom Data? This cannot be undone.'))return
+  const cleared=clearCustomDataStore();if(!cleared.ok){alert(cleared.message);return}customData.value=[]
 }
-function clearDiceRolls(){
-  if(!confirm('Clear the stored Dice Roller history?'))return
-  const removed=removeLocalStorage(RHYTHM_STORE);if(!removed.ok)alert(removed.message)
+function resetCharacters(){
+  if(!confirmTwice('Reset all saved characters on this device?','Confirm again: permanently delete approved, unapproved, and incomplete characters? This cannot be undone.'))return
+  const saved=writeCharacters([]);if(!saved.ok)alert(saved.message)
 }
-function clearAllLocalData(){
-  if(!confirm('Reset Brambleheart local data? This removes characters, recent rules, Dice Roller history, custom data, and welcome state. Display settings are preserved.'))return
+function resetAllLocalData(){
+  if(!confirmTwice('Reset all Brambleheart local data? Display settings are preserved.','Confirm again: remove characters, recent rules, Dice Roller history, custom data, and local welcome state? This cannot be undone.'))return
   const keys=localStorageKeys().filter(key=>key.startsWith('brambleheart')&&key!==SETTINGS_STORE)
   for(const key of keys){const removed=removeLocalStorage(key);if(!removed.ok){alert(removed.message);return}}
   customData.value=[];void router.replace('/welcome')
@@ -109,11 +106,8 @@ function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?')
     <section class="settings-group compact-donation-group" aria-label="Donation"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DONATION</p></div><section class="settings-card support-settings-card"><div class="setting-row donation-setting-row"><span><strong>Support Brambleheart</strong><small>Support development with a one-time donation or recurring contribution.</small></span><div class="support-button-row compact-support-buttons"><a class="secondary-button support-action-button" :href="externalLinks.donation" target="_blank" rel="noopener noreferrer">Donation</a><a class="secondary-button support-action-button" :href="externalLinks.recurringSupport" target="_blank" rel="noopener noreferrer">Recurring Support</a></div></div></section></section>
 
     <section class="settings-group" aria-label="Data and content settings"><div class="settings-group-heading"><p class="eyebrow settings-group-title">DATA &amp; CONTENT</p></div><section class="settings-card">
-      <details class="reset-data-settings-panel"><summary><span><strong>Reset Local Data</strong><small>Manage characters, recent rules, Dice Roller history, custom data, and local welcome state.</small></span><span class="value-chip">MANAGE</span></summary><div class="reset-data-option-list">
-        <div class="setting-row reset-data-row"><span><strong>Reset All Local Data</strong><small>Remove all locally stored app data while preserving Display settings.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearAllLocalData">Reset Data</button></div>
-        <details class="character-clear-panel"><summary><span><strong>Clear Characters</strong><small>Delete characters by completion and approval status. Every action requires two confirmations.</small></span><span class="value-chip">MANAGE</span></summary><div class="character-clear-actions"><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('all')">Clear All</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('incomplete')">Clear Incomplete</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('unapproved')">Clear Unapproved</button><button class="secondary-button settings-compact-action" type="button" @click="clearCharacters('approved')">Clear Approved</button></div></details>
-        <div class="setting-row local-clear-row"><span><strong>Clear Dice Rolls</strong><small>Remove the Dice Roller roll history.</small></span><button class="secondary-button settings-compact-action" type="button" @click="clearDiceRolls">Clear</button></div>
-      </div></details>
+      <div class="setting-row data-backup-row"><span><strong>Data Backup</strong><small>Download one JSON backup containing all approved, unapproved, and incomplete characters stored on this device.</small></span><button class="secondary-button settings-compact-action" type="button" @click="downloadCharacterBackup">Download</button></div>
+      <div class="setting-row reset-data-row"><span><strong>Reset Local Data</strong><small>Reset custom content, characters, or all locally stored Brambleheart data. Display settings are preserved by Reset Data.</small></span><div class="button-row reset-data-actions"><button class="secondary-button settings-compact-action" type="button" @click="resetCustomData">Reset Custom</button><button class="secondary-button settings-compact-action" type="button" @click="resetCharacters">Reset Characters</button><button class="secondary-button settings-compact-action" type="button" @click="resetAllLocalData">Reset Data</button></div></div>
       <div class="setting-row static-row"><span><strong>Site Changelog - Beta {{ BUILD }}</strong><small>Review changes to the Brambleheart companion site. Rules amendments are listed under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>
       <div class="setting-row static-row"><span><strong>Character Data</strong><small>Characters are stored locally and can be imported or exported as JSON.</small></span><span class="value-chip">LOCAL</span></div>
       <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Import custom Species, Spells, Talents, and Traits built from the supplied JSON templates.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions custom-data-stack">

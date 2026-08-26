@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.25
+
+- Rebuilt Settings → Data & Content around Data Backup, Reset Custom, Reset Characters, and Reset Data; removed the obsolete nested character/reset managers and Clear Dice Rolls action.
+- Reworked Character Creation Attribute rows so Secondary Stats sit beneath each Attribute description while Rank/Modifier use matching stat boxes at right with centered +/- controls.
+- Added Homeland source pills when a Homeland choice raises an already-granted Skill rank, preserving Cultural source pills alongside it.
+- Fixed spell-source boundary parsing sitewide and registered Power Word: Reinforcement in the Oath spell catalog so Thunder’s Fury can no longer absorb a following spell into its rules or keyword pills.
+- Corrected Threadpiece scaling to 10 WP = 1 NP, 5 NP = 1 SP, and 5 SP = 1 BP; restored all four denominations and reorganized starting currency/Adventure Kit guidance around 50 SP plus the kit, which may be sold for 3 SP.
+- Added quantity-aware purchased gear for repeatable items, consolidating duplicate purchases into one row with +/- controls and quantity-aware cost/weight totals.
+- Updated Additional Language pills to identify the Species that speaks the selected language and removed native-language subtext from the Review Species field.
+- Updated weapon Review profiles so unspecified range displays Touch, all weapon qualities remain in Properties / Notes, and attached Journey Knots are listed and contribute +1 displayed weapon damage.
+- Simplified Review expandable-menu summaries; Equipment & Gear now shows current Threadpieces and total carried weight instead of an item count.
+- Added a temporary Attuned switch to each non-Invocation Lore reader page; it previews the Lore’s -2 Mana cost and resets whenever navigation leaves the page.
+- Synchronized visible build, package version, character export source, PWA cache, README, patch notes, and in-app changelog to Beta 0.25.
+
 # Brambleheart Beta 0.24
 
 - Realigned the header Back and Dark Mode controls to the normal content width while preserving the enlarged centered logo.

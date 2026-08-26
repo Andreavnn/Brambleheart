@@ -59,8 +59,9 @@ function labeledProfileValue(detail:string,label:string){const part=profileParts
 export function weaponProfile(item:EquipmentProfileSource|undefined){
   if(!item)return{name:'—',damage:'—',range:'—',properties:'—',weight:'—'}
   const parts=profileParts(item.detail||'')
-  const properties=parts.find(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))||'—'
-  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'—'
+  const propertyParts=parts.filter(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))
+  const properties=propertyParts.join(', ')||'—'
+  const range=properties.match(/(?:Projectile|Thrown|Reach)\s*\(([^)]+)\)/i)?.[1]||'Touch'
   return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range,properties,weight:labeledProfileValue(item.detail||'','Weight')}
 }
 
