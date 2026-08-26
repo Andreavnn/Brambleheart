@@ -1,0 +1,189 @@
+BRAMBLEHEART CLOUD SYNC — DROPBOX APP FOLDER SETUP
+Beta 0.28
+
+OVERVIEW
+Brambleheart keeps Character Data stored locally on the current device. Cloud Sync is optional and manual. Normal character editing does not contact Dropbox.
+
+When connected, Brambleheart uses Dropbox App Folder access. Dropbox isolates the app to the folder assigned to Brambleheart under the user's Dropbox Apps area. Brambleheart cannot browse the user's full Dropbox when the Dropbox application is created with App Folder access.
+
+Only files whose names end in _BH.json are considered during Character Data synchronization.
+
+There are two setup sections below:
+A. SITE OWNER SETUP — done once for the Brambleheart deployment.
+B. PLAYER SETUP — what normal users do afterward.
+
+============================================================
+A. SITE OWNER SETUP
+============================================================
+
+1. OPEN THE DROPBOX APP CONSOLE
+Go to:
+https://www.dropbox.com/developers/apps
+
+Sign in with the Dropbox account that will own the Brambleheart Dropbox application.
+
+2. CREATE THE DROPBOX APP
+Choose Create app.
+
+Use these application choices:
+- API: Scoped access
+- Access type: App folder
+- App name: choose the Brambleheart application name you want Dropbox to display
+
+IMPORTANT:
+Choose App folder, not Full Dropbox. App Folder access is what prevents Brambleheart from browsing the rest of a user's Dropbox.
+
+3. ENABLE ONLY THE REQUIRED PERMISSIONS
+Open the Permissions tab for the Dropbox app.
+
+Enable these user scopes:
+- files.metadata.read
+- files.content.read
+- files.content.write
+
+Save/submit the permission changes.
+
+Brambleheart does not require team-wide Dropbox permissions and does not require Full Dropbox access.
+
+4. ADD THE OAUTH REDIRECT URI
+Open the Dropbox app Settings page and locate OAuth 2 Redirect URIs.
+
+Add the exact production Brambleheart Settings URL:
+https://YOUR-BRAMBLEHEART-DOMAIN/settings
+
+Example:
+https://brambleheart.example.com/settings
+
+The redirect URI must exactly match the URL Brambleheart uses. Dropbox requires HTTPS for normal hosted sites. If you use more than one permanent domain, register each permanent /settings URL that users may connect from.
+
+5. COPY THE DROPBOX APP KEY
+On the Dropbox app Settings page, copy the App key.
+
+The App key is a public application identifier. Brambleheart uses OAuth PKCE, so the Dropbox App secret is not placed in the browser or repository and is not required by this implementation.
+
+6. ADD THE APP KEY TO VERCEL
+Open the Brambleheart Vercel project.
+
+Go to:
+Settings -> Environment Variables
+
+Create:
+VITE_DROPBOX_APP_KEY
+
+Set its value to the Dropbox App key from Step 5.
+
+Apply it to the environments where Cloud Sync should be available. At minimum, configure Production.
+
+7. REDEPLOY BRAMBLEHEART
+Vite environment values are compiled into the browser bundle. After adding or changing VITE_DROPBOX_APP_KEY, create a new Vercel deployment.
+
+8. VERIFY THE DEPLOYMENT
+Open Brambleheart:
+Settings -> Data & Content -> Cloud Sync
+
+The Workspace Link row should show an enabled Connect Dropbox button.
+
+If the button is disabled and the menu shows NOT CONFIGURED, verify VITE_DROPBOX_APP_KEY and redeploy.
+
+============================================================
+B. PLAYER SETUP
+============================================================
+
+Once the site owner has completed Section A, normal users do not create developer projects, service accounts, shared folders, API keys, or Workspace accounts.
+
+1. Open Brambleheart.
+2. Go to Settings -> Data & Content -> Cloud Sync.
+3. Review Cloud Link Code. Brambleheart uses this automatically to verify the OAuth return to the same browser.
+4. Under Workspace Link, click Connect Dropbox.
+5. Sign in to Dropbox if requested.
+6. Approve Brambleheart's requested App Folder access.
+7. Dropbox returns to Brambleheart Settings.
+8. Character Data should now show LOCAL and CONNECTED.
+
+Dropbox creates the app's isolated folder automatically. Its visible name under Dropbox Apps is determined by the Dropbox app name configured by the site owner.
+
+============================================================
+USING CLOUD SYNC
+============================================================
+
+UPLOAD LOCAL
+Choose Upload Local to send all locally stored Brambleheart characters to the Dropbox App Folder.
+
+Character files use human-readable names such as:
+CharacterName_BH.json
+
+If a cloud file already contains the same internal Brambleheart character ID, that file is updated instead of creating a second character record.
+
+If a renamed character needs a different filename, Brambleheart renames the matching cloud file when safe.
+
+If two different characters would otherwise use the same filename, Brambleheart adds part of the internal character ID to keep the filenames unique.
+
+UPDATE FROM CLOUD
+Choose Update from Cloud to read _BH.json files from the Dropbox App Folder.
+
+Brambleheart matches characters using the internal character ID stored inside the JSON file, not the filename.
+
+- Exact ID match: the Dropbox copy replaces the local copy.
+- New ID: the Dropbox character is added locally.
+- Local character with no Dropbox match: it remains local and is not deleted.
+- Invalid _BH.json file: it is skipped.
+- Duplicate valid files containing the same character ID: synchronization stops so Brambleheart does not guess which file is authoritative.
+
+NO AUTOMATIC POLLING
+Brambleheart does not continuously watch Dropbox.
+
+Dropbox is contacted only when the user explicitly:
+- connects Cloud Sync,
+- chooses Update from Cloud,
+- chooses Upload Local, or
+- disconnects Cloud Sync and Brambleheart attempts to revoke the Dropbox authorization.
+
+============================================================
+DISCONNECTING
+============================================================
+
+Choose Disconnect inside Cloud Sync.
+
+Brambleheart removes the locally stored Dropbox connection and attempts to revoke its Dropbox authorization. Existing _BH.json files are not deleted from Dropbox.
+
+If automatic revocation cannot be completed because the Dropbox token has already expired or been revoked, remove Brambleheart manually from Dropbox Connected Apps.
+
+============================================================
+SECURITY NOTES
+============================================================
+
+- Brambleheart uses Dropbox OAuth 2 with PKCE.
+- The Dropbox App secret is not stored in the Brambleheart browser bundle.
+- The long-lived Dropbox refresh token is stored locally on the user's device so manual synchronization can work after the short-lived access token expires.
+- The Dropbox application must be configured for App Folder access, not Full Dropbox.
+- Character Data remains local-first even while Cloud Sync is connected.
+- Standard JSON import/export remains available independently of Cloud Sync.
+
+============================================================
+TROUBLESHOOTING
+============================================================
+
+CONNECT DROPBOX IS DISABLED
+The deployed site is probably missing VITE_DROPBOX_APP_KEY. Configure it in Vercel and redeploy.
+
+DROPBOX SAYS THE REDIRECT URI IS INVALID
+The exact Brambleheart /settings URL being used is not registered in the Dropbox App Console. Add the exact HTTPS URL under OAuth 2 Redirect URIs.
+
+DROPBOX REPORTS A MISSING SCOPE
+Verify these scopes are enabled in the Dropbox App Console:
+- files.metadata.read
+- files.content.read
+- files.content.write
+
+After changing Dropbox app permissions, disconnect/re-authorize the Dropbox connection so the new authorization grants the updated scopes.
+
+UPDATE OR UPLOAD SAYS AUTHORIZATION IS INVALID
+The Dropbox connection may have been revoked. Disconnect Cloud Sync in Brambleheart and connect Dropbox again.
+
+A CHARACTER DOES NOT REPLACE THE LOCAL COPY
+Cloud replacement uses the internal Brambleheart character ID. Two JSON files with the same visible character name but different internal IDs are different characters.
+
+A FILE IS IGNORED
+Only valid Brambleheart character exports ending in _BH.json are used by Cloud Sync.
+
+END OF BRAMBLEHEART CLOUD SYNC INSTRUCTIONS

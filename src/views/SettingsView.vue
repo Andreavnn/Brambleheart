@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { canInstall, installMessage, isInstalled, requestInstall } from '../state/install'
@@ -8,7 +8,7 @@ import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
 import { externalLinks } from '../data/links'
 import { downloadJson, loadCharacters, writeCharacters } from '../services/characters'
-import { disconnectCharacterDrive, ensureCharacterDriveState, getCharacterDriveConfig, linkCharacterDrive, regenerateCharacterDriveCode, updateCharactersFromDrive, uploadCharactersToDrive, type CharacterDriveConfig } from '../services/characterDrive'
+import { beginDropboxCloudConnection, completeDropboxCloudConnection, disconnectCharacterCloud, ensureCharacterCloudState, getCharacterCloudConfig, regenerateCharacterCloudCode, updateCharactersFromCloud, uploadCharactersToCloud } from '../services/characterCloud'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
 import { localStorageKeys, removeLocalStorage, SETTINGS_STORE } from '../services/storage'
 
@@ -19,13 +19,12 @@ const customData=ref<CustomDataItem[]>(loadCustomData())
 const customImportMessage=ref('')
 const customCounts=computed(()=>customDataCounts(customData.value))
 const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'None loaded')
-const characterDriveState=ref(ensureCharacterDriveState())
-const characterDriveConfig=ref<CharacterDriveConfig|null>(null)
-const characterDriveFolderUrl=ref(characterDriveState.value.link?.folderUrl||'')
-const characterDriveMessage=ref('')
-const characterDriveBusy=ref(false)
-const characterDriveStatus=computed(()=>characterDriveState.value.link?'DRIVE LINKED':'LOCAL')
-const characterDriveLink=computed(()=>characterDriveState.value.link)
+const characterCloudState=ref(ensureCharacterCloudState())
+const characterCloudConfig=getCharacterCloudConfig()
+const characterCloudMessage=ref('')
+const characterCloudBusy=ref(false)
+const characterCloudConnection=computed(()=>characterCloudState.value.connection)
+const characterCloudConnected=computed(()=>Boolean(characterCloudConnection.value))
 
 const fontOptions:Array<{value:FontSize;label:string}>=[
   {value:'smallest',label:'Smallest'},{value:'small',label:'Small'},{value:'normal',label:'Normal'},{value:'large',label:'Large'},{value:'largest',label:'Largest'},
@@ -86,66 +85,71 @@ async function importCustomData(event:Event){
   finally{input.value=''}
 }
 function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?'))return;const cleared=clearCustomDataStore();if(!cleared.ok){alert(cleared.message);return}customData.value=[]}
-async function loadCharacterDriveConfig(){
-  if(characterDriveConfig.value)return
-  try{characterDriveConfig.value=await getCharacterDriveConfig()}catch(error){characterDriveMessage.value=error instanceof Error?error.message:'Drive sync configuration could not be loaded.'}
+function newCharacterCloudCode(){
+  if(characterCloudConnected.value)return
+  try{
+    characterCloudState.value=regenerateCharacterCloudCode(characterCloudState.value)
+    characterCloudMessage.value='A new Cloud Link Code was generated. Brambleheart will verify this code automatically when Dropbox returns to this browser.'
+  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'A new Cloud Link Code could not be saved on this device.'}
 }
-async function onCharacterDataToggle(event:Event){
-  if((event.currentTarget as HTMLDetailsElement).open)await loadCharacterDriveConfig()
-}
-async function copyDriveValue(value:string,label:string){
+async function copyCloudValue(value:string,label:string){
   if(!value)return
-  try{await navigator.clipboard.writeText(value);characterDriveMessage.value=`${label} copied.`}catch{characterDriveMessage.value=`Copy this ${label.toLowerCase()} manually: ${value}`}
+  try{await navigator.clipboard.writeText(value);characterCloudMessage.value=`${label} copied.`}catch{characterCloudMessage.value=`Copy this ${label.toLowerCase()} manually: ${value}`}
 }
-function newCharacterDriveCode(){
-  if(characterDriveState.value.link)return
-  try{
-    characterDriveState.value=regenerateCharacterDriveCode(characterDriveState.value)
-    characterDriveMessage.value='A new folder link code was generated. Put the new code in the Shared Drive folder description before linking.'
-  }catch(error){characterDriveMessage.value=error instanceof Error?error.message:'A new Drive link code could not be saved on this device.'}
+async function connectCharacterCloud(){
+  if(characterCloudBusy.value||characterCloudConnected.value)return
+  characterCloudBusy.value=true;characterCloudMessage.value='Opening Dropbox…'
+  try{await beginDropboxCloudConnection(characterCloudState.value)}
+  catch(error){characterCloudBusy.value=false;characterCloudMessage.value=error instanceof Error?error.message:'Dropbox could not start the Cloud Sync connection.'}
 }
-async function connectCharacterDrive(){
-  if(characterDriveBusy.value)return
-  characterDriveBusy.value=true;characterDriveMessage.value=''
+async function updateCharacterCloud(){
+  const connection=characterCloudConnection.value
+  if(!connection||characterCloudBusy.value)return
+  characterCloudBusy.value=true;characterCloudMessage.value=''
   try{
-    const link=await linkCharacterDrive(characterDriveFolderUrl.value,characterDriveState.value.pendingCode)
-    characterDriveState.value={...characterDriveState.value,link}
-    characterDriveMessage.value=`Linked ${link.folderName}. The temporary BH-LINK line was removed from the folder description. Characters remain stored locally until you explicitly update or upload.`
-  }catch(error){characterDriveMessage.value=error instanceof Error?error.message:'The Shared Drive folder could not be linked.'}
-  finally{characterDriveBusy.value=false}
-}
-async function updateCharacterDrive(){
-  const link=characterDriveLink.value
-  if(!link||characterDriveBusy.value)return
-  characterDriveBusy.value=true;characterDriveMessage.value=''
-  try{
-    const result=await updateCharactersFromDrive(link)
+    const result=await updateCharactersFromCloud(connection)
     const skipped=result.skipped.length?` ${result.skipped.length} invalid _BH.json ${result.skipped.length===1?'file was':'files were'} skipped.`:''
-    characterDriveMessage.value=`Drive update complete: ${result.replaced} replaced, ${result.added} added.${skipped}`
-  }catch(error){characterDriveMessage.value=error instanceof Error?error.message:'Drive update failed.'}
-  finally{characterDriveBusy.value=false}
+    characterCloudMessage.value=`Cloud update complete: ${result.replaced} replaced, ${result.added} added.${skipped}`
+  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'Cloud update failed.'}
+  finally{characterCloudBusy.value=false}
 }
-async function uploadCharacterDrive(){
-  const link=characterDriveLink.value
-  if(!link||characterDriveBusy.value)return
-  if(!confirm('Upload all local characters to the linked Shared Drive folder? Existing Drive files with the same internal character ID will be replaced.'))return
-  characterDriveBusy.value=true;characterDriveMessage.value=''
+async function uploadCharacterCloud(){
+  const connection=characterCloudConnection.value
+  if(!connection||characterCloudBusy.value)return
+  if(!confirm('Upload all local characters to the Brambleheart Dropbox App Folder? Existing cloud files with the same internal character ID will be replaced.'))return
+  characterCloudBusy.value=true;characterCloudMessage.value=''
   try{
-    const result=await uploadCharactersToDrive(link)
+    const result=await uploadCharactersToCloud(connection)
     const skipped=result.skipped.length?` ${result.skipped.length} invalid existing _BH.json ${result.skipped.length===1?'file was':'files were'} ignored.`:''
-    characterDriveMessage.value=`Drive upload complete: ${result.updated} updated, ${result.created} created${result.renamed?`, ${result.renamed} renamed`:''}.${skipped}`
-  }catch(error){characterDriveMessage.value=error instanceof Error?error.message:'Drive upload failed.'}
-  finally{characterDriveBusy.value=false}
+    characterCloudMessage.value=`Cloud upload complete: ${result.updated} updated, ${result.created} created${result.renamed?`, ${result.renamed} renamed`:''}.${skipped}`
+  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'Cloud upload failed.'}
+  finally{characterCloudBusy.value=false}
 }
-function disconnectDrive(){
-  if(!characterDriveLink.value)return
-  if(!confirm('Disconnect this Shared Drive folder from this device? Drive files will not be deleted.'))return
+async function disconnectCloud(){
+  if(!characterCloudConnection.value||characterCloudBusy.value)return
+  if(!confirm('Disconnect Dropbox Cloud Sync from this device? Cloud files will not be deleted.'))return
+  characterCloudBusy.value=true;characterCloudMessage.value=''
   try{
-    characterDriveState.value=disconnectCharacterDrive()
-    characterDriveFolderUrl.value=''
-    characterDriveMessage.value='Google Drive sync was disconnected from this device. Remove the service-account share from the folder if you also want to revoke server access.'
-  }catch(error){characterDriveMessage.value=error instanceof Error?error.message:'The Drive link could not be removed from local storage.'}
+    const result=await disconnectCharacterCloud(characterCloudState.value)
+    characterCloudState.value=result.state
+    characterCloudMessage.value=result.revoked?'Dropbox Cloud Sync was disconnected and its authorization was revoked.':'Dropbox Cloud Sync was disconnected from this device. If Dropbox authorization was already unavailable, remove Brambleheart from Dropbox Connected Apps if you also want to revoke it there.'
+  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'The cloud connection could not be removed from local storage.'}
+  finally{characterCloudBusy.value=false}
 }
+onMounted(async()=>{
+  const url=new URL(window.location.href)
+  const hasDropboxReturn=Boolean(characterCloudState.value.oauth&&(url.searchParams.get('code')||url.searchParams.get('state')||url.searchParams.get('error')))
+  if(!hasDropboxReturn)return
+  characterCloudBusy.value=true
+  try{
+    const next=await completeDropboxCloudConnection(window.location.href)
+    if(next){characterCloudState.value=next;characterCloudMessage.value='Dropbox Cloud Sync connected. Characters remain stored locally and Dropbox is contacted only when you choose Update from Cloud or Upload Local.'}
+  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'Dropbox Cloud Sync could not complete the connection.'}
+  finally{
+    characterCloudBusy.value=false
+    window.history.replaceState({},document.title,window.location.pathname)
+  }
+})
 </script>
 
 <template>
@@ -177,13 +181,16 @@ function disconnectDrive(){
       <div class="setting-row data-backup-row"><span><strong>Data Backup</strong><small>Download one JSON backup containing all approved, unapproved, and incomplete characters stored on this device.</small></span><button class="secondary-button settings-compact-action" type="button" @click="downloadCharacterBackup">Download</button></div>
       <div class="setting-row reset-data-row"><span><strong>Reset Local Data</strong><small>Reset custom content, characters, or all locally stored Brambleheart data.</small></span><div class="button-row reset-data-actions"><button class="secondary-button settings-compact-action" type="button" @click="resetCustomData">Reset Custom</button><button class="secondary-button settings-compact-action" type="button" @click="resetCharacters">Reset Characters</button><button class="secondary-button settings-compact-action" type="button" @click="resetAllLocalData">Reset Data</button></div></div>
       <div class="setting-row static-row"><span><strong>Site Changelog - Beta {{ BUILD }}</strong><small>Review changes to the Brambleheart companion site. Rules amendments are listed under Changes &amp; Updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/changelog')">Open</button></div>
-      <details class="custom-data-panel character-data-panel" @toggle="onCharacterDataToggle"><summary><span><strong>Character Data</strong><small>Characters remain stored locally. Optionally link one Google Workspace Shared Drive folder for manual _BH.json updates and uploads.</small></span><span class="value-chip">{{ characterDriveStatus }}</span></summary><div class="custom-data-actions custom-data-stack">
-        <div class="setting-row character-drive-detail"><span><strong>Google Drive Character Sync</strong><small>Brambleheart does not poll Google Drive. Drive access occurs only when you link a folder, choose Update from Drive, or choose Upload Local. Only the exact linked Shared Drive folder is searched, and only files ending in <code>_BH.json</code> are considered.</small><a class="inline-rule-link" href="/downloads/Brambleheart-Google-Drive-Setup.txt" download>Download Google Drive setup instructions (.txt)</a></span></div>
-        <div class="setting-row"><span><strong>Service Account</strong><small v-if="characterDriveConfig?.configured">Share only the exact Brambleheart folder directly with this account using an edit-capable role that can add and edit files. Do not add the service account as a member of the entire Shared Drive.</small><small v-else>{{ characterDriveConfig?'Drive sync is not configured on this deployment. Follow the site-owner section in the setup instructions.':'Open this menu to load the configured service-account address.' }}</small></span><div class="character-drive-value"><code>{{ characterDriveConfig?.serviceAccountEmail||characterDriveLink?.serviceAccountEmail||'Not configured' }}</code><button class="secondary-button settings-compact-action" type="button" :disabled="!(characterDriveConfig?.serviceAccountEmail||characterDriveLink?.serviceAccountEmail)" @click="copyDriveValue(characterDriveConfig?.serviceAccountEmail||characterDriveLink?.serviceAccountEmail||'','Service account')">Copy</button></div></div>
-        <div v-if="!characterDriveLink" class="setting-row"><span><strong>Folder Link Code</strong><small>In Google Drive, put this exact temporary line in the folder description before linking: <code>BH-LINK:{{ characterDriveState.pendingCode }}</code>. Brambleheart removes the line after a successful link and stores its private pairing marker on the folder.</small></span><div class="button-row character-drive-code-actions"><button class="secondary-button settings-compact-action" type="button" :disabled="Boolean(characterDriveLink)" @click="newCharacterDriveCode">New Code</button><button class="secondary-button settings-compact-action" type="button" @click="copyDriveValue(`BH-LINK:${characterDriveState.pendingCode}`,'Folder link code')">Copy Code</button></div></div>
-        <div v-if="!characterDriveLink" class="setting-row character-drive-folder-row"><span><strong>Shared Drive Folder Link</strong><small>Paste the link to the exact folder Brambleheart may use. Normal My Drive folders are rejected because Google service accounts cannot own new My Drive files.</small></span><div class="character-drive-link-controls"><input v-model.trim="characterDriveFolderUrl" class="field-control" type="url" autocomplete="off" placeholder="https://drive.google.com/drive/folders/..." /><button class="secondary-button settings-compact-action" type="button" :disabled="characterDriveBusy||!characterDriveFolderUrl||!characterDriveConfig?.configured" @click="connectCharacterDrive">{{ characterDriveBusy?'Working…':'Link Folder' }}</button></div></div>
-        <div v-else class="setting-row"><span><strong>{{ characterDriveLink.folderName }}</strong><small>Linked {{ new Date(characterDriveLink.linkedAt).toLocaleDateString() }}. Exact character-ID matches from Drive replace the local copy when Update from Drive is clicked. Unmatched local characters remain local.</small></span><div class="button-row character-drive-sync-actions"><button class="secondary-button settings-compact-action" type="button" :disabled="characterDriveBusy" @click="updateCharacterDrive">Update from Drive</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterDriveBusy" @click="uploadCharacterDrive">Upload Local</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterDriveBusy" @click="disconnectDrive">Disconnect</button></div></div>
-      </div><p v-if="characterDriveMessage" class="creation-status-message character-drive-status-message">{{ characterDriveMessage }}</p></details>
+      <details class="custom-data-panel character-data-panel"><summary><span><strong>Character Data</strong><small>Character data is stored locally. Optionally link Dropbox for cloud base storage.</small></span><span class="character-data-status-pills"><span class="value-chip">LOCAL</span><span class="value-chip">{{ characterCloudConnected?'CONNECTED':'DISCONNECTED' }}</span></span></summary><div class="custom-data-actions custom-data-stack">
+        <div class="setting-row"><span><strong>Local Character Storage</strong><small>Approved, unapproved, and incomplete characters continue to use this device as their active storage. Cloud Sync never replaces local storage as the live character database.</small></span><span class="value-chip">LOCAL</span></div>
+      </div></details>
+      <details class="custom-data-panel cloud-sync-panel"><summary><span><strong>Cloud Sync</strong><small>Optionally connect Dropbox App Folder storage for explicit character updates and uploads.</small></span><span class="value-chip">DROPBOX</span></summary><div class="custom-data-actions custom-data-stack">
+        <div class="setting-row character-cloud-detail"><span><strong>Dropbox App Folder</strong><small>Brambleheart uses Dropbox App Folder access, so it can read and write only the folder Dropbox assigns to this app. Nothing is polled in the background. Only files ending in <code>_BH.json</code> are considered during a manual sync.</small><a class="inline-rule-link" href="/downloads/Brambleheart-Cloud-Instructions.txt" download>Cloud Instructions (.txt)</a></span></div>
+        <div v-if="!characterCloudConnected" class="setting-row"><span><strong>Cloud Link Code</strong><small>This code protects the Dropbox OAuth return to this browser. Brambleheart sends it automatically and verifies the exact value when Dropbox returns; you do not need to paste it anywhere.</small></span><div class="character-cloud-code-controls"><code>{{ characterCloudState.linkCode }}</code><div class="button-row character-cloud-code-actions"><button class="secondary-button settings-compact-action" type="button" @click="newCharacterCloudCode">New Code</button><button class="secondary-button settings-compact-action" type="button" @click="copyCloudValue(characterCloudState.linkCode,'Cloud Link Code')">Copy Code</button></div></div></div>
+        <div v-if="!characterCloudConnected" class="setting-row character-cloud-workspace-row"><span><strong>Workspace Link</strong><small>Connect a Dropbox account. Dropbox creates and isolates the Brambleheart App Folder automatically; no shared-folder URL, Workspace account, or service account is required.</small></span><div class="character-cloud-workspace-controls"><code>Dropbox App Folder</code><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy||!characterCloudConfig.configured" @click="connectCharacterCloud">{{ characterCloudBusy?'Working…':'Connect Dropbox' }}</button></div></div>
+        <div v-if="!characterCloudConfig.configured&&!characterCloudConnected" class="setting-row"><span><strong>Cloud Configuration</strong><small>This deployment is missing the Dropbox App Key. Follow Cloud Instructions (.txt), set <code>VITE_DROPBOX_APP_KEY</code> in Vercel, register the production <code>/settings</code> redirect URI in Dropbox, and redeploy.</small></span><span class="value-chip">NOT CONFIGURED</span></div>
+        <div v-else-if="characterCloudConnection" class="setting-row"><span><strong>Dropbox App Folder</strong><small>Connected {{ new Date(characterCloudConnection.linkedAt).toLocaleDateString() }}. Exact character-ID matches from Dropbox replace the local copy only when Update from Cloud is clicked. Unmatched local characters remain local.</small></span><div class="button-row character-cloud-sync-actions"><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="updateCharacterCloud">Update from Cloud</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="uploadCharacterCloud">Upload Local</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="disconnectCloud">Disconnect</button></div></div>
+      </div><p v-if="characterCloudMessage" class="creation-status-message character-cloud-status-message">{{ characterCloudMessage }}</p></details>
       <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Import custom Species, Spells, Talents, and Traits built from the supplied JSON templates.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions custom-data-stack">
         <div class="setting-row"><span><strong>Custom Data Templates</strong><small>Download one ZIP containing typed JSON templates for Species, Spell, Talent, and Trait entries.</small></span><a class="secondary-button settings-compact-action" href="/downloads/Brambleheart-Custom-Data-Templates.zip" download>Download Templates</a></div>
         <div class="setting-row"><span><strong>Imported Custom Content</strong><small>Species {{ customCounts.species }} · Spells {{ customCounts.spell }} · Talents {{ customCounts.talent }} · Traits {{ customCounts.trait }}</small></span><div class="button-row"><button class="secondary-button settings-compact-action" type="button" @click="customDataInput?.click()">Import JSON</button><button class="secondary-button settings-compact-action" type="button" :disabled="!customData.length" @click="clearCustomData">Clear</button><input ref="customDataInput" hidden multiple type="file" accept="application/json,.json" @change="importCustomData" /></div></div>
@@ -193,23 +200,23 @@ function disconnectDrive(){
 </template>
 
 <style scoped>
-.character-drive-detail>span{max-width:100%;}
-.character-drive-detail .inline-rule-link{width:max-content;max-width:100%;}
-.character-drive-value{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0;max-width:52%;}
-.character-drive-value code{min-width:0;overflow-wrap:anywhere;color:var(--ink);font-size:calc(9px + var(--font-offset));}
-.character-drive-link-controls{display:grid;grid-template-columns:minmax(220px,1fr) auto;align-items:center;gap:7px;width:min(440px,58%);}
-.character-drive-code-actions,.character-drive-sync-actions{justify-content:flex-end;flex-wrap:wrap;}
-.character-drive-status-message{margin:10px 12px 12px;}
-.character-data-panel code{user-select:text;-webkit-user-select:text;}
+.character-cloud-detail>span{max-width:100%;}
+.character-cloud-detail .inline-rule-link{width:max-content;max-width:100%;}
+.character-data-status-pills{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-left:auto;}
+.character-cloud-code-controls,.character-cloud-workspace-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0;max-width:58%;}
+.character-cloud-code-controls code,.character-cloud-workspace-controls code{min-width:0;overflow-wrap:anywhere;color:var(--ink);font-size:calc(9px + var(--font-offset));}
+.character-cloud-code-actions,.character-cloud-sync-actions{justify-content:flex-end;flex-wrap:wrap;}
+.character-cloud-status-message{margin:10px 12px 12px;}
+.cloud-sync-panel code{user-select:text;-webkit-user-select:text;}
 @media(max-width:680px){
-  .character-data-panel .setting-row{align-items:stretch;flex-direction:column;}
-  .character-drive-folder-row{align-items:stretch;flex-direction:column;}
-  .character-drive-link-controls{width:100%;grid-template-columns:1fr;}
-  .character-drive-link-controls .settings-compact-action{width:100%;}
-  .character-drive-value{width:100%;max-width:100%;flex-wrap:wrap;justify-content:flex-start;}
-  .character-drive-code-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
-  .character-drive-code-actions .settings-compact-action{width:100%;}
-  .character-drive-sync-actions{width:100%;display:grid;grid-template-columns:1fr;}
-  .character-drive-sync-actions .settings-compact-action{width:100%;}
+  .cloud-sync-panel .setting-row,.character-data-panel .setting-row{align-items:stretch;flex-direction:column;}
+  .character-data-status-pills{justify-content:flex-start;margin-left:0;}
+  .character-cloud-workspace-row{align-items:stretch;flex-direction:column;}
+  .character-cloud-code-controls,.character-cloud-workspace-controls{width:100%;max-width:100%;flex-wrap:wrap;justify-content:flex-start;}
+  .character-cloud-workspace-controls .settings-compact-action{width:100%;}
+  .character-cloud-code-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
+  .character-cloud-code-actions .settings-compact-action{width:100%;}
+  .character-cloud-sync-actions{width:100%;display:grid;grid-template-columns:1fr;}
+  .character-cloud-sync-actions .settings-compact-action{width:100%;}
 }
 </style>

@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.27
+# Brambleheart TTRPG — Beta 0.28
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.27 is a focused Google Drive character-sync release built directly on current GitHub main after Beta 0.26.
+Beta 0.28 replaces the Beta 0.27 Google Drive service-account sync with Dropbox App Folder Cloud Sync and adds a small Rules → Recent visual refinement.
 
 ## Main views
 
@@ -15,20 +15,24 @@ Beta 0.27 is a focused Google Drive character-sync release built directly on cur
 - Settings
 - Site Changelog
 
-## Beta 0.27 focus
+## Beta 0.28 focus
 
-- Adds local-first, manually triggered Google Drive Character Sync under Settings → Data & Content → Character Data.
-- Links one exact Google Workspace Shared Drive folder through a server-side service account; Google credentials never enter browser storage or repository source.
-- Searches only direct files in the linked folder and only `_BH.json` character files; subfolders are not scanned.
-- Updates local characters by stable internal character ID, replacing exact matches and adding new Drive records while retaining unmatched local records.
-- Uploads local characters as human-readable `CharacterName_BH.json` files, updating the existing Drive file when the internal ID already matches.
-- Adds a downloadable plain-text setup and troubleshooting guide directly inside the Character Data menu.
-- Keeps synchronization explicit: there is no automatic polling or background Drive access.
+- Keeps Character Data local-first and separates `Character Data` and `Cloud Sync` into their own Settings parents.
+- Shows `LOCAL` plus `CONNECTED` or `DISCONNECTED` in Character Data.
+- Rebuilds Cloud Sync around Dropbox App Folder access instead of Google Workspace Shared Drive/service-account access.
+- Uses Dropbox OAuth 2 PKCE so normal users connect Dropbox with an authorization screen rather than creating projects, service accounts, shared folders, or API keys.
+- Keeps explicit `Update from Cloud`, `Upload Local`, and `Disconnect` actions; there is no background polling.
+- Searches only the Dropbox App Folder and only files ending in `_BH.json`.
+- Keeps stable internal character IDs authoritative for replacement/addition and human-readable `CharacterName_BH.json` filenames for portability.
+- Replaces the Google setup guide with `Cloud Instructions (.txt)` for Dropbox setup and use.
+- Gives each Rules → Recent result card its own top-border color.
 - Preserves the Node runtime pin at `22.x`.
 
-## Google Drive deployment configuration
+## Dropbox deployment configuration
 
-The site owner must configure `BH_DRIVE_SERVICE_ACCOUNT_EMAIL`, `BH_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY`, and `BH_DRIVE_LINK_SECRET` as private Vercel environment variables. Two-way service-account sync requires a folder inside a Google Workspace Shared Drive. The complete setup procedure is available from Settings → Data & Content → Character Data.
+The site owner creates one Dropbox Scoped Access app with **App folder** access, enables `files.metadata.read`, `files.content.read`, and `files.content.write`, registers the production `/settings` OAuth redirect URI, and sets `VITE_DROPBOX_APP_KEY` in Vercel before redeploying. The Dropbox App secret is not required by the browser implementation because Cloud Sync uses PKCE.
+
+The complete procedure is available from Settings → Data & Content → Cloud Sync → `Cloud Instructions (.txt)`.
 
 ## Runtime
 

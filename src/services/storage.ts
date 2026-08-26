@@ -2,7 +2,7 @@ export const STORAGE_KEYS={
   settings:'brambleheart-settings-v0.01',
   rhythm:'brambleheart-simulator-rhythm-v0.05',
   characters:'brambleheart-characters-v0.01',
-  characterDrive:'brambleheart-character-drive-v0.01',
+  characterCloud:'brambleheart-character-cloud-v0.28',
   customData:'brambleheart-custom-data-v0.14',
   recentRules:'brambleheart-rules-recent-v0.05',
   welcomeSeen:'brambleheart.welcome.v0.05',

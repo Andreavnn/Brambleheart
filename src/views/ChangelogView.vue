@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.28',summary:'Dropbox App Folder Cloud Sync, Character Data status, and Recent Rules color refinement',open:true,items:[
+    'Splits Character Data and Cloud Sync into separate Settings parents and shows LOCAL plus CONNECTED/DISCONNECTED status on Character Data.',
+    'Replaces Google Workspace Shared Drive/service-account synchronization with Dropbox App Folder access and OAuth 2 PKCE, removing the active Google service-account and folder-description pairing workflow.',
+    'Uses Cloud Link Code as the OAuth state boundary and Workspace Link as the one-click Dropbox connection control; no shared-folder URL or user-created cloud folder is required.',
+    'Keeps synchronization local-first and explicit: Update from Cloud replaces exact internal-ID matches and adds new cloud characters, Upload Local updates/creates _BH.json files, and Disconnect attempts to revoke Dropbox authorization.',
+    'Restricts Brambleheart to the Dropbox App Folder and the existing _BH.json convention while retaining stable internal character IDs as the synchronization authority.',
+    'Replaces the Google setup guide with Cloud Instructions (.txt) covering Dropbox App Folder setup, scopes, redirect URI, Vercel App Key configuration, user connection, and troubleshooting.',
+    'Gives each Rules Recent card its own top-border color using existing Brambleheart detail tones instead of a shared left accent.',
+    'Synchronizes Beta 0.28 release markers while preserving the Node runtime pin at 22.x and adding no Dropbox npm dependency.',
+  ]},
   {version:'Beta Build 0.27',summary:'Manual Google Drive character sync with exact-folder scope and local-first storage',open:true,items:[
     'Adds an expandable Character Data menu with explicit Link Folder, Update from Drive, Upload Local, and Disconnect actions; normal character editing remains entirely local.',
     'Keeps service-account credentials server-side in Vercel; a temporary BH-LINK folder-description proof establishes pairing, then a private Drive app property and signed local token validate later sync operations.',

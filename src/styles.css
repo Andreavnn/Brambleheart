@@ -1231,13 +1231,13 @@ html[data-background-view="true"] body::before{display:none!important;}html[data
 
 
 .settings-card,.review-character-sheet,.review-section,.rules-index-panel,.rule-content-card,.organized-rule-category,.character-selection-panel,.tool-panel,.species-rule-lore,.character-list-group{background:var(--surface-back)!important;border-color:var(--surface-line)!important;}
-.settings-card .setting-row,.settings-card details,.rules-index-row,.recent-rule-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-feature-box,.review-equipment-grid article,.result-panel,.monster-family-box,.monster-family-link,.equipment-slot-row{background:var(--surface-front)!important;border-color:var(--surface-line)!important;}
+.settings-card .setting-row,.settings-card details,.rules-index-row,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-feature-box,.review-equipment-grid article,.result-panel,.monster-family-box,.monster-family-link,.equipment-slot-row{background:var(--surface-front)!important;border-color:var(--surface-line)!important;}
 .trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.equipment-rule-card,.narrative-choice-card,.choice-summary,.gear-shop-row{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 9%,var(--surface-front))!important;border-color:color-mix(in srgb,var(--rule-tone,var(--accent)) 46%,var(--surface-line))!important;}
 .settings-card .setting-row,.settings-card details,.settings-card summary,.rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary,.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-color:var(--surface-line)!important;}
 .rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary{background:var(--surface-title)!important;}
 .trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 16%,var(--surface-title))!important;}
 
-.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.recent-rule-box,.result-panel,.equipment-rule-card,.narrative-choice-card{
+.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.result-panel,.equipment-rule-card,.narrative-choice-card{
   border-style:solid!important;
   border-width:1px!important;
   border-top-width:5px!important;
@@ -1246,7 +1246,7 @@ html[data-background-view="true"] body::before{display:none!important;}html[data
   box-shadow:0 2px 7px rgba(0,0,0,.06)!important;
   overflow:hidden;
 }
-.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.recent-rule-box,.result-panel{border-color:var(--surface-line)!important;}
+.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.result-panel{border-color:var(--surface-line)!important;}
 .spell-detail-card{border-top-color:var(--spell-lore,var(--accent))!important;}
 .trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-bottom:1px solid var(--surface-line)!important;}
 .review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article{padding-top:9px!important;}

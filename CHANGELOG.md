@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.28
+
+- Replaced the Beta 0.27 Google Workspace/service-account Character Sync implementation with Dropbox App Folder Cloud Sync using OAuth 2 PKCE.
+- Split Settings → Data & Content into separate Character Data and Cloud Sync parents; Character Data now shows LOCAL plus CONNECTED/DISCONNECTED status.
+- Removed the active Service Account UI and Google Shared Drive folder-link workflow. Cloud Sync now exposes Cloud Link Code, Workspace Link, Update from Cloud, Upload Local, Disconnect, and the renamed Cloud Instructions (.txt) download.
+- Kept local character storage authoritative during normal use and retained explicit-only cloud access with no background polling.
+- Restricted Dropbox access to the app's isolated App Folder and `_BH.json` files, while keeping internal character IDs authoritative for replacement/addition and human-readable filenames for export portability.
+- Added PKCE refresh-token handling through the guarded local-storage service and isolated cleanup of the obsolete Beta 0.27 Google connection key at the migration boundary.
+- Changed Rules → Recent cards from a shared left accent to individual top-border colors using established Brambleheart detail tones.
+- Synchronized visible build, package/export version, PWA cache, README, patch notes, repository/in-app changelog to Beta 0.28 while preserving the Node runtime pin at `22.x`.
+
 # Brambleheart Beta 0.27
 
 - Added local-first, manually triggered Google Drive Character Sync under Settings → Data & Content → Character Data with Link Folder, Update from Drive, Upload Local, and Disconnect controls.
