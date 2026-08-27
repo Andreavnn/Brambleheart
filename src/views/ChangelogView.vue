@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.31',summary:'Safer local resets, visible rule-layout test entry, switch-style choices, device QR capture, and transfer icons',open:true,items:[
+    'Moves destructive Reset Local Data buttons behind an expandable MANAGE parent while retaining the existing double-confirmation checks.',
+    'Moves Site Changelog into its own Changelog & Updates Settings section and removes underlines from Cloud Instructions and template download buttons.',
+    'Renders Themes and Background choices with the shared Settings switch presentation while preserving mutually exclusive radio selection.',
+    'Adds an expandable Rule Page Layout Test parent under The Watcher and keeps the preview isolated from production Rule Reader pages.',
+    'Enlarges the footer Brambleheart icon from 26px to a responsive maximum of 260px.',
+    'Removes the in-page getUserMedia QR scanner; Scan QR now invokes device camera capture where supported and decodes the captured image.',
+    'Replaces Character List Import, Scan QR, and Export text buttons with accessible file/QR transfer icons.',
+    'Synchronizes Beta 0.31 release markers while preserving the Node runtime pin at 22.x.',
+  ]},
   {version:'Beta Build 0.30',summary:'Character QR sharing, completion-state authority, larger identity, site sharing, Settings arrows, and isolated Rule layout preview',open:true,items:[
     'Doubles the desktop site-logo visual scale while keeping Back and Dark Mode controls on their independent centered header-control row, with responsive scale caps at narrower widths.',
     'Adds the Brambleheart app icon above the footer separator, adds Share between Discord and Install, adds Share Brambleheart under Access & Community, and uses www.brambleheartrpg.com as the canonical public share origin.',

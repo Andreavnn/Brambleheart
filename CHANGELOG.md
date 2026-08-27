@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.31
+
+- Hides destructive Reset Local Data actions inside an expandable MANAGE parent while retaining double confirmation.
+- Moves Site Changelog to a dedicated Changelog & Updates Settings section and removes underlines from the Cloud Instructions and template download buttons.
+- Presents Themes and Background selections as switch controls while keeping their canonical one-choice radio behavior.
+- Adds an expandable isolated Rule Page Layout Test parent under The Watcher without changing production Rule Reader pages.
+- Enlarges the bottom-of-page Brambleheart icon from 26px to a responsive maximum of 260px.
+- Replaces the in-page QR camera stream with device-camera image capture and keeps QR decoding on the captured image.
+- Replaces Character List Import, Scan QR, and Export text controls with accessible transfer icons.
+- Synchronizes package/build/export/PWA/release documentation to Beta 0.31 while preserving the exact Node `22.x` requirement.
+
 # Brambleheart Beta 0.30
 
 - Doubled the desktop site-logo visual scale while keeping Back/Dark Mode controls on their independent centered header-control row; tablet/mobile scales are capped responsively.

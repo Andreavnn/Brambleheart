@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { attributes, BUILD, homelands, sparks } from '../data/bramble'
@@ -15,16 +15,12 @@ const characters=ref<CharacterRecord[]>(loadCharacters())
 const openIds=ref(new Set<string>())
 const fileInput=ref<HTMLInputElement|null>(null)
 const qrImageInput=ref<HTMLInputElement|null>(null)
-const qrVideo=ref<HTMLVideoElement|null>(null)
-const qrDialogMode=ref<'closed'|'share'|'scan'|'import'>('closed')
+const qrDialogMode=ref<'closed'|'share'|'import'>('closed')
 const qrDataUrl=ref('')
 const qrShareUrl=ref('')
 const qrShareName=ref('')
 const qrMessage=ref('')
 const pendingQrCharacter=ref<CharacterRecord|null>(null)
-let qrStream:MediaStream|null=null
-let qrFrame=0
-let qrLastScan=0
 const sortedCharacters=computed(()=>[...characters.value].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||Date.parse(b.updatedAt||b.createdAt)-Date.parse(a.updatedAt||a.createdAt)))
 const unapprovedCharacters=computed(()=>sortedCharacters.value.filter(character=>characterStatus(character)==='unapproved'))
 const approvedCharacters=computed(()=>sortedCharacters.value.filter(character=>characterStatus(character)==='approved'))
@@ -53,12 +49,12 @@ async function importCharacter(event:Event){
   input.value=''
 }
 async function openCharacterShare(character:CharacterRecord){
-  stopQrScanner();pendingQrCharacter.value=null;qrMessage.value='';qrShareName.value=character.name
+  pendingQrCharacter.value=null;qrMessage.value='';qrShareName.value=character.name
   try{
     const share=await createCharacterShareUrl(character)
     qrShareUrl.value=share.url
     qrDataUrl.value=await QRCode.toDataURL(share.url,{errorCorrectionLevel:'L',margin:2,width:360})
-    qrMessage.value=`${share.bytes.toLocaleString()} bytes · scan with a phone camera or Brambleheart Scan QR.`
+    qrMessage.value=`${share.bytes.toLocaleString()} bytes · scan with a phone camera.`
     qrDialogMode.value='share'
   }catch(error){qrDialogMode.value='share';qrDataUrl.value='';qrShareUrl.value='';qrMessage.value=error instanceof Error?error.message:'Could not create this character QR code.'}
 }
@@ -66,44 +62,27 @@ async function copyQrLink(){
   if(!qrShareUrl.value)return
   try{await navigator.clipboard.writeText(qrShareUrl.value);qrMessage.value='Character share link copied.'}catch{qrMessage.value='Could not copy the share link in this browser.'}
 }
-function stopQrScanner(){
-  if(qrFrame)cancelAnimationFrame(qrFrame);qrFrame=0
-  qrStream?.getTracks().forEach(track=>track.stop());qrStream=null
-  if(qrVideo.value)qrVideo.value.srcObject=null
-}
-function closeQrDialog(){stopQrScanner();qrDialogMode.value='closed';pendingQrCharacter.value=null;qrMessage.value=''}
+function closeQrDialog(){qrDialogMode.value='closed';pendingQrCharacter.value=null;qrMessage.value=''}
 async function handleQrText(text:string){
   try{
     const character=await parseCharacterShareValue(text)
-    stopQrScanner();pendingQrCharacter.value=character;qrDialogMode.value='import';qrMessage.value='Review the character below before importing it to this device.'
+    pendingQrCharacter.value=character;qrDialogMode.value='import';qrMessage.value='Review the character below before importing it to this device.'
   }catch(error){qrMessage.value=error instanceof Error?error.message:'Could not read this QR code.'}
 }
-function scanVideoFrame(now:number){
-  if(qrDialogMode.value!=='scan'||!qrVideo.value||!qrStream)return
-  if(now-qrLastScan>180&&qrVideo.value.readyState>=2){
-    qrLastScan=now
-    const video=qrVideo.value,canvas=document.createElement('canvas')
-    canvas.width=video.videoWidth;canvas.height=video.videoHeight
-    const context=canvas.getContext('2d',{willReadFrequently:true})
-    if(context&&canvas.width&&canvas.height){context.drawImage(video,0,0);const image=context.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'});if(code?.data){void handleQrText(code.data);return}}
-  }
-  qrFrame=requestAnimationFrame(scanVideoFrame)
-}
-async function openQrScanner(){
-  closeQrDialog();qrDialogMode.value='scan';qrMessage.value='Point the camera at a Brambleheart character QR code.'
-  await nextTick()
-  try{
-    qrStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})
-    if(!qrVideo.value){stopQrScanner();return}
-    qrVideo.value.srcObject=qrStream;await qrVideo.value.play();qrFrame=requestAnimationFrame(scanVideoFrame)
-  }catch{qrMessage.value='Camera access is unavailable. You can scan a saved QR image instead.'}
+function loadCapturedImage(file:File){
+  return new Promise<HTMLImageElement>((resolve,reject)=>{
+    const url=URL.createObjectURL(file),image=new Image()
+    image.onload=()=>{URL.revokeObjectURL(url);resolve(image)}
+    image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not read this image.'))}
+    image.src=url
+  })
 }
 async function scanQrImage(event:Event){
   const input=event.target as HTMLInputElement,file=input.files?.[0];if(!file)return
   try{
-    const bitmap=await createImageBitmap(file),canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height
-    const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw new Error('Could not read this image.')
-    context.drawImage(bitmap,0,0);bitmap.close();const image=context.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'})
+    const captured=await loadCapturedImage(file),canvas=document.createElement('canvas');canvas.width=captured.naturalWidth;canvas.height=captured.naturalHeight
+    const context=canvas.getContext('2d',{willReadFrequently:true});if(!context||!canvas.width||!canvas.height)throw new Error('Could not read this image.')
+    context.drawImage(captured,0,0);const image=context.getImageData(0,0,canvas.width,canvas.height);const code=jsQR(image.data,image.width,image.height,{inversionAttempts:'attemptBoth'})
     if(!code?.data)throw new Error('No QR code was found in this image.')
     await handleQrText(code.data)
   }catch(error){qrMessage.value=error instanceof Error?error.message:'Could not scan this QR image.'}
@@ -122,7 +101,6 @@ function skillSummary(character:CharacterRecord){
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
 }
 onMounted(()=>{const shared=characterShareFromLocation();if(shared)void handleQrText(shared)})
-onBeforeUnmount(stopQrScanner)
 </script>
 
 <template>
@@ -137,10 +115,11 @@ onBeforeUnmount(stopQrScanner)
     <section class="list-launch card-surface character-action-launch">
       <div class="list-launch-actions centered-character-actions">
         <RouterLink class="primary-button" to="/characters/create">Create a Character</RouterLink>
-        <button class="secondary-button" type="button" @click="fileInput?.click()">Import Character</button>
-        <button class="secondary-button" type="button" @click="openQrScanner">Scan QR</button>
-        <button class="secondary-button" type="button" :disabled="!characters.length" @click="exportCharacters">Export Characters</button>
+        <button class="secondary-button character-transfer-action" type="button" aria-label="Import character" title="Import Character" @click="fileInput?.click()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M12 17V9"/><path d="m8.5 12.5 3.5-3.5 3.5 3.5"/></svg></button>
+        <button class="secondary-button character-transfer-action" type="button" aria-label="Scan QR code with device camera" title="Scan QR" @click="qrImageInput?.click()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3z"/><path d="M15 15h2v2h-2zM19 15h2v6h-2zM15 19h2v2h-2z"/><path d="M12 18V10"/><path d="m9 13 3-3 3 3"/></svg></button>
+        <button class="secondary-button character-transfer-action" type="button" :disabled="!characters.length" aria-label="Export characters" title="Export Characters" @click="exportCharacters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M12 9v8"/><path d="m8.5 13.5 3.5 3.5 3.5-3.5"/></svg></button>
         <input ref="fileInput" class="file-import-input" hidden type="file" accept="application/json,.json" @change="importCharacter" />
+        <input ref="qrImageInput" hidden type="file" accept="image/*" capture="environment" @change="scanQrImage" />
       </div>
     </section>
 
@@ -186,17 +165,12 @@ onBeforeUnmount(stopQrScanner)
     <section v-else class="empty-state card-surface compact-empty lists-empty-state"><div class="empty-icon">◆</div><h2>Your characters will appear here</h2><p>Create a character or import an existing Brambleheart character file.</p></section>
 
     <div v-if="qrDialogMode!=='closed'" class="qr-share-backdrop" role="presentation" @click.self="closeQrDialog">
-      <section class="qr-share-dialog card-surface" role="dialog" aria-modal="true" :aria-label="qrDialogMode==='share'?'Share character QR code':qrDialogMode==='import'?'Import shared character':'Scan character QR code'">
-        <header class="qr-share-heading"><div><p class="eyebrow">CHARACTER SHARE</p><h2 v-if="qrDialogMode==='share'">Share {{ qrShareName }}</h2><h2 v-else-if="qrDialogMode==='import'">Import Shared Character</h2><h2 v-else>Scan Character QR</h2></div><button class="icon-button" type="button" aria-label="Close QR dialog" @click="closeQrDialog">×</button></header>
+      <section class="qr-share-dialog card-surface" role="dialog" aria-modal="true" :aria-label="qrDialogMode==='share'?'Share character QR code':'Import shared character'">
+        <header class="qr-share-heading"><div><p class="eyebrow">CHARACTER SHARE</p><h2 v-if="qrDialogMode==='share'">Share {{ qrShareName }}</h2><h2 v-else>Import Shared Character</h2></div><button class="icon-button" type="button" aria-label="Close QR dialog" @click="closeQrDialog">×</button></header>
         <template v-if="qrDialogMode==='share'">
           <img v-if="qrDataUrl" class="character-share-qr" :src="qrDataUrl" :alt="`QR code for ${qrShareName}`" />
           <p class="qr-share-message">{{ qrMessage }}</p>
           <div class="button-row qr-share-actions"><button v-if="qrShareUrl" class="secondary-button" type="button" @click="copyQrLink">Copy Share Link</button><button class="secondary-button" type="button" @click="closeQrDialog">Close</button></div>
-        </template>
-        <template v-else-if="qrDialogMode==='scan'">
-          <video ref="qrVideo" class="qr-scan-video" muted playsinline></video>
-          <p class="qr-share-message">{{ qrMessage }}</p>
-          <div class="button-row qr-share-actions"><button class="secondary-button" type="button" @click="qrImageInput?.click()">Scan Saved QR Image</button><button class="secondary-button" type="button" @click="closeQrDialog">Cancel</button><input ref="qrImageInput" hidden type="file" accept="image/*" @change="scanQrImage" /></div>
         </template>
         <template v-else-if="pendingQrCharacter">
           <div class="qr-import-summary"><strong>{{ pendingQrCharacter.name }}</strong><span>{{ pendingQrCharacter.species||'Species not selected' }} · {{ pendingQrCharacter.campaignName||'No campaign assigned' }}</span><small>Status after import: {{ characterStatus(pendingQrCharacter)==='approved'?'Approved':characterStatus(pendingQrCharacter)==='unapproved'?'Unapproved':'Incomplete' }}</small></div>

@@ -1,44 +1,30 @@
-# Brambleheart Beta 0.30 Patch Notes
+# Brambleheart Beta 0.31 Patch Notes
 
-## Site Identity & Footer
-- Enlarges the site-header Brambleheart logo to twice its desktop visual scale while keeping the Back and Dark Mode controls on their independent centered control row so the larger logo does not push those controls toward the screen edges.
-- Uses responsive scale caps at tablet and mobile widths to reduce clipping/overflow risk while retaining the larger identity treatment.
-- Adds the existing Brambleheart app icon above the footer separator without placing it in the utility-button flex row, so it stays inside the current footer footprint instead of changing button wrapping.
-- Adds `Share` between `Discord` and `Install Brambleheart` in the global footer.
-- Adds `Share Brambleheart` under Settings -> Access & Community, directly below Join Discord.
-- Establishes `https://www.brambleheartrpg.com` as the canonical public site URL used by site sharing and character QR links.
+## Settings Safety & Organization
+- Replaces the exposed Reset Local Data action row with an expandable Reset Local Data parent. The `MANAGE` summary must be opened before Reset Custom Data, Reset Characters, or Reset All Local Data buttons are visible.
+- Retains the existing two-confirmation protection for destructive reset operations.
+- Moves Site Changelog out of Data & Content into its own `CHANGELOG & UPDATES` Settings section directly below Data & Content.
+- Removes text underlines from the button-styled Cloud Instructions (.txt) and Download Templates links.
 
-## Character QR Sharing
-- Adds per-character `Share QR` controls to Character List and a `Scan QR` import action alongside the existing JSON import/export controls.
-- Character QR codes contain a client-side Brambleheart character share URL. No Brambleheart server-side character store is introduced.
-- Uses gzip compression when the browser supports `CompressionStream`, with an uncompressed JSON fallback for compatible browsers.
-- Enforces a 2,800-byte reliable QR payload ceiling. Characters that exceed the limit are directed to the existing JSON export instead of generating an unreliable QR code.
-- QR imports require confirmation before writing to local Character Data.
-- QR input supports the device camera, a saved QR image, and normal phone-camera links that open Brambleheart with the character payload in the URL fragment.
-- JSON import and QR import now share one canonical imported-character normalizer instead of maintaining separate import rules.
-- Adds `qrcode` for QR rendering and `jsqr` for camera/image decoding.
+## Themes & Backgrounds
+- Keeps Themes and Backgrounds mutually exclusive using their existing radio values, but renders each choice with the same switch control used by Dark Mode and other Settings toggles.
+- Reuses the canonical Settings switch CSS instead of introducing a second independent switch implementation.
 
-## Character Completion Status
-- Adds an explicit `creationComplete` field as the canonical boundary between Incomplete and completed characters.
-- A character is Incomplete only until the full creation flow is finished once.
-- Editing an Unapproved or Approved character and choosing Save / Save & Close no longer moves that character back to Incomplete merely because the editor was closed before revisiting every creation step.
-- Legacy records migrate at load: existing Approved/Unapproved records are treated as creation-complete; existing Incomplete/draft records remain incomplete.
-- Approval remains separate from completion, so a completed character is either Unapproved or Approved.
+## Rules Layout Test
+- Adds an expandable `Rule Page Layout Test` parent under The Watcher on the Rules index, with the actual preview link hidden inside until expanded.
+- The entry opens `/rules/layout-preview/fundamentals`; the preview remains isolated and production `/rules/read/:slug` pages are unchanged.
 
-## Settings
-- Consolidates expandable Settings navigation arrows into one Settings-wide `details > summary` authority.
-- Removes the older Themes, Backgrounds, and Reset-specific arrow implementations rather than stacking another arrow rule over them.
-- Changes the empty Custom Data status label from `None loaded` to `NONE LOADED`.
+## Character QR & Transfer Controls
+- Removes the in-page live camera scanner and all `getUserMedia`, video-stream, animation-frame, and QR-video UI code.
+- Scan QR now invokes a hidden image input with `capture="environment"`, allowing supported phones/tablets to open their device camera capture UI; the captured image is decoded with the existing `jsqr` path. Desktop/non-capture browsers fall back to their normal image picker.
+- Keeps normal QR share links and QR image decoding unchanged.
+- Replaces the Character List Import Character, Scan QR, and Export Characters text buttons with accessible transfer icons: file + up arrow, QR + up arrow, and file + down arrow.
 
-## Rules Layout Preview
-- Adds an isolated Rule Page Layout Preview route for the design work from the separate rule-layout design discussion.
-- The preview demonstrates `Banner/Header -> Contents -> Overview -> Rule Text` using the existing source-backed rule documents and available rule-banner artwork.
-- The preview is explicitly labeled as a test page and can switch among source documents for layout review.
-- Existing production `/rules/read/:slug` Rule Reader pages are not changed by this design experiment.
-- Preview route: `/rules/layout-preview/:slug?`.
+## Footer
+- Enlarges the bottom-of-page Brambleheart icon from 26px to a maximum 260px (10×), while capping it to 90% of the footer width to prevent horizontal overflow.
 
 ## Release Integrity
-- Release markers are synchronized to Beta `0.30`, package `0.30.0`, and PWA cache `v0.30`.
+- Release markers are synchronized to Beta `0.31`, package `0.31.0`, and PWA cache `v0.31`.
 - Character export version continues to derive from the canonical `BUILD` value.
 - `package.json` retains the exact Node requirement `"node": "22.x"`.
-- This patch is based on current GitHub `main` commit `d9bf1f9e772db4b940122583fc23f800402643a1` (Beta 0.29).
+- This patch is based on current GitHub `main` commit `89686e46ec953bb9077310259d68d1959296045f` (Beta 0.30 plus the QR Blob build correction).
