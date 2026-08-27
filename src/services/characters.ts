@@ -47,6 +47,8 @@ export interface CharacterRecord {
   magicLevel?:number
   draft?:boolean
   creationStep?:string
+  /** True once the character has completed the full creation flow. Later edits do not unset it. */
+  creationComplete?:boolean
   createdAt:string
   updatedAt?:string
 }
@@ -54,9 +56,16 @@ export interface CharacterRecord {
 export const CHARACTER_STORE=STORAGE_KEYS.characters
 
 const validStatuses=new Set<CharacterStatus>(['incomplete','unapproved','approved'])
-export function characterStatus(record:Pick<CharacterRecord,'status'|'draft'|'locked'>):CharacterStatus{
-  if(record.status&&validStatuses.has(record.status))return record.status
-  if(record.draft)return'incomplete'
+export function characterCreationComplete(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>){
+  if(typeof record.creationComplete==='boolean')return record.creationComplete
+  if(record.status&&validStatuses.has(record.status))return record.status!=='incomplete'
+  if(record.draft)return false
+  return true
+}
+export function characterStatus(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>):CharacterStatus{
+  if(!characterCreationComplete(record))return'incomplete'
+  if(record.status==='approved')return'approved'
+  if(record.status==='unapproved')return'unapproved'
   return record.locked?'approved':'unapproved'
 }
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
@@ -68,8 +77,16 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
   })
 }
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
-  const status=characterStatus(record)
-  return{...record,equipment:normalizeEquipment(record.equipment),status,draft:status==='incomplete',locked:Boolean(record.locked)}
+  const creationComplete=characterCreationComplete(record)
+  const status=characterStatus({...record,creationComplete})
+  return{...record,equipment:normalizeEquipment(record.equipment),creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+}
+export function normalizeImportedCharacter(raw:unknown):CharacterRecord{
+  if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.')
+  const source=raw as Partial<CharacterRecord>
+  if(!source.name||!source.attributes)throw new Error('Invalid Brambleheart character data.')
+  const now=new Date().toISOString()
+  return normalizeCharacterRecord({...source,id:crypto.randomUUID(),name:String(source.name),attributes:source.attributes,createdAt:now,updatedAt:now,pinned:Boolean(source.pinned)} as CharacterRecord)
 }
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{
   return (JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)
@@ -79,7 +96,7 @@ export function loadCharacters():CharacterRecord[]{
     const parsed=JSON.parse(readLocalStorage(CHARACTER_STORE)||'[]')
     if(!Array.isArray(parsed))return[]
     const normalized=(parsed as CharacterRecord[]).map(normalizeCharacterRecord)
-    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
+    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.creationComplete)!==Boolean(normalized[index]?.creationComplete)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
       writeLocalStorage(CHARACTER_STORE,JSON.stringify(normalized))
     }
     return normalized
@@ -96,7 +113,7 @@ export function setCharacterApproval(id:string,approved:boolean):StorageWriteRes
   const list=loadCharacters();const index=list.findIndex(item=>item.id===id)
   if(index<0)return{ok:false,message:'That character could not be found on this device.'}
   if(characterStatus(list[index])==='incomplete')return{ok:false,message:'Finish this character before approving it.'}
-  list[index]={...list[index],status:approved?'approved':'unapproved',draft:false,updatedAt:new Date().toISOString()}
+  list[index]={...list[index],creationComplete:true,status:approved?'approved':'unapproved',draft:false,updatedAt:new Date().toISOString()}
   return writeCharacters(list)
 }
 export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:BUILD,character}}

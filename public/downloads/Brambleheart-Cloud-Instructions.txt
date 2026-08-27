@@ -1,5 +1,5 @@
 BRAMBLEHEART CLOUD SYNC — USER INSTRUCTIONS
-Beta 0.29
+Beta 0.30
 
 OVERVIEW
 Brambleheart stores your active Character Data locally on the device you are using. Cloud Sync is optional and manually controlled.

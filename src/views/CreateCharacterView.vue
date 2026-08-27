@@ -13,7 +13,7 @@ import { ruleSourceDocuments } from '../data/rulesSource'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
 import { armorProfile, derivedStats, equipmentControlBonus, equipmentGutsBonus, equipmentManaSyphon, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
-import { loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { characterStatus, loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 
 const router = useRouter()
@@ -574,12 +574,14 @@ function jumpTo(index:number){
 function next(){if(stepIndex.value<totalSteps.value-1)jumpTo(stepIndex.value+1)}
 function back(){if(stepIndex.value>0)jumpTo(stepIndex.value-1)}
 
-function buildRecord(draft:boolean):CharacterRecord{
+function buildRecord(saveAsDraft:boolean):CharacterRecord{
   const now=new Date().toISOString()
   const homelandName=isCustomHomeland.value?(form.customHomelandName.trim()||'Custom Homeland'):form.homeland
+  const creationComplete=!saveAsDraft||originalStatus.value!=='incomplete'
+  const status=creationComplete?(originalStatus.value==='approved'?'approved':'unapproved'):'incomplete'
   return {
     id:draftId.value||crypto.randomUUID(),
-    name:form.name.trim()||(draft?'Unnamed Draft':'Unnamed Character'),
+    name:form.name.trim()||(!creationComplete?'Unnamed Draft':'Unnamed Character'),
     campaignName:form.campaignName.trim(), appearance:form.appearance.trim(), allowCustomData:form.allowCustomData,
     species:form.species,
     cultureTraits:selectedCultureTraits.value.map(item=>`${item.name} (${item.species})`),
@@ -595,7 +597,7 @@ function buildRecord(draft:boolean):CharacterRecord{
     invocationSpells:form.path==='magic'?[...form.invocationSpells.filter(Boolean)]:undefined,
     languages:[...languages.value], equipment:consolidatePurchasedEquipment(form.equipment), adventureKit:form.adventureKit,
     startingWealth:startingWealth.value, wealthRemaining:wealthRemaining.value, wealthCurrency:'NP',
-    attributes:{...form.attributes}, status:draft?'incomplete':(originalStatus.value==='approved'?'approved':'unapproved'), draft, locked:originalLocked.value, creationStep:stepId.value,
+    attributes:{...form.attributes}, status, draft:!creationComplete, creationComplete, locked:originalLocked.value, creationStep:stepId.value,
     createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
 }
@@ -655,7 +657,7 @@ onMounted(async()=>{
   if(!editId)return
   const record=loadCharacters().find(item=>item.id===editId)
   if(!record)return
-  draftId.value=record.id;originalCreatedAt.value=record.createdAt;originalStatus.value=record.status|| (record.draft?'incomplete':record.locked?'approved':'unapproved');originalLocked.value=Boolean(record.locked)
+  draftId.value=record.id;originalCreatedAt.value=record.createdAt;originalStatus.value=characterStatus(record);originalLocked.value=Boolean(record.locked)
   form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||'';form.allowCustomData=Boolean(record.allowCustomData)
   form.species=record.species||''
   await nextTick()

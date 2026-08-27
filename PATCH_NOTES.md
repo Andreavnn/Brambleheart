@@ -1,39 +1,44 @@
-# Brambleheart Beta 0.29 Patch Notes
+# Brambleheart Beta 0.30 Patch Notes
 
-## Character Creation & Review
-- Centers `Rank` and `Modifier` within their existing Attribute panels rather than right-aligning their contents.
-- Stops Secondary Stat cards from expanding across the full available row, removing roughly three quarters of the unused horizontal space on normal desktop layouts while preserving wrap behavior at narrower widths.
-- Renames the Starting Languages choice from `Additional Language` to `Bonus Language`, including the visible help and validation copy.
-- Review Character now starts `Skills`, `Magic`, `Talents`, and `Equipment & Gear` collapsed. The other Review parents retain their existing default states.
+## Site Identity & Footer
+- Enlarges the site-header Brambleheart logo to twice its desktop visual scale while keeping the Back and Dark Mode controls on their independent centered control row so the larger logo does not push those controls toward the screen edges.
+- Uses responsive scale caps at tablet and mobile widths to reduce clipping/overflow risk while retaining the larger identity treatment.
+- Adds the existing Brambleheart app icon above the footer separator without placing it in the utility-button flex row, so it stays inside the current footer footprint instead of changing button wrapping.
+- Adds `Share` between `Discord` and `Install Brambleheart` in the global footer.
+- Adds `Share Brambleheart` under Settings -> Access & Community, directly below Join Discord.
+- Establishes `https://www.brambleheartrpg.com` as the canonical public site URL used by site sharing and character QR links.
 
-## Equipment & Gear
-- Converts every catalog item whose displayed price was in SP to the equivalent NP price. The conversion preserves value at 1 SP = 5 NP; WP/NP prices are otherwise unchanged.
-- Purchased-item cost labels now use NP (or WP for sub-NP values) instead of converting larger equipment prices back to SP/BP.
-- Totem now grants `+1 Control` instead of `+1 to Strike rolls for spells`.
-- Scriptweave Book now grants `+1 Control` instead of `+1 Spell Strike`.
-- Added a structured equipment stat-bonus field for non-armor items. Totem and Scriptweave Book supply `control: +1`, and the shared derived-stat engine adds those bonuses to a character's Control.
-- Existing saved Totem/Scriptweave purchases are normalized against the canonical equipment catalog when character data is loaded, so older saved characters gain the new Control behavior and current effect text without carrying a second legacy implementation forward.
-- The same canonical Control bonus now feeds Character Review, Character List derived values, and the Rhythm Engine character sheet/dice stat selection.
+## Character QR Sharing
+- Adds per-character `Share QR` controls to Character List and a `Scan QR` import action alongside the existing JSON import/export controls.
+- Character QR codes contain a client-side Brambleheart character share URL. No Brambleheart server-side character store is introduced.
+- Uses gzip compression when the browser supports `CompressionStream`, with an uncompressed JSON fallback for compatible browsers.
+- Enforces a 2,800-byte reliable QR payload ceiling. Characters that exceed the limit are directed to the existing JSON export instead of generating an unreliable QR code.
+- QR imports require confirmation before writing to local Character Data.
+- QR input supports the device camera, a saved QR image, and normal phone-camera links that open Brambleheart with the character payload in the URL fragment.
+- JSON import and QR import now share one canonical imported-character normalizer instead of maintaining separate import rules.
+- Adds `qrcode` for QR rendering and `jsqr` for camera/image decoding.
 
-## Character List
-- Replaces the visible text action controls with accessible icons: Pencil for Edit, up arrow for Level Up, lock for Lock/Unlock, thumbs-up for Approve, thumbs-down for Remove Approval, copy icon for Copy, and trash can for Delete.
-- Adds the manual lock control to Approved, Unapproved, and Incomplete characters while keeping approval as a separate status.
-- Removes the duplicated campaign/species text block immediately beside the action controls; the same information remains in the character summary on the left.
-- Character List derived values now include structured equipment Control bonuses as well as existing Armor/Shield Guts bonuses.
+## Character Completion Status
+- Adds an explicit `creationComplete` field as the canonical boundary between Incomplete and completed characters.
+- A character is Incomplete only until the full creation flow is finished once.
+- Editing an Unapproved or Approved character and choosing Save / Save & Close no longer moves that character back to Incomplete merely because the editor was closed before revisiting every creation step.
+- Legacy records migrate at load: existing Approved/Unapproved records are treated as creation-complete; existing Incomplete/draft records remain incomplete.
+- Approval remains separate from completion, so a completed character is either Unapproved or Approved.
 
-## Backgrounds
-- Fixes the next-background control at the background catalog authority. Duplicate asset slugs are deduplicated before options are exposed, so the last background now advances back to the first background instead of resolving to another option with the same ID.
-- The duplicate source assets are not deleted in this patch because their artwork was not verified as interchangeable; only one canonical option is exposed at runtime.
+## Settings
+- Consolidates expandable Settings navigation arrows into one Settings-wide `details > summary` authority.
+- Removes the older Themes, Backgrounds, and Reset-specific arrow implementations rather than stacking another arrow rule over them.
+- Changes the empty Custom Data status label from `None loaded` to `NONE LOADED`.
 
-## Cloud Sync
-- The Cloud Link Code remains an internal OAuth protection value, but the obsolete `New Code` and `Copy Code` user controls are removed because users never need to handle that value manually.
-- Replaces the long Cloud Link Code explanation with: `Brambleheart OAuth protection code for this browser.`
-- Moves `Dropbox App Folder` and `Connect Dropbox` beneath the Workspace Link title/detail text on all widths so the row does not stretch horizontally.
-- Rebuilds `Cloud Instructions (.txt)` as a user-only Dropbox connection/sync guide. Site-owner, Vercel, Dropbox developer-app, scope-registration, and deployment setup steps are removed completely.
-- Turns the Cloud Instructions download into a centered button.
-- When a deployment is not configured, the user-facing Settings message now says Cloud Sync is unavailable and that no user action is required.
+## Rules Layout Preview
+- Adds an isolated Rule Page Layout Preview route for the design work from the separate rule-layout design discussion.
+- The preview demonstrates `Banner/Header -> Contents -> Overview -> Rule Text` using the existing source-backed rule documents and available rule-banner artwork.
+- The preview is explicitly labeled as a test page and can switch among source documents for layout review.
+- Existing production `/rules/read/:slug` Rule Reader pages are not changed by this design experiment.
+- Preview route: `/rules/layout-preview/:slug?`.
 
 ## Release Integrity
-- Release markers are synchronized to Beta 0.29 / package `0.29.0` / PWA cache `v0.29`.
+- Release markers are synchronized to Beta `0.30`, package `0.30.0`, and PWA cache `v0.30`.
 - Character export version continues to derive from the canonical `BUILD` value.
 - `package.json` retains the exact Node requirement `"node": "22.x"`.
+- This patch is based on current GitHub `main` commit `d9bf1f9e772db4b940122583fc23f800402643a1` (Beta 0.29).

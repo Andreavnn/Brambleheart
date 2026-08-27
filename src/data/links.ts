@@ -1,4 +1,5 @@
 export const externalLinks={
+  site:'https://www.brambleheartrpg.com',
   issues:'https://github.com/Andreavnn/Brambleheart/issues',
   discord:'https://discord.gg/NHf3YdueHE',
   donation:'https://donate.stripe.com/eVq28r5fM5PI1bKdzz3Nm04',

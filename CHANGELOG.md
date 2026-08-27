@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.30
+
+- Doubled the desktop site-logo visual scale while keeping Back/Dark Mode controls on their independent centered header-control row; tablet/mobile scales are capped responsively.
+- Added the existing Brambleheart app icon above the footer separator and added Share between Discord and Install.
+- Added Settings -> Access & Community -> Share Brambleheart and established `https://www.brambleheartrpg.com` as the canonical site/share origin.
+- Added character QR sharing, camera/image QR scanning, phone-camera share links, gzip payload compression where supported, and a 2,800-byte reliability ceiling with JSON-export fallback.
+- Centralized JSON and QR imports through one imported-character normalizer.
+- Added persistent `creationComplete` state so only characters that have never finished creation are Incomplete; later partial edits preserve Unapproved/Approved completion status.
+- Consolidated Settings disclosure arrows into one authority and changed Custom Data empty state to `NONE LOADED`.
+- Added an isolated `/rules/layout-preview/:slug?` test route for the proposed Banner/Header -> Contents -> Overview -> Rule Text design. Production `/rules/read/:slug` pages remain unchanged.
+- Synchronized package/build/export/PWA/release documentation to Beta 0.30 while preserving the exact Node `22.x` requirement.
+
 # Brambleheart Beta 0.29
 
 - Centered Character Creation Attribute Rank/Modifier panels and reduced unused Secondary Stat panel width while preserving responsive wrapping.

@@ -11,6 +11,7 @@ import { downloadJson, loadCharacters, writeCharacters } from '../services/chara
 import { beginDropboxCloudConnection, completeDropboxCloudConnection, disconnectCharacterCloud, ensureCharacterCloudState, getCharacterCloudConfig, updateCharactersFromCloud, uploadCharactersToCloud } from '../services/characterCloud'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
 import { localStorageKeys, removeLocalStorage, SETTINGS_STORE } from '../services/storage'
+import { shareBrambleheart } from '../services/siteShare'
 
 const router=useRouter()
 const { darkMode, compactRows, fontSize, boldText, roleTheme, backgroundImage, backgroundGrayscale, bootAudio, reset } = useSettings()
@@ -18,7 +19,7 @@ const customDataInput=ref<HTMLInputElement|null>(null)
 const customData=ref<CustomDataItem[]>(loadCustomData())
 const customImportMessage=ref('')
 const customCounts=computed(()=>customDataCounts(customData.value))
-const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'None loaded')
+const customDataLabel=computed(()=>customData.value.length?`${customData.value.length} item${customData.value.length===1?'':'s'}`:'NONE LOADED')
 const characterCloudState=ref(ensureCharacterCloudState())
 const characterCloudConfig=getCharacterCloudConfig()
 const characterCloudMessage=ref('')
@@ -62,6 +63,7 @@ function resetAllLocalData(){
 }
 function reportIssue(){window.open(externalLinks.issues,'_blank','noopener,noreferrer')}
 function openDiscord(){window.open(externalLinks.discord,'_blank','noopener,noreferrer')}
+async function shareSite(){const result=await shareBrambleheart();if(!result.ok&&result.message!=='Share cancelled.')alert(result.message)}
 async function importCustomData(event:Event){
   const input=event.target as HTMLInputElement
   const files=Array.from(input.files||[])
@@ -149,6 +151,7 @@ onMounted(async()=>{
     <section class="settings-group" aria-label="Access and community"><div class="settings-group-heading"><p class="eyebrow settings-group-title">ACCESS &amp; COMMUNITY</p></div><section class="settings-card">
       <div class="setting-row install-setting-row"><span><strong>Install Brambleheart</strong><small>{{ isInstalled?'Brambleheart is installed on this device.':canInstall?'Install the companion as an app on this phone, tablet, or computer.':'If the direct prompt is unavailable, use the browser menu and choose Install app or Add to Home Screen.' }}<template v-if="installMessage"> {{ installMessage }}</template></small></span><button class="secondary-button settings-compact-action" type="button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled?'Installed':'Install' }}</button></div>
       <div class="setting-row"><span><strong>Join Discord</strong><small>Join the Brambleheart community server for discussion, play, and development updates.</small></span><button class="secondary-button settings-compact-action" type="button" @click="openDiscord">Join</button></div>
+      <div class="setting-row"><span><strong>Share Brambleheart</strong><small>Share www.brambleheartrpg.com using your device share sheet or copy the site link.</small></span><button class="secondary-button settings-compact-action" type="button" @click="shareSite">Share</button></div>
     </section></section>
 
     <section class="settings-group" aria-label="Report bugs and issues"><div class="settings-group-heading"><p class="eyebrow settings-group-title">REPORT BUGS &amp; ISSUES</p></div><section class="settings-card"><div class="setting-row static-row"><span><strong>Bug &amp; Issue Reporting</strong><small>Open the public issue tracker for reproducible application problems.</small></span><button class="secondary-button settings-compact-action" type="button" @click="reportIssue">Report</button></div></section></section>

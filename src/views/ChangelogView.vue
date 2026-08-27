@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.30',summary:'Character QR sharing, completion-state authority, larger identity, site sharing, Settings arrows, and isolated Rule layout preview',open:true,items:[
+    'Doubles the desktop site-logo visual scale while keeping Back and Dark Mode controls on their independent centered header-control row, with responsive scale caps at narrower widths.',
+    'Adds the Brambleheart app icon above the footer separator, adds Share between Discord and Install, adds Share Brambleheart under Access & Community, and uses www.brambleheartrpg.com as the canonical public share origin.',
+    'Adds per-character Share QR plus camera, saved-image, and phone-camera-link QR import while retaining JSON import/export and one shared imported-character normalizer.',
+    'Uses compressed client-side QR payloads where supported, enforces a 2,800-byte reliable QR limit, and directs oversized characters to JSON export.',
+    'Adds persistent creationComplete state so only characters that have never finished Character Creation are Incomplete; later partial edits preserve Unapproved or Approved completion status.',
+    'Consolidates expandable Settings arrows into one authority and changes the empty Custom Data status to NONE LOADED.',
+    'Adds an isolated Rule Page Layout Preview test route for Banner/Header, Contents, Overview, and Rule Text without changing existing production Rule Reader pages.',
+    'Synchronizes Beta 0.30 release markers while preserving the Node runtime pin at 22.x.',
+  ]},
   {version:'Beta Build 0.29',summary:'Character sheet controls, Control gear bonuses, background wrap, and user-only Cloud Sync guidance',open:true,items:[
     'Centers Attribute Rank and Modifier panels, shortens Secondary Stat cards, and renames Additional Language to Bonus Language.',
     'Converts Equipment & Gear SP prices to equivalent NP labels and keeps purchased-item cost presentation in NP/WP.',
