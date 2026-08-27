@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.31
+# Brambleheart TTRPG — Beta 0.32
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.31 hardens destructive Settings controls, exposes the isolated Rule Page Layout Test from The Watcher, refines Themes/Backgrounds and footer presentation, and replaces the unreliable in-page QR camera scanner with device-camera capture.
+Beta 0.32 replaces QR character transfer with Share Codes, deterministically cleans legacy long share URLs after receipt, refines the isolated Rules layout test, reorganizes Core Abilities and Talents, restores Character List transfer text, and corrects the footer image scale.
 
 ## Main views
 
@@ -16,16 +16,17 @@ Beta 0.31 hardens destructive Settings controls, exposes the isolated Rule Page 
 - Settings
 - Site Changelog
 
-## Beta 0.31 focus
+## Beta 0.32 focus
 
-- Moves Reset Local Data actions behind an expandable `MANAGE` parent so destructive controls are not exposed by default.
-- Moves Site Changelog into its own Settings section named Changelog & Updates.
-- Shows Themes and Background choices with the same switch presentation used by other Settings toggles while retaining one-choice radio semantics.
-- Removes underlines from the Cloud Instructions and Custom Data template download buttons.
-- Enlarges the footer Brambleheart icon by 10× from its Beta 0.30 size while constraining it to the footer width.
-- Adds an expandable Rule Page Layout Test parent under The Watcher, with its child preview link routed to the isolated test page; production Rule Reader pages remain unchanged.
-- Removes the in-page `getUserMedia` QR scanner. Scan QR now invokes the device image capture control (`capture=environment`) and decodes the resulting image with the existing QR parser.
-- Replaces Character List Import, Scan QR, and Export text buttons with accessible file/QR transfer icons.
+- Replaces character QR generation/scanning with compressed Share Codes and removes QR-specific dependencies.
+- Keeps the QR-shaped per-character icon as the Share Code action.
+- Adds Import Share Code to Character List and retains JSON import/export.
+- Native sharing sends the Share Code in the message while the URL remains `https://www.brambleheartrpg.com/characters`.
+- Legacy `#bhc=` links remain readable, but their long URL fragment is removed from the address bar immediately after Brambleheart captures it.
+- Reduces the footer Brambleheart image to 65px.
+- Shortens the Settings page detail description.
+- Moves Rule Page Layout Test into its own Rules parent immediately below The Watcher and refines the Fundamentals test layout using the supplied dice artwork.
+- Renames Keyword Abilities to Core Abilities, moves seven former Core Abilities into Talents, and applies the Swiftstride / Range Strike renames.
 
 ## Dropbox deployment configuration
 
@@ -35,5 +36,4 @@ Brambleheart uses one Dropbox Scoped Access application configured for **App fol
 
 - Node.js 22.x
 - Vue 3 / TypeScript / Vite
-- QR rendering: `qrcode`
-- QR image decoding: `jsqr`
+- Character Share Codes: browser gzip compression where supported, with plain JSON/base64url fallback

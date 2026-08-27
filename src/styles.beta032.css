@@ -1,0 +1,81 @@
+/* Beta 0.32 patch-level presentation changes. */
+.page-utility-icon{
+  width:min(65px,90%)!important;
+}
+
+.settings-page .page-title-block>p:not(.beta032-settings-detail){
+  display:none;
+}
+
+.changelog-stack>.beta032-changelog-entry{
+  order:-1;
+}
+.changelog-stack>.changelog-entry:not(.beta032-changelog-entry) .value-chip{
+  display:none;
+}
+
+.share-code-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1100;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:rgba(8,10,12,.62);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.share-code-dialog{
+  width:min(620px,100%);
+  max-height:min(84vh,760px);
+  overflow:auto;
+  padding:0;
+}
+.share-code-heading{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  background:var(--paper-2);
+}
+.share-code-heading .eyebrow{margin:0 0 3px;}
+.share-code-heading h2{margin:0;font-family:Georgia,'Times New Roman',serif;}
+.share-code-help,.share-code-message,.share-code-url{margin:12px 16px;line-height:1.48;}
+.share-code-help,.share-code-message{color:var(--ink-soft);}
+.share-code-field{
+  box-sizing:border-box;
+  display:block;
+  width:calc(100% - 32px);
+  min-height:132px;
+  margin:12px 16px;
+  padding:10px 11px;
+  resize:vertical;
+  border:1px solid var(--line-dark);
+  border-radius:8px;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+.share-code-actions{padding:0 16px 16px;justify-content:flex-end;}
+.share-code-import-summary{
+  display:grid;
+  gap:4px;
+  margin:14px 16px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-left:5px solid var(--accent);
+  border-radius:8px;
+  background:var(--paper-2);
+}
+.share-code-import-summary>strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(17px + var(--font-offset));}
+.share-code-import-summary>span,.share-code-import-summary>small{color:var(--ink-soft);}
+@media(max-width:620px){
+  .share-code-dialog{max-height:90vh;}
+  .share-code-actions{justify-content:stretch;}
+  .share-code-actions>*{flex:1 1 100%;}
+}
