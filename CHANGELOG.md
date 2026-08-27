@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.33
+
+- Replaces active QR character transfer with compressed Share Codes, consolidates import/export workflows, adds Character filtering, and rebuilds the Share Code popup around the supplied Old.dex presentation.
+- Adds persistent measurement display choices for Squares, Yards, Meters, and Feet while keeping square-based rules canonical at 1 square = 1 yard = 1 meter = 3 feet.
+- Adds Bravery secondary stats Heart and Inspiration; changes Mana Pool to Magic Level + Inspiration and start-of-round Mana restoration to Heart.
+- Renames the former Might-based Power secondary stat to Fury and adds Lore-based Power for spell damage.
+- Adds a versioned Game Updates page linked beneath the Brambleheart logo and from Settings → Changelog & Updates, without adding it to primary navigation.
+- Reduces all Equipment & Gear purchase costs by 50%, applies Threadpiece conversion to displayed prices, and makes Spirit Flare require Threadseer.
+- Refines Character Creation Attribute labels, Bonus Language presentation, Review identity spacing, Review Spell cards, and one-column Review Talents.
+- Expands the Fundamentals Rule Layout Preview with Core Roll, Conditions, Fortune/Misfortune, Half-Step, target, and page-navigation examples while moving Attributes & Skills to its own preview page.
+- Retains the Core Abilities/Talent move and Swiftstride / Range Strike renames, updates Melee Strike damage to Fury, and adds Lore Power to Arcane Command damage.
+- Reduces the bottom page icon to 65px, keeps the revised Settings detail text, and synchronizes the cumulative Beta 0.33 documentation with package 0.33.0, PWA cache v0.33, and Node 22.x.
+
 # Brambleheart Beta 0.31
 
 - Hides destructive Reset Local Data actions inside an expandable MANAGE parent while retaining double confirmation.
@@ -42,7 +55,7 @@
 - Restricted Dropbox access to the app's isolated App Folder and `_BH.json` files, while keeping internal character IDs authoritative for replacement/addition and human-readable filenames for export portability.
 - Added PKCE refresh-token handling through the guarded local-storage service and isolated cleanup of the obsolete Beta 0.27 Google connection key at the migration boundary.
 - Changed Rules → Recent cards from a shared left accent to individual top-border colors using established Brambleheart detail tones.
-- Synchronized visible build, package/export version, PWA cache, README, patch notes, repository/in-app changelog to Beta 0.28 while preserving the Node runtime pin at `22.x`.
+- Synchronized package/export version, PWA cache, README, patch notes, repository/in-app changelog to Beta 0.28 while preserving the exact Node `22.x` requirement.
 
 # Brambleheart Beta 0.27
 

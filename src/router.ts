@@ -3,12 +3,13 @@ import SplashView from './views/SplashView.vue'
 import HomeView from './views/HomeView.vue'
 import CreateCharacterView from './views/CreateCharacterView.vue'
 import LevelUpView from './views/LevelUpView.vue'
-import RulesView from './views/RulesViewBeta032.vue'
+import RulesView from './views/RulesView.vue'
 import RuleReaderView from './views/RuleReaderView.vue'
 import RuleLayoutPreviewView from './views/RuleLayoutTestView.vue'
 import SimulatorView from './views/SimulatorView.vue'
 import SettingsView from './views/SettingsViewBeta032.vue'
 import ChangelogView from './views/ChangelogViewBeta032.vue'
+import GameUpdatesView from './views/GameUpdatesView.vue'
 import { hasSeenWelcome } from './services/welcome'
 
 const router=createRouter({
@@ -25,6 +26,7 @@ const router=createRouter({
     {path:'/rules/layout-preview/:slug?',name:'rule-layout-preview',component:RuleLayoutPreviewView},
     {path:'/simulator',name:'simulator',component:SimulatorView},
     {path:'/settings',name:'settings',component:SettingsView},
+    {path:'/game-updates',name:'game-updates',component:GameUpdatesView},
     {path:'/changelog',name:'changelog',component:ChangelogView},
     {path:'/:pathMatch(.*)*',redirect:'/characters'},
   ],

@@ -1,6 +1,9 @@
 import { allRulePages, fundamentalsNavigation } from './ruleCatalog'
 import { coreAbilities } from './coreAbilities'
-import { ruleSourceDocuments, type RuleSourceSection } from './rulesSource'
+import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from './rulesSource'
+import { currentMeasurement, formatMeasurementText } from '../rules/measurements'
+import { gearShopItems } from './characterOptions'
+import { formatGearCostSp, halfGearCostSp, halfThreadpieceCostText } from '../rules/threadpieces'
 
 const movedCoreAbilityNames=new Set([
   'ROOTED RESOLVE',
@@ -54,7 +57,7 @@ const movedTalentSections:RuleSourceSection[]=[
   {
     heading:'Spirit Flare',
     blocks:[
-      {type:'paragraph',text:'Whispers of power unravel the enemy’s will. COST: [2] Mana TRIGGER: This ability can be used at the end of the round. EFFECT: Your character may immediately use a magic ability. Resolve this effect after all other abilities have been completed. If there are multiple abilities that resolve last, they are resolved in initiative order. KEYWORDS: Reaction | Magic'},
+      {type:'paragraph',text:'Whispers of power unravel the enemy’s will. COST: [2] Mana REQUIRES: Threadseer TRIGGER: This ability can be used at the end of the round. EFFECT: Your character may immediately use a magic ability. Resolve this effect after all other abilities have been completed. If there are multiple abilities that resolve last, they are resolved in initiative order. KEYWORDS: Reaction | Magic'},
     ],
   },
   {
@@ -106,3 +109,104 @@ if(talentDocument){
     }
   }
 }
+
+
+/* Beta 0.33 rules amendments remain isolated at the source-ingestion boundary so the
+   generated/raw rule documents do not spread retired derived-stat formulas through UI logic. */
+function applyGameRuleAmendments(value:string){
+  let text=String(value||'')
+  text=text.replace(/\bStarting Mana\b/gi,'Mana Pool')
+  text=text.replace(/\bMana Regeneration\b/gi,'Mana Pool & Restoration')
+  text=text.replace(/\b2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Magic Level + Inspiration')
+  text=text.replace(/Every character generates two\s*\[?2\]?\s*mana at the start of each combat round\.?/gi,'At the start of each combat round, each character restores Mana equal to Heart.')
+  text=text.replace(/players can gain additional MANA regeneration through magic levels, talents, abilities and condition\(s\)\.?/gi,'Characters may restore additional Mana during a turn or round through Talents, Abilities, equipment, and other rules.')
+  text=text.replace(/Each Magic Level increases mana regeneration by \+1\.?/gi,'Each Magic Level increases Mana Pool by +1.')
+  text=text.replace(/Each level adds mana regeneration and spell capacity\.?/gi,'Each level increases Mana Pool and spell capacity.')
+  text=text.replace(/weapon[’']s damage value and power/gi,match=>match.replace(/power/i,'Fury'))
+  if(/\bMight\b/i.test(text)&&/\bPower\b/i.test(text))text=text.replace(/\bPower\b/g,'Fury').replace(/\bpower\b/g,'fury')
+  return text
+}
+
+const gearPatchKey=Symbol.for('brambleheart.beta032.half-gear-costs')
+const runtimeState=globalThis as unknown as Record<PropertyKey,unknown>
+if(!runtimeState[gearPatchKey]){
+  for(const item of gearShopItems){
+    item.costSp=halfGearCostSp(item.costSp)
+    item.costText=formatGearCostSp(item.costSp).toLowerCase()
+  }
+  for(const documentKey of ['weapons','armor-shields','adventuring-gear']){
+    const document=ruleSourceDocuments[documentKey]
+    if(!document)continue
+    for(const section of document.sections){
+      for(const block of section.blocks){
+        if(block.type!=='table'||block.rows.length<2)continue
+        const costIndexes=block.rows[0].map((cell,index)=>/\b(cost|price)\b/i.test(String(cell))?index:-1).filter(index=>index>=0)
+        if(!costIndexes.length)continue
+        block.rows=block.rows.map((row,rowIndex)=>rowIndex===0?row:row.map((cell,index)=>costIndexes.includes(index)?halfThreadpieceCostText(cell):cell))
+      }
+    }
+  }
+  runtimeState[gearPatchKey]=true
+}
+
+const fundamentals=ruleSourceDocuments.fundamentals
+if(fundamentals){
+  const secondary=fundamentals.sections.find(section=>/secondary/i.test(section.heading))||fundamentals.sections.find(section=>/attribute/i.test(section.heading))
+  if(secondary&&!secondary.blocks.some(block=>block.type==='paragraph'&&/Heart is equal to Bravery Rank/i.test(block.text))){
+    secondary.blocks.push({type:'paragraph',text:'SECONDARY STATS UPDATE: Heart is equal to Bravery Rank. Inspiration is equal to the Bravery modifier. Fury is equal to Might Rank and adds to physical damage where a rule calls for it. Power is equal to Lore Rank and adds to spell damage where a rule calls for it.'})
+  }
+  const rounds=fundamentals.sections.find(section=>/round|mana/i.test(section.heading))
+  if(rounds&&!rounds.blocks.some(block=>block.type==='paragraph'&&/Mana Pool is equal to Magic Level/i.test(block.text))){
+    rounds.blocks.push({type:'paragraph',text:'MANA UPDATE: Mana Pool is equal to Magic Level + Inspiration. At the start of each round, restore Mana equal to Heart. Additional Abilities, Talents, equipment, and other rules may restore Mana during a turn or round.'})
+  }
+}
+
+
+function amendCoreAbilityRules(){
+  for(const ability of coreAbilities){
+    for(const field of ability.fields){
+      if(ability.name.toUpperCase()==='MELEE STRIKE'&&field.label.toUpperCase()==='DAMAGE')field.value=field.value.replace(/\bpower\b/gi,'Fury')
+      if(ability.name.toUpperCase()==='ARCANE COMMAND'&&field.label.toUpperCase()==='DAMAGE'&&!/\bPower\b/.test(field.value))field.value=field.value.replace(/plus any conditions\.?$/i,'plus Power and any conditions.')
+    }
+  }
+}
+amendCoreAbilityRules()
+for(const source of Object.values(ruleSourceDocuments)){
+  for(const section of source.sections){
+    section.heading=applyGameRuleAmendments(section.heading)
+    for(const block of section.blocks){
+      if(block.type==='paragraph')block.text=applyGameRuleAmendments(block.text)
+      else block.rows=block.rows.map(row=>row.map(cell=>applyGameRuleAmendments(cell)))
+    }
+  }
+}
+
+const coreFieldOriginals=new Map<object,string>()
+for(const ability of coreAbilities)for(const field of ability.fields)coreFieldOriginals.set(field,field.value)
+const paragraphOriginals=new WeakMap<object,string>()
+const tableOriginals=new WeakMap<object,string[][]>()
+for(const source of Object.values(ruleSourceDocuments)){
+  for(const section of source.sections){
+    for(const block of section.blocks){
+      if(block.type==='paragraph')paragraphOriginals.set(block,block.text)
+      else tableOriginals.set(block,block.rows.map(row=>[...row]))
+    }
+  }
+}
+function applyMeasurementDisplay(){
+  const unit=currentMeasurement()
+  for(const ability of coreAbilities)for(const field of ability.fields)field.value=formatMeasurementText(coreFieldOriginals.get(field)||field.value,unit)
+  for(const source of Object.values(ruleSourceDocuments)){
+    for(const section of source.sections){
+      for(const block of section.blocks){
+        if(block.type==='paragraph')block.text=formatMeasurementText(paragraphOriginals.get(block)||block.text,unit)
+        else{
+          const original=tableOriginals.get(block)||block.rows
+          block.rows=original.map(row=>row.map(cell=>formatMeasurementText(cell,unit)))
+        }
+      }
+    }
+  }
+}
+applyMeasurementDisplay()
+if(typeof window!=='undefined')window.addEventListener('brambleheart:measurement-change',applyMeasurementDisplay)

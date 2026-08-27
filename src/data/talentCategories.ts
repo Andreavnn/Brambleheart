@@ -8,7 +8,8 @@ const renames:Record<string,string>={
 
 function key(value:string){return String(value||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ')}
 
-export function canonicalTalentName(name:string){return renames[key(name)]||name}
+function capitalizeTalentName(value:string){return String(value||'').trim().toLowerCase().replace(/(^|[\s\-—–/])([a-z])/g,(_m,prefix:string,letter:string)=>`${prefix}${letter.toUpperCase()}`)}
+export function canonicalTalentName(name:string){return renames[key(name)]||capitalizeTalentName(name)}
 export function talentNameMatches(left:string,right:string){return key(canonicalTalentName(left))===key(canonicalTalentName(right))}
 
 const categoryOverrides=new Map<string,TalentCategory>()

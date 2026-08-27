@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.32
+# Brambleheart TTRPG — Beta 0.33
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.32 replaces QR character transfer with Share Codes, deterministically cleans legacy long share URLs after receipt, refines the isolated Rules layout test, reorganizes Core Abilities and Talents, restores Character List transfer text, and corrects the footer image scale.
+Beta 0.33 is a cumulative rules/interface patch. It replaces QR character transfer with Share Codes, refines the Rules layout-test pages, updates Core Abilities/Talents, adds measurement display preferences, revises Bravery/Mana/damage secondary statistics, reduces gear prices, and refines Character Creation review/transfer presentation.
 
 ## Main views
 
@@ -13,24 +13,26 @@ Beta 0.32 replaces QR character transfer with Share Codes, deterministically cle
 - Rules / Rule Reader
 - Rule Page Layout Preview (test route)
 - Rhythm Engine — Character Sheet and Dice Roller
+- Game Updates (small link beneath the Brambleheart logo; not a primary-navigation item)
 - Settings
 - Site Changelog
 
-## Beta 0.32 focus
+## Beta 0.33 focus
 
-- Replaces character QR generation/scanning with compressed Share Codes and removes QR-specific dependencies.
-- Keeps the QR-shaped per-character icon as the Share Code action.
-- Adds Import Share Code to Character List and retains JSON import/export.
-- Native sharing sends the Share Code in the message while the URL remains `https://www.brambleheartrpg.com/characters`.
-- Legacy `#bhc=` links remain readable, but their long URL fragment is removed from the address bar immediately after Brambleheart captures it.
-- Reduces the footer Brambleheart image to 65px.
-- Shortens the Settings page detail description.
-- Moves Rule Page Layout Test into its own Rules parent immediately below The Watcher and refines the Fundamentals test layout using the supplied dice artwork.
-- Renames Keyword Abilities to Core Abilities, moves seven former Core Abilities into Talents, and applies the Swiftstride / Range Strike renames.
+- Character transfer uses compressed Share Codes rather than QR generation/scanning. Legacy long `#bhc=` links remain import-compatible and are cleaned immediately after capture.
+- Character List combines file/Share Code import and file/Share Code export into unified controls, retains the QR-shaped per-character Share Code shortcut, adds filtering, and uses the Old.dex-style compact Share Code dialog.
+- Measurements can display square-based rules as Squares, Yards, Meters, or Feet. The underlying rule remains square-based: 1 square = 1 yard = 1 meter = 3 feet.
+- Bravery now provides Heart (Bravery Rank) and Inspiration (Bravery modifier). Mana Pool = Magic Level + Inspiration, while Mana restored at the start of each round = Heart.
+- Might Power is renamed Fury (Might Rank) for physical damage. Lore gains Power (Lore Rank) for spell damage.
+- All Equipment & Gear purchase prices are reduced by 50%, preserving Threadpiece conversion: 10 WP = 1 NP, 5 NP = 1 SP, 5 SP = 1 BP.
+- Spirit Flare requires Threadseer; Talent names are normalized for capitalization.
+- Character Creation refines Attribute labels, Bonus Language layout, Review identity spacing, Spell presentation, and one-column Talent presentation.
+- The Fundamentals layout test adds roll/Condition/Fortune examples, separates Active & Passive Targets, demonstrates Half-Step with Threadseer, and moves Attributes & Skills to a dedicated preview page with page navigation.
+- Game-rule amendments are listed on Game Updates. Site/interface history remains in Site Changelog.
 
 ## Dropbox deployment configuration
 
-Brambleheart uses one Dropbox Scoped Access application configured for **App folder** access. The deployed site receives its public Dropbox App Key through `VITE_DROPBOX_APP_KEY`; normal users then authorize their own Dropbox accounts and use their own Dropbox storage quota. The browser implementation uses OAuth 2 Authorization Code with PKCE and does not require the Dropbox App secret.
+Brambleheart uses one Dropbox Scoped Access application configured for **App folder** access. The deployed site receives its public Dropbox App Key through `VITE_DROPBOX_APP_KEY`; normal users authorize their own Dropbox accounts and use their own Dropbox storage quota. The browser implementation uses OAuth 2 Authorization Code with PKCE and does not require the Dropbox App secret.
 
 ## Runtime
 

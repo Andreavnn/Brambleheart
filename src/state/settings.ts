@@ -1,5 +1,6 @@
 import { reactive, toRef, watch } from 'vue'
 import { backgroundIds, backgroundUrl } from '../data/backgroundCatalog'
+import { normalizeMeasurement, type MeasurementUnit } from '../rules/measurements'
 import { readLocalStorage, SETTINGS_STORE, writeLocalStorage } from '../services/storage'
 
 export type FontSize = 'smallest' | 'small' | 'normal' | 'large' | 'largest'
@@ -15,6 +16,7 @@ type SettingsState = {
   backgroundImage:BackgroundChoice
   backgroundGrayscale:boolean
   bootAudio:boolean
+  measurement:MeasurementUnit
 }
 
 const defaults:SettingsState={
@@ -26,6 +28,7 @@ const defaults:SettingsState={
   backgroundImage:'none',
   backgroundGrayscale:false,
   bootAudio:true,
+  measurement:'squares',
 }
 const roles:RoleTheme[]=['default','warrior','healer','ranger','thief']
 
@@ -38,14 +41,7 @@ function normalizeFontSize(value:unknown):FontSize{
 }
 function normalizeRole(value:unknown):RoleTheme{
   if(roles.includes(value as RoleTheme))return value as RoleTheme
-  const legacy:Record<string,RoleTheme>={
-    adventurer:'ranger',
-    tactician:'warrior',
-    storyteller:'default',
-    mystic:'default',
-    spellcaster:'default',
-    trickster:'default',
-  }
+  const legacy:Record<string,RoleTheme>={adventurer:'ranger',tactician:'warrior',storyteller:'default',mystic:'default',spellcaster:'default',trickster:'default'}
   return legacy[String(value)]||'default'
 }
 function normalizeBackground(value:unknown):BackgroundChoice{
@@ -68,6 +64,7 @@ function loadSettings():SettingsState{
       backgroundImage:normalizeBackground(saved.backgroundImage??saved.background),
       backgroundGrayscale:Boolean(saved.backgroundGrayscale),
       bootAudio:saved.bootAudio!==false,
+      measurement:normalizeMeasurement(saved.measurement),
     }
   }catch{return{...defaults}}
 }
@@ -84,14 +81,19 @@ function applySettings(){
   root.dataset.background=state.backgroundImage
   root.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
   root.dataset.bootAudio=state.bootAudio?'true':'false'
+  root.dataset.measurement=state.measurement
   const url=backgroundUrl(state.backgroundImage)
   root.style.setProperty('--bh-selected-background',url?`url(${JSON.stringify(url)})`:'none')
 }
 watch(state,()=>{
   state.backgroundImage=normalizeBackground(state.backgroundImage)
+  state.measurement=normalizeMeasurement(state.measurement)
   applySettings()
   if(typeof window!=='undefined')writeLocalStorage(SETTINGS_STORE,JSON.stringify(state))
 },{deep:true,immediate:true})
+watch(()=>state.measurement,(next,previous)=>{
+  if(typeof window!=='undefined'&&previous!==undefined&&next!==previous)window.dispatchEvent(new CustomEvent('brambleheart:measurement-change',{detail:next}))
+})
 
 export function useSettings(){
   return{
@@ -103,6 +105,7 @@ export function useSettings(){
     backgroundImage:toRef(state,'backgroundImage'),
     backgroundGrayscale:toRef(state,'backgroundGrayscale'),
     bootAudio:toRef(state,'bootAudio'),
+    measurement:toRef(state,'measurement'),
     toggleTheme:()=>{state.darkMode=!state.darkMode},
     reset:()=>Object.assign(state,defaults),
   }

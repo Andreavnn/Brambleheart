@@ -68,28 +68,33 @@ function clearSearch(){query.value=''}
         </section>
 
         <section class="rules-chapter-stack">
-          <details v-for="category in ruleCategories" :key="category.id" class="rules-index-panel rules-chapter card-surface">
-            <summary class="rules-index-heading rules-chapter-heading">
-              <span><strong>{{ category.title }}</strong><small>{{ category.summary }}</small></span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-            </summary>
-            <div class="rules-index-list">
-              <RouterLink v-for="entry in [category.landing,...category.pages]" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
-                <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
-              </RouterLink>
-              <details v-if="category.id==='watcher'" class="rules-layout-test-parent">
-                <summary class="rules-index-row rules-layout-test-summary">
-                  <span><strong>Rule Page Layout Test</strong><small>Isolated test pages for the proposed Rules layout. Production Rule Reader pages are unchanged.</small></span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-                </summary>
+          <template v-for="category in ruleCategories" :key="category.id">
+            <details class="rules-index-panel rules-chapter card-surface">
+              <summary class="rules-index-heading rules-chapter-heading">
+                <span><strong>{{ category.title }}</strong><small>{{ category.summary }}</small></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="rules-index-list">
+                <RouterLink v-for="entry in [category.landing,...category.pages]" :key="entry.slug" class="rules-index-row" :to="`/rules/read/${entry.slug}`">
+                  <span><strong>{{ entry.title }}</strong><small>{{ entry.summary }}</small></span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+                </RouterLink>
+              </div>
+            </details>
+
+            <details v-if="category.id==='watcher'" class="rules-index-panel rules-chapter rules-layout-test-parent card-surface">
+              <summary class="rules-index-heading rules-chapter-heading rules-layout-test-summary">
+                <span><strong>Rule Page Layout Test</strong><small>Isolated test pages for the proposed Rules layout. Production Rule Reader pages are unchanged.</small></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="rules-index-list">
                 <RouterLink class="rules-index-row rules-layout-test-child" to="/rules/layout-preview/fundamentals">
                   <span><strong>Layout Preview</strong><small>Open the test layout and switch among source documents.</small></span>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
                 </RouterLink>
-              </details>
-            </div>
-          </details>
+              </div>
+            </details>
+          </template>
         </section>
       </template>
     </RuleSurfaceScope>
@@ -106,7 +111,9 @@ function clearSearch(){query.value=''}
 .rules-index-row:last-child{border-bottom:0}.rules-index-row:hover{background:var(--paper-2)}
 .rules-index-row>span{display:grid;gap:3px;min-width:0}.rules-index-row strong{font-family:Georgia,'Times New Roman',serif;font-size:calc(15px + var(--font-offset))}.rules-index-row small{color:var(--ink-soft);line-height:1.35}
 .rules-index-row svg,.rules-chapter-heading>svg{width:18px;height:18px;fill:none;stroke:var(--ink-soft);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.rules-layout-test-parent{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--accent-wash) 35%,var(--paper))}.rules-layout-test-parent:last-child{border-bottom:0}.rules-layout-test-summary{list-style:none;border-bottom:0;background:transparent;cursor:pointer}.rules-layout-test-summary::-webkit-details-marker{display:none}.rules-layout-test-parent[open] .rules-layout-test-summary{border-bottom:1px solid var(--line)}.rules-layout-test-parent[open] .rules-layout-test-summary>svg{transform:rotate(180deg)}.rules-layout-test-child{padding-left:28px;background:var(--paper)}
+.rules-layout-test-parent{margin-top:0;background:color-mix(in srgb,var(--accent-wash) 28%,var(--paper))}
+.rules-layout-test-summary{background:color-mix(in srgb,var(--accent-wash) 42%,var(--paper-2))}
+.rules-layout-test-child{background:var(--paper)}
 .rules-recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}
 .recent-rule-box{--recent-tone:var(--accent);display:grid;grid-template-rows:auto auto;align-content:start;gap:4px;min-width:0;min-height:76px;padding:10px 12px;border:1px solid var(--surface-line);border-top:5px solid var(--recent-tone);border-radius:9px;background:var(--surface-front);color:var(--ink);text-decoration:none}
 .recent-rule-box:nth-child(4n+1){--recent-tone:var(--detail-trait-heritage)}

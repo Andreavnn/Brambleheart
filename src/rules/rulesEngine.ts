@@ -1,4 +1,5 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
+import { formatMeasurementText } from './measurements'
 
 function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
 
@@ -39,7 +40,6 @@ export type EquipmentProfileSource = {
 }
 
 export function rankModifier(rank:number){return Number(rank||0)*2}
-
 export function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
 
 function profileParts(detail:string){return String(detail||'').split('·').map(part=>part.trim()).filter(Boolean)}
@@ -62,18 +62,37 @@ function numericProfileBonus(value:string){const match=String(value||'').match(/
 export function equipmentGutsBonus(items:Array<{detail?:string;category?:string}>|undefined){
   return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
 }
-
 export function equipmentManaSyphon(items:Array<{detail?:string;category?:string}>|undefined){
   return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
 }
-
 export function equipmentControlBonus(items:Array<{statBonuses?:EquipmentStatBonuses;quantity?:number}>|undefined){
   return (items||[]).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
 }
 
 export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0){
-  const agility=Number(attributes.agility||0),might=Number(attributes.might||0),hide=Number(attributes.hide||0),lore=Number(attributes.lore||0)
-  return{speed:2+agility,aim:rankModifier(agility),mettle:rankModifier(might),ward:rankModifier(hide),control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),power:might,guts:hide+Math.max(0,Number(gutsBonus)||0)}
+  const agility=Number(attributes.agility||0)
+  const might=Number(attributes.might||0)
+  const hide=Number(attributes.hide||0)
+  const lore=Number(attributes.lore||0)
+  const bravery=Number(attributes.bravery||0)
+  return{
+    speed:2+agility,
+    aim:rankModifier(agility),
+    mettle:rankModifier(might),
+    fury:might,
+    ward:rankModifier(hide),
+    guts:hide+Math.max(0,Number(gutsBonus)||0),
+    control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),
+    power:lore,
+    heart:bravery,
+    inspiration:rankModifier(bravery),
+  }
+}
+
+export function magicResources(attributes:CoreAttributeRanks,magicLevel=0){
+  const stats=derivedStats(attributes)
+  const level=Math.max(0,Number(magicLevel)||0)
+  return{manaPool:level+stats.inspiration,manaPerRound:stats.heart}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){
@@ -82,7 +101,7 @@ export function weaponProfile(item:EquipmentProfileSource|undefined){
   const propertyParts=parts.filter(part=>!/^Damage\b/i.test(part)&&!/^Weight\b/i.test(part))
   const properties=propertyParts.join(', ')||'—'
   const range=properties.match(/(?:Projectile|Reach)\s*\(([^)]+)\)/i)?.[1]||'Touch'
-  return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range,properties,weight:labeledProfileValue(item.detail||'','Weight')}
+  return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range:formatMeasurementText(range),properties:formatMeasurementText(properties),weight:labeledProfileValue(item.detail||'','Weight')}
 }
 
 export function armorProfile(item:EquipmentProfileSource|undefined){
@@ -95,7 +114,7 @@ export type StructuredRuleField={label:string;value:string}
 const STRUCTURED_RULE_LABELS=['OPEN DEFENCE','COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTION','RESTRICTIONS','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS'] as const
 
 export function structuredRule(text:string):{intro:string;fields:StructuredRuleField[]}{
-  const source=String(text||'')
+  const source=formatMeasurementText(String(text||''))
   const rx=new RegExp(`\\b(${STRUCTURED_RULE_LABELS.join('|')}):\\s*`,'gi')
   const matches=Array.from(source.matchAll(rx))
   if(!matches.length)return{intro:source.trim(),fields:[]}
@@ -106,5 +125,4 @@ export function structuredRule(text:string):{intro:string;fields:StructuredRuleF
   })).filter(field=>field.value)
   return{intro,fields}
 }
-
 export function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST'&&field.label!=='KEYWORDS')}

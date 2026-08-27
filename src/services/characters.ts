@@ -1,6 +1,7 @@
 import { BUILD, type AttributeId } from '../data/bramble'
 import { gearShopItems } from '../data/characterOptions'
 import type { EquipmentStatBonuses } from '../data/equipment'
+import { gearCostNp } from '../rules/threadpieces'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks = Record<AttributeId, number>
@@ -73,13 +74,21 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
     const source=gearShopItems.find(candidate=>candidate.name===item.name&&candidate.category===item.category)
     const statBonuses=item.statBonuses??source?.statBonuses
     const effect=source?.statBonuses?source.effect:item.effect
-    return{...item,effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses}
+    const costSp=source?.costSp??item.costSp
+    const costNp=source?gearCostNp(source.costSp):item.costNp
+    return{...item,costSp,costNp,effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses}
   })
+}
+function normalizedWealthRemaining(record:CharacterRecord,equipment:PurchasedEquipment[]){
+  if(!Number.isFinite(Number(record.startingWealth)))return record.wealthRemaining
+  const spent=equipment.reduce((sum,item)=>sum+Number(item.costNp??gearCostNp(item.costSp))*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
+  return Math.max(0,Number(record.startingWealth)-spent)
 }
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record)
   const status=characterStatus({...record,creationComplete})
-  return{...record,equipment:normalizeEquipment(record.equipment),creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  const equipment=normalizeEquipment(record.equipment)
+  return{...record,equipment,wealthRemaining:normalizedWealthRemaining(record,equipment),creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{
   if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.')
@@ -96,7 +105,7 @@ export function loadCharacters():CharacterRecord[]{
     const parsed=JSON.parse(readLocalStorage(CHARACTER_STORE)||'[]')
     if(!Array.isArray(parsed))return[]
     const normalized=(parsed as CharacterRecord[]).map(normalizeCharacterRecord)
-    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.creationComplete)!==Boolean(normalized[index]?.creationComplete)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
+    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.creationComplete)!==Boolean(normalized[index]?.creationComplete)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||Number(item.wealthRemaining)!==Number(normalized[index]?.wealthRemaining)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
       writeLocalStorage(CHARACTER_STORE,JSON.stringify(normalized))
     }
     return normalized

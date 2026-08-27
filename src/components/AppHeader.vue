@@ -33,37 +33,28 @@ function goBack(){
       <div class="header-control-row">
         <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>
         <div v-else class="header-spacer"></div>
-
         <button class="icon-button theme-button" type="button" :aria-label="darkMode?'Switch to light mode':'Switch to dark mode'" @click="toggleTheme">
           <svg v-if="darkMode" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
           <svg v-else viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"/></svg>
         </button>
       </div>
-
-      <RouterLink to="/characters" class="brand-stack brand-logo-link" aria-label="Brambleheart Character List">
-        <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="brand-logo" />
-      </RouterLink>
+      <div class="brand-stack brand-update-stack">
+        <RouterLink to="/characters" class="brand-logo-link" aria-label="Brambleheart Character List">
+          <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="brand-logo" />
+        </RouterLink>
+        <RouterLink to="/game-updates" class="game-updates-header-link">Game Updates</RouterLink>
+      </div>
     </div>
     <PrimaryNav />
   </header>
 </template>
 
 <style scoped>
-.header-control-row{
-  grid-column:1/-1;
-  grid-row:1;
-  z-index:3;
-  width:min(760px,calc(100vw - 28px));
-  justify-self:center;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  pointer-events:none;
-}
-.header-control-row>*{pointer-events:auto}
-.header-control-row .header-spacer{pointer-events:none}
-.brand-logo-link{grid-column:1/-1;grid-row:1;z-index:1}
-@media(max-width:680px){
-  .header-control-row{width:min(760px,calc(100vw - 20px))}
-}
+.header-control-row{grid-column:1/-1;grid-row:1;z-index:3;width:min(760px,calc(100vw - 28px));justify-self:center;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.header-control-row>*{pointer-events:auto}.header-control-row .header-spacer{pointer-events:none}
+.brand-update-stack{grid-column:1/-1;grid-row:1;z-index:1;display:grid;justify-items:center;align-content:start;gap:2px;min-width:0}
+.brand-logo-link{display:block;min-width:0}
+.game-updates-header-link{margin-top:-2px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850;letter-spacing:.055em;text-transform:uppercase;text-decoration:none}
+.game-updates-header-link:hover,.game-updates-header-link.router-link-active{color:var(--accent-dark);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:680px){.header-control-row{width:min(760px,calc(100vw - 20px))}.game-updates-header-link{font-size:calc(8.5px + var(--font-offset))}}
 </style>
