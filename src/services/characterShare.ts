@@ -17,14 +17,19 @@ function base64UrlToBytes(value:string){
   const binary=atob(padded)
   return Uint8Array.from(binary,char=>char.charCodeAt(0))
 }
+function blobFromBytes(bytes:Uint8Array){
+  const copy=new Uint8Array(bytes.byteLength)
+  copy.set(bytes)
+  return new Blob([copy.buffer])
+}
 async function gzip(bytes:Uint8Array){
   if(typeof CompressionStream==='undefined')return null
-  const stream=new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))
+  const stream=blobFromBytes(bytes).stream().pipeThrough(new CompressionStream('gzip'))
   return new Uint8Array(await new Response(stream).arrayBuffer())
 }
 async function gunzip(bytes:Uint8Array){
   if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot open compressed Brambleheart QR data.')
-  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))
+  const stream=blobFromBytes(bytes).stream().pipeThrough(new DecompressionStream('gzip'))
   return new Uint8Array(await new Response(stream).arrayBuffer())
 }
 
