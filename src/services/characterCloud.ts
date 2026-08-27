@@ -81,10 +81,6 @@ export function loadCharacterCloudState():CharacterCloudState{
   try{return cleanState(JSON.parse(readLocalStorage(CLOUD_STORE)||'{}'))}catch{return cleanState({})}
 }
 export function ensureCharacterCloudState(){return saveState(loadCharacterCloudState())}
-export function regenerateCharacterCloudCode(state:CharacterCloudState){
-  if(state.connection)throw new Error('Disconnect Cloud Sync before generating a new Cloud Link Code.')
-  return saveState({...state,linkCode:randomLinkCode(),oauth:null})
-}
 export function getCharacterCloudConfig():CharacterCloudConfig{
   return{configured:configured(),provider:'dropbox',workspaceLabel:'Dropbox App Folder'}
 }
@@ -100,7 +96,7 @@ async function pkceChallenge(verifier:string){return base64Url(await crypto.subt
 
 export async function beginDropboxCloudConnection(state:CharacterCloudState){
   const key=appKey()
-  if(!key)throw new Error('Dropbox Cloud Sync is not configured on this Brambleheart deployment. See Cloud Instructions (.txt).')
+  if(!key)throw new Error('Dropbox Cloud Sync is unavailable on this deployment.')
   if(state.connection)throw new Error('Cloud Sync is already connected. Disconnect it before linking another Dropbox account.')
   const verifier=randomString(64,VERIFIER_ALPHABET)
   const redirectUri=characterCloudRedirectUri()

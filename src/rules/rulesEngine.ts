@@ -1,3 +1,5 @@
+import type { EquipmentStatBonuses } from '../data/equipment'
+
 function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
 
 export function rhythmResult(dice: number[], mode: 'normal'|'edged'|'weighted'='normal', stat=0, conditions=0) {
@@ -65,9 +67,13 @@ export function equipmentManaSyphon(items:Array<{detail?:string;category?:string
   return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
 }
 
-export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0){
+export function equipmentControlBonus(items:Array<{statBonuses?:EquipmentStatBonuses;quantity?:number}>|undefined){
+  return (items||[]).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
+}
+
+export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0){
   const agility=Number(attributes.agility||0),might=Number(attributes.might||0),hide=Number(attributes.hide||0),lore=Number(attributes.lore||0)
-  return{speed:2+agility,aim:rankModifier(agility),mettle:rankModifier(might),ward:rankModifier(hide),control:rankModifier(lore),power:might,guts:hide+Math.max(0,Number(gutsBonus)||0)}
+  return{speed:2+agility,aim:rankModifier(agility),mettle:rankModifier(might),ward:rankModifier(hide),control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),power:might,guts:hide+Math.max(0,Number(gutsBonus)||0)}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){

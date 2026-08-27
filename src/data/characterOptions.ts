@@ -1,8 +1,10 @@
+import type { EquipmentStatBonuses } from './equipment'
+
 export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
 export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Spellcasting Implements'|'Accessories'|'Tools'
-export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[] }
+export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
 
 export const sparkDetails: Record<string,SparkDetail> = {
   "Courageous": {
@@ -396,21 +398,21 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Shade Blade (Dagger)",
     "category": "Weapon",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "2 · 1 lb. · Deadly, Versatile, Thrown (5)"
   },
   {
     "name": "Timber Fang (Hatchet)",
     "category": "Weapon",
-    "costText": "5 sp",
+    "costText": "25 np",
     "costSp": 5.0,
     "detail": "3 · 2 lb. · Slashing, Thrown (5)"
   },
   {
     "name": "Rootbreaker (Mace)",
     "category": "Weapon",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "4 · 2 lb. · Bludgeoning, Thrown (4)"
   },
@@ -424,14 +426,14 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Brush Blade (Short Sword)",
     "category": "Weapon",
-    "costText": "10 sp",
+    "costText": "50 np",
     "costSp": 10.0,
     "detail": "3 · 2 lb. · Slashing, Versatile"
   },
   {
     "name": "Stonebreaker (Warhammer)",
     "category": "Weapon",
-    "costText": "25 sp",
+    "costText": "125 np",
     "costSp": 25.0,
     "detail": "4 (6) · 2 lb. · Bludgeoning, Adaptable"
   },
@@ -459,105 +461,105 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Brush Bow (Short Bow)",
     "category": "Weapon",
-    "costText": "20 sp",
+    "costText": "100 np",
     "costSp": 20.0,
     "detail": "3 · 2 lb. · Projectile (7), Penetration"
   },
   {
     "name": "Far Bow (Long Bow)",
     "category": "Weapon",
-    "costText": "50 sp",
+    "costText": "250 np",
     "costSp": 50.0,
     "detail": "4 · 2 lb. · Projectile (12), Penetration, Skyfire"
   },
   {
     "name": "Quicklock (Light Crossbow)",
     "category": "Weapon",
-    "costText": "25 sp",
+    "costText": "125 np",
     "costSp": 25.0,
     "detail": "3 · 5 lb. · Projectile (8), Penetration, Versatile"
   },
   {
     "name": "Latchlock (Heavy Crossbow)",
     "category": "Weapon",
-    "costText": "50 sp",
+    "costText": "250 np",
     "costSp": 50.0,
     "detail": "5 · 5 lb. · Projectile (10), Penetration, Skyfire"
   },
   {
     "name": "Leafsitch",
     "category": "Armor & Shield",
-    "costText": "5sp",
+    "costText": "25 np",
     "costSp": 5.0,
     "detail": "0 · +1 · +0 · 0 · 4lb"
   },
   {
     "name": "Barkskin Vest",
     "category": "Armor & Shield",
-    "costText": "20sp",
+    "costText": "100 np",
     "costSp": 20.0,
     "detail": "0 · +1 · +0 · -1 · 6lb"
   },
   {
     "name": "Briarhide",
     "category": "Armor & Shield",
-    "costText": "45sp",
+    "costText": "225 np",
     "costSp": 45.0,
     "detail": "1+ · +2 · +1 · -2 · 9lb"
   },
   {
     "name": "Roughscale",
     "category": "Armor & Shield",
-    "costText": "30sp",
+    "costText": "150 np",
     "costSp": 30.0,
     "detail": "2+ · +2 · +2 · -3 · 14lb"
   },
   {
     "name": "Root Weave",
     "category": "Armor & Shield",
-    "costText": "75sp",
+    "costText": "375 np",
     "costSp": 75.0,
     "detail": "2+ · +3 · +2 · -4 · 28lb"
   },
   {
     "name": "Heartguard",
     "category": "Armor & Shield",
-    "costText": "250sp",
+    "costText": "1250 np",
     "costSp": 250.0,
     "detail": "3+ · +3 · +3 · -4 · 22lb"
   },
   {
     "name": "Earthforged Plate",
     "category": "Armor & Shield",
-    "costText": "600sp",
+    "costText": "3000 np",
     "costSp": 600.0,
     "detail": "4+ · +4 · +3 · -5 · 36lb"
   },
   {
     "name": "Toughscale",
     "category": "Armor & Shield",
-    "costText": "300sp",
+    "costText": "1500 np",
     "costSp": 300.0,
     "detail": "4+ · +4 · +2 · -5 · 32lb"
   },
   {
     "name": "Durtlehide",
     "category": "Armor & Shield",
-    "costText": "800sp",
+    "costText": "4000 np",
     "costSp": 800.0,
     "detail": "5+ · +5 · +3 · -5 · 40lb"
   },
   {
     "name": "Runeforged Plate",
     "category": "Armor & Shield",
-    "costText": "1,500sp",
+    "costText": "7500 np",
     "costSp": 1500.0,
     "detail": "5+ · +6 · +4 · -6 · 65lb"
   },
   {
     "name": "Sapguard",
     "category": "Armor & Shield",
-    "costText": "10sp",
+    "costText": "50 np",
     "costSp": 10.0,
     "detail": "1+ · +1 · +1 · -1 · 4lb",
     "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Stealth effects still apply."
@@ -565,14 +567,14 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Vinegrip",
     "category": "Armor & Shield",
-    "costText": "50sp",
+    "costText": "250 np",
     "costSp": 50.0,
     "detail": "2+ · +3 · +2 · -2 · 10lb"
   },
   {
     "name": "Ironwood Bulwark",
     "category": "Armor & Shield",
-    "costText": "300sp",
+    "costText": "1500 np",
     "costSp": 300.0,
     "detail": "3+ · +4 · +3 · -3 · 18lb"
   },
@@ -589,7 +591,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Traveler’s Cloak",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "3 lb.",
     "description": "A heavy weather-ready cloak that protects against wind and cold while helping careful movement and concealment.",
@@ -609,7 +611,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Travel Lantern",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "A sturdy shuttered oil lantern that requires fuel and a Fire-Starting Kit.",
@@ -669,7 +671,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Traveler’s Pack",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "2 lb.",
     "description": "A durable pack designed for extended travel and awkward expedition gear.",
@@ -697,7 +699,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Traveler’s Rope (20 ft)",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "3 lb.",
     "description": "Strong flexible rope for climbing, securing loads, and solving terrain problems.",
@@ -724,7 +726,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Artisan",
     "category": "Adventuring Gear",
-    "costText": "3 sp",
+    "costText": "15 np",
     "costSp": 3.0,
     "detail": "5 lb.",
     "description": "A compact collection of crafting, repair, and camp-cooking tools.",
@@ -733,7 +735,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Climber",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "4 lb.",
     "description": "Hooks, pitons, straps, and line supports used to scale stone, wood, and ruins.",
@@ -742,7 +744,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Disguise",
     "category": "Adventuring Gear",
-    "costText": "3 sp",
+    "costText": "15 np",
     "costSp": 3.0,
     "detail": "3 lb.",
     "description": "Pigments, powders, cloth wraps, and shaping tools used to alter appearance and roles.",
@@ -751,7 +753,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Forgery",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "Ink, seals, imitation stamps, paper scraps, and precision tools for recreating documents and markings.",
@@ -760,7 +762,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Navigator",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "3 lb.",
     "description": "Charts, parchment, measuring cords, charcoal, and a sighting tool for navigation and mapmaking.",
@@ -769,7 +771,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Poisoner",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "Vials, gloves, clamps, and tools for safely creating, refining, or applying simple poisons.",
@@ -778,7 +780,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Herbalist",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "1 lb.",
     "description": "A divided pouch with bandages, dried leaves, bark, binding fibers, and storage for gathered herbs.",
@@ -787,7 +789,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Infusion",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "3 lb.",
     "description": "A small alchemical setup for tinctures, distillations, and other non-herbal mixtures.",
@@ -796,7 +798,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Thieves’",
     "category": "Adventuring Gear",
-    "costText": "3 sp",
+    "costText": "15 np",
     "costSp": 3.0,
     "detail": "2 lb.",
     "description": "Slim picks, soft pads, wedges, and tension tools for quiet entry and delicate manipulation.",
@@ -805,7 +807,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Antivenin",
     "category": "Adventuring Gear",
-    "costText": "3 sp",
+    "costText": "15 np",
     "costSp": 3.0,
     "detail": "—",
     "description": "A neutralizing mixture designed to counter common natural toxins.",
@@ -814,7 +816,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Aroma",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "—",
     "description": "A potent scent used to mask odors, soothe beasts, or confuse creatures that hunt by smell.",
@@ -823,7 +825,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Black Water",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "—",
     "description": "A murky Ancient-site liquid whose properties vary with source and preparation.",
@@ -832,7 +834,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Blessed Water",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "1 lb.",
     "description": "Ritually prepared water used in cleansing, warding, and symbolic acts.",
@@ -841,7 +843,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Liquid Fire",
     "category": "Adventuring Gear",
-    "costText": "4 sp",
+    "costText": "20 np",
     "costSp": 4.0,
     "detail": "1 lb.",
     "description": "A volatile mixture that clings to surfaces when ignited and is useful for clearing obstacles or dispersing threats.",
@@ -850,7 +852,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Potion of Healing",
     "category": "Adventuring Gear",
-    "costText": "5 sp",
+    "costText": "25 np",
     "costSp": 5.0,
     "detail": "—",
     "description": "A restorative mixture that speeds recovery and helps stabilize the wounded.",
@@ -863,23 +865,29 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 1.0,
     "detail": "1 lb.",
     "description": "A sturdy book that can be inscribed and prepared as the required Spellbook focus for a caster.",
-    "effect": "When prepared as a Spellbook, it is required for that caster’s spellcasting. Each known spell may be cast only once per encounter; spell Mana cost is −1, non-lethal spell damage is +1, and Spell Strike is +1.",
+    "effect": "When prepared as a Spellbook, it is required for that caster’s spellcasting. Each known spell may be cast only once per encounter; spell Mana cost is −1, non-lethal spell damage is +1, and Control is +1.",
+    "statBonuses": {
+      "control": 1
+    },
     "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Totem",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "—",
     "description": "A crafted bone, wood, metal, or woven charm that can be designated as a caster’s arcane focus.",
-    "effect": "May be designated as an arcane focus. While held or worn as the required focus, gain +1 to Strike rolls for spells.",
+    "effect": "May be designated as an arcane focus. While held or worn as the required focus, gain +1 to Control.",
+    "statBonuses": {
+      "control": 1
+    },
     "shopGroup": "Spellcasting Implements"
   },
   {
     "name": "Charm",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "—",
     "description": "A small enchanted emblem worn or carried to reinforce spell damage.",
@@ -889,7 +897,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Len-stone Arcanum",
     "category": "Adventuring Gear",
-    "costText": "3 sp",
+    "costText": "15 np",
     "costSp": 3.0,
     "detail": "—",
     "description": "A polished crystal lens bound in cord that alters a compelled Renew the Heart target once per encounter.",
@@ -899,7 +907,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Cloak of Windweave",
     "category": "Adventuring Gear",
-    "costText": "6 sp",
+    "costText": "30 np",
     "costSp": 6.0,
     "detail": "2 lb.",
     "description": "A shimmering mantle infused with subtle harmonic currents.",
@@ -920,7 +928,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Quickdraw Quiver",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "1 lb.",
     "description": "A rigid quiver designed for rapid arrow retrieval.",
@@ -930,7 +938,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Featherwind Bolt-Case",
     "category": "Adventuring Gear",
-    "costText": "2 sp",
+    "costText": "10 np",
     "costSp": 2.0,
     "detail": "1 lb.",
     "description": "A smooth-lined case that keeps crossbow bolts from snagging.",
@@ -940,7 +948,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Wristloop",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "—",
     "description": "A fitted wrist strap that improves the release of thrown weapons.",
@@ -960,7 +968,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Journey Knot",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "—",
     "description": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb.",
@@ -986,7 +994,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Hatchet",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "2 lb.",
     "shopGroup": "Tools"
@@ -994,7 +1002,7 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Hand Saw",
     "category": "Adventuring Gear",
-    "costText": "1 sp",
+    "costText": "5 np",
     "costSp": 1.0,
     "detail": "2 lb.",
     "shopGroup": "Tools"

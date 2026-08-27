@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { attributes, BUILD, homelands, sparks } from '../data/bramble'
 import { canonicalTalentName } from '../data/talentCategories'
-import { derivedStats, equipmentGutsBonus } from '../rules/rulesEngine'
+import { derivedStats, equipmentControlBonus, equipmentGutsBonus } from '../rules/rulesEngine'
 import { characterExportPayload, characterStatus, downloadJson, loadCharacters, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
 
 const router=useRouter()
@@ -19,7 +19,7 @@ function snapshot(){return JSON.parse(JSON.stringify(characters.value)) as Chara
 function persist(previous?:CharacterRecord[]){const saved=writeCharacters(characters.value);if(saved.ok)return true;if(previous)characters.value=previous;alert(saved.message);return false}
 function toggle(id:string){const next=new Set(openIds.value);next.has(id)?next.delete(id):next.add(id);openIds.value=next}
 function togglePin(id:string){const previous=snapshot();const c=characters.value.find(item=>item.id===id);if(!c)return;c.pinned=!c.pinned;c.updatedAt=new Date().toISOString();persist(previous)}
-function toggleDraftLock(id:string){const previous=snapshot();const c=characters.value.find(item=>item.id===id);if(!c||characterStatus(c)!=='incomplete')return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist(previous)}
+function toggleCharacterLock(id:string){const previous=snapshot();const c=characters.value.find(item=>item.id===id);if(!c)return;c.locked=!c.locked;c.updatedAt=new Date().toISOString();persist(previous)}
 function setApproval(id:string,approved:boolean){const saved=setCharacterApproval(id,approved);if(!saved.ok){alert(saved.message);return}characters.value=loadCharacters()}
 function levelUpCharacter(id:string){void router.push(`/characters/${id}/level-up`)}
 function editCharacter(id:string){void router.push({path:'/characters/create',query:{edit:id}})}
@@ -46,7 +46,7 @@ async function importCharacter(event:Event){
 }
 function homelandSkills(name:string){return homelands.find(h=>h.name===name)?.skills.join(' · ')||'—'}
 function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
-function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment))}
+function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment),equipmentControlBonus(c.equipment))}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${Number(rank)*2}`).join(' · ')
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
@@ -79,18 +79,18 @@ function skillSummary(character:CharacterRecord){
           <div class="character-card-topline">
             <button class="saved-list-open-area character-open-area" type="button" @click="toggle(character.id)">
               <div>
-                <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="characterStatus(character)==='incomplete'" class="character-status-badge incomplete">INCOMPLETE</span><span v-else class="character-status-badge complete">{{ characterStatus(character)==='approved'?'APPROVED':'UNAPPROVED' }}</span><span v-if="characterStatus(character)==='incomplete'&&character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
+                <div class="character-title-line"><strong>{{ character.name }}</strong><span v-if="characterStatus(character)==='incomplete'" class="character-status-badge incomplete">INCOMPLETE</span><span v-else class="character-status-badge complete">{{ characterStatus(character)==='approved'?'APPROVED':'UNAPPROVED' }}</span><span v-if="character.locked" class="row-badge lock-badge">LOCKED</span><span v-if="character.pinned" class="row-badge">PINNED</span></div>
                 <div class="saved-list-labels character-list-summary"><span class="app-option-label">{{ character.species||'Species not selected' }}</span><span class="app-option-label">{{ character.campaignName||'No campaign assigned' }}</span></div>
               </div>
-              <div class="saved-list-card-meta"><strong>{{ character.campaignName||'Independent' }}</strong><small>{{ character.species||'Species not selected' }}</small></div>
             </button>
-            <div class="character-card-actions-visible">
-              <button v-if="characterStatus(character)!=='approved'" class="secondary-button compact-action" type="button" @click="editCharacter(character.id)">Edit</button>
-              <button v-else class="primary-button compact-action" type="button" @click="levelUpCharacter(character.id)">Level Up</button>
-              <button v-if="characterStatus(character)==='incomplete'" class="secondary-button compact-action character-lock-button" type="button" :class="{active:character.locked}" @click="toggleDraftLock(character.id)">{{ character.locked?'Unlock':'Lock' }}</button>
-              <button v-else class="secondary-button compact-action character-lock-button" type="button" :class="{active:characterStatus(character)==='approved'}" @click="setApproval(character.id,characterStatus(character)!=='approved')">{{ characterStatus(character)==='approved'?'Remove Approval':'Approve' }}</button>
-              <button class="secondary-button compact-action" type="button" @click="copyCharacter(character.id)">Copy</button>
-              <button class="danger-button compact-action" type="button" :disabled="character.locked||characterStatus(character)==='approved'" @click="removeCharacter(character.id)">Delete</button>
+            <div class="character-card-actions-visible" role="group" :aria-label="`${character.name} actions`">
+              <button v-if="characterStatus(character)!=='approved'" class="secondary-button character-icon-action" type="button" aria-label="Edit character" title="Edit" @click="editCharacter(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg></button>
+              <button v-else class="primary-button character-icon-action" type="button" aria-label="Level up character" title="Level Up" @click="levelUpCharacter(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="m6.5 10.5 5.5-5.5 5.5 5.5"/></svg></button>
+              <button class="secondary-button character-icon-action character-lock-button" type="button" :class="{active:character.locked}" :aria-label="character.locked?'Unlock character':'Lock character'" :title="character.locked?'Unlock':'Lock'" @click="toggleCharacterLock(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button>
+              <button v-if="characterStatus(character)==='unapproved'" class="secondary-button character-icon-action" type="button" aria-label="Approve character" title="Approve" @click="setApproval(character.id,true)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v10H4V10h3Z"/><path d="M9 20h7.5a2 2 0 0 0 1.9-1.4l2-6A2 2 0 0 0 18.5 10H14l.7-3.5A2.5 2.5 0 0 0 12.2 4L9 10v10Z"/></svg></button>
+              <button v-else-if="characterStatus(character)==='approved'" class="secondary-button character-icon-action" type="button" aria-label="Remove character approval" title="Remove Approval" @click="setApproval(character.id,false)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14V4H4v10h3Z"/><path d="M9 4h7.5a2 2 0 0 1 1.9 1.4l2 6A2 2 0 0 1 18.5 14H14l.7 3.5A2.5 2.5 0 0 1 12.2 20L9 14V4Z"/></svg></button>
+              <button class="secondary-button character-icon-action" type="button" aria-label="Copy character" title="Copy" @click="copyCharacter(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></button>
+              <button class="danger-button character-icon-action" type="button" :disabled="character.locked||characterStatus(character)==='approved'" aria-label="Delete character" title="Delete" @click="removeCharacter(character.id)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="m6 7 1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></svg></button>
             </div>
           </div>
           <div v-if="openIds.has(character.id)" class="character-detail-panel">
@@ -102,7 +102,7 @@ function skillSummary(character:CharacterRecord){
             <div v-if="character.talents?.length" class="info-card"><strong>Talents{{ character.loreAttunement?` · ${character.loreAttunement} Attunement`:'' }}</strong><p>{{ character.talents.map(canonicalTalentName).join(' · ') }}</p></div>
             <div v-if="character.spells?.length || character.invocationSpells?.length || character.invocationSpell" class="info-card"><strong>Magic</strong><p><template v-if="character.spells?.length">Spells: {{ character.spells.join(' · ') }}</template><template v-if="character.invocationSpells?.length"> · Invocations: {{ character.invocationSpells.join(' · ') }}</template><template v-else-if="character.invocationSpell"> · Invocation: {{ character.invocationSpell }}</template></p></div>
             <div v-if="character.equipment?.length" class="info-card"><strong>Purchased Equipment</strong><p>{{ character.equipment.map(item=>item.name).join(' · ') }}</p></div>
-            <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button v-if="characterStatus(character)==='incomplete'" class="secondary-button" type="button" @click="toggleDraftLock(character.id)">{{ character.locked?'Unlock':'Lock Character' }}</button><button v-else class="secondary-button" type="button" @click="setApproval(character.id,characterStatus(character)!=='approved')">{{ characterStatus(character)==='approved'?'Remove Approval':'Approve Character' }}</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" :disabled="character.locked||characterStatus(character)==='approved'" @click="removeCharacter(character.id)">Delete</button></div>
+            <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="toggleCharacterLock(character.id)">{{ character.locked?'Unlock Character':'Lock Character' }}</button><button v-if="characterStatus(character)!=='incomplete'" class="secondary-button" type="button" @click="setApproval(character.id,characterStatus(character)!=='approved')">{{ characterStatus(character)==='approved'?'Remove Approval':'Approve Character' }}</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" :disabled="character.locked||characterStatus(character)==='approved'" @click="removeCharacter(character.id)">Delete</button></div>
           </div>
         </article>
         </div>

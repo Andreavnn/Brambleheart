@@ -3,6 +3,16 @@ import AppHeader from '../components/AppHeader.vue'
 
 type Release={version:string;summary:string;items:string[];open?:boolean}
 const releases:Release[]=[
+  {version:'Beta Build 0.29',summary:'Character sheet controls, Control gear bonuses, background wrap, and user-only Cloud Sync guidance',open:true,items:[
+    'Centers Attribute Rank and Modifier panels, shortens Secondary Stat cards, and renames Additional Language to Bonus Language.',
+    'Converts Equipment & Gear SP prices to equivalent NP labels and keeps purchased-item cost presentation in NP/WP.',
+    'Changes Totem and Scriptweave Book to +1 Control, adds structured equipment Control bonuses to derived character stats, and migrates existing saved copies to the current catalog effect.',
+    'Starts Skills, Magic, Talents, and Equipment & Gear collapsed in Review Character.',
+    'Replaces Character List text actions with accessible icons, adds manual Lock/Unlock to all character statuses, and removes duplicated summary text beside the actions.',
+    'Repairs next-background wrapping by deduplicating background option IDs before the catalog is exposed to the header control.',
+    'Removes unnecessary New Code/Copy Code controls, compacts Workspace Link, centers the Cloud Instructions button, and rebuilds the download as a user-only Dropbox guide.',
+    'Synchronizes Beta 0.29 release markers while preserving the Node runtime pin at 22.x.',
+  ]},
   {version:'Beta Build 0.28',summary:'Dropbox App Folder Cloud Sync, Character Data status, and Recent Rules color refinement',open:true,items:[
     'Splits Character Data and Cloud Sync into separate Settings parents and shows LOCAL plus CONNECTED/DISCONNECTED status on Character Data.',
     'Replaces Google Workspace Shared Drive/service-account synchronization with Dropbox App Folder access and OAuth 2 PKCE, removing the active Google service-account and folder-description pairing workflow.',

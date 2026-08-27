@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.29
+
+- Centered Character Creation Attribute Rank/Modifier panels and reduced unused Secondary Stat panel width while preserving responsive wrapping.
+- Renamed the Starting Languages choice from Additional Language to Bonus Language.
+- Converted all Equipment & Gear catalog prices displayed in SP to equivalent NP values and kept purchased-item presentation in NP/WP.
+- Changed Totem and Scriptweave Book to grant structured +1 Control bonuses; existing saved copies are normalized to the canonical equipment definitions, and the bonus feeds Character Review, Character List, and Rhythm Engine derived stats.
+- Set Skills, Magic, Talents, and Equipment & Gear to start collapsed in Review Character.
+- Replaced Character List text actions with accessible icons, added independent Lock/Unlock controls to every character status, and removed duplicated campaign/species text beside the actions.
+- Fixed next-background wraparound by deduplicating background option IDs at the background catalog authority.
+- Simplified Dropbox Cloud Link Code presentation, removed unnecessary New Code/Copy Code controls, compacted Workspace Link, centered the Cloud Instructions button, and rebuilt the downloadable instructions as a user-only guide.
+- Synchronized visible build, package/export version source, PWA cache, README, patch notes, repository/in-app changelog to Beta 0.29 while preserving the Node runtime pin at `22.x`.
+
 # Brambleheart Beta 0.28
 
 - Replaced the Beta 0.27 Google Workspace/service-account Character Sync implementation with Dropbox App Folder Cloud Sync using OAuth 2 PKCE.

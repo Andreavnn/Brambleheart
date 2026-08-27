@@ -1,9 +1,11 @@
 import { BUILD, type AttributeId } from '../data/bramble'
+import { gearShopItems } from '../data/characterOptions'
+import type { EquipmentStatBonuses } from '../data/equipment'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks = Record<AttributeId, number>
 export type CharacterStatus = 'incomplete'|'unapproved'|'approved'
-export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string; quantity?:number }
+export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string; quantity?:number; statBonuses?:EquipmentStatBonuses }
 export interface CharacterRecord {
   id:string
   name:string
@@ -38,7 +40,7 @@ export interface CharacterRecord {
   wealthCurrency?:'NP'|'SP'
   attributes:AttributeRanks
   pinned?:boolean
-  /** Draft-only manual lock. Approval is tracked separately by status. */
+  /** Manual local safety lock. Approval is tracked separately by status. */
   locked?:boolean
   status?:CharacterStatus
   experience?:number
@@ -58,11 +60,16 @@ export function characterStatus(record:Pick<CharacterRecord,'status'|'draft'|'lo
   return record.locked?'approved':'unapproved'
 }
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
-  return (items||[]).map(item=>({...item,quantity:Math.max(1,Math.floor(Number(item.quantity)||1))}))
+  return (items||[]).map(item=>{
+    const source=gearShopItems.find(candidate=>candidate.name===item.name&&candidate.category===item.category)
+    const statBonuses=item.statBonuses??source?.statBonuses
+    const effect=source?.statBonuses?source.effect:item.effect
+    return{...item,effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses}
+  })
 }
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const status=characterStatus(record)
-  return{...record,equipment:normalizeEquipment(record.equipment),status,draft:status==='incomplete',locked:status==='incomplete'?Boolean(record.locked):false}
+  return{...record,equipment:normalizeEquipment(record.equipment),status,draft:status==='incomplete',locked:Boolean(record.locked)}
 }
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{
   return (JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)
@@ -89,7 +96,7 @@ export function setCharacterApproval(id:string,approved:boolean):StorageWriteRes
   const list=loadCharacters();const index=list.findIndex(item=>item.id===id)
   if(index<0)return{ok:false,message:'That character could not be found on this device.'}
   if(characterStatus(list[index])==='incomplete')return{ok:false,message:'Finish this character before approving it.'}
-  list[index]={...list[index],status:approved?'approved':'unapproved',draft:false,locked:false,updatedAt:new Date().toISOString()}
+  list[index]={...list[index],status:approved?'approved':'unapproved',draft:false,updatedAt:new Date().toISOString()}
   return writeCharacters(list)
 }
 export function characterExportPayload(character:CharacterRecord){return{format:'brambleheart-character',version:BUILD,character}}

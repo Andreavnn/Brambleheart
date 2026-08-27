@@ -8,7 +8,7 @@ import { backgroundOptions, backgroundLabel } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
 import { externalLinks } from '../data/links'
 import { downloadJson, loadCharacters, writeCharacters } from '../services/characters'
-import { beginDropboxCloudConnection, completeDropboxCloudConnection, disconnectCharacterCloud, ensureCharacterCloudState, getCharacterCloudConfig, regenerateCharacterCloudCode, updateCharactersFromCloud, uploadCharactersToCloud } from '../services/characterCloud'
+import { beginDropboxCloudConnection, completeDropboxCloudConnection, disconnectCharacterCloud, ensureCharacterCloudState, getCharacterCloudConfig, updateCharactersFromCloud, uploadCharactersToCloud } from '../services/characterCloud'
 import { clearCustomData as clearCustomDataStore, customDataCounts, loadCustomData, mergeCustomData, parseCustomDataText, saveCustomData, type CustomDataItem } from '../services/customData'
 import { localStorageKeys, removeLocalStorage, SETTINGS_STORE } from '../services/storage'
 
@@ -85,17 +85,6 @@ async function importCustomData(event:Event){
   finally{input.value=''}
 }
 function clearCustomData(){if(!confirm('Remove all locally loaded Custom Data?'))return;const cleared=clearCustomDataStore();if(!cleared.ok){alert(cleared.message);return}customData.value=[]}
-function newCharacterCloudCode(){
-  if(characterCloudConnected.value)return
-  try{
-    characterCloudState.value=regenerateCharacterCloudCode(characterCloudState.value)
-    characterCloudMessage.value='A new Cloud Link Code was generated. Brambleheart will verify this code automatically when Dropbox returns to this browser.'
-  }catch(error){characterCloudMessage.value=error instanceof Error?error.message:'A new Cloud Link Code could not be saved on this device.'}
-}
-async function copyCloudValue(value:string,label:string){
-  if(!value)return
-  try{await navigator.clipboard.writeText(value);characterCloudMessage.value=`${label} copied.`}catch{characterCloudMessage.value=`Copy this ${label.toLowerCase()} manually: ${value}`}
-}
 async function connectCharacterCloud(){
   if(characterCloudBusy.value||characterCloudConnected.value)return
   characterCloudBusy.value=true;characterCloudMessage.value='Opening Dropbox…'
@@ -185,10 +174,10 @@ onMounted(async()=>{
         <div class="setting-row"><span><strong>Local Character Storage</strong><small>Approved, unapproved, and incomplete characters continue to use this device as their active storage. Cloud Sync never replaces local storage as the live character database.</small></span><span class="value-chip">LOCAL</span></div>
       </div></details>
       <details class="custom-data-panel cloud-sync-panel"><summary><span><strong>Cloud Sync</strong><small>Optionally connect Dropbox App Folder storage for explicit character updates and uploads.</small></span><span class="value-chip">DROPBOX</span></summary><div class="custom-data-actions custom-data-stack">
-        <div class="setting-row character-cloud-detail"><span><strong>Dropbox App Folder</strong><small>Brambleheart uses Dropbox App Folder access, so it can read and write only the folder Dropbox assigns to this app. Nothing is polled in the background. Only files ending in <code>_BH.json</code> are considered during a manual sync.</small><a class="inline-rule-link" href="/downloads/Brambleheart-Cloud-Instructions.txt" download>Cloud Instructions (.txt)</a></span></div>
-        <div v-if="!characterCloudConnected" class="setting-row"><span><strong>Cloud Link Code</strong><small>This code protects the Dropbox OAuth return to this browser. Brambleheart sends it automatically and verifies the exact value when Dropbox returns; you do not need to paste it anywhere.</small></span><div class="character-cloud-code-controls"><code>{{ characterCloudState.linkCode }}</code><div class="button-row character-cloud-code-actions"><button class="secondary-button settings-compact-action" type="button" @click="newCharacterCloudCode">New Code</button><button class="secondary-button settings-compact-action" type="button" @click="copyCloudValue(characterCloudState.linkCode,'Cloud Link Code')">Copy Code</button></div></div></div>
+        <div class="setting-row character-cloud-detail"><span><strong>Dropbox App Folder</strong><small>Brambleheart uses Dropbox App Folder access, so it can read and write only the folder Dropbox assigns to this app. Nothing is polled in the background. Only files ending in <code>_BH.json</code> are considered during a manual sync.</small></span><div class="cloud-instructions-action"><a class="secondary-button settings-compact-action cloud-instructions-button" href="/downloads/Brambleheart-Cloud-Instructions.txt" download>Cloud Instructions (.txt)</a></div></div>
+        <div v-if="!characterCloudConnected" class="setting-row character-cloud-code-row"><span><strong>Cloud Link Code</strong><small>Brambleheart OAuth protection code for this browser.</small></span><div class="character-cloud-code-controls"><code>{{ characterCloudState.linkCode }}</code></div></div>
         <div v-if="!characterCloudConnected" class="setting-row character-cloud-workspace-row"><span><strong>Workspace Link</strong><small>Connect a Dropbox account. Dropbox creates and isolates the Brambleheart App Folder automatically; no shared-folder URL, Workspace account, or service account is required.</small></span><div class="character-cloud-workspace-controls"><code>Dropbox App Folder</code><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy||!characterCloudConfig.configured" @click="connectCharacterCloud">{{ characterCloudBusy?'Working…':'Connect Dropbox' }}</button></div></div>
-        <div v-if="!characterCloudConfig.configured&&!characterCloudConnected" class="setting-row"><span><strong>Cloud Configuration</strong><small>This deployment is missing the Dropbox App Key. Follow Cloud Instructions (.txt), set <code>VITE_DROPBOX_APP_KEY</code> in Vercel, register the production <code>/settings</code> redirect URI in Dropbox, and redeploy.</small></span><span class="value-chip">NOT CONFIGURED</span></div>
+        <div v-if="!characterCloudConfig.configured&&!characterCloudConnected" class="setting-row"><span><strong>Cloud Configuration</strong><small>Cloud Sync is unavailable on this deployment. No user action is required.</small></span><span class="value-chip">NOT CONFIGURED</span></div>
         <div v-else-if="characterCloudConnection" class="setting-row"><span><strong>Dropbox App Folder</strong><small>Connected {{ new Date(characterCloudConnection.linkedAt).toLocaleDateString() }}. Exact character-ID matches from Dropbox replace the local copy only when Update from Cloud is clicked. Unmatched local characters remain local.</small></span><div class="button-row character-cloud-sync-actions"><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="updateCharacterCloud">Update from Cloud</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="uploadCharacterCloud">Upload Local</button><button class="secondary-button settings-compact-action" type="button" :disabled="characterCloudBusy" @click="disconnectCloud">Disconnect</button></div></div>
       </div><p v-if="characterCloudMessage" class="creation-status-message character-cloud-status-message">{{ characterCloudMessage }}</p></details>
       <details class="custom-data-panel"><summary><span><strong>Custom Data</strong><small>Import custom Species, Spells, Talents, and Traits built from the supplied JSON templates.</small></span><span class="value-chip">{{ customDataLabel }}</span></summary><div class="custom-data-actions custom-data-stack">
@@ -200,22 +189,23 @@ onMounted(async()=>{
 </template>
 
 <style scoped>
+.character-cloud-detail{align-items:stretch;flex-direction:column;}
 .character-cloud-detail>span{max-width:100%;}
-.character-cloud-detail .inline-rule-link{width:max-content;max-width:100%;}
+.cloud-instructions-action{display:flex;justify-content:center;width:100%;}
+.cloud-instructions-button{width:max-content;max-width:100%;}
 .character-data-status-pills{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-left:auto;}
-.character-cloud-code-controls,.character-cloud-workspace-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0;max-width:58%;}
+.character-cloud-code-controls{display:flex;align-items:center;justify-content:flex-end;min-width:0;max-width:58%;}
+.character-cloud-workspace-row{align-items:stretch;flex-direction:column;}
+.character-cloud-workspace-controls{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;max-width:100%;min-width:0;flex-wrap:wrap;}
 .character-cloud-code-controls code,.character-cloud-workspace-controls code{min-width:0;overflow-wrap:anywhere;color:var(--ink);font-size:calc(9px + var(--font-offset));}
-.character-cloud-code-actions,.character-cloud-sync-actions{justify-content:flex-end;flex-wrap:wrap;}
+.character-cloud-sync-actions{justify-content:flex-end;flex-wrap:wrap;}
 .character-cloud-status-message{margin:10px 12px 12px;}
 .cloud-sync-panel code{user-select:text;-webkit-user-select:text;}
 @media(max-width:680px){
   .cloud-sync-panel .setting-row,.character-data-panel .setting-row{align-items:stretch;flex-direction:column;}
   .character-data-status-pills{justify-content:flex-start;margin-left:0;}
-  .character-cloud-workspace-row{align-items:stretch;flex-direction:column;}
-  .character-cloud-code-controls,.character-cloud-workspace-controls{width:100%;max-width:100%;flex-wrap:wrap;justify-content:flex-start;}
+  .character-cloud-code-controls{width:100%;max-width:100%;justify-content:flex-start;}
   .character-cloud-workspace-controls .settings-compact-action{width:100%;}
-  .character-cloud-code-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
-  .character-cloud-code-actions .settings-compact-action{width:100%;}
   .character-cloud-sync-actions{width:100%;display:grid;grid-template-columns:1fr;}
   .character-cloud-sync-actions .settings-compact-action{width:100%;}
 }

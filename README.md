@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.28
+# Brambleheart TTRPG — Beta 0.29
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.28 replaces the Beta 0.27 Google Drive service-account sync with Dropbox App Folder Cloud Sync and adds a small Rules → Recent visual refinement.
+Beta 0.29 refines Character Creation, Equipment & Gear, saved-character controls, background cycling, and the user-facing Dropbox Cloud Sync workflow.
 
 ## Main views
 
@@ -15,24 +15,21 @@ Beta 0.28 replaces the Beta 0.27 Google Drive service-account sync with Dropbox 
 - Settings
 - Site Changelog
 
-## Beta 0.28 focus
+## Beta 0.29 focus
 
-- Keeps Character Data local-first and separates `Character Data` and `Cloud Sync` into their own Settings parents.
-- Shows `LOCAL` plus `CONNECTED` or `DISCONNECTED` in Character Data.
-- Rebuilds Cloud Sync around Dropbox App Folder access instead of Google Workspace Shared Drive/service-account access.
-- Uses Dropbox OAuth 2 PKCE so normal users connect Dropbox with an authorization screen rather than creating projects, service accounts, shared folders, or API keys.
-- Keeps explicit `Update from Cloud`, `Upload Local`, and `Disconnect` actions; there is no background polling.
-- Searches only the Dropbox App Folder and only files ending in `_BH.json`.
-- Keeps stable internal character IDs authoritative for replacement/addition and human-readable `CharacterName_BH.json` filenames for portability.
-- Replaces the Google setup guide with `Cloud Instructions (.txt)` for Dropbox setup and use.
-- Gives each Rules → Recent result card its own top-border color.
-- Preserves the Node runtime pin at `22.x`.
+- Centers Attribute Rank/Modifier panels and shortens Secondary Stat cards.
+- Renames Additional Language to Bonus Language.
+- Converts Equipment & Gear SP price labels to equivalent NP values.
+- Makes Totem and Scriptweave Book grant structured `+1 Control` equipment bonuses across Character Review, Character List, and Rhythm Engine, and migrates existing saved copies to the new canonical effect.
+- Starts Skills, Magic, Talents, and Equipment & Gear collapsed in Review Character.
+- Replaces the Character List's primary text actions with accessible icons, adds manual Lock/Unlock to every character status, and removes duplicated summary text beside the controls.
+- Repairs next-background wrapping by deduplicating background option IDs at the catalog source.
+- Simplifies Cloud Link Code presentation, removes unnecessary code-copy/regeneration controls, improves Workspace Link layout, and replaces the Cloud Instructions download with a centered button.
+- Makes `Cloud Instructions (.txt)` a player-only guide. Deployment setup remains a repository/deployment responsibility rather than something normal users are asked to perform.
 
 ## Dropbox deployment configuration
 
-The site owner creates one Dropbox Scoped Access app with **App folder** access, enables `files.metadata.read`, `files.content.read`, and `files.content.write`, registers the production `/settings` OAuth redirect URI, and sets `VITE_DROPBOX_APP_KEY` in Vercel before redeploying. The Dropbox App secret is not required by the browser implementation because Cloud Sync uses PKCE.
-
-The complete procedure is available from Settings → Data & Content → Cloud Sync → `Cloud Instructions (.txt)`.
+Brambleheart uses one Dropbox Scoped Access application configured for **App folder** access. The deployed site receives its public Dropbox App Key through `VITE_DROPBOX_APP_KEY`; normal users then authorize their own Dropbox accounts and use their own Dropbox storage quota. The browser implementation uses OAuth 2 Authorization Code with PKCE and does not require the Dropbox App secret.
 
 ## Runtime
 
