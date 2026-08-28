@@ -8,7 +8,7 @@ import RuleReaderView from './views/RuleReaderView.vue'
 import RuleLayoutPreviewView from './views/RuleLayoutTestView.vue'
 import SimulatorView from './views/SimulatorView.vue'
 import SettingsView from './views/SettingsViewBeta032.vue'
-import ChangelogView from './views/ChangelogViewBeta032.vue'
+import ChangelogView from './views/ChangelogView.vue'
 import GameUpdatesView from './views/GameUpdatesView.vue'
 import { hasSeenWelcome } from './services/welcome'
 
