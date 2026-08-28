@@ -85,15 +85,15 @@ export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBo
     guts:hide+Math.max(0,Number(gutsBonus)||0),
     control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),
     power:lore,
-    spirit:bravery,
-    heart:rankModifier(bravery),
+    heart:bravery,
+    spirit:rankModifier(bravery),
   }
 }
 
 export function magicResources(attributes:CoreAttributeRanks,magicLevel=0){
   const stats=derivedStats(attributes)
   const level=Math.max(0,Number(magicLevel)||0)
-  return{manaPool:level+stats.heart,manaPerRound:stats.spirit}
+  return{manaPool:level+stats.spirit,magicRegen:stats.heart+2}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){

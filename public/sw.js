@@ -1,4 +1,4 @@
-const CACHE='brambleheart-shell-v0.34'
+const CACHE='brambleheart-shell-v0.35'
 const SHELL=['/','/assets/Logo.png','/icons/favicon-64.png','/icons/icon-192.png','/icons/icon-512.png','/icons/icon-maskable-512.png','/icons/apple-touch-icon.png','/manifest.webmanifest','/audio/brambleheart-launch.wav']
 const CACHEABLE_DESTINATIONS=new Set(['script','style','image','font','manifest','worker','audio'])
 

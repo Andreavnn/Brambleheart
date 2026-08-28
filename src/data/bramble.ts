@@ -1,4 +1,4 @@
-export const BUILD = '0.34'
+export const BUILD = '0.35'
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },

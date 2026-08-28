@@ -1,8 +1,8 @@
-# Brambleheart TTRPG — Beta 0.34
+# Brambleheart TTRPG — Beta 0.35
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.34 is a cumulative rules/interface release built on Beta 0.33. It clarifies the secondary-stat system, introduces Rule Updates versioning independent from site builds, expands post-creation character management, refines Threadpiece economy handling, repairs Settings switches, and develops the isolated Fundamentals layout test further.
+Beta 0.35 is a cumulative interface and rules-clarity release built on the current Beta 0.34 GitHub implementation.
 
 ## Main views
 
@@ -19,28 +19,28 @@ Beta 0.34 is a cumulative rules/interface release built on Beta 0.33. It clarifi
 
 ## Current rules-update version
 
-Rule Updates are versioned independently from the application build. Beta 0.34 uses **Rule Updates v0.01**.
+Rule Updates are versioned independently from application builds. Beta 0.35 continues **Rule Updates v0.01**.
 
 Current shared secondary statistics are:
 
-- Agility: Aim = modifier; Accuracy = Rank; Speed = modifier +2.
-- Might: Brawl = modifier; Fury = Rank.
-- Hide: Ward = modifier; Guts = Rank plus applicable equipment bonuses.
-- Lore: Control = modifier plus applicable equipment bonuses; Power = Rank.
-- Bravery: Spirit = Rank; Heart = modifier.
-- Mana Pool = Magic Level + Heart; Mana restored at the start of each round = Spirit.
+- Agility: Accuracy = Rank; Aim = modifier; Speed = modifier +2.
+- Might: Fury = Rank; Brawl = modifier.
+- Hide: Guts = Rank plus applicable equipment bonuses; Ward = modifier.
+- Lore: Power = Rank; Control = modifier plus applicable equipment bonuses.
+- Bravery: Heart = Rank; Spirit = modifier.
+- Mana Pool = Magic Level + Spirit.
+- Magic Regen = Heart +2 and is the amount of Mana restored at the start of each round. Effects that alter start-of-round Mana restoration alter Magic Regen.
 
-## Beta 0.34 focus
+## Beta 0.35 focus
 
-- Character List is renamed Character Roster. Create/Import/Export remain grouped at left and Filter moves to the right.
-- Level Up can now record earned Threadpieces, maintain a simple Treasure list, and purchase Equipment & Gear.
-- New characters begin with 30 sp and may sell the Adventure Kit for 2 sp.
-- Equipment & Gear retains the 50% cost reduction from Beta 0.33. Fractional discounted Threadpieces round down, and visible currency initials use lowercase `wp`, `np`, `sp`, and `bp`.
-- Rhythm Engine Character Sheet groups secondary stats by their parent Attribute and presents Mana Pool and Speed below those groups.
-- Settings places Measurements below Bold Text and Reset Local Settings below Measurements; switch-style radio presentation is repaired for Theme, Background, and Measurement choices.
-- The Fundamentals layout test adds revised Conditions, Edged/Weighted examples, expanded target guidance, and a Half-Step die/math graphic.
+- Character Creation highlights the Agility modifier contribution to Speed and expands the Mana Pool / Magic Regen explanation.
+- Character Creation Review and Rhythm Engine share one Attribute/secondary-stat presentation with AGL, MIG, HID, LOR, and BRY shorthand.
+- Character Roster Filter opens as a contained full-width panel beneath the action bar.
+- Reset Local Settings is the final control in Settings → Display.
+- Character Sheet Skills, Magic, Talents, and Equipment & Gear have additional title-to-content spacing.
+- The Fundamentals test page corrects Half-Step presentation and Edged/Weighted examples.
+- The Attributes & Skills test page combines Skills and Skill Trees, moves Expanded & Restricted to the bottom, and uses production-style Skill Tree cards.
 - Character transfer remains Share Code based; QR generation/scanning remains removed.
-- The in-app Site Changelog is generated from `CHANGELOG.md`, keeping one release-history authority.
 
 ## Measurements
 

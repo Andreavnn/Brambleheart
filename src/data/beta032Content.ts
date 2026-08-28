@@ -115,21 +115,25 @@ if(talentDocument){
 function applyGameRuleAmendments(value:string){
   let text=String(value||'')
   text=text.replace(/\bStarting Mana\b/gi,'Mana Pool')
-  text=text.replace(/\bMana Regeneration\b/gi,'Mana Pool & Restoration')
-  text=text.replace(/\b2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Magic Level + Heart')
-  text=text.replace(/\bMagic Level\s*\+\s*Inspiration\b/gi,'Magic Level + Heart')
-  text=text.replace(/Every character generates two\s*\[?2\]?\s*mana at the start of each combat round\.?/gi,'At the start of each combat round, each character restores Mana equal to Spirit.')
-  text=text.replace(/At the start of each combat round, each character restores Mana equal to Heart\.?/gi,'At the start of each combat round, each character restores Mana equal to Spirit.')
-  text=text.replace(/At the start of each round, restore Mana equal to Heart\.?/gi,'At the start of each round, restore Mana equal to Spirit.')
-  text=text.replace(/players can gain additional MANA regeneration through magic levels, talents, abilities and condition\(s\)\.?/gi,'Characters may restore additional Mana during a turn or round through Talents, Abilities, equipment, and other rules.')
+  text=text.replace(/\bMana Regeneration\b/gi,'Magic Regen')
+  text=text.replace(/\bMagic Regen\s*2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Magic Regen = Heart + 2')
+  text=text.replace(/\bMagic Level\s*\+\s*Inspiration\b/gi,'Magic Level + Spirit')
+  text=text.replace(/\bMana Pool\s*(?:is equal to|=)?\s*2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Mana Pool = Magic Level + Spirit')
+  text=text.replace(/Every character generates two\s*\[?2\]?\s*mana at the start of each combat round\.?/gi,'At the start of each combat round, each character restores Mana equal to their Magic Regen.')
+  text=text.replace(/At the start of each combat round, each character restores Mana equal to (?:Heart|Spirit)\.?/gi,'At the start of each combat round, each character restores Mana equal to their Magic Regen.')
+  text=text.replace(/At the start of each round, restore Mana equal to (?:Heart|Spirit)\.?/gi,'At the start of each round, restore Mana equal to Magic Regen.')
+  text=text.replace(/players can gain additional MANA regeneration through magic levels, talents, abilities and condition\(s\)\.?/gi,'Effects that increase or decrease Mana restored at the start of a round modify Magic Regen; Talents, Abilities, equipment, and conditions may change it.')
   text=text.replace(/Each Magic Level increases mana regeneration by \+1\.?/gi,'Each Magic Level increases Mana Pool by +1.')
   text=text.replace(/Each level adds mana regeneration and spell capacity\.?/gi,'Each level increases Mana Pool and spell capacity.')
   text=text.replace(/modifiers will often be referred to by a secondary stat such as mettle, power, or accuracy\.?/gi,'secondary stats may derive from either an Attribute Rank or its modifier, as specified by each secondary-stat formula.')
   text=text.replace(/\bMettle\b/g,'Brawl').replace(/\bmettle\b/g,'brawl')
   text=text.replace(/\b2\s*\+\s*Agility Rank\b/gi,'Agility Modifier +2')
-  text=text.replace(/Heart is equal to (?:the )?characters?[’']?\s*Bravery Rank\.?/gi,'Spirit is equal to the character’s Bravery Rank.')
-  text=text.replace(/\bHeart is equal to Bravery Rank\b/gi,'Spirit is equal to Bravery Rank')
-  text=text.replace(/\bInspiration is equal to (?:the )?Bravery modifier\b/gi,'Heart is equal to the Bravery modifier')
+  text=text.replace(/Spirit is equal to (?:the )?characters?[’']?\s*Bravery Rank\.?/gi,'Heart is equal to the character’s Bravery Rank.')
+  text=text.replace(/\bSpirit is equal to Bravery Rank\b/gi,'Heart is equal to Bravery Rank')
+  text=text.replace(/Heart is equal to (?:the )?characters?[’']?\s*Bravery Rank\.?/gi,'Heart is equal to the character’s Bravery Rank.')
+  text=text.replace(/\bHeart is equal to Bravery Rank\b/gi,'Heart is equal to Bravery Rank')
+  text=text.replace(/\bHeart is equal to (?:the )?Bravery modifier\b/gi,'Spirit is equal to the Bravery modifier')
+  text=text.replace(/\bInspiration is equal to (?:the )?Bravery modifier\b/gi,'Spirit is equal to the Bravery modifier')
   text=text.replace(/weapon[’']s damage value and power/gi,match=>match.replace(/power/i,'Fury'))
   if(/\bMight\b/i.test(text)&&/\bPower\b/i.test(text))text=text.replace(/\bPower\b/g,'Fury').replace(/\bpower\b/g,'fury')
   text=text.replace(/\b(WP|NP|SP|BP)\b/g,match=>match.toLowerCase())
@@ -162,11 +166,11 @@ const fundamentals=ruleSourceDocuments.fundamentals
 if(fundamentals){
   const secondary=fundamentals.sections.find(section=>/secondary/i.test(section.heading))||fundamentals.sections.find(section=>/attribute/i.test(section.heading))
   if(secondary&&!secondary.blocks.some(block=>block.type==='paragraph'&&/Accuracy is equal to Agility Rank/i.test(block.text))){
-    secondary.blocks.push({type:'paragraph',text:'SECONDARY STATS: Accuracy is equal to Agility Rank and adds to ranged damage. Aim is equal to the Agility modifier and is used for ranged Strike rolls. Speed is equal to the Agility modifier +2. Fury is equal to Might Rank and adds to melee damage; Brawl is equal to the Might modifier and is used for melee Strike rolls. Guts is equal to Hide Rank and reduces damage; Ward is equal to the Hide modifier and is used to defend. Power is equal to Lore Rank and adds to magical damage; Control is equal to the Lore modifier and is used for magical Strike rolls. Spirit is equal to Bravery Rank and restores Mana each round; Heart is equal to the Bravery modifier and adds to Mana Pool.'})
+    secondary.blocks.push({type:'paragraph',text:'SECONDARY STATS: Accuracy is equal to Agility Rank and adds to ranged damage. Aim is equal to the Agility modifier and is used for ranged Strike rolls. Speed is equal to the Agility modifier +2. Fury is equal to Might Rank and adds to melee damage; Brawl is equal to the Might modifier and is used for melee Strike rolls. Guts is equal to Hide Rank and reduces damage; Ward is equal to the Hide modifier and is used to defend. Power is equal to Lore Rank and adds to magical damage; Control is equal to the Lore modifier and is used for magical Strike rolls. Heart is equal to Bravery Rank and contributes to Magic Regen; Spirit is equal to the Bravery modifier and adds to Mana Pool.'})
   }
   const rounds=fundamentals.sections.find(section=>/round|mana/i.test(section.heading))
   if(rounds&&!rounds.blocks.some(block=>block.type==='paragraph'&&/Mana Pool is equal to Magic Level/i.test(block.text))){
-    rounds.blocks.push({type:'paragraph',text:'MANA UPDATE: Mana Pool is equal to Magic Level + Heart. At the start of each round, restore Mana equal to Spirit. Additional Abilities, Talents, equipment, and other rules may restore Mana during a turn or round.'})
+    rounds.blocks.push({type:'paragraph',text:'MANA UPDATE: Mana Pool is equal to Magic Level + Spirit. Magic Regen is equal to Heart +2 and is the amount of Mana restored at the start of each round. Effects that increase or decrease start-of-round Mana modify Magic Regen.'})
   }
 }
 

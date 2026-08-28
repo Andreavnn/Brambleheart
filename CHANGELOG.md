@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.35
+
+- Swaps the Bravery secondary-stat authority so Heart = Bravery Rank and Spirit = Bravery modifier; Mana Pool = Magic Level + Spirit and Magic Regen = Heart +2.
+- Treats Magic Regen as the canonical start-of-round Mana-restoration value so effects that increase or decrease that restoration modify Magic Regen.
+- Rebuilds the shared Character Sheet Attribute presentation as reusable Attribute cards with AGL/MIG/HID/LOR/BRY shorthand, parented secondary stats, and adjacent Mana Pool / Magic Regen cards; Character Creation Review and Rhythm Engine now use the same component.
+- Highlights only the Agility modifier and its Speed contribution in red during Attribute distribution, while preserving the visible `2 + modifier = Speed` calculation.
+- Repairs the expanded Character Roster Filter panel so Search, Status, and Clear stay contained below the action row at desktop, tablet, and mobile widths.
+- Moves Reset Local Settings to the bottom of Settings → Display while retaining Measurements directly below Bold Text and the repaired switch-style radio controls.
+- Adds spacing between Character Sheet section titles and the first content card for Skills, Magic, Talents, and Equipment & Gear.
+- Corrects the Fundamentals Half-Step preview to use d10 result bands (1–5 → 1; 6–10 → 2), removes the strike-through from dropped Edged/Weighted dice, and updates the Threadseer example without mathematically dividing the die.
+- Reworks the Attributes & Skills layout-test page with a concise secondary-stat explanation and Attribute→secondary-stat graphic, combines Skills with Skill Trees, moves Expanded & Restricted to the bottom, and renders skill trees in production-style cards.
+- Synchronizes BUILD/export 0.35, package 0.35.0, PWA cache v0.35, and Node 22.x while keeping Rule Updates at v0.01.
+
 # Brambleheart Beta 0.34
 
 - Separates the application release (`Beta 0.34`) from Brambleheart Rule Updates and starts the rules-update stream at `v0.01`, linked beneath the site logo rather than added to primary navigation.

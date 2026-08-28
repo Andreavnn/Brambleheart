@@ -38,10 +38,10 @@ const {measurement}=useSettings()
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(3)){order:30}
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(4)){order:40}
 .measurement-settings-panel{order:50}
-:deep(.settings-group[aria-label='Display settings'] .reset-setting-row){order:60}
-:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(5)){order:70}
-:deep(.settings-group[aria-label='Display settings'] .theme-settings-panel){order:80}
-:deep(.settings-group[aria-label='Display settings'] .background-settings-panel){order:90}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(5)){order:60}
+:deep(.settings-group[aria-label='Display settings'] .theme-settings-panel){order:70}
+:deep(.settings-group[aria-label='Display settings'] .background-settings-panel){order:80}
+:deep(.settings-group[aria-label='Display settings'] .reset-setting-row){order:90}
 :deep(.theme-option-row>input[type='radio'].choice-switch-input),:deep(.background-option-row>input[type='radio'].choice-switch-input),:deep(.measurement-option-row>input[type='radio'].choice-switch-input){-webkit-appearance:none;appearance:none;width:42px;height:24px;min-width:42px;min-height:24px;margin:0;border:0;border-radius:999px;background:radial-gradient(circle at 12px 12px,#fff 0 8.5px,transparent 9px),#cbc5ba;position:relative;display:block;flex:0 0 42px;align-self:center;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer;transition:background .18s}
 :deep(.theme-option-row>input[type='radio'].choice-switch-input:checked),:deep(.background-option-row>input[type='radio'].choice-switch-input:checked),:deep(.measurement-option-row>input[type='radio'].choice-switch-input:checked){background:radial-gradient(circle at 30px 12px,#fff 0 8.5px,transparent 9px),var(--accent-dark)}
 :deep(.theme-option-row>input[type='radio'].choice-switch-input::after),:deep(.background-option-row>input[type='radio'].choice-switch-input::after),:deep(.measurement-option-row>input[type='radio'].choice-switch-input::after){content:none!important;display:none!important}
