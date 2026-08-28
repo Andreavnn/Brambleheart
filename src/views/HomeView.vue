@@ -5,8 +5,8 @@ import AppHeader from '../components/AppHeader.vue'
 import { attributes, BUILD, homelands, sparks } from '../data/bramble'
 import { canonicalTalentName } from '../data/talentCategories'
 import { derivedStats, equipmentControlBonus, equipmentGutsBonus, magicResources } from '../rules/rulesEngine'
-import { formatGearCostNp } from '../rules/threadpieces'
-import { characterExportPayload, characterStatus, downloadJson, loadCharacters, normalizeImportedCharacter, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
+import { formatThreadpieceWp } from '../rules/threadpieces'
+import { characterExportPayload, characterStatus, characterWealthWp, downloadJson, loadCharacters, normalizeImportedCharacter, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
 import { CHARACTER_SHARE_URL, consumeCharacterShareFromLocation, createCharacterShareCode, parseCharacterShareValue } from '../services/characterShare'
 
 const router=useRouter()
@@ -111,7 +111,7 @@ function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
 function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment),equipmentControlBonus(c.equipment))}
 function characterMagicLevel(c:CharacterRecord){return Number(c.magicLevel??(c.path==='magic'?1:0))}
 function resources(c:CharacterRecord){return magicResources(c.attributes,characterMagicLevel(c))}
-function wealthLabel(c:CharacterRecord){return formatGearCostNp(Number(c.wealthRemaining??c.startingWealth??150))}
+function wealthLabel(c:CharacterRecord){return formatThreadpieceWp(characterWealthWp(c))}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${Number(rank)*2}`).join(' · ')
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)

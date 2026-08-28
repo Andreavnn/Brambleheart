@@ -1,12 +1,31 @@
 import { BUILD, type AttributeId } from '../data/bramble'
-import { gearShopItems } from '../data/characterOptions'
+import { gearShopItems as legacyGearShopItems } from '../data/characterOptions'
 import type { EquipmentStatBonuses } from '../data/equipment'
-import { gearCostNp } from '../rules/threadpieces'
+import { STARTING_WEALTH_WP, canonicalGearCostWp, economyGearCatalog, protectiveGearKind } from '../rules/economy'
+import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks = Record<AttributeId, number>
 export type CharacterStatus = 'incomplete'|'unapproved'|'approved'
-export interface PurchasedEquipment { name:string; costSp:number; costNp?:number; category?:string; detail?:string; effect?:string; choice?:string; attachedTo?:string; quantity?:number; statBonuses?:EquipmentStatBonuses }
+export interface PurchasedEquipment {
+  name:string
+  /** Current retail value in the canonical runtime monetary unit. */
+  costWp?:number
+  /** Historical amount paid. Never used as current retail-price authority. */
+  costPaidWp?:number
+  /** Legacy compatibility fields. Runtime logic must use costWp/canonicalGearCostWp. */
+  costSp:number
+  costNp?:number
+  category?:string
+  detail?:string
+  effect?:string
+  choice?:string
+  attachedTo?:string
+  quantity?:number
+  statBonuses?:EquipmentStatBonuses
+  /** Used only by protective gear. At most one armor and one shield may be equipped. */
+  equipped?:boolean
+}
 export interface CharacterRecord {
   id:string
   name:string
@@ -36,10 +55,14 @@ export interface CharacterRecord {
   languages?:string[]
   equipment?:PurchasedEquipment[]
   adventureKit?:boolean
+  /** Canonical economy fields. Whole wp are the only runtime monetary authority. */
+  startingWealthWp?:number
+  wealthWp?:number
+  currencyAddedWp?:number
+  /** Legacy compatibility fields, normalized from the wp values above. */
   startingWealth?:number
   wealthRemaining?:number
   wealthCurrency?:'NP'|'SP'
-  /** Currency earned or granted after character creation, stored in NP for stable accounting. */
   currencyAddedNp?:number
   /** Free-form treasure entries acquired after character creation. */
   treasure?:string[]
@@ -59,8 +82,10 @@ export interface CharacterRecord {
 }
 
 export const CHARACTER_STORE=STORAGE_KEYS.characters
-
+const economyGearItems=economyGearCatalog(legacyGearShopItems)
 const validStatuses=new Set<CharacterStatus>(['incomplete','unapproved','approved'])
+const wholeWp=(value:unknown)=>Math.max(0,Math.floor(Number(value)||0))
+
 export function characterCreationComplete(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>){
   if(typeof record.creationComplete==='boolean')return record.creationComplete
   if(record.status&&validStatuses.has(record.status))return record.status!=='incomplete'
@@ -73,27 +98,87 @@ export function characterStatus(record:Pick<CharacterRecord,'creationComplete'|'
   if(record.status==='unapproved')return'unapproved'
   return record.locked?'approved':'unapproved'
 }
+
+function legacyPaidWp(item:PurchasedEquipment,currentCostWp:number){
+  if(Number.isFinite(Number(item.costPaidWp)))return wholeWp(item.costPaidWp)
+  if(Number.isFinite(Number(item.costNp)))return wholeWp(Number(item.costNp)*WP_PER_NP)
+  if(Number.isFinite(Number(item.costSp)))return wholeWp(Number(item.costSp)*WP_PER_SP)
+  return currentCostWp
+}
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
-  return (items||[]).map(item=>{
-    const source=gearShopItems.find(candidate=>candidate.name===item.name&&candidate.category===item.category)
+  const normalized=(items||[]).map(item=>{
+    const source=economyGearItems.find(candidate=>candidate.name===item.name&&candidate.category===item.category)
+      ||economyGearItems.find(candidate=>candidate.name===item.name)
+    const currentCostWp=source?.costWp??canonicalGearCostWp(item)
     const statBonuses=item.statBonuses??source?.statBonuses
-    const effect=source?.statBonuses?source.effect:item.effect
-    const costSp=source?.costSp??item.costSp
-    const costNp=source?gearCostNp(source.costSp):item.costNp
-    return{...item,costSp,costNp,effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses}
+    const effect=source?.effect??item.effect
+    return{
+      ...item,
+      costWp:currentCostWp,
+      costPaidWp:legacyPaidWp(item,currentCostWp),
+      // Compatibility only. These are derived from costWp and are never read as price authority.
+      costSp:currentCostWp/WP_PER_SP,
+      costNp:currentCostWp/WP_PER_NP,
+      effect,
+      quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),
+      statBonuses,
+    }
   })
+  for(const kind of ['armor','shield'] as const){
+    const indexes=normalized.map((item,index)=>protectiveGearKind(item)===kind?index:-1).filter(index=>index>=0)
+    if(!indexes.length)continue
+    const hasExplicit=indexes.some(index=>typeof normalized[index].equipped==='boolean')
+    const chosen=indexes.find(index=>normalized[index].equipped===true)??(!hasExplicit?indexes[0]:-1)
+    for(const index of indexes)normalized[index].equipped=index===chosen
+  }
+  return normalized
 }
-function normalizedWealthRemaining(record:CharacterRecord,equipment:PurchasedEquipment[]){
-  if(!Number.isFinite(Number(record.startingWealth)))return record.wealthRemaining
-  const spent=equipment.reduce((sum,item)=>sum+Number(item.costNp??gearCostNp(item.costSp))*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
-  const added=Math.max(0,Number(record.currencyAddedNp)||0)
-  return Math.max(0,Number(record.startingWealth)+added-spent)
+
+function legacyMoneyWp(record:CharacterRecord,key:'starting'|'remaining'|'added'){
+  if(key==='starting'&&Number.isFinite(Number(record.startingWealth)))return wholeWp(Number(record.startingWealth)*(record.wealthCurrency==='SP'?WP_PER_SP:WP_PER_NP))
+  if(key==='remaining'&&Number.isFinite(Number(record.wealthRemaining)))return wholeWp(Number(record.wealthRemaining)*(record.wealthCurrency==='SP'?WP_PER_SP:WP_PER_NP))
+  if(key==='added'&&Number.isFinite(Number(record.currencyAddedNp)))return wholeWp(Number(record.currencyAddedNp)*WP_PER_NP)
+  return undefined
 }
+export function characterWealthWp(record:Pick<CharacterRecord,'wealthWp'|'wealthRemaining'|'wealthCurrency'>){
+  if(Number.isFinite(Number(record.wealthWp)))return wholeWp(record.wealthWp)
+  if(Number.isFinite(Number(record.wealthRemaining)))return wholeWp(Number(record.wealthRemaining)*(record.wealthCurrency==='SP'?WP_PER_SP:WP_PER_NP))
+  return 0
+}
+export function currentEquipmentRetailWp(item:PurchasedEquipment){return canonicalGearCostWp(item)}
+export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){
+  const next=(items||[]).map(item=>({...item}))
+  const target=next[index];if(!target)return next
+  const kind=protectiveGearKind(target);if(!kind)return next
+  for(const item of next)if(protectiveGearKind(item)===kind)item.equipped=false
+  target.equipped=equipped
+  return next
+}
+
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record)
   const status=characterStatus({...record,creationComplete})
   const equipment=normalizeEquipment(record.equipment)
-  return{...record,equipment,wealthRemaining:normalizedWealthRemaining(record,equipment),creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  const startingWealthWp=Number.isFinite(Number(record.startingWealthWp))?wholeWp(record.startingWealthWp):(legacyMoneyWp(record,'starting')??STARTING_WEALTH_WP)
+  // Preserve the saved wallet snapshot during migration. New retail prices never retroactively charge a character.
+  const wealthWp=Number.isFinite(Number(record.wealthWp))?wholeWp(record.wealthWp):(legacyMoneyWp(record,'remaining')??startingWealthWp)
+  const currencyAddedWp=Number.isFinite(Number(record.currencyAddedWp))?wholeWp(record.currencyAddedWp):(legacyMoneyWp(record,'added')??0)
+  return{
+    ...record,
+    equipment,
+    startingWealthWp,
+    wealthWp,
+    currencyAddedWp,
+    // Compatibility fields are generated from canonical wp values.
+    startingWealth:startingWealthWp/WP_PER_NP,
+    wealthRemaining:wealthWp/WP_PER_NP,
+    wealthCurrency:'NP',
+    currencyAddedNp:currencyAddedWp/WP_PER_NP,
+    creationComplete,
+    status,
+    draft:!creationComplete,
+    locked:Boolean(record.locked),
+  }
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{
   if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.')
@@ -110,9 +195,7 @@ export function loadCharacters():CharacterRecord[]{
     const parsed=JSON.parse(readLocalStorage(CHARACTER_STORE)||'[]')
     if(!Array.isArray(parsed))return[]
     const normalized=(parsed as CharacterRecord[]).map(normalizeCharacterRecord)
-    if(parsed.some((item:CharacterRecord,index:number)=>item.status!==normalized[index]?.status||Boolean(item.draft)!==Boolean(normalized[index]?.draft)||Boolean(item.creationComplete)!==Boolean(normalized[index]?.creationComplete)||Boolean(item.locked)!==Boolean(normalized[index]?.locked)||Number(item.wealthRemaining)!==Number(normalized[index]?.wealthRemaining)||JSON.stringify(item.equipment||[])!==JSON.stringify(normalized[index]?.equipment||[]))){
-      writeLocalStorage(CHARACTER_STORE,JSON.stringify(normalized))
-    }
+    if(JSON.stringify(parsed)!==JSON.stringify(normalized))writeLocalStorage(CHARACTER_STORE,JSON.stringify(normalized))
     return normalized
   }catch{return[]}
 }

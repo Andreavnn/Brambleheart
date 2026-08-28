@@ -1,5 +1,6 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { formatMeasurementText } from './measurements'
+import { protectiveGearKind } from './economy'
 
 function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
 
@@ -59,12 +60,24 @@ function armorProfileValues(detail:string){
 }
 function numericProfileBonus(value:string){const match=String(value||'').match(/[+-]?(\d+)/);return match?Math.max(0,Number(match[1])):0}
 
-export function equipmentGutsBonus(items:Array<{detail?:string;category?:string}>|undefined){
-  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
+export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean}
+function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
+  const candidates=(items||[]).filter(item=>item.category==='Armor & Shield')
+  return(['armor','shield'] as const).flatMap(kind=>{
+    const matching=candidates.filter(item=>protectiveGearKind(item)===kind)
+    if(!matching.length)return[]
+    const hasExplicit=matching.some(item=>typeof item.equipped==='boolean')
+    const chosen=matching.find(item=>item.equipped===true)||(!hasExplicit?matching[0]:undefined)
+    return chosen?[chosen]:[]
+  })
 }
-export function equipmentManaSyphon(items:Array<{detail?:string;category?:string}>|undefined){
-  return (items||[]).filter(item=>item.category==='Armor & Shield').reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
+export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){
+  return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
 }
+export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){
+  return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
+}
+export function equippedProtectiveGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined){return equippedProtectiveItems(items)}
 export function equipmentControlBonus(items:Array<{statBonuses?:EquipmentStatBonuses;quantity?:number}>|undefined){
   return (items||[]).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
 }
@@ -93,7 +106,7 @@ export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBo
 export function magicResources(attributes:CoreAttributeRanks,magicLevel=0){
   const stats=derivedStats(attributes)
   const level=Math.max(0,Number(magicLevel)||0)
-  return{manaPool:level+stats.spirit,magicRegen:stats.heart+2}
+  return{manaPool:level+stats.spirit,magicRegen:stats.heart}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){

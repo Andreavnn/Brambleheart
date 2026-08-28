@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.36
+
+- Rebuilds Threadpiece economy around one integer `wp` authority: 10 wp = 1 np, 5 np = 1 sp, and 5 sp = 1 bp; starting wealth remains 30 sp and the Adventure Kit creation sellback becomes 3 sp.
+- Reprices Weapons, Armor & Shields, Adventuring Gear, Trade Goods, and Transportation from the Economy Rebuild specification; restores Field Blade (Long Sword) at 20 sp and positions veteran-tier equipment beyond the 33 sp maximum creation budget.
+- Adds canonical 50% ordinary-gear resale, 75% trade-good resale, a 50% crafting-material value floor, and 3× canonical armor pricing for barding.
+- Separates owned protective gear from equipped protective gear so only one Armor and one Shield contribute Guts, Mana Syphon, Stealth, and Might requirements; equip state is persisted and Level Up can buy, equip, and sell gear.
+- Corrects Magic Regen to equal Heart with no standard +2 modifier; Mana Pool remains Magic Level + Spirit, and Rule Updates advances independently to v0.02.
+- Compacts Character Sheet Rank/Modifier boxes, changes Agility shorthand to AGI, and reduces secondary-stat detail to the numerical parent formula (for example `2 + 4 AGI MOD` and `3 MIG RNK`).
+- Keeps Rhythm Engine Magic collapsed by default and preserves post-creation wallet, XP, treasure, Magic Level, and pin state when an approved character is reopened in Character Creation.
+- Replaces the Half-Step layout-test diagram with a direct result-band flow: natural d10 1–5 → 1 and 6–10 → 2, with a matching square Threadseer example and no numerical division of the die result.
+- Synchronizes BUILD/export 0.36, package 0.36.0, PWA cache v0.36, and Node 22.x.
+
 # Brambleheart Beta 0.35
 
 - Swaps the Bravery secondary-stat authority so Heart = Bravery Rank and Spirit = Bravery modifier; Mana Pool = Magic Level + Spirit and Magic Regen = Heart +2.

@@ -6,17 +6,21 @@ import CharacterAttributePanel from '../components/CharacterAttributePanel.vue'
 import { useFocusTrap } from '../composables/useFocusTrap'
 import { attributes, faiths, homelands, oaths, sparks, species, type AttributeId } from '../data/bramble'
 import { allCultureTraits, speciesByName } from '../data/speciesData'
-import { gearShopItems, homelandDetails, skillDefinitions, sparkDetails } from '../data/characterOptions'
+import { gearShopItems as legacyGearShopItems, homelandDetails, skillDefinitions, sparkDetails } from '../data/characterOptions'
 import { cultureSkillGrants, speciesImagePaths } from '../data/creationRules'
 import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
-import { armorProfile, derivedStats, equipmentControlBonus, equipmentGutsBonus, equipmentManaSyphon, magicResources, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
-import { gearCostNp as catalogGearCostNp, formatGearCostNp } from '../rules/threadpieces'
+import { armorProfile, derivedStats, equippedProtectiveGear, equipmentControlBonus, equipmentGutsBonus, equipmentManaSyphon, magicResources, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
+import { ADVENTURE_KIT_SELL_WP, STARTING_WEALTH_WP, canonicalGearCostWp, economyGearCatalog, protectiveGearKind, SHIELD_NAMES } from '../rules/economy'
+import { formatThreadpieceWp, formatThreadpieceWpAs, WP_PER_BP, WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
-import { characterStatus, loadCharacters, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
+import { characterStatus, loadCharacters, setProtectiveEquipmentEquipped, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
+
+
+const gearShopItems=economyGearCatalog(legacyGearShopItems)
 
 const router = useRouter()
 const route = useRoute()
@@ -48,6 +52,7 @@ const draftId = ref<string | null>(null)
 const originalCreatedAt = ref<string | null>(null)
 const originalStatus = ref<'incomplete'|'unapproved'|'approved'>('incomplete')
 const originalLocked = ref(false)
+const originalRecord = ref<CharacterRecord | null>(null)
 const pathTouched = ref(false)
 const customData=ref(loadCustomData())
 const customSpeciesItems=computed(()=>customData.value.filter((item):item is CustomSpeciesItem=>item.type==='species'))
@@ -173,23 +178,21 @@ const selectedSpeciesImage=computed(()=>form.species?speciesImagePaths[form.spec
 const selectedCultureTraits=computed(()=>form.cultureTraits.map(findCulture).filter((item):item is NonNullable<ReturnType<typeof findCulture>>=>Boolean(item)))
 const spent=computed(()=>Object.values(form.attributes).reduce((sum,rank)=>sum+rank-1,0))
 const remaining=computed(()=>5-spent.value)
-const STARTING_WEALTH_NP=150
-const ADVENTURE_KIT_SELL_NP=10
-function gearCostNp(item:{costSp:number}){return catalogGearCostNp(item.costSp)}
+function gearCostWp(item:{name:string;costWp?:number;costSp?:number;costNp?:number}){return canonicalGearCostWp(item)}
 function equipmentQuantity(item:PurchasedEquipment){return Math.max(1,Math.floor(Number(item.quantity)||1))}
-const startingWealth=computed(()=>STARTING_WEALTH_NP+(form.adventureKit?0:ADVENTURE_KIT_SELL_NP))
-const spentWealth=computed(()=>form.equipment.reduce((sum,item)=>sum+Number(item.costNp??gearCostNp(item))*equipmentQuantity(item),0))
+const startingWealth=computed(()=>STARTING_WEALTH_WP+(form.adventureKit?0:ADVENTURE_KIT_SELL_WP))
+const spentWealth=computed(()=>form.equipment.reduce((sum,item)=>sum+gearCostWp(item)*equipmentQuantity(item),0))
 const wealthRemaining=computed(()=>Math.max(0,startingWealth.value-spentWealth.value))
-function threadpieceBreakdownFromNp(value:number){
-  let totalWp=Math.max(0,Math.round(Number(value||0)*10))
-  const bp=Math.floor(totalWp/250);totalWp%=250
-  const sp=Math.floor(totalWp/50);totalWp%=50
-  const np=Math.floor(totalWp/10);const wp=totalWp%10
+function threadpieceBreakdownFromWp(value:number){
+  let totalWp=Math.max(0,Math.floor(Number(value)||0))
+  const bp=Math.floor(totalWp/WP_PER_BP);totalWp%=WP_PER_BP
+  const sp=Math.floor(totalWp/WP_PER_SP);totalWp%=WP_PER_SP
+  const np=Math.floor(totalWp/WP_PER_NP);const wp=totalWp%WP_PER_NP
   return{bp,sp,np,wp}
 }
-const threadpieceBreakdown=computed(()=>threadpieceBreakdownFromNp(wealthRemaining.value))
+const threadpieceBreakdown=computed(()=>threadpieceBreakdownFromWp(wealthRemaining.value))
 const threadpieceBalanceLabel=computed(()=>{const b=threadpieceBreakdown.value;const parts=[b.bp?`${b.bp} bp`:'',b.sp?`${b.sp} sp`:'',b.np?`${b.np} np`:'',b.wp?`${b.wp} wp`:''].filter(Boolean);return parts.join(' · ')||'0 wp'})
-function formatGearCost(item:Pick<PurchasedEquipment,'costSp'|'costNp'>){return formatGearCostNp(Number(item.costNp??gearCostNp(item)))}
+function formatGearCost(item:Pick<PurchasedEquipment,'name'|'costWp'|'costSp'|'costNp'>){return formatThreadpieceWp(gearCostWp(item))}
 const isCustomHomeland=computed(()=>form.homeland==='__custom__')
 const homelandDetail=computed(()=>isCustomHomeland.value?null:homelandDetails[form.homeland])
 const homelandCoreSkills=computed(()=>Array.from(new Set((homelandDetail.value?.skills||[]).map(normalizeSkillName))))
@@ -222,7 +225,7 @@ const deedExamples = [
   {name:'Vision in Shadow',objective:'Spot or interpret a hidden clue before others act.',reward:'+2 XP',keywords:['Intuitive','Curious']},
 ]
 const currentDeedExample=computed(()=>{const keys=new Set(currentSpark.value?.keywords||[]);return deedExamples.find(deed=>deed.keywords.some(keyword=>keys.has(keyword)))||deedExamples[0]})
-const shieldNames=new Set(['Sapguard','Vinegrip','Ironwood Bulwark'])
+const shieldNames=SHIELD_NAMES
 const gearTabs=['All','Weapons','Armor','Shields','Traveler’s Gear','Field Kits','Consumables','Spellcasting Implements','Accessories','Tools'] as const
 function gearTabFor(item:typeof gearShopItems[number]){
   if(item.category==='Weapon')return'Weapons'
@@ -407,7 +410,7 @@ function gearMightRequirement(item:typeof gearShopItems[number]){
   return Number(first.replace(/[^0-9]/g,''))||0
 }
 function canAddEquipment(item:typeof gearShopItems[number]){
-  return gearCostNp(item)<=wealthRemaining.value && (!gearChoices(item).length||Boolean(gearChoice.value[item.name])) && form.attributes.might>=gearMightRequirement(item)
+  return gearCostWp(item)<=wealthRemaining.value && (!gearChoices(item).length||Boolean(gearChoice.value[item.name])) && form.attributes.might>=gearMightRequirement(item)
 }
 function gearShopSubtitle(item:typeof gearShopItems[number]){const cost=item.costText.toLowerCase();return gearTab.value==='All'?`${gearTabFor(item)} · ${cost}`:cost}
 function gearDisplayDetail(item:typeof gearShopItems[number]){
@@ -447,21 +450,29 @@ function requiredTalentCount(){return form.path==='magic'?1:2}
 function ensureTalentSlots(){const count=requiredTalentCount();while(form.talents.length<count)form.talents.push('');form.talents=form.talents.slice(0,count)}
 function addEquipment(item:typeof gearShopItems[number]){
   if(!canAddEquipment(item))return
-  const costNp=gearCostNp(item);const choice=gearChoice.value[item.name]||''
+  const costWp=gearCostWp(item);const choice=gearChoice.value[item.name]||''
   if(isStackableGear(item)){
     const existing=form.equipment.find(candidate=>candidate.name===item.name&&candidate.category===item.category&&(candidate.choice||'')===choice)
     if(existing){existing.quantity=equipmentQuantity(existing)+1;return}
   }
-  form.equipment.push({name:item.name,costSp:item.costSp,costNp,category:item.category,detail:gearDisplayDetail(item),effect:gearEffect(item),choice:choice||undefined,quantity:1,statBonuses:item.statBonuses})
+  const kind=protectiveGearKind(item)
+  const equipped=kind?!form.equipment.some(candidate=>protectiveGearKind(candidate)===kind&&candidate.equipped===true):undefined
+  form.equipment.push({name:item.name,costWp,costPaidWp:costWp,costSp:costWp/WP_PER_SP,costNp:costWp/WP_PER_NP,category:item.category,detail:gearDisplayDetail(item),effect:gearEffect(item),choice:choice||undefined,quantity:1,statBonuses:item.statBonuses,equipped})
 }
-function removeEquipment(index:number){form.equipment.splice(index,1)}
+function removeEquipment(index:number){
+  const removed=form.equipment[index];const kind=removed?protectiveGearKind(removed):null;const wasEquipped=Boolean(removed?.equipped)
+  form.equipment.splice(index,1)
+  if(kind&&wasEquipped){const replacement=form.equipment.findIndex(item=>protectiveGearKind(item)===kind);if(replacement>=0)form.equipment=setProtectiveEquipmentEquipped(form.equipment,replacement,true)}
+}
+function isProtectivePurchased(item:PurchasedEquipment){return protectiveGearKind(item)!==null}
+function setProtectiveEquipped(index:number){form.equipment=setProtectiveEquipmentEquipped(form.equipment,index,true)}
 function changeEquipmentQuantity(index:number,delta:-1|1){
   const item=form.equipment[index];if(!item||!isStackablePurchased(item))return
   if(delta>0){const source=sourceGearFor(item);if(!source||!canAddEquipment(source))return;item.quantity=equipmentQuantity(item)+1;return}
   const next=equipmentQuantity(item)-1;if(next<1)removeEquipment(index);else item.quantity=next
 }
 const reviewWeapons=computed(()=>form.equipment.filter(item=>item.category==='Weapon'))
-const reviewArmor=computed(()=>form.equipment.filter(item=>item.category==='Armor & Shield'))
+const reviewArmor=computed(()=>equippedProtectiveGear(form.equipment))
 function journeyKnotAttachedTo(weaponName:string){return form.equipment.some(item=>item.name==='Journey Knot'&&item.attachedTo===weaponName)}
 function addDamageBonus(value:string,bonus:number){return bonus&&value!=='—'?value.replace(/\d+(?:\.\d+)?/g,match=>String(Number(match)+bonus)):value}
 function reviewWeaponProfile(item:PurchasedEquipment|undefined){
@@ -552,7 +563,7 @@ function validateStep(id=stepId.value){
   if(id==='spells'&&!regularSpellsValid())return 'Choose 2 different Lore Spells.'
   if(id==='spells'&&!invocationSpellsValid())return 'Choose 2 different Invocation Spells.'
   if(id==='talents'&&!talentsValid())return invalidTalents.value.length?`Resolve Talent requirements: ${invalidTalents.value.join(', ')}.`:`Choose ${requiredTalentCount()} different Talent${requiredTalentCount()===1?'':'s'}.`
-  if(id==='equipment'&&wealthRemaining.value<0)return 'Remove equipment until Remaining Wealth is 0 np or more.'
+  if(id==='equipment'&&wealthRemaining.value<0)return 'Remove equipment until Remaining Wealth is 0 wp or more.'
   if(id==='languages'&&!form.additionalLanguage)return 'Choose one Bonus Language before continuing.'
   return ''
 }
@@ -589,6 +600,11 @@ function buildRecord(saveAsDraft:boolean):CharacterRecord{
   const homelandName=isCustomHomeland.value?(form.customHomelandName.trim()||'Custom Homeland'):form.homeland
   const creationComplete=!saveAsDraft||originalStatus.value!=='incomplete'
   const status=creationComplete?(originalStatus.value==='approved'?'approved':'unapproved'):'incomplete'
+  const previous=originalRecord.value
+  const preserveCampaignEconomy=Boolean(previous&&characterStatus(previous)==='approved')
+  const startingWealthWp=preserveCampaignEconomy?previous!.startingWealthWp:startingWealth.value
+  const wealthWp=preserveCampaignEconomy?previous!.wealthWp:wealthRemaining.value
+  const currencyAddedWp=preserveCampaignEconomy?previous!.currencyAddedWp:0
   return {
     id:draftId.value||crypto.randomUUID(),
     name:form.name.trim()||(!creationComplete?'Unnamed Draft':'Unnamed Character'),
@@ -606,7 +622,9 @@ function buildRecord(saveAsDraft:boolean):CharacterRecord{
     spells:form.path==='magic'?[...form.spells.filter(Boolean)]:undefined,
     invocationSpells:form.path==='magic'?[...form.invocationSpells.filter(Boolean)]:undefined,
     languages:[...languages.value], equipment:consolidatePurchasedEquipment(form.equipment), adventureKit:form.adventureKit,
-    startingWealth:startingWealth.value, wealthRemaining:wealthRemaining.value, wealthCurrency:'NP',
+    startingWealthWp, wealthWp, currencyAddedWp,
+    treasure:preserveCampaignEconomy?[...(previous?.treasure||[])]:undefined,
+    experience:preserveCampaignEconomy?previous?.experience:undefined, magicLevel:preserveCampaignEconomy?previous?.magicLevel:undefined, pinned:previous?.pinned,
     attributes:{...form.attributes}, status, draft:!creationComplete, creationComplete, locked:originalLocked.value, creationStep:stepId.value,
     createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
@@ -630,7 +648,7 @@ function resetForm(){
   form.name='';form.campaignName='';form.appearance='';form.allowCustomData=false;form.species='';form.cultureTraits=[];form.cultureSkillChoices={};
   form.spark='';form.homeland='';form.customHomelandName='';form.customHomelandDetail='';form.skills=['',''];form.faith='';form.oath='';
   attributes.forEach(attribute=>form.attributes[attribute.id]=1);form.path='magic';pathTouched.value=false;form.loreAttunement='';form.spells=['',''];form.invocationSpells=['',''];form.talents=[''];form.adventureKit=true;form.equipment=[];form.additionalLanguage='';
-  draftId.value=null;originalCreatedAt.value=null;originalStatus.value='incomplete';originalLocked.value=false;reviewNameLocked.value=true;reviewCampaignLocked.value=true;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
+  draftId.value=null;originalCreatedAt.value=null;originalStatus.value='incomplete';originalLocked.value=false;originalRecord.value=null;reviewNameLocked.value=true;reviewCampaignLocked.value=true;stepIndex.value=0;error.value='';window.scrollTo({top:0,behavior:'smooth'})
 }
 function closeWithoutSave(){void router.push('/characters')}
 
@@ -667,7 +685,7 @@ onMounted(async()=>{
   if(!editId)return
   const record=loadCharacters().find(item=>item.id===editId)
   if(!record)return
-  draftId.value=record.id;originalCreatedAt.value=record.createdAt;originalStatus.value=characterStatus(record);originalLocked.value=Boolean(record.locked)
+  draftId.value=record.id;originalCreatedAt.value=record.createdAt;originalStatus.value=characterStatus(record);originalLocked.value=Boolean(record.locked);originalRecord.value=record
   form.name=record.name||'';form.campaignName=record.campaignName||'';form.appearance=record.appearance||'';form.allowCustomData=Boolean(record.allowCustomData)
   form.species=record.species||''
   await nextTick()
@@ -797,7 +815,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Rhythm of Body &amp; Spirit</h1></div></div>
           <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s player knows this Axalori is shaped more by intuition and compassion than force of arms. They gain a Magic Level, attune to the Lore of Harmony, and choose Hearth Touch as their Talent.</em></div>
           <details class="creation-info-panel help-panel" open><summary>Choose Your Path</summary><div class="creation-info-body"><p>This choice decides how your hero first expresses exceptional ability. One path begins Magic Level 1 and pairs it with a Talent; the other begins with two Talents and no starting Magic Level.</p></div></details>
-          <aside class="creator-static-panel mana-path-panel winds-magic-panel"><strong>Winds of Magic</strong><p>The Winds of Magic are living currents that move through stone, storm, root, and heartbeat. Mana is the portion of that rhythm a hero can draw upon to fuel Abilities, Spells, and other supernatural effects.</p><div class="mana-stat-line"><div><span>Mana Pool</span><b>{{ manaPool }}</b><small>(Magic Level + Spirit [Bravery modifier]).</small></div><div><span>Magic Regen</span><b>{{ magicRegen }}</b><small>([Bravery rank] Heart + 2).</small></div></div><p v-if="manaTraitNotes.length" class="mana-trait-note"><strong>Magic Regen interaction:</strong> {{ manaTraitNotes.join(' · ') }}</p></aside>
+          <aside class="creator-static-panel mana-path-panel winds-magic-panel"><strong>Winds of Magic</strong><p>The Winds of Magic are living currents that move through stone, storm, root, and heartbeat. Mana is the portion of that rhythm a hero can draw upon to fuel Abilities, Spells, and other supernatural effects.</p><div class="mana-stat-line"><div><span>Mana Pool</span><b>{{ manaPool }}</b><small>(Magic Level + Spirit [Bravery modifier]).</small></div><div><span>Magic Regen</span><b>{{ magicRegen }}</b><small>(Heart [Bravery rank]).</small></div></div><p v-if="manaTraitNotes.length" class="mana-trait-note"><strong>Magic Regen interaction:</strong> {{ manaTraitNotes.join(' · ') }}</p></aside>
           <div class="path-choice-grid"><button type="button" class="path-choice-card" :class="{selected:pathTouched&&form.path==='magic'}" @click="choosePath('magic')"><span class="path-choice-kicker">WIND-TOUCHED</span><strong class="path-choice-title">Magic Level 1 + 1 Talent</strong><p>Attune to a Lore, gain its Signature Spell, choose starting Spells, then select one Talent.</p></button><button type="button" class="path-choice-card" :class="{selected:pathTouched&&form.path==='talents'}" @click="choosePath('talents')"><span class="path-choice-kicker">GIFTED HEART</span><strong class="path-choice-title">2 Talents</strong><p>Build around training, instinct, and practiced gifts by selecting two Talents.</p></button></div>
         </template>
 
@@ -828,9 +846,9 @@ watch(()=>form.path,()=>ensureTalentSlots())
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Equipment &amp; Gear</h1></div></div>
           <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s travels and clothes are humble and practical. Their starting gear includes Leafstitch armor, an oakstaff, a driftwood charm, healing herbs, a water flask, and a journal of dreams.</em></div>
           <details class="creation-info-panel help-panel" open><summary>Currency of Anthro Mundas</summary><div class="creation-info-body"><p>Trade across Anthro Mundas commonly uses Ancient fasteners called <strong>Threadpieces</strong>. Washer pieces (wp) cover everyday purchases, Nut pieces (np) local trade, Screw pieces (sp) most adventuring commerce, and Bolt pieces (bp) major debts and purchases.</p><div class="currency-grid currency-grid-four"><span><strong>Washer Pieces</strong><small>10 wp = 1 np</small></span><span><strong>Nut Pieces</strong><small>5 np = 1 sp</small></span><span><strong>Screw Pieces</strong><small>5 sp = 1 bp</small></span><span><strong>Bolt Pieces</strong><small>Highest denomination</small></span></div></div></details>
-          <details class="creation-info-panel help-panel starting-equipment-parent" open><summary>Starting Equipment</summary><div class="creation-info-body"><p>Each character begins with <strong>30 sp</strong> in Threadpieces and an Adventure Kit. Keep the Adventure Kit as the standard starting package, or sell it during creation for an additional <strong>2 sp</strong> to spend on equipment and gear.</p><section class="starting-equipment-panel"><div class="adventure-kit-bar"><div><strong>Adventure Kit - Starting Equipment Package</strong></div><div class="kit-return-control"><span>Sell</span><label class="switch"><input v-model="form.adventureKit" type="checkbox" :true-value="false" :false-value="true"/><span></span></label></div></div><div v-if="form.adventureKit" class="adventure-kit-contents"><span>Bedroll &amp; Groundsheet</span><span>Traveler’s Cloak</span><span>2× Torches</span><span>Reed Flask</span><span>2× Trail Rations</span><span>Traveler’s Pack</span><span>Fire-Starting Kit</span></div><div class="wealth-balance-field"><span>Threadpieces</span><div class="threadpiece-breakdown"><span><b>{{ threadpieceBreakdown.wp }}</b> wp</span><span><b>{{ threadpieceBreakdown.np }}</b> np</span><span><b>{{ threadpieceBreakdown.sp }}</b> sp</span><span><b>{{ threadpieceBreakdown.bp }}</b> bp</span></div></div></section></div></details>
+          <details class="creation-info-panel help-panel starting-equipment-parent" open><summary>Starting Equipment</summary><div class="creation-info-body"><p>Each character begins with <strong>{{ formatThreadpieceWpAs(STARTING_WEALTH_WP,'sp') }}</strong> in Threadpieces and an Adventure Kit. Keep the Adventure Kit as the standard starting package, or sell it during creation for an additional <strong>{{ formatThreadpieceWpAs(ADVENTURE_KIT_SELL_WP,'sp') }}</strong> to spend on equipment and gear.</p><section class="starting-equipment-panel"><div class="adventure-kit-bar"><div><strong>Adventure Kit - Starting Equipment Package</strong></div><div class="kit-return-control"><span>Sell</span><label class="switch"><input v-model="form.adventureKit" type="checkbox" :true-value="false" :false-value="true"/><span></span></label></div></div><div v-if="form.adventureKit" class="adventure-kit-contents"><span>Bedroll &amp; Groundsheet</span><span>Traveler’s Cloak</span><span>2× Torches</span><span>Reed Flask</span><span>2× Trail Rations</span><span>Traveler’s Pack</span><span>Fire-Starting Kit</span></div><div class="wealth-balance-field"><span>Threadpieces</span><div class="threadpiece-breakdown"><span><b>{{ threadpieceBreakdown.wp }}</b> wp</span><span><b>{{ threadpieceBreakdown.np }}</b> np</span><span><b>{{ threadpieceBreakdown.sp }}</b> sp</span><span><b>{{ threadpieceBreakdown.bp }}</b> bp</span></div></div></section></div></details>
           <button type="button" class="secondary-button wide" @click="shopOpen=true">Equipment &amp; Gear</button>
-          <section v-if="form.equipment.length" class="purchased-equipment-section"><h2>Purchased Equipment &amp; Gear</h2><div class="purchased-gear-list"><article v-for="(item,index) in form.equipment" :key="`${item.name}-${item.choice||''}-${index}`" class="list-row"><span class="list-row-copy"><strong class="list-row-title">{{ item.name }}<template v-if="equipmentQuantity(item)>1"> ×{{ equipmentQuantity(item) }}</template></strong><small class="list-row-subtitle">{{ item.category }} · {{ formatGearCost(item) }}<template v-if="isStackablePurchased(item)"> each</template></small></span><div class="purchased-item-detail"><small v-if="item.choice">Choice: {{ item.choice }}</small><label v-if="equipmentAttachTargets(item).length" class="attachment-control">Attach / Apply (optional)<select class="field-control" :value="item.attachedTo||''" @change="setAttachment(index,$event)"><option value="">Not attached</option><option v-for="target in equipmentAttachTargets(item)" :key="target" :value="target">{{ target }}</option></select></label></div><div v-if="isStackablePurchased(item)" class="equipment-quantity-control" role="group" :aria-label="`Quantity of ${item.name}`"><button type="button" class="secondary-button compact-action" @click="changeEquipmentQuantity(index,-1)">−</button><strong>{{ equipmentQuantity(item) }}</strong><button type="button" class="secondary-button compact-action" :disabled="!sourceGearFor(item)||!canAddEquipment(sourceGearFor(item)!)" @click="changeEquipmentQuantity(index,1)">+</button></div><button v-else type="button" class="secondary-button compact-action" @click="removeEquipment(index)">Remove</button></article></div></section>
+          <section v-if="form.equipment.length" class="purchased-equipment-section"><h2>Purchased Equipment &amp; Gear</h2><div class="purchased-gear-list"><article v-for="(item,index) in form.equipment" :key="`${item.name}-${item.choice||''}-${index}`" class="list-row"><span class="list-row-copy"><strong class="list-row-title">{{ item.name }}<template v-if="equipmentQuantity(item)>1"> ×{{ equipmentQuantity(item) }}</template></strong><small class="list-row-subtitle">{{ item.category }} · {{ formatGearCost(item) }}<template v-if="isStackablePurchased(item)"> each</template></small></span><div class="purchased-item-detail"><small v-if="item.choice">Choice: {{ item.choice }}</small><label v-if="equipmentAttachTargets(item).length" class="attachment-control">Attach / Apply (optional)<select class="field-control" :value="item.attachedTo||''" @change="setAttachment(index,$event)"><option value="">Not attached</option><option v-for="target in equipmentAttachTargets(item)" :key="target" :value="target">{{ target }}</option></select></label></div><div v-if="isStackablePurchased(item)" class="equipment-quantity-control" role="group" :aria-label="`Quantity of ${item.name}`"><button type="button" class="secondary-button compact-action" @click="changeEquipmentQuantity(index,-1)">−</button><strong>{{ equipmentQuantity(item) }}</strong><button type="button" class="secondary-button compact-action" :disabled="!sourceGearFor(item)||!canAddEquipment(sourceGearFor(item)!)" @click="changeEquipmentQuantity(index,1)">+</button></div><div v-else class="purchased-gear-actions"><button v-if="isProtectivePurchased(item)" type="button" class="secondary-button compact-action" :class="{active:item.equipped}" @click="setProtectiveEquipped(index)">{{ item.equipped?'Equipped':'Equip' }}</button><button type="button" class="secondary-button compact-action" @click="removeEquipment(index)">Remove</button></div></article></div></section>
         </template>
 
         <template v-else-if="stepId==='languages'">
@@ -932,8 +950,8 @@ watch(()=>form.path,()=>ensureTalentSlots())
 .custom-data-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--paper-2)}.custom-data-toggle>span:first-child{display:grid;gap:2px}.custom-data-toggle small{color:var(--ink-soft);font-size:calc(8.5px + var(--font-offset))}.campaign-custom-stack{display:grid;gap:6px}.custom-content-badge{display:inline-flex!important;align-items:center!important;margin-left:5px;padding:2px 5px!important;border:1px solid #7b4f8d!important;border-radius:999px!important;background:#efe5f4!important;color:#60336f!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:8px!important;font-weight:900!important;letter-spacing:.06em!important;vertical-align:middle}.creator-name-campaign-grid{align-items:end}
 
 /* Canonical creator structures. */
-.attribute-sheet-row{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr)!important;align-items:start!important}.attribute-sheet-copy{gap:7px}.attribute-sheet-secondary{margin-top:3px}.attribute-sheet-secondary>span,.attribute-stat-box{display:grid!important;align-items:center;gap:8px;min-height:44px;padding:7px 9px!important;border:1px solid var(--line)!important;border-left:4px solid var(--accent)!important;border-radius:7px!important;background:var(--paper-2)!important}.attribute-sheet-secondary>span{grid-template-columns:1fr auto;text-align:left!important;flex:0 1 120px}.attribute-stat-box{grid-template-columns:1fr!important;justify-items:center!important;text-align:center!important}.attribute-sheet-secondary>span b,.attribute-stat-box b{font-size:calc(13px + var(--font-offset))!important;line-height:1!important}.attribute-sheet-secondary>span small{font-size:calc(8px + var(--font-offset))!important;color:var(--ink-soft)}.attribute-stat-box>span{color:var(--ink);font-weight:850}.attribute-rank-stack{align-self:center}.attribute-rank-mod-row{margin-bottom:7px}.attribute-rank-stepper{margin-inline:auto}.attribute-rank-stepper>span{min-width:34px;text-align:center}.skill-source-pills{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.homeland-skill-pill{display:inline-flex;padding:2px 6px;border:1px solid var(--accent);border-radius:999px;background:var(--accent-wash);color:var(--accent-dark);font-size:calc(8px + var(--font-offset));font-weight:850}.currency-grid-four{grid-template-columns:repeat(4,minmax(0,1fr))!important}.starting-equipment-parent .starting-equipment-panel{margin-top:10px}.equipment-quantity-control{display:grid;grid-template-columns:34px 34px 34px;align-items:center;justify-content:end;gap:4px}.equipment-quantity-control strong{text-align:center}.equipment-quantity-control .compact-action{min-width:34px;padding-inline:0}.purchased-gear-list .list-row{align-items:center}
-@media(max-width:680px){.attribute-sheet-row{grid-template-columns:1fr!important}.attribute-rank-stack{width:100%;min-width:0!important}.currency-grid-four{grid-template-columns:repeat(2,minmax(0,1fr))!important}.purchased-gear-list .list-row{align-items:stretch}.equipment-quantity-control{justify-content:start}}
+.attribute-sheet-row{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr)!important;align-items:start!important}.attribute-sheet-copy{gap:7px}.attribute-sheet-secondary{margin-top:3px}.attribute-sheet-secondary>span,.attribute-stat-box{display:grid!important;align-items:center;gap:8px;min-height:44px;padding:7px 9px!important;border:1px solid var(--line)!important;border-left:4px solid var(--accent)!important;border-radius:7px!important;background:var(--paper-2)!important}.attribute-sheet-secondary>span{grid-template-columns:1fr auto;text-align:left!important;flex:0 1 120px}.attribute-stat-box{grid-template-columns:1fr!important;justify-items:center!important;text-align:center!important}.attribute-sheet-secondary>span b,.attribute-stat-box b{font-size:calc(13px + var(--font-offset))!important;line-height:1!important}.attribute-sheet-secondary>span small{font-size:calc(8px + var(--font-offset))!important;color:var(--ink-soft)}.attribute-stat-box>span{color:var(--ink);font-weight:850}.attribute-rank-stack{align-self:center}.attribute-rank-mod-row{margin-bottom:7px}.attribute-rank-stepper{margin-inline:auto}.attribute-rank-stepper>span{min-width:34px;text-align:center}.skill-source-pills{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.homeland-skill-pill{display:inline-flex;padding:2px 6px;border:1px solid var(--accent);border-radius:999px;background:var(--accent-wash);color:var(--accent-dark);font-size:calc(8px + var(--font-offset));font-weight:850}.currency-grid-four{grid-template-columns:repeat(4,minmax(0,1fr))!important}.starting-equipment-parent .starting-equipment-panel{margin-top:10px}.equipment-quantity-control{display:grid;grid-template-columns:34px 34px 34px;align-items:center;justify-content:end;gap:4px}.equipment-quantity-control strong{text-align:center}.equipment-quantity-control .compact-action{min-width:34px;padding-inline:0}.purchased-gear-list .list-row{align-items:center}.purchased-gear-actions{display:flex;align-items:center;gap:5px;justify-content:flex-end}.purchased-gear-actions .active{border-color:var(--accent);background:var(--accent-wash)}
+@media(max-width:680px){.attribute-sheet-row{grid-template-columns:1fr!important}.attribute-rank-stack{width:100%;min-width:0!important}.currency-grid-four{grid-template-columns:repeat(2,minmax(0,1fr))!important}.purchased-gear-list .list-row{align-items:stretch}.equipment-quantity-control{justify-content:start}.purchased-gear-actions{justify-content:flex-start}}
 
 
 /* Beta 0.33 creator refinements. */

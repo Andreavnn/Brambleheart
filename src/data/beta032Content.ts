@@ -3,7 +3,8 @@ import { coreAbilities } from './coreAbilities'
 import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from './rulesSource'
 import { currentMeasurement, formatMeasurementText } from '../rules/measurements'
 import { gearShopItems } from './characterOptions'
-import { formatGearCostSp, halfGearCostSp, halfThreadpieceCostText } from '../rules/threadpieces'
+import { ADVENTURE_KIT_SELL_WP, CRAFTING_MATERIAL_FLOOR_PERCENT, STARTING_WEALTH_WP, canonicalRulePriceLabel, economyGearCatalog } from '../rules/economy'
+import { formatThreadpieceWp, formatThreadpieceWpAs } from '../rules/threadpieces'
 
 const movedCoreAbilityNames=new Set([
   'ROOTED RESOLVE',
@@ -116,9 +117,11 @@ function applyGameRuleAmendments(value:string){
   let text=String(value||'')
   text=text.replace(/\bStarting Mana\b/gi,'Mana Pool')
   text=text.replace(/\bMana Regeneration\b/gi,'Magic Regen')
-  text=text.replace(/\bMagic Regen\s*2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Magic Regen = Heart + 2')
+  text=text.replace(/\bMagic Regen\s*2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Magic Regen = Heart')
   text=text.replace(/\bMagic Level\s*\+\s*Inspiration\b/gi,'Magic Level + Spirit')
   text=text.replace(/\bMana Pool\s*(?:is equal to|=)?\s*2\s*\+\s*Magic Level(?:\s*\+\s*bonuses)?\b/gi,'Mana Pool = Magic Level + Spirit')
+  text=text.replace(/\bMagic Regen\s*=\s*Heart\s*\+\s*2\b/gi,'Magic Regen = Heart')
+  text=text.replace(/\bHeart\s*\+\s*2\b/gi,'Heart')
   text=text.replace(/Every character generates two\s*\[?2\]?\s*mana at the start of each combat round\.?/gi,'At the start of each combat round, each character restores Mana equal to their Magic Regen.')
   text=text.replace(/At the start of each combat round, each character restores Mana equal to (?:Heart|Spirit)\.?/gi,'At the start of each combat round, each character restores Mana equal to their Magic Regen.')
   text=text.replace(/At the start of each round, restore Mana equal to (?:Heart|Spirit)\.?/gi,'At the start of each round, restore Mana equal to Magic Regen.')
@@ -135,31 +138,79 @@ function applyGameRuleAmendments(value:string){
   text=text.replace(/\bHeart is equal to (?:the )?Bravery modifier\b/gi,'Spirit is equal to the Bravery modifier')
   text=text.replace(/\bInspiration is equal to (?:the )?Bravery modifier\b/gi,'Spirit is equal to the Bravery modifier')
   text=text.replace(/weapon[’']s damage value and power/gi,match=>match.replace(/power/i,'Fury'))
+  text=text.replace(/(begin(?:s)?|start(?:s)?)([^.]{0,100})\b50\s*sp\b/gi,(_match,verb,between)=>`${verb}${between}${formatThreadpieceWpAs(STARTING_WEALTH_WP,'sp')}`)
+  text=text.replace(/(Adventure Kit[^.]{0,100}(?:sell|sold|return|returned)[^.]{0,80})\b2\s*sp\b/gi,(_match,prefix)=>`${prefix}${formatThreadpieceWpAs(ADVENTURE_KIT_SELL_WP,'sp')}`)
+  text=text.replace(/\b1\s*bp\s*=\s*2\s*sp\b/gi,'1 bp = 5 sp')
+  text=text.replace(/\b1\s*Bolt Piece\s*=\s*2\s*Screw Pieces?\b/gi,'1 Bolt Piece = 5 Screw Pieces')
   if(/\bMight\b/i.test(text)&&/\bPower\b/i.test(text))text=text.replace(/\bPower\b/g,'Fury').replace(/\bpower\b/g,'fury')
   text=text.replace(/\b(WP|NP|SP|BP)\b/g,match=>match.toLowerCase())
   return text
 }
 
-const gearPatchKey=Symbol.for('brambleheart.half-gear-costs')
+const economyPatchKey=Symbol.for('brambleheart.canonical-economy-v1')
 const runtimeState=globalThis as unknown as Record<PropertyKey,unknown>
-if(!runtimeState[gearPatchKey]){
-  for(const item of gearShopItems){
-    item.costSp=halfGearCostSp(item.costSp)
-    item.costText=formatGearCostSp(item.costSp).toLowerCase()
+if(!runtimeState[economyPatchKey]){
+  // characterOptions retains legacy imported price fields; replace the active catalog in place from one integer-wp authority.
+  const canonicalCatalog=economyGearCatalog(gearShopItems)
+  gearShopItems.splice(0,gearShopItems.length,...canonicalCatalog)
+
+  const characterCreation=ruleSourceDocuments['character-creation']
+  if(characterCreation){
+    for(const section of characterCreation.sections){
+      for(const block of section.blocks){
+        if(block.type==='paragraph'){
+          block.text=block.text.replace(/\b50\s*sp\b/gi,formatThreadpieceWpAs(STARTING_WEALTH_WP,'sp'))
+            .replace(/(Adventure Kit[^.]{0,120}(?:sell|sold|return|returned)[^.]{0,100})\b2\s*sp\b/gi,(_match,prefix)=>`${prefix}${formatThreadpieceWpAs(ADVENTURE_KIT_SELL_WP,'sp')}`)
+        }else block.rows=block.rows.map(row=>row.map(cell=>String(cell).replace(/\b50\s*sp\b/gi,formatThreadpieceWpAs(STARTING_WEALTH_WP,'sp'))))
+      }
+    }
   }
-  for(const documentKey of ['weapons','armor-shields','adventuring-gear']){
+
+  for(const documentKey of ['weapons','armor-shields','adventuring-gear','trade-goods','transportation']){
     const document=ruleSourceDocuments[documentKey]
     if(!document)continue
     for(const section of document.sections){
       for(const block of section.blocks){
         if(block.type!=='table'||block.rows.length<2)continue
-        const costIndexes=block.rows[0].map((cell,index)=>/\b(cost|price)\b/i.test(String(cell))?index:-1).filter(index=>index>=0)
+        if(documentKey==='adventuring-gear'){
+          block.rows=block.rows.map(row=>{
+            const rowText=row.join(' ')
+            if(!/Bolt Piece|\b1\s*bp\b/i.test(rowText))return row
+            return row.map(cell=>String(cell).replace(/\b2\s*sp\b/gi,'5 sp').replace(/2\s*Screw Pieces?/gi,'5 Screw Pieces'))
+          })
+        }
+        const headers=block.rows[0].map(cell=>String(cell))
+        const costIndexes=headers.map((cell,index)=>/\b(cost|price|value)\b/i.test(cell)?index:-1).filter(index=>index>=0)
         if(!costIndexes.length)continue
-        block.rows=block.rows.map((row,rowIndex)=>rowIndex===0?row:row.map((cell,index)=>costIndexes.includes(index)?halfThreadpieceCostText(cell):cell))
+        block.rows=block.rows.map((row,rowIndex)=>{
+          if(rowIndex===0)return row
+          const itemName=String(row[0]||'').trim()
+          const price=canonicalRulePriceLabel(documentKey,itemName)
+          if(!price)return row
+          return row.map((cell,index)=>costIndexes.includes(index)?price:cell)
+        })
       }
     }
   }
-  runtimeState[gearPatchKey]=true
+
+  const tradeGoods=ruleSourceDocuments['trade-goods']
+  if(tradeGoods&&!tradeGoods.sections.some(section=>section.heading==='CRAFTING ECONOMY'))tradeGoods.sections.push({
+    heading:'CRAFTING ECONOMY',
+    blocks:[
+      {type:'paragraph',text:`Crafting a market-priced item consumes eligible listed materials with a combined base trade value equal to at least ${CRAFTING_MATERIAL_FLOOR_PERCENT}% of the item’s current retail price.`},
+      {type:'paragraph',text:'The crafter chooses quantities from the listed component types until the material-value floor is met. The Watcher may require a specific rare component when the fiction calls for it.'},
+      {type:'paragraph',text:'This value floor does not replace the required Skill, tools or kit, time, workspace, or any rule-specific crafting checks. Gathered materials may legitimately create value as a reward for time, risk, Skills, and access to rare resources.'},
+    ],
+  })
+  const adventuringGear=ruleSourceDocuments['adventuring-gear']
+  if(adventuringGear&&!adventuringGear.sections.some(section=>section.heading==='RESALE & MARKET VALUE'))adventuringGear.sections.push({
+    heading:'RESALE & MARKET VALUE',
+    blocks:[
+      {type:'paragraph',text:'Ordinary gear normally resells for 50% of its current retail value, rounded down to the nearest wp. The Adventure Kit has a fixed creation sellback of 3 sp rather than a component-based resale value.'},
+      {type:'paragraph',text:'Trade goods normally sell for 75% of their listed base value. The Watcher may adjust availability or resale for scarcity, regional demand, damage, or other circumstances.'},
+    ],
+  })
+  runtimeState[economyPatchKey]=true
 }
 
 const fundamentals=ruleSourceDocuments.fundamentals
@@ -170,7 +221,7 @@ if(fundamentals){
   }
   const rounds=fundamentals.sections.find(section=>/round|mana/i.test(section.heading))
   if(rounds&&!rounds.blocks.some(block=>block.type==='paragraph'&&/Mana Pool is equal to Magic Level/i.test(block.text))){
-    rounds.blocks.push({type:'paragraph',text:'MANA UPDATE: Mana Pool is equal to Magic Level + Spirit. Magic Regen is equal to Heart +2 and is the amount of Mana restored at the start of each round. Effects that increase or decrease start-of-round Mana modify Magic Regen.'})
+    rounds.blocks.push({type:'paragraph',text:'MANA UPDATE: Mana Pool is equal to Magic Level + Spirit. Magic Regen is equal to Heart and is the amount of Mana restored at the start of each round. Effects that increase or decrease start-of-round Mana modify Magic Regen.'})
   }
 }
 
