@@ -5,6 +5,7 @@ import PrimaryNav from './PrimaryNav.vue'
 import { useSettings } from '../state/settings'
 import { backgroundOptions } from '../data/backgroundCatalog'
 import { BUILD } from '../data/bramble'
+import { GAME_RULES_VERSION } from '../data/gameUpdates'
 
 const props=defineProps<{compact?:boolean;backTo?:string;backLabel?:string;preferBackTo?:boolean;skipBackPrefix?:string}>()
 const router=useRouter()
@@ -39,10 +40,10 @@ function goBack(){
         </button>
       </div>
       <div class="brand-stack brand-update-stack">
-        <RouterLink to="/characters" class="brand-logo-link" aria-label="Brambleheart Character List">
+        <RouterLink to="/characters" class="brand-logo-link" aria-label="Brambleheart Character Roster">
           <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="brand-logo" />
         </RouterLink>
-        <RouterLink to="/game-updates" class="game-updates-header-link">Game Updates</RouterLink>
+        <RouterLink to="/game-updates" class="game-updates-header-link">Rule Updates v{{ GAME_RULES_VERSION }}</RouterLink>
       </div>
     </div>
     <PrimaryNav />
@@ -52,9 +53,9 @@ function goBack(){
 <style scoped>
 .header-control-row{grid-column:1/-1;grid-row:1;z-index:3;width:min(760px,calc(100vw - 28px));justify-self:center;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
 .header-control-row>*{pointer-events:auto}.header-control-row .header-spacer{pointer-events:none}
-.brand-update-stack{grid-column:1/-1;grid-row:1;z-index:1;display:grid;justify-items:center;align-content:start;gap:2px;min-width:0}
+.brand-update-stack{grid-column:1/-1;grid-row:1;z-index:1;display:grid;justify-items:center;align-content:center;gap:2px;min-width:0;height:100%;position:relative}
 .brand-logo-link{display:block;min-width:0}
-.game-updates-header-link{margin-top:-2px;color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850;letter-spacing:.055em;text-transform:uppercase;text-decoration:none}
+.game-updates-header-link{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);color:var(--ink-soft);font-size:calc(9px + var(--font-offset));font-weight:850;letter-spacing:.055em;text-transform:uppercase;text-align:center;text-decoration:none}
 .game-updates-header-link:hover,.game-updates-header-link.router-link-active{color:var(--accent-dark);text-decoration:underline;text-underline-offset:3px}
-@media(max-width:680px){.header-control-row{width:min(760px,calc(100vw - 20px))}.game-updates-header-link{font-size:calc(8.5px + var(--font-offset))}}
+@media(max-width:680px){.header-control-row{width:min(760px,calc(100vw - 20px))}.game-updates-header-link{bottom:5px;font-size:calc(8.5px + var(--font-offset))}}
 </style>

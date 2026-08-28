@@ -1,59 +1,62 @@
-# Brambleheart Beta 0.33 Patch Notes
+# Brambleheart Beta 0.34 Patch Notes
 
-## Character List & Share Codes
-- Removes active QR generation/scanning and QR dependencies; compressed Share Codes are the character-transfer authority.
-- Keeps the QR-shaped per-character action icon, now as the direct Share Code action.
-- Rebuilds the Share Code popup to match the supplied Old.dex pattern: short Share Page, truncated code preview, expandable full code, and centered copy/send actions.
-- Combines import into one `Import Character` control with Upload File and Paste Share Code choices.
-- Combines export into one `Export Character` control with all-character download plus one-character file/Share Code choices.
-- Adds a Character Filter control to the action panel.
-- New shares keep the browser URL at the short canonical Character List address. Legacy `#bhc=` links remain readable and clean their payload fragment immediately after capture.
+## Rule Updates 0.01 & Secondary Statistics
+- Separates the site build (`Beta 0.34`) from the Brambleheart rules-update version (`0.01`).
+- Adds a centered `Rule Updates v0.01` link below the Brambleheart logo and above primary navigation; it is not a primary-navigation tab.
+- Corrects the shared secondary-stat formulas sitewide:
+  - Agility: Aim = modifier, Accuracy = Rank, Speed = modifier +2.
+  - Might: Brawl = modifier, Fury = Rank.
+  - Hide: Ward = modifier, Guts = Rank plus applicable equipment bonuses.
+  - Lore: Control = modifier plus applicable equipment bonuses, Power = Rank.
+  - Bravery: Spirit = Rank, Heart = modifier.
+- Mana Pool = Magic Level + Heart. Start-of-round Mana restoration = Spirit.
+- Adds the rules-wide formula clarification to Rule Updates 0.01 while intentionally omitting Accuracy from the update entry, per design direction.
+- Updates active melee references from Mettle to Brawl and retains Fury as melee damage and Power as magical damage.
 
-## Measurements
-- Adds Settings → Display → Measurements with Squares, Yards, Meters, and Feet switch-style choices; Squares is the default.
-- Uses one conversion authority: 1 square = 1 yard = 1 meter = 3 feet, rounded up to whole displayed units.
-- Removes the space in bracketed distance notation (`[2] squares` → `[2]squares`, or the selected converted unit).
+## Character Roster & Level Up
+- Renames the visible Character List to `Character Roster` and updates related navigation/back labels.
+- Keeps Create, Import, and Export on the left of the Roster action bar and moves Filter to the right.
+- Adds Level Up currency management using Threadpiece denominations.
+- Adds a simple persistent Treasure list to Level Up as the first-pass treasure placeholder.
+- Adds Equipment & Gear purchasing to Level Up using the current catalog cost, choices, Might requirements, and saved equipment model.
+- Adds a persisted post-creation currency ledger so currency earned after creation survives normalization/reload and is included in available wealth.
+- Shows acquired Treasure on expanded Character Roster entries.
 
-## Game Rules
-- Adds Heart = Bravery Rank.
-- Adds Inspiration = Bravery modifier.
-- Renames the former Might-based Power secondary stat to Fury = Might Rank; Fury adds physical damage where called for.
-- Adds Lore Power = Lore Rank; Power adds spell damage where called for.
-- Replaces Starting Mana with Mana Pool = Magic Level + Inspiration.
-- Mana restored at the start of each round = Heart; other rules can still restore additional Mana.
-- Adds a versioned Game Updates page documenting game-mechanics amendments. Its link appears beneath the Brambleheart logo, not in primary navigation, and is also available from Settings → Changelog & Updates.
+## Character Creation & Economy
+- Reorders Distribute Attributes secondary stats so Rank-based stats appear first, modifier-based stats second, and Speed third under Agility.
+- Displays Speed as `2 + Agility modifier`, including the visible `2+` calculation in the Attribute step.
+- Raises starting currency from `2 sp` to `30 sp`.
+- Raises the Adventure Kit sale value from `1 sp` to `2 sp`.
+- Keeps the Beta 0.33 50% Equipment & Gear price reduction and now rounds fractional discounted Threadpieces down to the nearest whole Threadpiece.
+- Standardizes visible currency initials to lowercase (`wp`, `np`, `sp`, `bp`) and uses shared exchange-rate formatting for displayed prices.
 
-## Character Creation
-- Reduces the normal text size of Step 5 Speed, Aim, Rank, Modifier, and matching secondary-stat labels by one step.
-- Ensures Talent display names use consistent capitalization.
-- Makes Spirit Flare require Threadseer.
-- Reduces all Equipment & Gear purchase costs by 50%, with NP/WP display conversion using the existing Threadpiece exchange rates.
-- Moves the Bonus Language pill above its dropdown and removes the word `Language` from Species-language pills.
-- Removes the artificial spacing/underline treatment after Review Character Name and Campaign labels.
-- Makes Review Spell boxes use the same spell-card structure as Step 10.
-- Displays Review Talents in a single vertical column.
-- Shows Heart, Inspiration, Fury, Lore Power, Mana Pool, and Heart-based round Mana in Review.
+## Rhythm Engine
+- Rebuilds Character Sheet secondary stats under their parent Attributes:
+  - Agility: Aim, Accuracy
+  - Might: Brawl, Fury
+  - Hide: Ward, Guts
+  - Lore: Control, Power
+  - Bravery: Spirit, Heart
+- Places Mana Pool and Speed beneath the Attribute groups.
+- Adds Speed formula detail and Mana Pool/round-restoration detail.
+- Updates Strike selection to use Aim, Brawl, or Control as appropriate.
 
-## Rules Layout Preview
-- Keeps Rule Page Layout Test as its own Rules parent below The Watcher.
-- Keeps Contents at the bottom, no Overview panel, compact title block, colored section headings, and colored tables/charts.
-- Uses the supplied dice artwork for Fundamentals.
-- Centers the Core Roll formula in its own colored formula box.
-- Adds a process-style Conditions example showing two bonuses and one penalty combining into a total.
-- Renames `FORTUNE & MISFORTUNE RESULTS` display heading to `FORTUNE & MISFORTUNE` and adds example dice-result graphics.
-- Separates Active & Passive Targets from Edged & Weighted Rolls and places them below Half-Step Rolls.
-- Uses Threadseer as the Half-Step Talent example.
-- Moves Attributes, Ranks & Modifiers, Skills, Skill Trees, and Expanded & Restricted Skills to their own preview page.
-- Adds previous/next page controls at the bottom of the Fundamentals preview pages.
+## Settings
+- Places Measurements directly below Bold Text.
+- Places Reset Local Settings directly below Measurements.
+- Repairs switch-style radio presentation for Themes, Backgrounds, and Measurements so the control renders as one complete flip switch rather than separated circles.
+- Keeps Squares as the measurement default and the existing square/yard/meter/feet conversion authority.
 
-## Core Abilities & Talents
-- Renames the Rules page `Keyword Abilities` to `Core Abilities`.
-- Moves Spirit Flare, Echo Strike, Steadfast, Sentinel’s Call, Wander Step, Verdant Surge, and Rooted Resolve from Core Abilities into their requested Talent categories.
-- Renames Swift Rush → Swiftstride and Sure Shot → Range Strike across loaded rules/Core Ability references.
-- Updates Melee Strike damage to use Fury and Arcane Command spell damage to include Power.
+## Rule Page Layout Test — Fundamentals
+- Changes the Conditions example to High Ground +1, Fortune +2, and Obscured −1 for a +2 total.
+- Centers Fortune and Misfortune example contents within their cards.
+- Adds Edged and Weighted four-die example graphics showing which die is removed and the kept-dice total.
+- Moves Active & Passive Targets above Half-Step Rolls.
+- Adds an Example column to the passive-target difficulty chart with concise single-line guidance and narrower Difficulty/Target columns.
+- Keeps Threadseer as the Half-Step example and adds a visual die/math process for `[1d10/2+1]`.
+- Retains the existing Core Roll formula box, supplied dice strip, separate Attributes & Skills preview page, bottom page navigation, and bottom Contents section.
 
-## Interface & Release Integrity
-- Reduces the bottom-of-page Brambleheart image from 260px to 65px.
-- Uses Settings detail text: `Site control: Community, display, data, storage, and optional controls.`
-- Keeps primary navigation limited to Character List, Rules, Rhythm Engine, and Settings.
-- Advances release markers to Beta `0.33`, package `0.33.0`, and PWA cache `v0.33`, while preserving Node `22.x`.
+## Release Integrity
+- Advances BUILD and character export version to `0.34`, package version to `0.34.0`, and PWA cache to `v0.34`.
+- Keeps the Node runtime pin at exact `22.x`.
+- Rebuilds the in-app Site Changelog to read the repository `CHANGELOG.md` directly, making the repository changelog the single release-history authority.

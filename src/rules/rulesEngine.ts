@@ -76,23 +76,24 @@ export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBo
   const lore=Number(attributes.lore||0)
   const bravery=Number(attributes.bravery||0)
   return{
-    speed:2+agility,
     aim:rankModifier(agility),
-    mettle:rankModifier(might),
+    accuracy:agility,
+    speed:rankModifier(agility)+2,
+    brawl:rankModifier(might),
     fury:might,
     ward:rankModifier(hide),
     guts:hide+Math.max(0,Number(gutsBonus)||0),
     control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),
     power:lore,
-    heart:bravery,
-    inspiration:rankModifier(bravery),
+    spirit:bravery,
+    heart:rankModifier(bravery),
   }
 }
 
 export function magicResources(attributes:CoreAttributeRanks,magicLevel=0){
   const stats=derivedStats(attributes)
   const level=Math.max(0,Number(magicLevel)||0)
-  return{manaPool:level+stats.inspiration,manaPerRound:stats.heart}
+  return{manaPool:level+stats.heart,manaPerRound:stats.spirit}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){

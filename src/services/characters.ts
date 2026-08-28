@@ -39,6 +39,10 @@ export interface CharacterRecord {
   startingWealth?:number
   wealthRemaining?:number
   wealthCurrency?:'NP'|'SP'
+  /** Currency earned or granted after character creation, stored in NP for stable accounting. */
+  currencyAddedNp?:number
+  /** Free-form treasure entries acquired after character creation. */
+  treasure?:string[]
   attributes:AttributeRanks
   pinned?:boolean
   /** Manual local safety lock. Approval is tracked separately by status. */
@@ -82,7 +86,8 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
 function normalizedWealthRemaining(record:CharacterRecord,equipment:PurchasedEquipment[]){
   if(!Number.isFinite(Number(record.startingWealth)))return record.wealthRemaining
   const spent=equipment.reduce((sum,item)=>sum+Number(item.costNp??gearCostNp(item.costSp))*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
-  return Math.max(0,Number(record.startingWealth)-spent)
+  const added=Math.max(0,Number(record.currencyAddedNp)||0)
+  return Math.max(0,Number(record.startingWealth)+added-spent)
 }
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record)

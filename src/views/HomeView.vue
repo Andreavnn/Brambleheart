@@ -5,6 +5,7 @@ import AppHeader from '../components/AppHeader.vue'
 import { attributes, BUILD, homelands, sparks } from '../data/bramble'
 import { canonicalTalentName } from '../data/talentCategories'
 import { derivedStats, equipmentControlBonus, equipmentGutsBonus, magicResources } from '../rules/rulesEngine'
+import { formatGearCostNp } from '../rules/threadpieces'
 import { characterExportPayload, characterStatus, downloadJson, loadCharacters, normalizeImportedCharacter, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
 import { CHARACTER_SHARE_URL, consumeCharacterShareFromLocation, createCharacterShareCode, parseCharacterShareValue } from '../services/characterShare'
 
@@ -86,7 +87,7 @@ async function shareCharacterCode(){
   try{
     if(navigator.share){await navigator.share({title:`Brambleheart Character — ${shareName.value}`,text,url:CHARACTER_SHARE_URL});shareMessage.value='Character Share Code sent.';return}
     await writeClipboard(`${text}\n\n${CHARACTER_SHARE_URL}`)
-    shareMessage.value='Share message copied. The link uses the normal Brambleheart Character List URL.'
+    shareMessage.value='Share message copied. The link uses the normal Brambleheart Character Roster URL.'
   }catch(error){if(error instanceof DOMException&&error.name==='AbortError')return;shareMessage.value='Could not share from this browser. Use Copy Share Code instead.'}
 }
 function closeShareDialog(){shareDialogMode.value='closed';pendingSharedCharacter.value=null;shareMessage.value='';shareCodeInput.value=''}
@@ -110,6 +111,7 @@ function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
 function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment),equipmentControlBonus(c.equipment))}
 function characterMagicLevel(c:CharacterRecord){return Number(c.magicLevel??(c.path==='magic'?1:0))}
 function resources(c:CharacterRecord){return magicResources(c.attributes,characterMagicLevel(c))}
+function wealthLabel(c:CharacterRecord){return formatGearCostNp(Number(c.wealthRemaining??c.startingWealth??150))}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${Number(rank)*2}`).join(' · ')
   return character.skills?.length?character.skills.map(name=>`${name}: Rank 1, Mod +2`).join(' · '):homelandSkills(character.homeland)
@@ -122,16 +124,16 @@ onMounted(()=>{const shared=consumeCharacterShareFromLocation();if(shared)void h
     <AppHeader />
 
     <div class="page-title-block">
-      <h1>Character List</h1>
+      <h1>Character Roster</h1>
       <p>Create, import, export, pin, lock, and manage Brambleheart characters stored on this device.</p>
     </div>
 
     <section class="list-launch card-surface character-action-launch">
       <div class="list-launch-actions centered-character-actions combined-character-actions">
-        <button class="secondary-button character-filter-button" type="button" :class="{active:filterOpen}" @click="filterOpen=!filterOpen">Filter</button>
         <RouterLink class="primary-button" to="/characters/create">Create a Character</RouterLink>
         <button class="secondary-button" type="button" @click="openImportDialog">Import Character</button>
         <button class="secondary-button" type="button" :disabled="!characters.length" @click="openExportDialog">Export Character</button>
+        <button class="secondary-button character-filter-button" type="button" :class="{active:filterOpen}" @click="filterOpen=!filterOpen">Filter</button>
         <input ref="fileInput" class="file-import-input" hidden type="file" accept="application/json,.json,.bramble" @change="importCharacter" />
       </div>
       <div v-if="filterOpen" class="character-filter-panel">
@@ -166,13 +168,14 @@ onMounted(()=>{const shared=consumeCharacterShareFromLocation();if(shared)void h
           </div>
           <div v-if="openIds.has(character.id)" class="character-detail-panel">
             <div class="stat-grid character-stat-grid"><div v-for="attribute in attributes" :key="attribute.id" class="character-stat"><strong>{{ character.attributes[attribute.id] }}</strong><span>{{ attribute.name.slice(0,3).toUpperCase() }}</span></div></div>
-            <div class="detail-grid"><div><span>Faith</span><strong>{{ character.faith||'—' }}</strong></div><div><span>Oath</span><strong>{{ character.oath||'—' }}</strong></div><div><span>Skills</span><strong>{{ skillSummary(character) }}</strong></div><div><span>Starting Wealth</span><strong>{{ character.wealthRemaining ?? character.startingWealth ?? 188 }} {{ character.wealthCurrency||'NP' }} Remaining{{ character.adventureKit===false?'':' · Adventure Kit' }}</strong></div></div>
+            <div class="detail-grid"><div><span>Faith</span><strong>{{ character.faith||'—' }}</strong></div><div><span>Oath</span><strong>{{ character.oath||'—' }}</strong></div><div><span>Skills</span><strong>{{ skillSummary(character) }}</strong></div><div><span>Threadpieces</span><strong>{{ wealthLabel(character) }} Remaining{{ character.adventureKit===false?'':' · Adventure Kit' }}</strong></div></div>
             <div v-if="character.cultureTraits?.length" class="info-card"><strong>Culture Traits</strong><p>{{ character.cultureTraits.join(' · ') }}</p></div>
             <div v-if="character.languages?.length" class="info-card"><strong>Languages</strong><p>{{ character.languages.join(' · ') }}</p></div>
-            <div class="info-card character-derived"><strong>Derived Values</strong><p>Speed {{ derived(character).speed }} · Aim {{ derived(character).aim }} · Mettle {{ derived(character).mettle }} · Fury {{ derived(character).fury }} · Ward {{ derived(character).ward }} · Guts {{ derived(character).guts }} · Control {{ derived(character).control }} · Power {{ derived(character).power }} · Heart {{ derived(character).heart }} · Inspiration {{ derived(character).inspiration }} · Mana Pool {{ resources(character).manaPool }} · +{{ resources(character).manaPerRound }} Mana/round.</p></div>
+            <div class="info-card character-derived"><strong>Derived Values</strong><p>Aim {{ derived(character).aim }} · Accuracy {{ derived(character).accuracy }} · Speed {{ derived(character).speed }} · Brawl {{ derived(character).brawl }} · Fury {{ derived(character).fury }} · Ward {{ derived(character).ward }} · Guts {{ derived(character).guts }} · Control {{ derived(character).control }} · Power {{ derived(character).power }} · Spirit {{ derived(character).spirit }} · Heart {{ derived(character).heart }} · Mana Pool {{ resources(character).manaPool }} · +{{ resources(character).manaPerRound }} Mana/round.</p></div>
             <div v-if="character.talents?.length" class="info-card"><strong>Talents{{ character.loreAttunement?` · ${character.loreAttunement} Attunement`:'' }}</strong><p>{{ character.talents.map(canonicalTalentName).join(' · ') }}</p></div>
             <div v-if="character.spells?.length || character.invocationSpells?.length || character.invocationSpell" class="info-card"><strong>Magic</strong><p><template v-if="character.spells?.length">Spells: {{ character.spells.join(' · ') }}</template><template v-if="character.invocationSpells?.length"> · Invocations: {{ character.invocationSpells.join(' · ') }}</template><template v-else-if="character.invocationSpell"> · Invocation: {{ character.invocationSpell }}</template></p></div>
             <div v-if="character.equipment?.length" class="info-card"><strong>Purchased Equipment</strong><p>{{ character.equipment.map(item=>item.name).join(' · ') }}</p></div>
+            <div v-if="character.treasure?.length" class="info-card"><strong>Treasure</strong><p>{{ character.treasure.join(' · ') }}</p></div>
             <div class="button-row end"><button class="secondary-button" type="button" @click="downloadCharacter(character)">Export JSON</button><button class="secondary-button" type="button" @click="openCharacterShare(character)">Share Code</button><button class="secondary-button" type="button" @click="toggleCharacterLock(character.id)">{{ character.locked?'Unlock Character':'Lock Character' }}</button><button v-if="characterStatus(character)!=='incomplete'" class="secondary-button" type="button" @click="setApproval(character.id,characterStatus(character)!=='approved')">{{ characterStatus(character)==='approved'?'Remove Approval':'Approve Character' }}</button><button class="secondary-button" type="button" @click="togglePin(character.id)">{{ character.pinned?'Unpin':'Pin to Top' }}</button><button class="danger-button" type="button" :disabled="character.locked||characterStatus(character)==='approved'" @click="removeCharacter(character.id)">Delete</button></div>
           </div>
         </article>
@@ -215,7 +218,7 @@ onMounted(()=>{const shared=consumeCharacterShareFromLocation();if(shared)void h
   </main>
 </template>
 <style scoped>
-.combined-character-actions{justify-content:center}.character-filter-button{margin-right:auto}.character-filter-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr) auto;gap:8px;align-items:end;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.combined-character-actions{justify-content:flex-start}.character-filter-button{margin-left:auto}.character-filter-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr) auto;gap:8px;align-items:end;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
 .olddex-share-dialog{width:min(620px,calc(100% - 24px));padding:16px}.share-code-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.share-code-heading h2{margin:2px 0 0}.share-close-button{border-radius:999px}.share-code-summary-box{display:grid;gap:4px;margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper-2)}.share-code-summary-box small{font-weight:900;letter-spacing:.05em}.share-code-summary-box strong,.share-code-summary-box code{overflow-wrap:anywhere}.share-code-summary-box span{color:var(--ink-soft);font-size:calc(9px + var(--font-offset))}.full-share-code{margin-top:10px;border:1px solid var(--line);border-radius:8px}.full-share-code summary{padding:9px 10px;cursor:pointer;font-weight:850}.full-share-code .share-code-field{width:calc(100% - 20px);min-height:130px;margin:0 10px 10px}.share-code-copy-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px}.transfer-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.transfer-choice{min-height:112px}.transfer-choice strong,.transfer-choice small{display:block}.transfer-choice small{margin-top:5px;color:var(--ink-soft)}.paste-code-choice,.export-one-choice{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--paper-2)}.paste-code-choice .share-code-field{min-height:96px}.export-one-choice .button-row{justify-content:flex-start}.share-code-help{line-height:1.5}.share-code-message{color:var(--ink-soft)}
 @media(max-width:680px){.combined-character-actions{display:grid!important;grid-template-columns:1fr 1fr}.combined-character-actions>*{width:100%;margin:0}.character-filter-panel,.transfer-choice-grid{grid-template-columns:1fr}.olddex-share-dialog{width:100%;max-height:92vh;overflow:auto;border-radius:14px 14px 0 0}.share-code-backdrop{align-items:flex-end}}
 </style>

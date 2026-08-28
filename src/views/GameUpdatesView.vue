@@ -5,10 +5,10 @@ import { GAME_RULES_VERSION, gameUpdates } from '../data/gameUpdates'
 
 <template>
   <main class="page game-updates-page">
-    <AppHeader compact back-to="/characters" back-label="Back to Character List" />
+    <AppHeader compact back-to="/characters" back-label="Back to Character Roster" />
     <div class="page-title-block">
       <p class="eyebrow">GAME RULES</p>
-      <h1>Game Updates</h1>
+      <h1>Rule Updates</h1>
       <p>Rules changes to Brambleheart itself. Site-interface and companion changes remain in the Site Changelog.</p>
     </div>
     <section class="game-update-current card-surface">

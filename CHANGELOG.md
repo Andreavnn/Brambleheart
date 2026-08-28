@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.34
+
+- Separates the application release (`Beta 0.34`) from Brambleheart Rule Updates and starts the rules-update stream at `v0.01`, linked beneath the site logo rather than added to primary navigation.
+- Corrects the shared secondary-stat model to Aim/Accuracy/Speed, Brawl/Fury, Ward/Guts, Control/Power, and Spirit/Heart; Mana Pool now uses Magic Level + Heart and start-of-round restoration uses Spirit.
+- Renames Character List to Character Roster, keeps Create/Import/Export at the left of the action bar, and moves Filter to the right.
+- Expands approved-character Level Up with post-creation Threadpiece rewards, a persistent Treasure placeholder list, and Equipment & Gear purchasing using the existing catalog and wealth authority.
+- Raises new-character starting currency to 30 sp and the Adventure Kit sale value to 2 sp; visible currency initials are lowercase and discounted fractional Threadpieces round down.
+- Reorganizes Character Creation secondary stats with Rank-based values first, modifier-based values second, and Speed third under Agility with its 2 + modifier calculation.
+- Rebuilds Rhythm Engine Character Sheet derived statistics beneath their parent Attributes and places Mana Pool and Speed below the Attribute groups with formula detail.
+- Moves Measurements below Bold Text and Reset Local Settings below Measurements, and repairs Theme/Background/Measurement flip-switch presentation.
+- Expands the isolated Fundamentals layout test with revised Conditions, centered Fortune/Misfortune cards, Edged/Weighted roll examples, Active/Passive target guidance, and Half-Step die/math presentation.
+- Makes repository CHANGELOG.md the authority used by the in-app Site Changelog and synchronizes BUILD/export 0.34, package 0.34.0, PWA cache v0.34, and Node 22.x.
+
 # Brambleheart Beta 0.33
 
 - Replaces active QR character transfer with compressed Share Codes, consolidates import/export workflows, adds Character filtering, and rebuilds the Share Code popup around the supplied Old.dex presentation.

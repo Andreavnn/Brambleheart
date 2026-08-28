@@ -1,4 +1,4 @@
-export const GAME_RULES_VERSION='0.33'
+export const GAME_RULES_VERSION='0.01'
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
@@ -6,16 +6,16 @@ export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
     date:'2026-08-27',
-    title:'Bravery, Mana, and Damage Statistics',
-    summary:'Adds Heart and Inspiration, rebuilds Mana around Bravery, and separates physical Fury from magical Power.',
+    title:'Secondary Statistic Formula Clarification',
+    summary:'Clarifies the shared secondary-stat formulas, physical and magical damage statistics, and Bravery-based Mana rules used throughout Brambleheart.',
     changes:[
-      'Bravery now provides Heart equal to Bravery Rank and Inspiration equal to the Bravery modifier.',
-      'Mana Pool equals Magic Level + Inspiration.',
-      'At the start of each round, a character restores Mana equal to Heart. Other rules may restore additional Mana during a turn or round.',
-      'The former Might-based Power statistic is renamed Fury. Fury equals Might Rank and adds to physical damage where the damage rule calls for it.',
-      'Power is now a Lore secondary statistic. Power equals Lore Rank and adds to spell damage where the damage rule calls for it.',
-      'Measurement display can be changed between Squares, Yards, Meters, and Feet without changing the underlying square-based rules.',
-      'Equipment and gear purchase costs are reduced by 50%, using the existing Threadpiece exchange rates for display and accounting.',
+      'Aim equals the Agility modifier and is used to hit with ranged attacks. Speed equals the Agility modifier +2.',
+      'Brawl equals the Might modifier and is used to hit with melee attacks. Fury equals Might Rank and adds to melee damage where a rule calls for it.',
+      'Ward equals the Hide modifier and is used to defend against attacks. Guts equals Hide Rank, plus applicable equipment bonuses, and reduces incoming damage where a rule calls for it.',
+      'Control equals the Lore modifier, plus applicable equipment bonuses, and is used to hit with magical attacks. Power equals Lore Rank and adds to magical damage where a rule calls for it.',
+      'Spirit equals Bravery Rank and determines Mana restored at the start of each round. Heart equals the Bravery modifier and adds to Mana Pool.',
+      'Mana Pool equals Magic Level + Heart. At the start of each round, restore Mana equal to Spirit; Talents, Abilities, equipment, and other rules may restore additional Mana.',
+      'Equipment and gear purchase costs are reduced by 50 percent. When a reduced price would create a fractional Threadpiece, the price rounds down to the nearest whole Threadpiece.',
     ],
   },
 ]

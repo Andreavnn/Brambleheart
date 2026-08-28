@@ -1,34 +1,50 @@
-# Brambleheart TTRPG — Beta 0.33
+# Brambleheart TTRPG — Beta 0.34
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.33 is a cumulative rules/interface patch. It replaces QR character transfer with Share Codes, refines the Rules layout-test pages, updates Core Abilities/Talents, adds measurement display preferences, revises Bravery/Mana/damage secondary statistics, reduces gear prices, and refines Character Creation review/transfer presentation.
+Beta 0.34 is a cumulative rules/interface release built on Beta 0.33. It clarifies the secondary-stat system, introduces Rule Updates versioning independent from site builds, expands post-creation character management, refines Threadpiece economy handling, repairs Settings switches, and develops the isolated Fundamentals layout test further.
 
 ## Main views
 
 - Welcome / Splash
-- Character List
+- Character Roster
 - Guided Character Creation
 - Character Level Up
 - Rules / Rule Reader
 - Rule Page Layout Preview (test route)
 - Rhythm Engine — Character Sheet and Dice Roller
-- Game Updates (small link beneath the Brambleheart logo; not a primary-navigation item)
+- Rule Updates (small centered link beneath the Brambleheart logo; not a primary-navigation item)
 - Settings
 - Site Changelog
 
-## Beta 0.33 focus
+## Current rules-update version
 
-- Character transfer uses compressed Share Codes rather than QR generation/scanning. Legacy long `#bhc=` links remain import-compatible and are cleaned immediately after capture.
-- Character List combines file/Share Code import and file/Share Code export into unified controls, retains the QR-shaped per-character Share Code shortcut, adds filtering, and uses the Old.dex-style compact Share Code dialog.
-- Measurements can display square-based rules as Squares, Yards, Meters, or Feet. The underlying rule remains square-based: 1 square = 1 yard = 1 meter = 3 feet.
-- Bravery now provides Heart (Bravery Rank) and Inspiration (Bravery modifier). Mana Pool = Magic Level + Inspiration, while Mana restored at the start of each round = Heart.
-- Might Power is renamed Fury (Might Rank) for physical damage. Lore gains Power (Lore Rank) for spell damage.
-- All Equipment & Gear purchase prices are reduced by 50%, preserving Threadpiece conversion: 10 WP = 1 NP, 5 NP = 1 SP, 5 SP = 1 BP.
-- Spirit Flare requires Threadseer; Talent names are normalized for capitalization.
-- Character Creation refines Attribute labels, Bonus Language layout, Review identity spacing, Spell presentation, and one-column Talent presentation.
-- The Fundamentals layout test adds roll/Condition/Fortune examples, separates Active & Passive Targets, demonstrates Half-Step with Threadseer, and moves Attributes & Skills to a dedicated preview page with page navigation.
-- Game-rule amendments are listed on Game Updates. Site/interface history remains in Site Changelog.
+Rule Updates are versioned independently from the application build. Beta 0.34 uses **Rule Updates v0.01**.
+
+Current shared secondary statistics are:
+
+- Agility: Aim = modifier; Accuracy = Rank; Speed = modifier +2.
+- Might: Brawl = modifier; Fury = Rank.
+- Hide: Ward = modifier; Guts = Rank plus applicable equipment bonuses.
+- Lore: Control = modifier plus applicable equipment bonuses; Power = Rank.
+- Bravery: Spirit = Rank; Heart = modifier.
+- Mana Pool = Magic Level + Heart; Mana restored at the start of each round = Spirit.
+
+## Beta 0.34 focus
+
+- Character List is renamed Character Roster. Create/Import/Export remain grouped at left and Filter moves to the right.
+- Level Up can now record earned Threadpieces, maintain a simple Treasure list, and purchase Equipment & Gear.
+- New characters begin with 30 sp and may sell the Adventure Kit for 2 sp.
+- Equipment & Gear retains the 50% cost reduction from Beta 0.33. Fractional discounted Threadpieces round down, and visible currency initials use lowercase `wp`, `np`, `sp`, and `bp`.
+- Rhythm Engine Character Sheet groups secondary stats by their parent Attribute and presents Mana Pool and Speed below those groups.
+- Settings places Measurements below Bold Text and Reset Local Settings below Measurements; switch-style radio presentation is repaired for Theme, Background, and Measurement choices.
+- The Fundamentals layout test adds revised Conditions, Edged/Weighted examples, expanded target guidance, and a Half-Step die/math graphic.
+- Character transfer remains Share Code based; QR generation/scanning remains removed.
+- The in-app Site Changelog is generated from `CHANGELOG.md`, keeping one release-history authority.
+
+## Measurements
+
+The game remains square-based. Display can be changed in Settings to Squares, Yards, Meters, or Feet using one conversion authority: 1 square = 1 yard = 1 meter = 3 feet. Converted values round up to whole displayed units.
 
 ## Dropbox deployment configuration
 

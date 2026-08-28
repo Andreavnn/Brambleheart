@@ -23,7 +23,7 @@ const {measurement}=useSettings()
     </details>
   </Teleport>
   <Teleport defer to=".settings-page .settings-group[aria-label='Changelog and updates'] .settings-card">
-    <div class="setting-row static-row game-updates-setting-row"><span><strong>Game Updates - Rules {{ GAME_RULES_VERSION }}</strong><small>Review changes to Brambleheart game rules. Site and interface changes remain in the Site Changelog.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/game-updates')">Open</button></div>
+    <div class="setting-row static-row game-updates-setting-row"><span><strong>Rule Updates v{{ GAME_RULES_VERSION }}</strong><small>Review Brambleheart rules changes. Site and interface changes remain in the Site Changelog.</small></span><button class="secondary-button settings-compact-action" type="button" @click="router.push('/game-updates')">Open</button></div>
   </Teleport>
 </template>
 
@@ -32,4 +32,17 @@ const {measurement}=useSettings()
 .measurement-settings-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;cursor:pointer;list-style:none}
 .measurement-settings-panel>summary::-webkit-details-marker{display:none}.measurement-settings-panel>summary>span:first-child{display:grid;gap:2px}.measurement-settings-panel>summary small{color:var(--ink-soft)}.measurement-option-list{border-top:1px solid var(--line)}
 .game-updates-setting-row{border-top:1px solid var(--line)}
+:deep(.settings-group[aria-label='Display settings']>.settings-card){display:flex;flex-direction:column}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(1)){order:10}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(2)){order:20}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(3)){order:30}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(4)){order:40}
+.measurement-settings-panel{order:50}
+:deep(.settings-group[aria-label='Display settings'] .reset-setting-row){order:60}
+:deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(5)){order:70}
+:deep(.settings-group[aria-label='Display settings'] .theme-settings-panel){order:80}
+:deep(.settings-group[aria-label='Display settings'] .background-settings-panel){order:90}
+:deep(.theme-option-row>input[type='radio'].choice-switch-input),:deep(.background-option-row>input[type='radio'].choice-switch-input),:deep(.measurement-option-row>input[type='radio'].choice-switch-input){-webkit-appearance:none;appearance:none;width:42px;height:24px;min-width:42px;min-height:24px;margin:0;border:0;border-radius:999px;background:radial-gradient(circle at 12px 12px,#fff 0 8.5px,transparent 9px),#cbc5ba;position:relative;display:block;flex:0 0 42px;align-self:center;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.18);cursor:pointer;transition:background .18s}
+:deep(.theme-option-row>input[type='radio'].choice-switch-input:checked),:deep(.background-option-row>input[type='radio'].choice-switch-input:checked),:deep(.measurement-option-row>input[type='radio'].choice-switch-input:checked){background:radial-gradient(circle at 30px 12px,#fff 0 8.5px,transparent 9px),var(--accent-dark)}
+:deep(.theme-option-row>input[type='radio'].choice-switch-input::after),:deep(.background-option-row>input[type='radio'].choice-switch-input::after),:deep(.measurement-option-row>input[type='radio'].choice-switch-input::after){content:none!important;display:none!important}
 </style>

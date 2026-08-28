@@ -1,0 +1,12 @@
+After uploading the repository files in this patch, delete these obsolete repository files:
+
+src/views/RulesViewBeta032.vue
+src/views/RuleLayoutPreviewView.vue
+src/views/ChangelogViewBeta032.vue
+
+Why:
+- src/router.ts points directly to src/views/RulesView.vue, which contains the cumulative Rules landing implementation. RulesViewBeta032.vue is a duplicate with no active route.
+- The isolated layout-preview route uses src/views/RuleLayoutTestView.vue. RuleLayoutPreviewView.vue is superseded and no longer routed.
+- src/router.ts points directly to src/views/ChangelogView.vue. ChangelogViewBeta032.vue is the superseded Beta 0.32/0.33 wrapper and must not remain as a second changelog implementation.
+
+Do not upload this DO NOT UPLOAD folder into the repository.

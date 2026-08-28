@@ -1,16 +1,9 @@
-/* Beta 0.32 patch-level presentation changes. */
+/* Transitional presentation shared by the current Brambleheart release. */
 .page-utility-icon{
   width:min(65px,90%)!important;
 }
 
 .settings-page .page-title-block>p:not(.beta032-settings-detail){
-  display:none;
-}
-
-.changelog-stack>.beta032-changelog-entry{
-  order:-1;
-}
-.changelog-stack>.changelog-entry:not(.beta032-changelog-entry) .value-chip{
   display:none;
 }
 
