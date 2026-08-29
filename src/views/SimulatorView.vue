@@ -8,7 +8,7 @@ import { loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesSource'
 import { canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
-import { armorProfile, derivedStats, equippedProtectiveGear, equipmentControlBonus, equipmentGutsBonus, equipmentManaSyphon, equipmentSpellManaReduction, magicResources, normalizeSkillName, rankModifier, rhythmResult, structuredRule, visibleRuleFields, weaponProfile } from '../rules/rulesEngine'
+import { armorProfile, characterSheetWeaponProfile, derivedStats, equippedProtectiveGear, equipmentControlBonus, equipmentGutsBonus, equipmentManaSyphon, equipmentSpellManaReduction, magicResources, normalizeSkillName, rankModifier, rhythmResult, structuredRule, visibleRuleFields } from '../rules/rulesEngine'
 import { resolveSpellManaCost, spellCostLabel } from '../rules/magicRules'
 import { canonicalGearCostWp } from '../rules/economy'
 import { formatThreadpieceWp } from '../rules/threadpieces'
@@ -115,7 +115,7 @@ const selectedSkills=computed(()=>{const c=selectedCharacter.value;if(!c)return[
 const weapons=computed(()=>selectedCharacter.value?.equipment?.filter(item=>item.category==='Weapon')||[])
 const armor=computed(()=>equippedProtectiveGear(selectedCharacter.value?.equipment))
 const otherGear=computed(()=>selectedCharacter.value?.equipment?.filter(item=>!['Weapon','Armor & Shield'].includes(item.category||''))||[])
-const weaponSlots=computed(()=>Array.from({length:Math.max(3,weapons.value.length)},(_,index)=>weaponProfile(weapons.value[index])))
+const weaponSlots=computed(()=>Array.from({length:Math.max(3,weapons.value.length)},(_,index)=>characterSheetWeaponProfile(weapons.value[index],selectedCharacter.value?.equipment)))
 const armorSlots=computed(()=>Array.from({length:Math.max(2,armor.value.length)},(_,index)=>armorProfile(armor.value[index])))
 
 function spellDetail(name:string){const custom=customSpells.find(item=>item.name===name);return custom||spellDetails[name]}
@@ -141,7 +141,7 @@ function spellCostText(name:string){
 }
 const loreCharacterSpells=computed(()=>characterSpells.value.filter(name=>!selectedCharacter.value?.invocationSpells?.includes(name)&&name!==selectedCharacter.value?.invocationSpell).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
 const invocationCharacterSpells=computed(()=>characterSpells.value.filter(name=>selectedCharacter.value?.invocationSpells?.includes(name)||name===selectedCharacter.value?.invocationSpell).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
-const selectedPathName=computed(()=>selectedCharacter.value?.path==='magic'?'Wind-Touched':'Gifted Heart')
+const selectedPathName=computed(()=>({magic:'Wind-Touched',talents:'Gifted Heart',skills:'Practiced Hand',attribute:'Tempered Form'} as const)[selectedCharacter.value?.path||'magic']||'Gifted Heart')
 </script>
 
 <template>

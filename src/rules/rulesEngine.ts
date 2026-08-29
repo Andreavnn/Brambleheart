@@ -40,6 +40,10 @@ export type EquipmentProfileSource = {
   name:string
   detail?:string
 }
+export type CharacterSheetEquipmentSource=EquipmentProfileSource&{
+  attachedTo?:string
+  category?:string
+}
 
 export function rankModifier(rank:number){return Number(rank||0)*2}
 export function normalizeSkillName(name:string){return String(name||'').replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()}
@@ -129,6 +133,25 @@ export function weaponProfile(item:EquipmentProfileSource|undefined){
   const properties=propertyParts.join(', ')||'—'
   const range=properties.match(/(?:Projectile|Reach)\s*\(([^)]+)\)/i)?.[1]||'Touch'
   return{name:item.name,damage:labeledProfileValue(item.detail||'','Damage'),range:formatMeasurementText(range),properties:formatMeasurementText(properties),weight:labeledProfileValue(item.detail||'','Weight')}
+}
+
+function addWeaponDamageBonus(value:string,bonus:number){
+  if(!bonus||value==='—')return value
+  let applied=false
+  return value.replace(/\d+(?:\.\d+)?/,match=>{if(applied)return match;applied=true;return String(Number(match)+bonus)})
+}
+export function characterSheetWeaponName(name:string){return String(name||'').replace(/\s+\([^()]+\)\s*$/,'').trim()||'—'}
+const CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS:Readonly<Record<string,number>>={
+  'Journey Knot':1,
+  'Sharpening Stone':1,
+}
+export function characterSheetWeaponProfile(item:CharacterSheetEquipmentSource|undefined,equipment:CharacterSheetEquipmentSource[]|undefined=[]){
+  const base=weaponProfile(item)
+  if(!item)return base
+  const attachedDamageSources=(equipment||[]).filter(candidate=>candidate.attachedTo===item.name&&CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[candidate.name])
+  const damageBonus=attachedDamageSources.reduce((sum,candidate)=>sum+CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[candidate.name],0)
+  const properties=[base.properties==='—'?'':base.properties,...attachedDamageSources.map(candidate=>candidate.name)].filter(Boolean).join(', ')||'—'
+  return{...base,name:characterSheetWeaponName(base.name),damage:addWeaponDamageBonus(base.damage,damageBonus),properties}
 }
 
 export function armorProfile(item:EquipmentProfileSource|undefined){

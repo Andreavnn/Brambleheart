@@ -50,7 +50,10 @@ export interface CharacterRecord {
   skillRanks?:Record<string,number>
   faith:string
   oath:string
-  path:'magic'|'talents'
+  path:'magic'|'talents'|'skills'|'attribute'
+  /** Creation-only bonus selections for the nonmagical Body & Spirit paths. */
+  pathSkills?:string[]
+  pathAttributeBonus?:AttributeId
   talents?:string[]
   loreAttunement?:string
   spells?:string[]

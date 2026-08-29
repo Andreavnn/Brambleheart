@@ -1,12 +1,27 @@
-# Brambleheart TTRPG — Beta 0.37
+# Brambleheart TTRPG — Beta 0.38
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.37 is a cumulative action-economy, Talent, and magic-framework release built on GitHub `main` commit `093cbf928eb3dabb4fd20769bc5b886198e497b7` (Beta 0.36.0).
+Beta 0.38 is a cumulative character-creation, character-sheet, Threadpiece-display, and rules-presentation release built on GitHub `main` commit `af7c20c075409385c255478aa7b1ba9a71f7757e` (Beta 0.37.0).
 
-## Rule Updates v0.03
+## Rule Updates v0.04
 
 Rule Updates are versioned independently from application builds.
+
+### Rhythm of Body & Spirit
+
+Character Creation now offers four starting paths, each granting at least one Talent:
+
+- Wind-Touched — Magic Level 1 + 1 Talent.
+- Gifted Heart — 2 Talents.
+- Practiced Hand — 2 new Skills at Rank 1 + 1 Talent.
+- Tempered Form — +1 Rank to one Attribute + 1 Talent, up to the normal Rank 3 creation maximum.
+
+Practiced Hand cannot choose Skills the character already knows. The selected path and its Skill/Attribute choices are persisted with the character.
+
+### Character-sheet consistency
+
+Character-sheet weapon names hide trailing parenthetical catalog identifiers while purchase surfaces retain them. External equipment effects such as Journey Knot and Sharpening Stone can modify the displayed weapon Damage value; Attribute and secondary-stat damage bonuses are not folded into the weapon profile. Threadpiece balances display exact normalized BP/SP/NP/WP remainders without denomination rounding.
 
 ### Ability economy
 

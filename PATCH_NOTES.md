@@ -1,53 +1,45 @@
-# Brambleheart Beta 0.37 Patch Notes
+# Brambleheart Beta 0.38 Patch Notes
 
-Baseline: GitHub `main` commit `093cbf928eb3dabb4fd20769bc5b886198e497b7` (Beta 0.36.0).
+Baseline: GitHub `main` commit `af7c20c075409385c255478aa7b1ba9a71f7757e` (Beta 0.37.0).
 
-## Rule Updates v0.03
-- Rebuilds the encounter action economy around one CORE Instinct, one CORE Move, and one CORE Combat opportunity per round.
-- Moves ROOT off Core Abilities and makes it the stacking limiter for specific Talent families: Instinct, Move, Touch, Shoot, Magic, and Reactive.
-- Standardizes REACTIVE terminology and the rule-card order around COST, TRIGGER, DECLARE, TO HIT / SAVE, EFFECT / DAMAGE, DURATION, RESTRICTIONS, REQUIRES, COOLDOWN, and KEYWORDS.
-- Establishes the Start of Round sequence as CORE Instinct choices, Magic Regen modifiers, Mana restoration, then turns in Initiative Order.
-- Keeps Mana Pool = Magic Level + Spirit and Magic Regen = Heart. Channel the Winds increases Magic Regen rather than generating Mana directly.
+## Rule Updates v0.04 — Rhythm of Body & Spirit
+- Keeps Wind-Touched at Magic Level 1 + 1 Talent.
+- Keeps Gifted Heart at 2 Talents.
+- Adds Practiced Hand: 2 new Skills at Rank 1 + 1 Talent. The Skills must be ones the character does not already know.
+- Adds Tempered Form: +1 Rank to one Attribute + 1 Talent, without exceeding the normal Rank 3 character-creation maximum.
+- Stores the two new path types and their creation-only selections on the canonical CharacterRecord so save, reload, import, review, Level Up, and simulator surfaces can preserve the result.
 
-## Core Abilities
-- Makes Channel the Winds and Focused Will CORE Instinct abilities; Focused Will no longer costs Mana.
-- Makes Stride, Swiftstride, and Hero’s Charge CORE Move abilities.
-- Makes Melee Strike, Range Strike, and Arcane Command the three CORE Combat choices using Touch, Shoot, and Magic respectively.
-- Makes Renew the Heart Passive.
-- Corrects Melee Strike to use Brawl for TO HIT and weapon damage + Fury; Range Strike uses Aim and weapon damage + Accuracy.
-- Reduces Arcane Command to the casting entry point; individual Spell Details own targeting and resolution.
+## Heritage & Cultural Traits
+- Moves action/type pills to the bottom keyword row on Heritage and Cultural Trait cards.
+- Leaves only applicable Mana cost in the upper-right title area.
+- Applies the same structure in Species rules, Character Creation, selected Culture Traits, and the Culture Trait picker.
 
-## Talents
-- Reconstructs the Talent catalog so attack-style Talents modify Core Abilities rather than duplicating complete attack procedures.
-- Renames Fang Break to Cleave and rebuilds Cleave → Wildchain → Warpath as a fixed four-target maximum chain under one Melee Strike.
-- Treats Beastgrasp as the canonical replacement for Primate Grip and updates Titan’s Wake accordingly.
-- Repairs malformed/self-referential Talent requirements and normalizes Talent triggers, restrictions, and keywords.
-- Leaves Rooted Paws intentionally unchanged pending the dedicated Grapple/Touch decision.
+## Character Sheet Weapons
+- Hides trailing parenthetical catalog identifiers such as `(Mace)` on character-sheet weapon names only. Purchase menus and equipment data retain the full names.
+- Centralizes character-sheet weapon-profile calculation in the rules engine.
+- Applies external weapon-damage modifiers such as Journey Knot and Sharpening Stone to the displayed weapon Damage value without adding Fury, Accuracy, Attributes, or other secondary statistics.
 
-## Magic Levels & Known Spells
-- Tracks known Lore Spells and Invocations directly from Magic Level.
-- Magic Level 1 begins with 2 Lore Spells and 2 Invocations, plus a separate Signature Spell.
-- Every new Magic Level grants 1 Lore Spell, except Magic Level 5 grants 2; Magic Levels 3, 5, 7, and 9 each grant 1 Invocation.
-- Magic Level 10 therefore allows 12 chosen Lore Spells and 6 Invocations, plus the Signature Spell.
-- Level Up exposes unclaimed known-spell choices for existing characters without fabricating migration choices.
+## Threadpieces
+- Adds one shared exact Threadpiece breakdown/formatter using whole `wp` as the authority.
+- Displays every nonzero normalized remainder in BP → SP → NP → WP order instead of collapsing or rounding a mixed balance.
+- Uses the shared formatter on Character Roster and Level Up currency displays and removes the duplicate Character Creation balance formatter.
 
-## Spell Framework
-- Keeps Lore Attunement at -2 Mana and sets ordinary spell cost to a minimum final value of 1 Mana.
-- Signature Spells are hard-free triggered effects and display `Signature` rather than `0 Mana`.
-- Explicit zero-cost Invocation utility spells display `Cantrip`.
-- Replaces AUGMENT with ENHANCE, removes redundant spell ROOT/ANCHOR action limiting, and standardizes TO HIT as the attack-resolution field heading.
-- Power is applied only when the individual spell explicitly calls for it.
-- Only one Arcane Focus is active at a time; focus Control and spell-cost reductions do not stack across multiple owned foci.
-- This release does not perform the later spell-by-spell numerical damage, Mana-cost, healing, area, or Empower rebalance.
+## Ability & Attribute Presentation
+- Locks semantic ability colors so Touch, Shoot, Magic, Instinct, Move, Reactive, and Passive are not recolored by themes or dark mode.
+- Makes Core Ability cards align to their own content height rather than stretching to neighboring cards.
+- Adds restrained left-border colors for Agility, Might, Hide, Lore, and Bravery, plus distinct Mana resource borders.
 
-## Presentation
-- Adds consistent action-family color coding: Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
-- Keeps CORE, ROOT, and COMBAT visually neutral as structural keywords.
+## Rules Layout Test
+- Adds a new Abilities preview page immediately after Attributes & Skills.
+- Explains the four active ability families plus Passive and the one CORE Instinct / Move / Combat round structure.
+- Renders the actual shared Core Ability list instead of maintaining a second test-only list.
 
-## Deferred Follow-ups
-- Individual spell numerical balance.
-- Final high-end armor Speed penalties and their interaction with Ironhide.
-- Rooted Paws / Grapple resolution.
+## Repository Cleanup Audit (deferred)
+The earlier repository audit identified `src/data/beta032Content.ts`, `src/data/rulesCurrent.ts`, `src/styles.beta032.css`, `src/views/SettingsViewBeta032.vue`, accumulated late overrides in `src/styles.css`, and the duplicate Blightbound Horror background assets as cleanup candidates. This release does not mix that architectural cleanup into the requested UI/creation changes.
 
 ## Release Integrity
-- Advances BUILD/export to `0.37`, package version to `0.37.0`, PWA cache to `v0.37`, and Rule Updates to `v0.03`.
+- BUILD/export: `0.38`
+- package version: `0.38.0`
+- PWA cache: `v0.38`
+- Rule Updates: `v0.04`
+- Repository and in-app Site Changelog share `CHANGELOG.md` as the authority.

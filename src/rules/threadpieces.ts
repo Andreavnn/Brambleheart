@@ -18,6 +18,20 @@ export function threadpieceValueToWp(amount:number,unit:string){
   }
 }
 
+export function threadpieceBreakdownFromWp(value:number){
+  let remainder=wholeWp(value)
+  const bp=Math.floor(remainder/WP_PER_BP);remainder%=WP_PER_BP
+  const sp=Math.floor(remainder/WP_PER_SP);remainder%=WP_PER_SP
+  const np=Math.floor(remainder/WP_PER_NP);const wp=remainder%WP_PER_NP
+  return{bp,sp,np,wp}
+}
+
+export function formatThreadpieceBalance(value:number){
+  const balance=threadpieceBreakdownFromWp(value)
+  const parts=[balance.bp?`${balance.bp} bp`:'',balance.sp?`${balance.sp} sp`:'',balance.np?`${balance.np} np`:'',balance.wp?`${balance.wp} wp`:''].filter(Boolean)
+  return parts.join(' · ')||'0 wp'
+}
+
 export function formatThreadpieceWp(value:number){
   const wp=wholeWp(value)
   if(wp>=WP_PER_BP&&wp%WP_PER_BP===0)return`${wp/WP_PER_BP} bp`

@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.38
+
+- Expands Rhythm of Body & Spirit to four starting paths: Wind-Touched (Magic Level 1 + 1 Talent), Gifted Heart (2 Talents), Practiced Hand (2 new Skills + 1 Talent), and Tempered Form (+1 Attribute Rank + 1 Talent, capped at Rank 3 during creation).
+- Persists the two new path types and their Skill/Attribute selections so saved and imported characters retain the correct creation result.
+- Standardizes Heritage and Cultural Trait cards so action/type pills sit in the footer while only applicable Mana cost remains in the upper-right.
+- Makes Touch, Shoot, Magic, Instinct, Move, Reactive, and Passive pill colors semantic and independent of themes or dark mode.
+- Makes neighboring Core Ability boxes size independently rather than stretching to the tallest card in the row.
+- Hides parenthetical weapon identifiers on character-sheet weapon profiles while keeping full catalog names in purchase and equipment-management surfaces.
+- Centralizes character-sheet weapon damage modifiers from external gear effects such as Journey Knot and Sharpening Stone without adding Attribute or secondary-stat damage.
+- Replaces lossy Threadpiece display with exact normalized BP/SP/NP/WP remainder formatting across character and Level Up balances.
+- Adds an Abilities page to the Rules Layout Test immediately after Attributes & Skills, using the shared Core Ability authority rather than a duplicate list.
+- Adds restrained Attribute-family color to character-sheet left borders and keeps the same hierarchy for Mana resource boxes.
+- Advances BUILD/export to 0.38, package version to 0.38.0, PWA cache to v0.38, Rule Updates to v0.04, and synchronizes README, patch notes, repository changelog, and in-app changelog.
+
 # Brambleheart Beta 0.37
 
 - Rebuilds the encounter action economy around one CORE Instinct, one CORE Move, and one CORE Combat opportunity per round; ROOT now limits advanced Talent stacking by specific family rather than Core actions.

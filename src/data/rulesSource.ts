@@ -1317,11 +1317,19 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Magic Level [1] and [1] Talent, or"
+            "text": "WIND-TOUCHED: Gain Magic Level [1] and [1] Talent."
           },
           {
             "type": "paragraph",
-            "text": "[2] Talents of your choice"
+            "text": "GIFTED HEART: Gain [2] Talents of your choice."
+          },
+          {
+            "type": "paragraph",
+            "text": "PRACTICED HAND: Gain [2] new Skills of your choice at Rank [1] and [1] Talent. These must be Skills your character does not already know."
+          },
+          {
+            "type": "paragraph",
+            "text": "TEMPERED FORM: Increase [1] Attribute by [1] Rank, up to the normal character creation maximum of Rank [3], and gain [1] Talent."
           },
           {
             "type": "paragraph",

@@ -1,10 +1,23 @@
-export const GAME_RULES_VERSION='0.03'
+export const GAME_RULES_VERSION='0.04'
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-08-29',
+    title:'Rhythm of Body & Spirit Expansion',
+    summary:'Expands character creation from two Body & Spirit paths to four while preserving the normal Rank 3 creation cap and giving every path at least one Talent.',
+    changes:[
+      'Wind-Touched remains Magic Level 1 plus 1 Talent.',
+      'Gifted Heart remains 2 Talents.',
+      'Practiced Hand grants 2 new Skills at Rank 1 plus 1 Talent; both Skills must be ones the character does not already know.',
+      'Tempered Form grants +1 Rank to one Attribute plus 1 Talent, without exceeding the normal Rank 3 character-creation maximum.',
+      'The four creation paths are persisted as canonical character path values so saved, imported, reviewed, and simulated characters retain the selected path correctly.',
+    ],
+  },
+  {
+    version:'0.03',
     date:'2026-08-29',
     title:'Ability Economy, Talents & Magic Framework',
     summary:'Rebuilds Brambleheart’s Core action economy, Talent structure, Magic Level known-spell progression, spell-cost presentation, Arcane Focus authority, and shared rules grammar without performing the later spell-by-spell numerical rebalance.',

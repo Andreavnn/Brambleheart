@@ -10,7 +10,7 @@ import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/
 import { MAGIC_LEVEL_MAX, isArcaneFocusName, isSignatureSpell, magicSpellAllowance } from '../rules/magicRules'
 import { advancementCost } from '../rules/rulesEngine'
 import { canonicalGearCostWp, economyGearCatalog, ordinaryGearResaleWp, protectiveGearKind } from '../rules/economy'
-import { formatThreadpieceWp, threadpieceValueToWp, WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
+import { formatThreadpieceBalance, formatThreadpieceWp, threadpieceValueToWp, WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { canonicalTalentName, talentNameMatches } from '../data/talentCategories'
 import { characterStatus, characterWealthWp, loadCharacters, setActiveArcaneFocus, setProtectiveEquipmentEquipped, writeCharacters, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpellItem } from '../services/customData'
@@ -94,7 +94,7 @@ function claimLoreAttunement(){const lore=newLoreAttunement.value;if(!lore||!cha
 function claimLoreSpell(){const spell=newLoreSpell.value;if(!spell||loreClaimsRemaining.value<1)return;if(!commit(draft=>{draft.spells=Array.from(new Set([...(draft.spells||[]),spell]))}))return;newLoreSpell.value='';message.value=`Learned Lore Spell: ${spell}.`}
 function claimInvocationSpell(){const spell=newInvocationSpell.value;if(!spell||invocationClaimsRemaining.value<1)return;if(!commit(draft=>{draft.invocationSpells=Array.from(new Set([...(draft.invocationSpells||[]),...(draft.invocationSpell?[draft.invocationSpell]:[]),spell]));draft.invocationSpell=undefined}))return;newInvocationSpell.value='';message.value=`Learned Invocation: ${spell}.`}
 
-const wealthLabel=computed(()=>formatThreadpieceWp(character.value?characterWealthWp(character.value):0))
+const wealthLabel=computed(()=>formatThreadpieceBalance(character.value?characterWealthWp(character.value):0))
 function addCurrency(){
   const amount=Math.max(0,Math.floor(Number(currencyAmount.value)||0))
   if(!amount){message.value='Enter a whole Threadpiece amount to add.';return}
