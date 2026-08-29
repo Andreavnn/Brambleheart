@@ -82,10 +82,10 @@ export const ruleCategories: RuleCategoryDefinition[] = [
     ],
   },
   {
-    id:'winds-of-magic', title:'Winds of Magic', summary:'Magic Levels, spell slots, Lore Attunement, Spell Rules, Spells, and Lores of Magic.', landing:page('winds-of-magic-overview','Winds of Magic','Browse Magic Levels, Lore Attunement, Spell Rules, Invocations, and the Lores of Magic.'), pages:[
-      page('magical-level','Magical Level','Magic Power, spell slots, and Mana regeneration.',[{document:'winds-of-magic',sections:['MAGIC POWER','SPELL SLOTS']}],undefined,['Magic','Mana']),
+    id:'winds-of-magic', title:'Winds of Magic', summary:'Magic Levels, known spells, Lore Attunement, Spell Rules, Spells, and Lores of Magic.', landing:page('winds-of-magic-overview','Winds of Magic','Browse Magic Levels, Lore Attunement, Spell Rules, Invocations, and the Lores of Magic.'), pages:[
+      page('magical-level','Magic Level','Magic Power, known spells, Mana Pool, and Magic Regen.',[{document:'winds-of-magic',sections:['MAGIC POWER','KNOWN SPELLS']}],undefined,['Magic','Mana']),
       page('lore-attunement','Lore Attunement','Attuning to a Lore and gaining its Signature Spell.',[{document:'winds-of-magic',sections:['LORE ATTUNEMENT','SIGNATURE']}],undefined,['Lore','Attunement']),
-      page('spell-rules','Spell Rules','Spell Keywords, Augments, Hexes, range, and a link to the battle-grid Ability Targeting rules.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','AUGMENTS & HEXES','SPELL RANGE']}],undefined,['Spell']),
+      page('spell-rules','Spell Rules','Spell Keywords, Enhances, Hexes, range, and a link to the battle-grid Ability Targeting rules.',[{document:'winds-of-magic',sections:['SPELL KEYWORDS','ENHANCES & HEXES','SPELL RANGE']}],undefined,['Spell']),
       page('lore-invocation','Invocation','Invocation Spells.',[{document:'lore-invocation'}],undefined,['Lore','Spell','Invocation']),
       page('lore-flames','Flames','Lore of Flames.',[{document:'lore-flames'}],undefined,['Lore','Spell','Flames']),
       page('lore-frost','Frost','Lore of Frost.',[{document:'lore-frost'}],undefined,['Lore','Spell','Frost']),

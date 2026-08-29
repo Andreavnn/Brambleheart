@@ -32,7 +32,7 @@ function paragraphText(documentKey:string){
     .filter(Boolean)
 }
 function looksStructured(value:string){
-  return /\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|EFFECT|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):/i.test(value)
+  return /\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|AREA|STRIKE|TO HIT|ATTRIBUTE SAVE|SAVE|HEX|ON FAILURE|EFFECT|DAMAGE|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):/i.test(value)
 }
 function looksLikeStandaloneHeading(value:string){
   const text=value.trim()
@@ -41,7 +41,7 @@ function looksLikeStandaloneHeading(value:string){
   return letters.length>=3&&text===text.toUpperCase()
 }
 function parseKeywords(value:string){
-  const matches=Array.from(value.matchAll(/\bKEYWORDS?:\s*([^]*?)(?=\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|EFFECT|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):|$)/gi))
+  const matches=Array.from(value.matchAll(/\bKEYWORDS?:\s*([^]*?)(?=\b(?:COST|TRIGGER|DECLARE|DECLEAR|TARGET|AREA|STRIKE|TO HIT|ATTRIBUTE SAVE|SAVE|HEX|ON FAILURE|EFFECT|DAMAGE|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):|$)/gi))
   const match=matches.at(-1)
   return match ? match[1].split('|').map(item=>item.trim()).filter(Boolean) : []
 }

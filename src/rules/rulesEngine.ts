@@ -1,6 +1,7 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { formatMeasurementText } from './measurements'
 import { protectiveGearKind } from './economy'
+import { isArcaneFocusName } from './magicRules'
 
 function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
 
@@ -78,9 +79,21 @@ export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined)
   return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
 }
 export function equippedProtectiveGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined){return equippedProtectiveItems(items)}
-export function equipmentControlBonus(items:Array<{statBonuses?:EquipmentStatBonuses;quantity?:number}>|undefined){
-  return (items||[]).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
+export type ArcaneFocusEquipmentSource={name:string;statBonuses?:EquipmentStatBonuses;quantity?:number;activeArcaneFocus?:boolean}
+export function activeArcaneFocus<T extends ArcaneFocusEquipmentSource>(items:T[]|undefined):T|undefined{
+  const focuses=(items||[]).filter(item=>isArcaneFocusName(item.name))
+  if(!focuses.length)return undefined
+  const explicit=focuses.find(item=>item.activeArcaneFocus===true)
+  if(explicit)return explicit
+  return focuses[0]
 }
+export function equipmentControlBonus(items:ArcaneFocusEquipmentSource[]|undefined){
+  const list=items||[]
+  const ordinary=list.filter(item=>!isArcaneFocusName(item.name)).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
+  const focus=activeArcaneFocus(list)
+  return ordinary+(focus?Math.max(0,Number(focus.statBonuses?.control)||0):0)
+}
+export function equipmentSpellManaReduction(items:ArcaneFocusEquipmentSource[]|undefined){return activeArcaneFocus(items)?.name==='Scriptweave Book'?1:0}
 
 export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0){
   const agility=Number(attributes.agility||0)
@@ -125,7 +138,10 @@ export function armorProfile(item:EquipmentProfileSource|undefined){
 }
 
 export type StructuredRuleField={label:string;value:string}
-const STRUCTURED_RULE_LABELS=['OPEN DEFENCE','COST','TRIGGER','DECLARE','DECLEAR','TARGET','EFFECT','RESTRICTION','RESTRICTIONS','DURATION','EMPOWER','COOLDOWN','AFTERBURN','PURIFY','REQUIRES','KEYWORDS'] as const
+const STRUCTURED_RULE_LABELS=['COST','TRIGGER','DECLARE','DECLEAR','TARGET','AREA','STRIKE','TO HIT','ATTRIBUTE SAVE','SAVE','HEX','ON FAILURE','EFFECT','DAMAGE','LONG RANGE','PICK UP','AFTERBURN','PURIFY','EMPOWER','DURATION','OPEN DEFENCE','ARMOR MASTERY','DEFENSELESS','FORTIFIED','RAPID ATTACK','RESTICTION','RESTICTIONS','RESTRICTION','RESTRICTIONS','REQUIRES','COOLDOWN','KEYWORDS'] as const
+const RULE_FIELD_ORDER=['COST','TRIGGER','DECLARE','TARGET','AREA','TO HIT','SAVE','HEX','ON FAILURE','EFFECT','DAMAGE','LONG RANGE','PICK UP','AFTERBURN','PURIFY','EMPOWER','DURATION','OPEN DEFENCE','ARMOR MASTERY','DEFENSELESS','FORTIFIED','RAPID ATTACK','RESTRICTIONS','REQUIRES','COOLDOWN','KEYWORDS'] as const
+function canonicalRuleLabel(value:string){const label=value.toUpperCase();if(label==='DECLEAR')return'DECLARE';if(label==='STRIKE')return'TO HIT';if(label==='ATTRIBUTE SAVE')return'SAVE';if(label==='RESTICTION'||label==='RESTICTIONS'||label==='RESTRICTION')return'RESTRICTIONS';return label}
+function ruleFieldOrder(label:string){const index=RULE_FIELD_ORDER.indexOf(label as typeof RULE_FIELD_ORDER[number]);return index<0?RULE_FIELD_ORDER.length:index}
 
 export function structuredRule(text:string):{intro:string;fields:StructuredRuleField[]}{
   const source=formatMeasurementText(String(text||''))
@@ -134,9 +150,11 @@ export function structuredRule(text:string):{intro:string;fields:StructuredRuleF
   if(!matches.length)return{intro:source.trim(),fields:[]}
   const intro=source.slice(0,matches[0].index).trim()
   const fields=matches.map((match,index)=>({
-    label:match[1].toUpperCase().replace('DECLEAR','DECLARE'),
+    label:canonicalRuleLabel(match[1]),
     value:source.slice((match.index||0)+match[0].length,index+1<matches.length?matches[index+1].index:source.length).trim(),
-  })).filter(field=>field.value)
+    sourceIndex:index,
+  })).filter(field=>field.value).sort((left,right)=>ruleFieldOrder(left.label)-ruleFieldOrder(right.label)||left.sourceIndex-right.sourceIndex)
+    .map(({label,value})=>({label,value}))
   return{intro,fields}
 }
 export function visibleRuleFields(text:string){return structuredRule(text).fields.filter(field=>field.label!=='COST'&&field.label!=='KEYWORDS')}

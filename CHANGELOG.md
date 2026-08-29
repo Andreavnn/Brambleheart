@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.37
+
+- Rebuilds the encounter action economy around one CORE Instinct, one CORE Move, and one CORE Combat opportunity per round; ROOT now limits advanced Talent stacking by specific family rather than Core actions.
+- Rebuilds the shared Core Abilities as Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and passive Renew the Heart.
+- Reconstructs the Talent catalog around Core-ability modifiers and triggered effects, renames Fang Break to Cleave, treats Beastgrasp as the Primate Grip replacement, and rebuilds Cleave → Wildchain → Warpath as a fixed chain.
+- Establishes Magic Level known-spell progression through 12 Lore Spells and 6 Invocations at Magic Level 10, plus the separate Signature Spell, with Level Up exposing any unclaimed legacy choices.
+- Standardizes spell presentation around Signature, Cantrip, Enhance, Hex, TO HIT, Lore Attunement -2, and a minimum final ordinary spell cost of 1 Mana without performing the later spell-by-spell numerical rebalance.
+- Standardizes Start of Round as CORE Instinct choices → Magic Regen modifiers → Mana restoration → turns in Initiative Order; Channel the Winds increases Magic Regen instead of generating Mana directly.
+- Makes Arcane Focus effects non-stacking: one owned focus is active at a time, with Level Up controls to switch the active focus.
+- Adds action-family UI colors: Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, Passive gray; CORE/ROOT/COMBAT remain structural neutrals.
+- Synchronizes BUILD/export 0.37, package 0.37.0, PWA cache v0.37, Rule Updates v0.03, README, patch notes, and repository/in-app changelog.
+
 # Brambleheart Beta 0.36
 
 - Rebuilds Threadpiece economy around one integer `wp` authority: 10 wp = 1 np, 5 np = 1 sp, and 5 sp = 1 bp; starting wealth remains 30 sp and the Adventure Kit creation sellback becomes 3 sp.

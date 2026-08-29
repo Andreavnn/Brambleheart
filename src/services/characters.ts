@@ -1,8 +1,10 @@
 import { BUILD, type AttributeId } from '../data/bramble'
 import { gearShopItems as legacyGearShopItems } from '../data/characterOptions'
+import { canonicalTalentName } from '../data/talentCategories'
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { STARTING_WEALTH_WP, canonicalGearCostWp, economyGearCatalog, protectiveGearKind } from '../rules/economy'
 import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
+import { isArcaneFocusName } from '../rules/magicRules'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks = Record<AttributeId, number>
@@ -25,6 +27,8 @@ export interface PurchasedEquipment {
   statBonuses?:EquipmentStatBonuses
   /** Used only by protective gear. At most one armor and one shield may be equipped. */
   equipped?:boolean
+  /** Used only by Arcane Focus gear. At most one focus may be active. */
+  activeArcaneFocus?:boolean
 }
 export interface CharacterRecord {
   id:string
@@ -131,6 +135,11 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
     const chosen=indexes.find(index=>normalized[index].equipped===true)??(!hasExplicit?indexes[0]:-1)
     for(const index of indexes)normalized[index].equipped=index===chosen
   }
+  const focusIndexes=normalized.map((item,index)=>isArcaneFocusName(item.name)?index:-1).filter(index=>index>=0)
+  if(focusIndexes.length){
+    const chosen=focusIndexes.find(index=>normalized[index].activeArcaneFocus===true)??focusIndexes[0]
+    for(const index of focusIndexes)normalized[index].activeArcaneFocus=index===chosen
+  }
   return normalized
 }
 
@@ -155,6 +164,14 @@ export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefi
   return next
 }
 
+export function setActiveArcaneFocus(items:PurchasedEquipment[]|undefined,index:number,active=true){
+  const next=(items||[]).map(item=>({...item}))
+  const target=next[index];if(!target||!isArcaneFocusName(target.name))return next
+  for(const item of next)if(isArcaneFocusName(item.name))item.activeArcaneFocus=false
+  target.activeArcaneFocus=active
+  return next
+}
+
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record)
   const status=characterStatus({...record,creationComplete})
@@ -166,6 +183,7 @@ export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord
   return{
     ...record,
     equipment,
+    talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),
     startingWealthWp,
     wealthWp,
     currencyAddedWp,

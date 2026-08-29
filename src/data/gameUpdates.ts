@@ -1,10 +1,29 @@
-export const GAME_RULES_VERSION='0.02'
+export const GAME_RULES_VERSION='0.03'
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-08-29',
+    title:'Ability Economy, Talents & Magic Framework',
+    summary:'Rebuilds Brambleheart’s Core action economy, Talent structure, Magic Level known-spell progression, spell-cost presentation, Arcane Focus authority, and shared rules grammar without performing the later spell-by-spell numerical rebalance.',
+    changes:[
+      'Each character may use one CORE Instinct, one CORE Move, and one CORE Combat ability each round. COMBAT is the umbrella for Touch, Shoot, or Magic.',
+      'ROOT no longer limits Core Abilities. It limits advanced abilities by specific family: Instinct, Move, Touch, Shoot, Magic, or Reactive.',
+      'Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and passive Renew the Heart.',
+      'Channel the Winds increases Magic Regen. Focused Will is free. Start of Round resolves Instinct choices, Magic Regen modifiers, Mana restoration, then turns.',
+      'Magic Level directly determines known Lore Spells and Invocations. Magic Level 10 allows 12 Lore Spells and 6 Invocations, plus the Signature Spell.',
+      'Lore Attunement remains -2 Mana. Ordinary spells have a minimum final cost of 1 Mana. Signature and Cantrip replace visible 0 Mana labels for their respective spell structures.',
+      'Arcane Command delegates targeting and resolution to Spell Details. Enhance replaces Augment and TO HIT replaces Strike as the standardized rule-card field.',
+      'Only one Arcane Focus is active at a time; focus Control and Mana-cost effects do not stack across multiple owned foci.',
+      'Talents now primarily modify Core Abilities or resolve from their own triggers. Cleave replaces Fang Break; Beastgrasp is the canonical replacement for Primate Grip.',
+      'Action-family pills use consistent colors: Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.',
+      'Individual spell damage, Mana, healing, area, and Empower numerical tuning is intentionally deferred to the dedicated spell-balance pass.',
+    ],
+  },
+  {
+    version:'0.02',
     date:'2026-08-28',
     title:'Magic Regen & Threadpiece Economy Rebuild',
     summary:'Clarifies Magic Regen as the Heart statistic itself and rebuilds Brambleheart’s economy around one whole-wp runtime authority, creation-safe price tiers, and equipped protective gear.',
