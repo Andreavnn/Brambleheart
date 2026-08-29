@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.39
+
+- Brings Character Creation Attribute presentation in line with the Character Sheet by applying the same Agility, Might, Hide, Lore, and Bravery color identities to Rank, Modifier, and secondary-stat boxes.
+- Tightens the creation Speed formula to `2 + AGI MOD = total`, reduces that formula one text step, and keeps it on one line.
+- Refines Tempered Form presentation to `Attribute Point + 1 Talent`, shortens its supporting copy, and gives all four Rhythm of Body & Spirit path cards distinct top-border colors.
+- Colors Talent card top borders from their semantic ability families across Character Creation, the Talent picker, Character Creation Review, Rules, and the Rhythm Engine Character Sheet. Reactive takes precedence visually when combined with another family.
+- Restores pill UI presentation for weapon Properties / Notes on the Rhythm Engine Character Sheet using the same shared property-pill presentation already used by Character Creation Review.
+- Expands the Rules Layout Test Abilities page with a responsive Selu encounter graphic showing Arcane Command casting Ballad of the Courageous and the Passive Magic Talent Hearth Touch triggering from that spell.
+- Keeps Rule Updates at v0.04 because this release changes presentation and explanatory material without altering the underlying game rules.
+- Advances BUILD/export to 0.39, package version to 0.39.0, and the PWA shell cache to v0.39.
+
 # Brambleheart Beta 0.38
 
 - Expands Rhythm of Body & Spirit to four starting paths: Wind-Touched (Magic Level 1 + 1 Talent), Gifted Heart (2 Talents), Practiced Hand (2 new Skills + 1 Talent), and Tempered Form (+1 Attribute Rank + 1 Talent, capped at Rank 3 during creation).

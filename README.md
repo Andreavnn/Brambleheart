@@ -1,16 +1,25 @@
-# Brambleheart TTRPG — Beta 0.38
+# Brambleheart TTRPG — Beta 0.39
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.38 is a cumulative character-creation, character-sheet, Threadpiece-display, and rules-presentation release built on GitHub `main` commit `af7c20c075409385c255478aa7b1ba9a71f7757e` (Beta 0.37.0).
+Beta 0.39 is a cumulative presentation and rules-teaching release built on GitHub `main` commit `cb264ae4d57eeaa27aff789ed1f48aedcdcda01e` (Beta 0.38.0 with the 0.38 build fix).
+
+## Beta 0.39 presentation work
+
+- Character Creation Attribute boxes now use the same Attribute color identities as the shared Character Sheet.
+- Speed uses a smaller one-line `2 + AGI MOD = total` formula.
+- Rhythm of Body & Spirit path cards have distinct top-border colors and shorter Tempered Form presentation.
+- Talent card top borders use the same semantic ability colors as their ability families.
+- Rhythm Engine Character Sheet weapon Properties / Notes are rendered as pills again.
+- The Rules Layout Test Abilities page includes a responsive Selu encounter graphic showing Arcane Command used with the Hearth Touch Talent.
 
 ## Rule Updates v0.04
 
-Rule Updates are versioned independently from application builds.
+Rule Updates are versioned independently from application builds. Beta 0.39 does not change the underlying rule mechanics, so the current rules-update stream remains v0.04.
 
 ### Rhythm of Body & Spirit
 
-Character Creation now offers four starting paths, each granting at least one Talent:
+Character Creation offers four starting paths, each granting at least one Talent:
 
 - Wind-Touched — Magic Level 1 + 1 Talent.
 - Gifted Heart — 2 Talents.
@@ -27,7 +36,7 @@ Character-sheet weapon names hide trailing parenthetical catalog identifiers whi
 
 Each character has one `CORE · INSTINCT`, one `CORE · MOVE`, and one `CORE · COMBAT` opportunity per round. `COMBAT` is the umbrella for choosing Melee Strike (`TOUCH`), Range Strike (`SHOOT`), or Arcane Command (`MAGIC`). Reactive and Passive effects resolve from their own rules.
 
-`ROOT` is no longer used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round.
+`ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round.
 
 Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
 
@@ -55,11 +64,11 @@ Magic Level 10 grants 12 chosen Lore Spells and 6 Invocations, plus the Signatur
 
 ### Talents
 
-Talents now primarily modify Core Abilities or resolve from their own Instinct, Reactive, or Passive triggers rather than reproducing whole attack procedures. Cleave replaces Fang Break. Beastgrasp is the canonical replacement for Primate Grip. The Cleave → Wildchain → Warpath chain is a fixed progression within one Melee Strike.
+Talents primarily modify Core Abilities or resolve from their own Instinct, Reactive, or Passive triggers rather than reproducing whole attack procedures. Cleave replaces Fang Break. Beastgrasp is the canonical replacement for Primate Grip. The Cleave → Wildchain → Warpath chain is a fixed progression within one Melee Strike.
 
 ## Canonical Threadpiece economy
 
-All runtime money calculations continue to use whole Washer Pieces (`wp`) as the authority:
+All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
 
 - 10 wp = 1 np
 - 5 np = 1 sp
@@ -73,6 +82,14 @@ Only one Armor and one Shield may be equipped at a time; only those equipped pro
 ## Measurements
 
 The game remains square-based. Display can be changed in Settings to Squares, Yards, Meters, or Feet using one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
+
+## Release integrity
+
+- BUILD/export: `0.39`
+- package version: `0.39.0`
+- PWA cache: `v0.39`
+- Rule Updates: `v0.04`
+- Repository and in-app Site Changelog: `CHANGELOG.md`
 
 ## Runtime
 
