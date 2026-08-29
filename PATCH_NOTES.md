@@ -1,37 +1,53 @@
-# Brambleheart Beta 0.36 Patch Notes
+# Brambleheart Beta 0.37 Patch Notes
 
-Baseline: GitHub `main` commit `886e60f9736367e0206b688df0f923149b8feb00` (Beta 0.35.0).
+Baseline: GitHub `main` commit `093cbf928eb3dabb4fd20769bc5b886198e497b7` (Beta 0.36.0).
 
-## Rule Updates v0.02
-- Magic Regen is now exactly Heart. The former standard `+2` is removed; effects that increase or decrease start-of-round Mana restoration modify Magic Regen itself.
-- Heart remains Bravery Rank, Spirit remains Bravery modifier, and Mana Pool remains `Magic Level + Spirit`.
-- Rebuilds the Threadpiece economy from one canonical integer `wp` authority: `10 wp = 1 np`, `5 np = 1 sp`, `5 sp = 1 bp`.
-- Keeps starting wealth at `30 sp` (`1,500 wp`), keeps the Adventure Kit free, and changes its fixed creation sellback to `3 sp` (`150 wp`). Maximum creation purchasing power after selling the kit is therefore `33 sp`.
-- Applies the Economy Rebuild price schedule across weapons, armor/shields, adventuring gear, trade goods, and transportation; restores Field Blade (Long Sword) as a purchasable 20 sp weapon.
-- Ordinary gear resale is 50% of current retail, trade goods default to 75%, and crafting market-priced items requires eligible material value of at least 50% of current retail. Barding remains 3× current canonical armor retail.
-- Only one owned Armor and one owned Shield may be equipped at a time. Only equipped protective gear contributes Guts, Mana Syphon, Stealth, and Might requirements.
+## Rule Updates v0.03
+- Rebuilds the encounter action economy around one CORE Instinct, one CORE Move, and one CORE Combat opportunity per round.
+- Moves ROOT off Core Abilities and makes it the stacking limiter for specific Talent families: Instinct, Move, Touch, Shoot, Magic, and Reactive.
+- Standardizes REACTIVE terminology and the rule-card order around COST, TRIGGER, DECLARE, TO HIT / SAVE, EFFECT / DAMAGE, DURATION, RESTRICTIONS, REQUIRES, COOLDOWN, and KEYWORDS.
+- Establishes the Start of Round sequence as CORE Instinct choices, Magic Regen modifiers, Mana restoration, then turns in Initiative Order.
+- Keeps Mana Pool = Magic Level + Spirit and Magic Regen = Heart. Channel the Winds increases Magic Regen rather than generating Mana directly.
 
-## Character Sheet & Character Creation
-- Changes the Agility shorthand from `AGL` to `AGI`.
-- Keeps Attribute/secondary-stat box heights unchanged while shortening Rank and Modifier boxes so they no longer crowd the parent Attribute label.
-- Secondary-stat detail is now formula-only with the parent abbreviation, such as `2 + 4 AGI MOD`, `3 MIG RNK`, or an equipment bonus plus the parent Rank/Modifier where applicable.
-- Mana Pool displays its Magic Level + Spirit source; Magic Regen displays its Heart/BRY Rank source without a built-in +2.
-- Rhythm Engine → Character Sheet → Magic now starts collapsed.
-- Reopening an approved character in Character Creation preserves campaign-earned wallet balance, currency additions, XP, treasure, Magic Level, and pin state rather than reconstructing those values from creation purchases.
+## Core Abilities
+- Makes Channel the Winds and Focused Will CORE Instinct abilities; Focused Will no longer costs Mana.
+- Makes Stride, Swiftstride, and Hero’s Charge CORE Move abilities.
+- Makes Melee Strike, Range Strike, and Arcane Command the three CORE Combat choices using Touch, Shoot, and Magic respectively.
+- Makes Renew the Heart Passive.
+- Corrects Melee Strike to use Brawl for TO HIT and weapon damage + Fury; Range Strike uses Aim and weapon damage + Accuracy.
+- Reduces Arcane Command to the casting entry point; individual Spell Details own targeting and resolution.
 
-## Equipment & Economy Runtime
-- Introduces one canonical current-retail price map in whole wp. Existing `costSp`/`costNp` values are compatibility fields generated from current `costWp`, not independent price authorities.
-- Existing saved items retain ownership and historical paid value while current affordability/resale resolves against the canonical catalog price.
-- Legacy wallet fields migrate at load to whole wp without retroactively charging a character for new prices.
-- Level Up purchases subtract canonical wp, protective gear can be explicitly equipped, and ordinary owned gear can be sold at the 50% resale rule.
-- Removing/selling equipped Armor or Shield promotes another owned item of the same kind when available.
+## Talents
+- Reconstructs the Talent catalog so attack-style Talents modify Core Abilities rather than duplicating complete attack procedures.
+- Renames Fang Break to Cleave and rebuilds Cleave → Wildchain → Warpath as a fixed four-target maximum chain under one Melee Strike.
+- Treats Beastgrasp as the canonical replacement for Primate Grip and updates Titan’s Wake accordingly.
+- Repairs malformed/self-referential Talent requirements and normalizes Talent triggers, restrictions, and keywords.
+- Leaves Rooted Paws intentionally unchanged pending the dedicated Grapple/Touch decision.
 
-## Rules Layout Test
-- Replaces the confusing Half-Step graphic with a simple branch: roll 1d10, natural `1–5 → 1`, natural `6–10 → 2`; the die face is never divided.
-- Keeps the Threadseer example notation but explains it as result-band conversion followed by the listed `+1` condition.
-- Makes the Threadseer die/result boxes square and equal-sized.
+## Magic Levels & Known Spells
+- Tracks known Lore Spells and Invocations directly from Magic Level.
+- Magic Level 1 begins with 2 Lore Spells and 2 Invocations, plus a separate Signature Spell.
+- Every new Magic Level grants 1 Lore Spell, except Magic Level 5 grants 2; Magic Levels 3, 5, 7, and 9 each grant 1 Invocation.
+- Magic Level 10 therefore allows 12 chosen Lore Spells and 6 Invocations, plus the Signature Spell.
+- Level Up exposes unclaimed known-spell choices for existing characters without fabricating migration choices.
+
+## Spell Framework
+- Keeps Lore Attunement at -2 Mana and sets ordinary spell cost to a minimum final value of 1 Mana.
+- Signature Spells are hard-free triggered effects and display `Signature` rather than `0 Mana`.
+- Explicit zero-cost Invocation utility spells display `Cantrip`.
+- Replaces AUGMENT with ENHANCE, removes redundant spell ROOT/ANCHOR action limiting, and standardizes TO HIT as the attack-resolution field heading.
+- Power is applied only when the individual spell explicitly calls for it.
+- Only one Arcane Focus is active at a time; focus Control and spell-cost reductions do not stack across multiple owned foci.
+- This release does not perform the later spell-by-spell numerical damage, Mana-cost, healing, area, or Empower rebalance.
+
+## Presentation
+- Adds consistent action-family color coding: Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
+- Keeps CORE, ROOT, and COMBAT visually neutral as structural keywords.
+
+## Deferred Follow-ups
+- Individual spell numerical balance.
+- Final high-end armor Speed penalties and their interaction with Ironhide.
+- Rooted Paws / Grapple resolution.
 
 ## Release Integrity
-- Advances BUILD and character export version to `0.36`, package version to `0.36.0`, and PWA cache to `v0.36`.
-- Advances the independent Rule Updates stream to `v0.02`.
-- Keeps Node pinned to exact `22.x`.
+- Advances BUILD/export to `0.37`, package version to `0.37.0`, PWA cache to `v0.37`, and Rule Updates to `v0.03`.
