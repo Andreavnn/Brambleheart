@@ -390,9 +390,9 @@ const baseSkillRanks=computed(()=>{
 const pathSkillOptions=computed(()=>Array.from(new Set(skillDefinitions.map(item=>normalizeSkillName(item.name)))).filter(skill=>!baseSkillRanks.value[skill]).sort())
 const skillRanks=computed(()=>{const ranks={...baseSkillRanks.value};if(form.path==='skills')form.pathSkills.filter(Boolean).map(normalizeSkillName).forEach(skill=>ranks[skill]=(ranks[skill]||0)+1);return ranks})
 
-function cultureRankForSkill(skill:string){return cultureSkillEntries.value.filter(entry=>entry.skill===skill).length}
-function cultureSourcesForSkill(skill:string){return Array.from(new Set(cultureSkillEntries.value.filter(entry=>entry.skill===skill).map(entry=>entry.source))).join(', ')}
-function homelandRankForSkill(skill:string){const wanted=normalizeSkillName(skill);return form.skills.filter(Boolean).map(normalizeSkillName).filter(value=>value===wanted).length}
+function cultureRankForSkill(skill:string|number){const wanted=String(skill);return cultureSkillEntries.value.filter(entry=>entry.skill===wanted).length}
+function cultureSourcesForSkill(skill:string|number){const wanted=String(skill);return Array.from(new Set(cultureSkillEntries.value.filter(entry=>entry.skill===wanted).map(entry=>entry.source))).join(', ')}
+function homelandRankForSkill(skill:string|number){const wanted=normalizeSkillName(String(skill));return form.skills.filter(Boolean).map(normalizeSkillName).filter(value=>value===wanted).length}
 function homelandSkillOptionLabel(skill:string){return cultureRankForSkill(skill)>0?`${skill} (+1 rank)`:skill}
 function spellGroupLabel(lore:string){return `Lore of ${lore}${lore===form.loreAttunement?' (Attuned)':''}`}
 
