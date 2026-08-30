@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import { attributes, BUILD, homelands, sparks } from '../data/bramble'
 import { canonicalTalentName } from '../data/talentCategories'
-import { derivedStats, equipmentControlBonus, equipmentGutsBonus, magicResources } from '../rules/rulesEngine'
+import { derivedStats, equipmentControlBonus, equipmentGutsBonus, equipmentMagicRegenBonus, magicResources } from '../rules/rulesEngine'
 import { formatThreadpieceBalance } from '../rules/threadpieces'
 import { characterExportPayload, characterStatus, characterWealthWp, downloadJson, loadCharacters, normalizeImportedCharacter, setCharacterApproval, writeCharacters, type CharacterRecord } from '../services/characters'
 import { CHARACTER_SHARE_URL, consumeCharacterShareFromLocation, createCharacterShareCode, parseCharacterShareValue } from '../services/characterShare'
@@ -110,7 +110,7 @@ function homelandSkills(name:string){return homelands.find(h=>h.name===name)?.sk
 function sparkWords(name:string){return sparks.find(s=>s[0]===name)?.[1]||'—'}
 function derived(c:CharacterRecord){return derivedStats(c.attributes,equipmentGutsBonus(c.equipment),equipmentControlBonus(c.equipment))}
 function characterMagicLevel(c:CharacterRecord){return Number(c.magicLevel??(c.path==='magic'?1:0))}
-function resources(c:CharacterRecord){return magicResources(c.attributes,characterMagicLevel(c))}
+function resources(c:CharacterRecord){return magicResources(c.attributes,characterMagicLevel(c),equipmentMagicRegenBonus(c.equipment))}
 function wealthLabel(c:CharacterRecord){return formatThreadpieceBalance(characterWealthWp(c))}
 function skillSummary(character:CharacterRecord){
   if(character.skillRanks&&Object.keys(character.skillRanks).length)return Object.entries(character.skillRanks).sort((a,b)=>a[0].localeCompare(b[0])).map(([name,rank])=>`${name}: Rank ${rank}, Mod +${Number(rank)*2}`).join(' · ')

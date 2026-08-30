@@ -14,7 +14,7 @@ export const MAGIC_LEVEL_MAX=10
 export const LORE_ATTUNEMENT_DISCOUNT=2
 export const ORDINARY_SPELL_MINIMUM_MANA=1
 
-export const ARCANE_FOCUS_NAMES=new Set(['Scriptweave Book','Totem'])
+export const ARCANE_FOCUS_NAMES=new Set(['Scriptweave Book','Caster Totem'])
 export function isArcaneFocusName(name:string){return ARCANE_FOCUS_NAMES.has(String(name||''))}
 
 export const MAGIC_LEVEL_PROGRESSION:ReadonlyArray<{level:number;lore:number;invocation:number}>=[

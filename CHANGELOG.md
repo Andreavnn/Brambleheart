@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.40
+
+- Adds Trinkets as a canonical equipment class with one dedicated Trinket slot and an optional second Trinket that consumes one Armor & Shield slot.
+- Converts Journey Knot, Caster Totem, Lens-Stone Arcanum, Scriptweave Book, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Spell Charm to Trinkets, with legacy saved names normalized at load/import boundaries.
+- Changes Journey Knot from +1 damage to condition [+1] on one TO HIT roll per round with its attached weapon.
+- Reworks Scriptweave Book to Magic Regen [+1] and ordinary spell Mana cost [-1] while it is the equipped active arcane focus.
+- Adds Shiny Bobble, Votive Icon, Spell Charm, and Heartward Token Trinket effects and applies equipped Trinket bonuses to Character Sheet and Rhythm Engine calculations.
+- Changes the Character Sheet heading to Armor & Shield and displays the dedicated/overflow Trinket slots beneath protective equipment.
+- Keeps Practiced Hand from selecting Skills already gained from Homeland or Culture Traits and aligns the Tempered Form path card with its neighboring path cards.
+- Rebuilds the Rules Layout Test Abilities page around the encounter economy, distributed Selu examples without character artwork, and an expandable shared Core Ability reference.
+- Standardizes displayed rule measurements to `[X] square(s)` spacing while preserving the existing Squares/Yards/Meters/Feet setting conversion.
+- Advances BUILD/export to 0.40, package version to 0.40.0, PWA cache to v0.40, and Rule Updates to v0.05.
+
 # Brambleheart Beta 0.39
 
 - Brings Character Creation Attribute presentation in line with the Character Sheet by applying the same Agility, Might, Hide, Lore, and Bravery color identities to Rank, Modifier, and secondary-stat boxes.

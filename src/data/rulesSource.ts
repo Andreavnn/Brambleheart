@@ -3323,7 +3323,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": [
           {
             "type": "paragraph",
-            "text": "You’ve turned defense into offense, driving the rim of your shield into your foe with brutal precision. TRIGGER: When you hit a character with a physical combat ability while wielding a shield. EFFECT: If successful and the ability deals damage, the target of that ability is forced back [1]square and suffers [1] lethal damage. KEYWORDS: REACTIVE | TALENT"
+            "text": "You’ve turned defense into offense, driving the rim of your shield into your foe with brutal precision. TRIGGER: When you hit a character with a physical combat ability while wielding a shield. EFFECT: If successful and the ability deals damage, the target of that ability is forced back [1] square and suffers [1] lethal damage. KEYWORDS: REACTIVE | TALENT"
           }
         ]
       },
@@ -5110,57 +5110,75 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
                 "Spellcasting Implements"
               ],
               [
+                "Cloak of Windweave",
+                "10 sp",
+                "2 lb."
+              ],
+              [
+                "Trinkets"
+              ],
+              [
                 "Scriptweave Book",
-                "5 np",
+                "12 sp",
                 "1 lb."
               ],
               [
-                "Totem",
-                "1 sp",
-                "—"
-              ],
-              [
-                "Charm",
-                "2 sp",
-                "—"
-              ],
-              [
-                "Len-stone Arcanum",
-                "3 sp",
-                "—"
-              ],
-              [
-                "Cloak of Windweave",
+                "Caster Totem",
                 "6 sp",
-                "2 lb."
+                "—"
+              ],
+              [
+                "Spell Charm",
+                "7 sp",
+                "—"
+              ],
+              [
+                "Lens-Stone Arcanum",
+                "6 sp",
+                "—"
+              ],
+              [
+                "Shiny Bobble",
+                "10 sp",
+                "—"
+              ],
+              [
+                "Votive Icon",
+                "7 sp",
+                "—"
+              ],
+              [
+                "Heartward Token",
+                "10 sp",
+                "—"
+              ],
+              [
+                "Quickdraw Quiver",
+                "6 sp",
+                "1 lb."
+              ],
+              [
+                "Featherwind Bolt-Case",
+                "6 sp",
+                "1 lb."
+              ],
+              [
+                "Wristloop",
+                "4 sp",
+                "—"
+              ],
+              [
+                "Journey Knot",
+                "7 sp",
+                "—"
               ],
               [
                 "Accessories"
               ],
               [
-                "Quickdraw Quiver",
-                "2 sp",
-                "1 lb."
-              ],
-              [
-                "Featherwind Bolt-Case",
-                "2 sp",
-                "1 lb."
-              ],
-              [
-                "Wristloop",
-                "1 sp",
-                "—"
-              ],
-              [
                 "Sharpening Stone",
                 "3 np",
                 "1 lb."
-              ],
-              [
-                "Journey Knot",
-                "1 sp",
-                "—"
               ],
               [
                 "Tools"
@@ -5321,66 +5339,6 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Scriptweave Book"
-          },
-          {
-            "type": "paragraph",
-            "text": "A sturdy bound book carried for notes, sketches, and personal records. When properly inscribed and prepared, a Journal may be used as a Spellbook (see below)."
-          },
-          {
-            "type": "paragraph",
-            "text": "Spellbook: When a book is prepared as a spellbook, it becomes the focus through which the caster performs all of their magical workings. While using a spellbook, every spell the caster knows may be cast only once per encounter, regardless of its usual frequency. The spellbook is also required for spellcasting; the sigils and written sequences within it guide the caster’s rhythm and structure. If the Spellbook is lost, stolen, destroyed, or otherwise out of the caster’s possession, they cannot cast spells until it is recovered, or a new book is inscribed and prepared."
-          },
-          {
-            "type": "paragraph",
-            "text": "The effects of using a spellbook; • Spell Mana cost [–1] • Spell damage [+1] (non-lethal) • Spell strike [+1]"
-          },
-          {
-            "type": "paragraph",
-            "text": "Crafting Components: Silkthread, Willow Bark Extract, Ethereal Lemon Balm, Stormtide powder"
-          },
-          {
-            "type": "paragraph",
-            "text": "Caster’s Totem"
-          },
-          {
-            "type": "paragraph",
-            "text": "A crafted charm—bone, wood, metal, or woven—that channels and shapes magical intent. A totem may be designated as a character’s arcane focus, allowing the caster to direct their spellwork through its form. When used in this way, the totem must be held or worn during spellcasting, and spells cannot be cast without it. If the totem is lost, stolen, destroyed, or otherwise out of the caster’s possession, they cannot cast spells until it is recovered, or a new totem is selected and properly attuned. While a caster is actively using their totem,"
-          },
-          {
-            "type": "paragraph",
-            "text": "it grants [+1] to strike rolls for all spells."
-          },
-          {
-            "type": "paragraph",
-            "text": "Crafting Components: Yewheart, Willow Silkspindle Thread, Dreamblossom"
-          },
-          {
-            "type": "paragraph",
-            "text": "Charm"
-          },
-          {
-            "type": "paragraph",
-            "text": "A small, enchanted emblem worn around the neck, wrist, or carried. Once per round, it increases the damage of a single spell by [+1]."
-          },
-          {
-            "type": "paragraph",
-            "text": "Crafting Components: Aurora Stones, Silkthread, Tranquil Vale"
-          },
-          {
-            "type": "paragraph",
-            "text": "Lens-Stone Arcanum"
-          },
-          {
-            "type": "paragraph",
-            "text": "A polished crystal lens bound in cord. Once per encounter, when casting a spell that compels a renew the heart roll, increase that compelled roll’s passive target by [1] category higher or lower. (Your choice)"
-          },
-          {
-            "type": "paragraph",
-            "text": "Crafting Components: Aurora Stones, Ancient’s Metal, Elderstar Berries, Stormtide powder"
-          },
-          {
-            "type": "paragraph",
             "text": "Cloak of Windweave"
           },
           {
@@ -5394,15 +5352,75 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         ]
       },
       {
-        "heading": "ACCESSORIES",
+        "heading": "TRINKETS",
         "blocks": [
+          {
+            "type": "paragraph",
+            "text": "A character has one dedicated Trinket slot. A second Trinket may be equipped by using one of the character’s two Armor & Shield slots. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
+          },
+          {
+            "type": "paragraph",
+            "text": "Scriptweave Book"
+          },
+          {
+            "type": "paragraph",
+            "text": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm. While equipped and used as the active arcane focus, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana."
+          },
+          {
+            "type": "paragraph",
+            "text": "Caster Totem"
+          },
+          {
+            "type": "paragraph",
+            "text": "A crafted bone, wood, metal, or woven focus carried as a personal channel for spellwork. While equipped and used as the active arcane focus, gain [+1] Control."
+          },
+          {
+            "type": "paragraph",
+            "text": "Spell Charm"
+          },
+          {
+            "type": "paragraph",
+            "text": "A small enchanted emblem worn or carried to reinforce a single magical working. Once per round, increase the damage of one spell by [+1]."
+          },
+          {
+            "type": "paragraph",
+            "text": "Lens-Stone Arcanum"
+          },
+          {
+            "type": "paragraph",
+            "text": "A polished crystal lens bound in cord. Once per encounter, when a spell compels Renew the Heart, adjust that passive target by one category higher or lower."
+          },
+          {
+            "type": "paragraph",
+            "text": "Shiny Bobble"
+          },
+          {
+            "type": "paragraph",
+            "text": "A bright little charm that catches stray magical currents and returns them to its bearer. While equipped, increase Magic Regen by [+1]."
+          },
+          {
+            "type": "paragraph",
+            "text": "Votive Icon"
+          },
+          {
+            "type": "paragraph",
+            "text": "A small devotional icon carried as a reminder of faith, resolve, and the promises that steady the heart. While equipped, gain condition [+1] when using Renew the Heart."
+          },
+          {
+            "type": "paragraph",
+            "text": "Heartward Token"
+          },
+          {
+            "type": "paragraph",
+            "text": "A protective token fastened to armor so its warding joins the armor’s own resilience. While equipped and attached to worn armor, increase that armor’s Guts Bonus by [+1]."
+          },
           {
             "type": "paragraph",
             "text": "Quickdraw Quiver"
           },
           {
             "type": "paragraph",
-            "text": "A rigid quiver designed for rapid arrow retrieval. Provides [+1] to strike with bows when using shoot abilities."
+            "text": "A rigid quiver designed for rapid arrow retrieval. While equipped and attached to a bow, gain condition [+1] to TO HIT rolls made with that bow."
           },
           {
             "type": "paragraph",
@@ -5410,7 +5428,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A smooth-lined case that prevents bolts from snagging. Grants [+1] accuracy to crossbows."
+            "text": "A smooth-lined case that prevents bolts from snagging. While equipped and attached to a crossbow, gain [+1] Accuracy with that crossbow."
           },
           {
             "type": "paragraph",
@@ -5418,15 +5436,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A fitted wrist strap that improves the release of thrown weapons. Grants [+1] to strike with thrown weapons."
-          },
-          {
-            "type": "paragraph",
-            "text": "Sharpening Stone"
-          },
-          {
-            "type": "paragraph",
-            "text": "A small, smooth whetstone used to refine the edge of slashing or piercing weapons. When a character spends downtime or a short preparation period honing their weapon with the stone, gain [+1] damage to that weapon, until the end of the character’s next combat encounter. The effect applies only to physical, non-magical damage and fades once the encounter concludes."
+            "text": "A fitted wrist strap that improves the release of thrown weapons. While equipped and attached to a thrown weapon, gain condition [+1] to TO HIT rolls made with that weapon."
           },
           {
             "type": "paragraph",
@@ -5434,11 +5444,20 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A braided charm woven from cords or fiber traditionally tied to weapon grips, or bow limbs and carried as symbols of endurance and fortune. Once per round, it increases the damage of a single attack made by that weapon by [+1]."
+            "text": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb. Once per round, while equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon."
+          }
+        ]
+      },
+      {
+        "heading": "ACCESSORIES",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Sharpening Stone"
           },
           {
             "type": "paragraph",
-            "text": "Crafting Components: Silkthread, Wildharvest, Elderstar Berries, Tranquil Vale"
+            "text": "A small, smooth whetstone used to refine the edge of slashing or piercing weapons. When a character spends downtime or a short preparation period honing their weapon with the stone, gain [+1] damage to that weapon until the end of the character’s next combat encounter. The effect applies only to physical, non-magical damage and fades once the encounter concludes."
           }
         ]
       },

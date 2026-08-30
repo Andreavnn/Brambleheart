@@ -1,10 +1,25 @@
-export const GAME_RULES_VERSION='0.04'
+export const GAME_RULES_VERSION='0.05'
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-08-30',
+    title:'Trinkets & Equipment Loadout',
+    summary:'Adds a dedicated Trinket equipment class and slot, updates converted Trinket effects, and clarifies how equipment attachments interact with character abilities and protective slots.',
+    changes:[
+      'Each character has one dedicated Trinket slot. One additional Trinket may be equipped by consuming one of the character’s two Armor & Shield slots; other owned Trinkets remain carried and inactive.',
+      'Journey Knot, Caster Totem, Lens-Stone Arcanum, Scriptweave Book, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Spell Charm are Trinkets. Legacy saved names normalize at the character-data boundary.',
+      'Journey Knot now grants condition [+1] to one TO HIT roll per round with its attached weapon instead of increasing weapon damage.',
+      'Scriptweave Book now increases Magic Regen by [+1] and reduces ordinary spell Mana cost by [-1] while equipped as the active arcane focus. Its previous Control and spell-damage bonuses are removed.',
+      'Shiny Bobble increases Magic Regen by [+1], Votive Icon grants condition [+1] when using Renew the Heart, Spell Charm increases one spell’s damage by [+1] once per round, and Heartward Token increases the Guts Bonus of attached worn armor by [+1].',
+      'Practiced Hand continues to exclude Skills already gained earlier in character creation from Homeland and Culture Trait sources.',
+      'Rules measurement text now displays a space between bracketed distance and unit, such as [3] squares, while the Squares/Yards/Meters/Feet display conversion continues to use the shared measurement authority.',
+    ],
+  },
+  {
+    version:'0.04',
     date:'2026-08-29',
     title:'Rhythm of Body & Spirit Expansion',
     summary:'Expands character creation from two Body & Spirit paths to four while preserving the normal Rank 3 creation cap and giving every path at least one Talent.',

@@ -1,6 +1,6 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { formatMeasurementText } from './measurements'
-import { protectiveGearKind } from './economy'
+import { canonicalGearName, isTrinketGear, protectiveGearKind } from './economy'
 import { isArcaneFocusName } from './magicRules'
 
 function total(values: number[]) { return values.reduce((sum, value) => sum + Number(value || 0), 0) }
@@ -43,6 +43,12 @@ export type EquipmentProfileSource = {
 export type CharacterSheetEquipmentSource=EquipmentProfileSource&{
   attachedTo?:string
   category?:string
+  effect?:string
+  equipped?:boolean
+  trinketSlot?:'trinket'|'armor'
+  statBonuses?:EquipmentStatBonuses
+  quantity?:number
+  activeArcaneFocus?:boolean
 }
 
 export function rankModifier(rank:number){return Number(rank||0)*2}
@@ -64,8 +70,15 @@ function armorProfileValues(detail:string){
   return labeled
 }
 function numericProfileBonus(value:string){const match=String(value||'').match(/[+-]?(\d+)/);return match?Math.max(0,Number(match[1])):0}
+function addNumericProfileBonus(value:string,bonus:number){
+  if(!bonus||value==='—')return value
+  const match=String(value).match(/[+-]?\d+/)
+  if(!match)return value
+  const next=Number(match[0])+bonus
+  return String(value).replace(match[0],`${next>=0?'+':''}${next}`)
+}
 
-export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean}
+export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean;attachedTo?:string;trinketSlot?:'trinket'|'armor'}
 function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
   const candidates=(items||[]).filter(item=>item.category==='Armor & Shield')
   return(['armor','shield'] as const).flatMap(kind=>{
@@ -76,16 +89,29 @@ function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|
     return chosen?[chosen]:[]
   })
 }
+export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
+  const candidates=(items||[]).filter(item=>isTrinketGear(item))
+  const explicit=candidates.filter(item=>item.equipped===true)
+  if(explicit.length)return explicit.slice(0,2)
+  const hasExplicit=candidates.some(item=>typeof item.equipped==='boolean')
+  return hasExplicit?[]:candidates.slice(0,1)
+}
+export function dedicatedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot!=='armor')}
+export function overflowTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot==='armor')}
 export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){
-  return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
+  const protective=equippedProtectiveItems(items)
+  const base=protective.reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
+  const armor=protective.find(item=>protectiveGearKind(item)==='armor')
+  const heartward=Boolean(armor&&equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Heartward Token'&&item.attachedTo===armor.name))
+  return base+(heartward?1:0)
 }
 export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){
   return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)
 }
 export function equippedProtectiveGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined){return equippedProtectiveItems(items)}
-export type ArcaneFocusEquipmentSource={name:string;statBonuses?:EquipmentStatBonuses;quantity?:number;activeArcaneFocus?:boolean}
+export type ArcaneFocusEquipmentSource=ProtectiveEquipmentSource&{statBonuses?:EquipmentStatBonuses;quantity?:number;activeArcaneFocus?:boolean}
 export function activeArcaneFocus<T extends ArcaneFocusEquipmentSource>(items:T[]|undefined):T|undefined{
-  const focuses=(items||[]).filter(item=>isArcaneFocusName(item.name))
+  const focuses=equippedTrinketGear(items).filter(item=>isArcaneFocusName(canonicalGearName(item.name)))
   if(!focuses.length)return undefined
   const explicit=focuses.find(item=>item.activeArcaneFocus===true)
   if(explicit)return explicit
@@ -93,11 +119,33 @@ export function activeArcaneFocus<T extends ArcaneFocusEquipmentSource>(items:T[
 }
 export function equipmentControlBonus(items:ArcaneFocusEquipmentSource[]|undefined){
   const list=items||[]
-  const ordinary=list.filter(item=>!isArcaneFocusName(item.name)).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
+  const ordinary=list.filter(item=>!isArcaneFocusName(canonicalGearName(item.name))&&!isTrinketGear(item)).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)
   const focus=activeArcaneFocus(list)
   return ordinary+(focus?Math.max(0,Number(focus.statBonuses?.control)||0):0)
 }
-export function equipmentSpellManaReduction(items:ArcaneFocusEquipmentSource[]|undefined){return activeArcaneFocus(items)?.name==='Scriptweave Book'?1:0}
+export function equipmentSpellManaReduction(items:ArcaneFocusEquipmentSource[]|undefined){return canonicalGearName(activeArcaneFocus(items)?.name||'')==='Scriptweave Book'?1:0}
+export function equipmentMagicRegenBonus(items:ArcaneFocusEquipmentSource[]|undefined){
+  const equipped=equippedTrinketGear(items)
+  let bonus=equipped.some(item=>canonicalGearName(item.name)==='Shiny Bobble')?1:0
+  if(canonicalGearName(activeArcaneFocus(items)?.name||'')==='Scriptweave Book')bonus+=1
+  return bonus
+}
+export function equipmentRenewHeartConditionBonus(items:ProtectiveEquipmentSource[]|undefined){return equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Votive Icon')?1:0}
+export function equipmentSpellDamageBonus(items:ProtectiveEquipmentSource[]|undefined){return equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Spell Charm')?1:0}
+export function equipmentWeaponToHitBonus(items:ProtectiveEquipmentSource[]|undefined,weaponName:string){
+  const names=new Set(['Journey Knot','Quickdraw Quiver','Wristloop'])
+  return equippedTrinketGear(items).some(item=>item.attachedTo===weaponName&&names.has(canonicalGearName(item.name)))?1:0
+}
+export function equipmentAttachmentTargets(item:ProtectiveEquipmentSource,equipment:ProtectiveEquipmentSource[]|undefined){
+  const name=canonicalGearName(item.name)
+  const weapons=(equipment||[]).filter(candidate=>candidate.category==='Weapon')
+  if(name==='Quickdraw Quiver')return weapons.filter(candidate=>/\bbow\b/i.test(candidate.name)&&!/crossbow/i.test(candidate.name)).map(candidate=>candidate.name)
+  if(name==='Featherwind Bolt-Case')return weapons.filter(candidate=>/crossbow/i.test(candidate.name)).map(candidate=>candidate.name)
+  if(name==='Wristloop')return weapons.filter(candidate=>/Thrown/i.test(candidate.detail||'')).map(candidate=>candidate.name)
+  if(name==='Journey Knot'||name==='Sharpening Stone')return weapons.map(candidate=>candidate.name)
+  if(name==='Heartward Token')return (equipment||[]).filter(candidate=>candidate.category==='Armor & Shield'&&protectiveGearKind(candidate)==='armor').map(candidate=>candidate.name)
+  return[]
+}
 
 export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0){
   const agility=Number(attributes.agility||0)
@@ -120,10 +168,10 @@ export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBo
   }
 }
 
-export function magicResources(attributes:CoreAttributeRanks,magicLevel=0){
+export function magicResources(attributes:CoreAttributeRanks,magicLevel=0,magicRegenBonus=0){
   const stats=derivedStats(attributes)
   const level=Math.max(0,Number(magicLevel)||0)
-  return{manaPool:level+stats.spirit,magicRegen:stats.heart}
+  return{manaPool:level+stats.spirit,magicRegen:stats.heart+Math.max(0,Number(magicRegenBonus)||0)}
 }
 
 export function weaponProfile(item:EquipmentProfileSource|undefined){
@@ -141,16 +189,19 @@ function addWeaponDamageBonus(value:string,bonus:number){
   return value.replace(/\d+(?:\.\d+)?/,match=>{if(applied)return match;applied=true;return String(Number(match)+bonus)})
 }
 export function characterSheetWeaponName(name:string){return String(name||'').replace(/\s+\([^()]+\)\s*$/,'').trim()||'—'}
-const CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS:Readonly<Record<string,number>>={
-  'Journey Knot':1,
-  'Sharpening Stone':1,
+const CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS:Readonly<Record<string,number>>={'Sharpening Stone':1}
+function attachmentLabel(item:CharacterSheetEquipmentSource){
+  const name=canonicalGearName(item.name)
+  if(name==='Journey Knot')return'Journey Knot (+1 TO HIT once/round)'
+  return name
 }
 export function characterSheetWeaponProfile(item:CharacterSheetEquipmentSource|undefined,equipment:CharacterSheetEquipmentSource[]|undefined=[]){
   const base=weaponProfile(item)
   if(!item)return base
-  const attachedDamageSources=(equipment||[]).filter(candidate=>candidate.attachedTo===item.name&&CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[candidate.name])
-  const damageBonus=attachedDamageSources.reduce((sum,candidate)=>sum+CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[candidate.name],0)
-  const properties=[base.properties==='—'?'':base.properties,...attachedDamageSources.map(candidate=>candidate.name)].filter(Boolean).join(', ')||'—'
+  const attached=(equipment||[]).filter(candidate=>candidate.attachedTo===item.name&&(!isTrinketGear(candidate)||candidate.equipped===true))
+  const attachedDamageSources=attached.filter(candidate=>CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[canonicalGearName(candidate.name)])
+  const damageBonus=attachedDamageSources.reduce((sum,candidate)=>sum+CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS[canonicalGearName(candidate.name)],0)
+  const properties=[base.properties==='—'?'':base.properties,...attached.map(attachmentLabel)].filter(Boolean).join(', ')||'—'
   return{...base,name:characterSheetWeaponName(base.name),damage:addWeaponDamageBonus(base.damage,damageBonus),properties}
 }
 
@@ -158,6 +209,12 @@ export function armorProfile(item:EquipmentProfileSource|undefined){
   if(!item)return{name:'—',guts:'—',mana:'—',stealth:'—',might:'—',weight:'—'}
   const values=armorProfileValues(item.detail||'')
   return{name:item.name,...values}
+}
+export function characterSheetArmorProfile(item:CharacterSheetEquipmentSource|undefined,equipment:CharacterSheetEquipmentSource[]|undefined=[]){
+  const base=armorProfile(item)
+  if(!item||protectiveGearKind(item)!=='armor')return base
+  const bonus=equippedTrinketGear(equipment).some(candidate=>canonicalGearName(candidate.name)==='Heartward Token'&&candidate.attachedTo===item.name)?1:0
+  return{...base,guts:addNumericProfileBonus(base.guts,bonus)}
 }
 
 export type StructuredRuleField={label:string;value:string}

@@ -11,6 +11,19 @@ export type LegacyGearPriceSource={name:string;costWp?:number;costSp?:number;cos
 export type EconomyGearItem=GearShopItem&{costWp:number}
 export type ProtectiveGearKind='armor'|'shield'
 
+export const LEGACY_GEAR_NAME_ALIASES:Readonly<Record<string,string>>={
+  'Totem':'Caster Totem',
+  'Caster’s Totem':'Caster Totem',
+  "Caster's Totem":'Caster Totem',
+  'Charm':'Spell Charm',
+  'Len-stone Arcanum':'Lens-Stone Arcanum',
+}
+export function canonicalGearName(name:string){return LEGACY_GEAR_NAME_ALIASES[String(name||'')]||String(name||'')}
+export const TRINKET_NAMES=new Set([
+  'Journey Knot','Caster Totem','Lens-Stone Arcanum','Scriptweave Book','Quickdraw Quiver','Featherwind Bolt-Case','Wristloop','Shiny Bobble','Votive Icon','Spell Charm','Heartward Token',
+])
+export function isTrinketGear(item:{name:string;category?:string}){return item.category==='Trinket'||TRINKET_NAMES.has(canonicalGearName(item.name))}
+
 export const GEAR_PRICE_WP:Readonly<Record<string,number>>={
   'Club':50,
   'Shade Blade (Dagger)':150,
@@ -86,9 +99,12 @@ export const GEAR_PRICE_WP:Readonly<Record<string,number>>={
   'Liquid Fire':200,
   'Potion of Healing':250,
   'Scriptweave Book':600,
-  'Totem':300,
-  'Charm':350,
-  'Len-stone Arcanum':300,
+  'Caster Totem':300,
+  'Spell Charm':350,
+  'Lens-Stone Arcanum':300,
+  'Shiny Bobble':500,
+  'Votive Icon':350,
+  'Heartward Token':500,
   'Cloak of Windweave':500,
   'Quickdraw Quiver':300,
   'Featherwind Bolt-Case':300,
@@ -147,7 +163,7 @@ export const TRANSPORT_PRICE_WP:Readonly<Record<string,number>>={
 export const GEAR_PRICE_UNIT:Readonly<Record<string,ThreadpieceUnit>>={
   'Club':'sp','Shade Blade (Dagger)':'sp','Timber Fang (Hatchet)':'sp','Rootbreaker (Mace)':'sp','Oak Staff (Quarterstaff)':'sp','Brush Blade (Short Sword)':'sp','Field Blade (Long Sword)':'sp','Stonebreaker (Warhammer)':'sp','Thornspike (Dart)':'wp','Reedpipe (Blowpipe)':'wp','Sling':'np','Brush Bow (Short Bow)':'sp','Far Bow (Long Bow)':'sp','Quicklock (Light Crossbow)':'sp','Latchlock (Heavy Crossbow)':'sp',
   'Leafsitch':'sp','Barkskin Vest':'sp','Briarhide':'sp','Roughscale':'sp','Root Weave':'sp','Heartguard':'sp','Earthforged Plate':'sp','Toughscale':'sp','Durtlehide':'sp','Runeforged Plate':'sp','Sapguard':'sp','Vinegrip':'sp','Ironwood Bulwark':'sp',
-  'Bedroll & Groundsheet':'np','Traveler’s Cloak':'sp',"Traveler's Cloak":'sp','Torch (each)':'wp','Travel Lantern':'sp','Glowfruit Cage':'np','Waterskin':'np','Reed Flask':'np','Travel Meal (2 day)':'np','Trail Rations (1 day)':'np','Traveler’s Pack':'sp',"Traveler's Pack":'sp','Forager’s Satchel':'np',"Forager's Satchel":'np','Fire-Starting Kit':'np','Traveler’s Rope (20 ft)':'sp',"Traveler's Rope (20 ft)":'sp','Glow-Moss Chalk':'wp','Rootwalker Bundle':'np','Artisan':'sp','Artisan Kit':'sp','Climber':'sp','Climber Kit':'sp','Disguise':'sp','Disguise Kit':'sp','Forgery':'sp','Forgery Kit':'sp','Navigator':'sp','Navigator Kit':'sp','Poisoner':'sp','Poisoner Kit':'sp','Herbalist':'sp','Herbalist Kit':'sp','Infusion':'sp','Infusion Kit':'sp','Thieves’':'sp',"Thieves'":'sp','Thieves’ Kit':'sp',"Thieves' Kit":'sp','Antivenin':'sp','Aroma':'sp','Black Water':'sp','Blessed Water':'sp','Liquid Fire':'sp','Potion of Healing':'sp','Scriptweave Book':'sp','Totem':'sp','Charm':'sp','Len-stone Arcanum':'sp','Cloak of Windweave':'sp','Quickdraw Quiver':'sp','Featherwind Bolt-Case':'sp','Wristloop':'sp','Sharpening Stone':'sp','Journey Knot':'sp','Shovel':'np','Mallet':'np','Hatchet':'sp','Hand Saw':'sp','Trowel':'np','Pry Bar':'np',
+  'Bedroll & Groundsheet':'np','Traveler’s Cloak':'sp',"Traveler's Cloak":'sp','Torch (each)':'wp','Travel Lantern':'sp','Glowfruit Cage':'np','Waterskin':'np','Reed Flask':'np','Travel Meal (2 day)':'np','Trail Rations (1 day)':'np','Traveler’s Pack':'sp',"Traveler's Pack":'sp','Forager’s Satchel':'np',"Forager's Satchel":'np','Fire-Starting Kit':'np','Traveler’s Rope (20 ft)':'sp',"Traveler's Rope (20 ft)":'sp','Glow-Moss Chalk':'wp','Rootwalker Bundle':'np','Artisan':'sp','Artisan Kit':'sp','Climber':'sp','Climber Kit':'sp','Disguise':'sp','Disguise Kit':'sp','Forgery':'sp','Forgery Kit':'sp','Navigator':'sp','Navigator Kit':'sp','Poisoner':'sp','Poisoner Kit':'sp','Herbalist':'sp','Herbalist Kit':'sp','Infusion':'sp','Infusion Kit':'sp','Thieves’':'sp',"Thieves'":'sp','Thieves’ Kit':'sp',"Thieves' Kit":'sp','Antivenin':'sp','Aroma':'sp','Black Water':'sp','Blessed Water':'sp','Liquid Fire':'sp','Potion of Healing':'sp','Scriptweave Book':'sp','Caster Totem':'sp','Spell Charm':'sp','Lens-Stone Arcanum':'sp','Shiny Bobble':'sp','Votive Icon':'sp','Heartward Token':'sp','Cloak of Windweave':'sp','Quickdraw Quiver':'sp','Featherwind Bolt-Case':'sp','Wristloop':'sp','Sharpening Stone':'sp','Journey Knot':'sp','Shovel':'np','Mallet':'np','Hatchet':'sp','Hand Saw':'sp','Trowel':'np','Pry Bar':'np',
 }
 
 export const TRADE_GOOD_PRICE_UNIT:Readonly<Record<string,ThreadpieceUnit>>={
@@ -173,14 +189,14 @@ function legacyGearPriceWp(item:LegacyGearPriceSource){
 }
 
 export function canonicalGearCostWp(item:LegacyGearPriceSource){
-  const listed=GEAR_PRICE_WP[item.name]
+  const listed=GEAR_PRICE_WP[canonicalGearName(item.name)]
   if(Number.isFinite(listed))return Math.max(0,Math.floor(Number(listed)))
   const direct=Math.floor(Number(item.costWp))
   if(Number.isFinite(direct)&&direct>=0)return direct
   return legacyGearPriceWp(item)
 }
 
-export function canonicalGearCostLabel(item:LegacyGearPriceSource){const wp=canonicalGearCostWp(item);const unit=GEAR_PRICE_UNIT[item.name];return unit?formatThreadpieceWpAs(wp,unit):formatThreadpieceWp(wp)}
+export function canonicalGearCostLabel(item:LegacyGearPriceSource){const wp=canonicalGearCostWp(item);const unit=GEAR_PRICE_UNIT[canonicalGearName(item.name)];return unit?formatThreadpieceWpAs(wp,unit):formatThreadpieceWp(wp)}
 export function ordinaryGearResaleWp(item:LegacyGearPriceSource){return Math.floor(canonicalGearCostWp(item)*ORDINARY_GEAR_RESALE_PERCENT/100)}
 export function tradeGoodResaleWp(name:string){return Math.floor((TRADE_GOOD_PRICE_WP[name]||0)*TRADE_GOOD_RESALE_PERCENT/100)}
 export function craftingMaterialFloorWp(retailWp:number){return Math.floor(Math.max(0,Number(retailWp)||0)*CRAFTING_MATERIAL_FLOOR_PERCENT/100)}
@@ -210,7 +226,7 @@ export function canonicalRulePriceWp(documentKey:string,itemName:string){
 export function canonicalRulePriceLabel(documentKey:string,itemName:string){
   const wp=canonicalRulePriceWp(documentKey,itemName)
   if(!Number.isFinite(wp))return''
-  const unit=documentKey==='trade-goods'?TRADE_GOOD_PRICE_UNIT[itemName]:documentKey==='transportation'?TRANSPORT_PRICE_UNIT[itemName]:GEAR_PRICE_UNIT[itemName]
+  const unit=documentKey==='trade-goods'?TRADE_GOOD_PRICE_UNIT[itemName]:documentKey==='transportation'?TRANSPORT_PRICE_UNIT[itemName]:GEAR_PRICE_UNIT[canonicalGearName(itemName)]
   return unit?formatThreadpieceWpAs(Number(wp),unit):formatThreadpieceWp(Number(wp))
 }
 

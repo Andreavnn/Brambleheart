@@ -7,10 +7,11 @@ const props=withDefaults(defineProps<{
   magicLevel?:number
   gutsBonus?:number
   controlBonus?:number
-}>(),{magicLevel:0,gutsBonus:0,controlBonus:0})
+  magicRegenBonus?:number
+}>(),{magicLevel:0,gutsBonus:0,controlBonus:0,magicRegenBonus:0})
 
 const stats=computed(()=>derivedStats(props.attributes,props.gutsBonus,props.controlBonus))
-const resources=computed(()=>magicResources(props.attributes,props.magicLevel))
+const resources=computed(()=>magicResources(props.attributes,props.magicLevel,props.magicRegenBonus))
 const groups=computed(()=>[
   {id:'agility',name:'Agility',short:'AGI',rank:props.attributes.agility,modifier:rankModifier(props.attributes.agility),secondary:[
     {name:'Accuracy',value:stats.value.accuracy,detail:`${stats.value.accuracy} AGI RNK`},
@@ -56,7 +57,7 @@ const groups=computed(()=>[
     </div>
     <div class="character-magic-resource-grid">
       <article class="mana-pool-resource"><span>Mana Pool</span><strong>{{ resources.manaPool }}</strong><small>{{ props.magicLevel }} MAG LVL + {{ stats.spirit }} BRY MOD</small></article>
-      <article class="magic-regen-resource"><span>Magic Regen</span><strong>{{ resources.magicRegen }}</strong><small>{{ stats.heart }} BRY RNK</small></article>
+      <article class="magic-regen-resource"><span>Magic Regen</span><strong>{{ resources.magicRegen }}</strong><small>{{ props.magicRegenBonus ? `${stats.heart} BRY RNK + ${props.magicRegenBonus} TRINKET` : `${stats.heart} BRY RNK` }}</small></article>
     </div>
   </div>
 </template>

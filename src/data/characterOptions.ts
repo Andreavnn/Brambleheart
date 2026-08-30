@@ -3,7 +3,7 @@ import type { EquipmentStatBonuses } from './equipment'
 export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
-export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Spellcasting Implements'|'Accessories'|'Tools'
+export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Spellcasting Implements'|'Accessories'|'Trinkets'|'Tools'
 export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
 
 export const sparkDetails: Record<string,SparkDetail> = {
@@ -860,49 +860,76 @@ export const gearShopItems: GearShopItem[] = [
   },
   {
     "name": "Scriptweave Book",
-    "category": "Adventuring Gear",
-    "costText": "5 np",
-    "costSp": 1.0,
+    "category": "Trinket",
+    "costText": "12 sp",
+    "costSp": 12.0,
     "detail": "1 lb.",
-    "description": "A sturdy book that can be inscribed and prepared as the required Spellbook focus for a caster.",
-    "effect": "When prepared as a Spellbook, it is required for that caster’s spellcasting. Each known spell may be cast only once per encounter; spell Mana cost is −1, non-lethal spell damage is +1, and Control is +1.",
+    "description": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm.",
+    "effect": "While equipped and used as your active arcane focus, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana.",
+    "shopGroup": "Trinkets"
+  },
+  {
+    "name": "Caster Totem",
+    "category": "Trinket",
+    "costText": "6 sp",
+    "costSp": 6.0,
+    "detail": "—",
+    "description": "A crafted bone, wood, metal, or woven focus carried as a personal channel for spellwork.",
+    "effect": "While equipped and used as your active arcane focus, gain [+1] Control.",
     "statBonuses": {
       "control": 1
     },
-    "shopGroup": "Spellcasting Implements"
+    "shopGroup": "Trinkets"
   },
   {
-    "name": "Totem",
-    "category": "Adventuring Gear",
-    "costText": "5 np",
-    "costSp": 1.0,
+    "name": "Spell Charm",
+    "category": "Trinket",
+    "costText": "7 sp",
+    "costSp": 7.0,
     "detail": "—",
-    "description": "A crafted bone, wood, metal, or woven charm that can be designated as a caster’s arcane focus.",
-    "effect": "May be designated as an arcane focus. While held or worn as the required focus, gain +1 to Control.",
-    "statBonuses": {
-      "control": 1
-    },
-    "shopGroup": "Spellcasting Implements"
+    "description": "A small enchanted emblem worn or carried to reinforce a single magical working.",
+    "effect": "Once per round, increase the damage of one spell by [+1].",
+    "shopGroup": "Trinkets"
   },
   {
-    "name": "Charm",
-    "category": "Adventuring Gear",
-    "costText": "10 np",
-    "costSp": 2.0,
+    "name": "Lens-Stone Arcanum",
+    "category": "Trinket",
+    "costText": "6 sp",
+    "costSp": 6.0,
     "detail": "—",
-    "description": "A small enchanted emblem worn or carried to reinforce spell damage.",
-    "effect": "Once per round, increase the damage of one spell by +1.",
-    "shopGroup": "Spellcasting Implements"
+    "description": "A polished crystal lens bound in cord that bends the pressure of a compelled magical effect.",
+    "effect": "Once per encounter, when a spell compels Renew the Heart, adjust that passive target by one category higher or lower.",
+    "shopGroup": "Trinkets"
   },
   {
-    "name": "Len-stone Arcanum",
-    "category": "Adventuring Gear",
-    "costText": "15 np",
-    "costSp": 3.0,
+    "name": "Shiny Bobble",
+    "category": "Trinket",
+    "costText": "10 sp",
+    "costSp": 10.0,
     "detail": "—",
-    "description": "A polished crystal lens bound in cord that alters a compelled Renew the Heart target once per encounter.",
-    "effect": "Once per encounter, when a spell compels Renew the Heart, adjust the passive target by one category up or down.",
-    "shopGroup": "Spellcasting Implements"
+    "description": "A bright little charm that catches stray magical currents and returns them to its bearer.",
+    "effect": "While equipped, increase Magic Regen by [+1].",
+    "shopGroup": "Trinkets"
+  },
+  {
+    "name": "Votive Icon",
+    "category": "Trinket",
+    "costText": "7 sp",
+    "costSp": 7.0,
+    "detail": "—",
+    "description": "A small devotional icon carried as a reminder of faith, resolve, and the promises that steady the heart.",
+    "effect": "While equipped, gain condition [+1] when using Renew the Heart.",
+    "shopGroup": "Trinkets"
+  },
+  {
+    "name": "Heartward Token",
+    "category": "Trinket",
+    "costText": "10 sp",
+    "costSp": 10.0,
+    "detail": "—",
+    "description": "A protective token fastened to armor so its warding joins the armor’s own resilience.",
+    "effect": "While equipped and attached to worn armor, increase that armor’s Guts Bonus by [+1].",
+    "shopGroup": "Trinkets"
   },
   {
     "name": "Cloak of Windweave",
@@ -927,33 +954,33 @@ export const gearShopItems: GearShopItem[] = [
   },
   {
     "name": "Quickdraw Quiver",
-    "category": "Adventuring Gear",
-    "costText": "10 np",
-    "costSp": 2.0,
+    "category": "Trinket",
+    "costText": "6 sp",
+    "costSp": 6.0,
     "detail": "1 lb.",
     "description": "A rigid quiver designed for rapid arrow retrieval.",
-    "effect": "Gain +1 Strike with bows using Shoot.",
-    "shopGroup": "Accessories"
+    "effect": "While equipped and attached to a bow, gain condition [+1] to TO HIT rolls made with that bow.",
+    "shopGroup": "Trinkets"
   },
   {
     "name": "Featherwind Bolt-Case",
-    "category": "Adventuring Gear",
-    "costText": "10 np",
-    "costSp": 2.0,
+    "category": "Trinket",
+    "costText": "6 sp",
+    "costSp": 6.0,
     "detail": "1 lb.",
     "description": "A smooth-lined case that keeps crossbow bolts from snagging.",
-    "effect": "Gain +1 Accuracy with crossbows.",
-    "shopGroup": "Accessories"
+    "effect": "While equipped and attached to a crossbow, gain [+1] Accuracy with that crossbow.",
+    "shopGroup": "Trinkets"
   },
   {
     "name": "Wristloop",
-    "category": "Adventuring Gear",
-    "costText": "5 np",
-    "costSp": 1.0,
+    "category": "Trinket",
+    "costText": "4 sp",
+    "costSp": 4.0,
     "detail": "—",
     "description": "A fitted wrist strap that improves the release of thrown weapons.",
-    "effect": "Gain +1 Strike with thrown weapons.",
-    "shopGroup": "Accessories"
+    "effect": "While equipped and attached to a thrown weapon, gain condition [+1] to TO HIT rolls made with that weapon.",
+    "shopGroup": "Trinkets"
   },
   {
     "name": "Sharpening Stone",
@@ -967,13 +994,13 @@ export const gearShopItems: GearShopItem[] = [
   },
   {
     "name": "Journey Knot",
-    "category": "Adventuring Gear",
-    "costText": "5 np",
-    "costSp": 1.0,
+    "category": "Trinket",
+    "costText": "7 sp",
+    "costSp": 7.0,
     "detail": "—",
     "description": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb.",
-    "effect": "Once per round, add +1 damage to one attack made with the attached weapon.",
-    "shopGroup": "Accessories"
+    "effect": "Once per round, while equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon.",
+    "shopGroup": "Trinkets"
   },
   {
     "name": "Shovel",

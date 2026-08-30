@@ -2,7 +2,7 @@ import { BUILD, type AttributeId } from '../data/bramble'
 import { gearShopItems as legacyGearShopItems } from '../data/characterOptions'
 import { canonicalTalentName } from '../data/talentCategories'
 import type { EquipmentStatBonuses } from '../data/equipment'
-import { STARTING_WEALTH_WP, canonicalGearCostWp, economyGearCatalog, protectiveGearKind } from '../rules/economy'
+import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, economyGearCatalog, isTrinketGear, protectiveGearKind } from '../rules/economy'
 import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { isArcaneFocusName } from '../rules/magicRules'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
@@ -25,9 +25,11 @@ export interface PurchasedEquipment {
   attachedTo?:string
   quantity?:number
   statBonuses?:EquipmentStatBonuses
-  /** Used only by protective gear. At most one armor and one shield may be equipped. */
+  /** Used by protective gear and Trinkets. */
   equipped?:boolean
-  /** Used only by Arcane Focus gear. At most one focus may be active. */
+  /** A Trinket normally uses the dedicated slot; one optional second Trinket may use an Armor & Shield slot. */
+  trinketSlot?:'trinket'|'armor'
+  /** Used only by Arcane Focus gear. At most one equipped focus may be active. */
   activeArcaneFocus?:boolean
 }
 export interface CharacterRecord {
@@ -114,13 +116,18 @@ function legacyPaidWp(item:PurchasedEquipment,currentCostWp:number){
 }
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
   const normalized=(items||[]).map(item=>{
-    const source=economyGearItems.find(candidate=>candidate.name===item.name&&candidate.category===item.category)
-      ||economyGearItems.find(candidate=>candidate.name===item.name)
-    const currentCostWp=source?.costWp??canonicalGearCostWp(item)
-    const statBonuses=item.statBonuses??source?.statBonuses
+    const name=canonicalGearName(item.name)
+    const source=economyGearItems.find(candidate=>candidate.name===name&&candidate.category===item.category)
+      ||economyGearItems.find(candidate=>candidate.name===name)
+    const category=source?.category??(isTrinketGear({name,category:item.category})?'Trinket':item.category)
+    const currentCostWp=source?.costWp??canonicalGearCostWp({...item,name})
+    const statBonuses=source?.statBonuses??item.statBonuses
     const effect=source?.effect??item.effect
     return{
       ...item,
+      name,
+      category,
+      detail:source?.detail??item.detail,
       costWp:currentCostWp,
       costPaidWp:legacyPaidWp(item,currentCostWp),
       // Compatibility only. These are derived from costWp and are never read as price authority.
@@ -138,7 +145,27 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
     const chosen=indexes.find(index=>normalized[index].equipped===true)??(!hasExplicit?indexes[0]:-1)
     for(const index of indexes)normalized[index].equipped=index===chosen
   }
-  const focusIndexes=normalized.map((item,index)=>isArcaneFocusName(item.name)?index:-1).filter(index=>index>=0)
+
+  const trinketIndexes=normalized.map((item,index)=>isTrinketGear(item)?index:-1).filter(index=>index>=0)
+  if(trinketIndexes.length){
+    const hasExplicit=trinketIndexes.some(index=>typeof normalized[index].equipped==='boolean'||Boolean(normalized[index].trinketSlot))
+    const preferred=trinketIndexes.find(index=>normalized[index].equipped===true&&normalized[index].trinketSlot!=='armor')
+      ??trinketIndexes.find(index=>normalized[index].activeArcaneFocus===true)
+      ??(!hasExplicit?trinketIndexes[0]:-1)
+    for(const index of trinketIndexes){
+      if(index===preferred){normalized[index].equipped=true;normalized[index].trinketSlot='trinket'}
+      else if(normalized[index].trinketSlot!=='armor')normalized[index].equipped=false
+    }
+    const protectiveUsed=normalized.filter(item=>item.category==='Armor & Shield'&&item.equipped===true).length
+    const overflow=protectiveUsed<2?trinketIndexes.find(index=>index!==preferred&&normalized[index].equipped===true&&normalized[index].trinketSlot==='armor'):-1
+    for(const index of trinketIndexes){
+      if(index===overflow){normalized[index].equipped=true;normalized[index].trinketSlot='armor'}
+      else if(index!==preferred&&normalized[index].trinketSlot==='armor'){normalized[index].equipped=false;delete normalized[index].trinketSlot}
+    }
+  }
+
+  const focusIndexes=normalized.map((item,index)=>isArcaneFocusName(item.name)&&item.equipped===true?index:-1).filter(index=>index>=0)
+  for(const item of normalized)if(isArcaneFocusName(item.name)&&item.equipped!==true)item.activeArcaneFocus=false
   if(focusIndexes.length){
     const chosen=focusIndexes.find(index=>normalized[index].activeArcaneFocus===true)??focusIndexes[0]
     for(const index of focusIndexes)normalized[index].activeArcaneFocus=index===chosen
@@ -158,18 +185,45 @@ export function characterWealthWp(record:Pick<CharacterRecord,'wealthWp'|'wealth
   return 0
 }
 export function currentEquipmentRetailWp(item:PurchasedEquipment){return canonicalGearCostWp(item)}
+function protectiveSlotUse(items:PurchasedEquipment[]|undefined){return (items||[]).filter(item=>item.category==='Armor & Shield'&&item.equipped===true).length+(items||[]).filter(item=>isTrinketGear(item)&&item.equipped===true&&item.trinketSlot==='armor').length}
+export function canEquipProtectiveEquipment(items:PurchasedEquipment[]|undefined,index:number){
+  const list=items||[];const target=list[index];if(!target||!protectiveGearKind(target))return false
+  if(target.equipped===true)return true
+  const kind=protectiveGearKind(target)
+  const sameKindAlready=list.some((item,itemIndex)=>itemIndex!==index&&protectiveGearKind(item)===kind&&item.equipped===true)
+  return protectiveSlotUse(list)-(sameKindAlready?1:0)<2
+}
 export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){
   const next=(items||[]).map(item=>({...item}))
   const target=next[index];if(!target)return next
   const kind=protectiveGearKind(target);if(!kind)return next
-  for(const item of next)if(protectiveGearKind(item)===kind)item.equipped=false
-  target.equipped=equipped
+  if(!equipped){target.equipped=false;return next}
+  for(const item of next)if(item!==target&&protectiveGearKind(item)===kind)item.equipped=false
+  if(protectiveSlotUse(next)>=2&&target.equipped!==true)return next
+  target.equipped=true
+  return next
+}
+export function canEquipTrinketInArmorSlot(items:PurchasedEquipment[]|undefined,index:number){
+  const list=items||[];const target=list[index];if(!target||!isTrinketGear(target))return false
+  if(target.equipped===true&&target.trinketSlot==='armor')return true
+  return protectiveSlotUse(list)<2
+}
+export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,slot:'trinket'|'armor'|null){
+  const next=(items||[]).map(item=>({...item}))
+  const target=next[index];if(!target||!isTrinketGear(target))return next
+  if(slot===null){target.equipped=false;delete target.trinketSlot;if(isArcaneFocusName(target.name))target.activeArcaneFocus=false;return next}
+  if(slot==='armor'&&!canEquipTrinketInArmorSlot(next,index))return next
+  for(const item of next){
+    if(item===target||!isTrinketGear(item))continue
+    if((item.trinketSlot||'trinket')===slot&&item.equipped===true){item.equipped=false;delete item.trinketSlot;if(isArcaneFocusName(item.name))item.activeArcaneFocus=false}
+  }
+  target.equipped=true;target.trinketSlot=slot
   return next
 }
 
 export function setActiveArcaneFocus(items:PurchasedEquipment[]|undefined,index:number,active=true){
   const next=(items||[]).map(item=>({...item}))
-  const target=next[index];if(!target||!isArcaneFocusName(target.name))return next
+  const target=next[index];if(!target||!isArcaneFocusName(target.name)||target.equipped!==true)return next
   for(const item of next)if(isArcaneFocusName(item.name))item.activeArcaneFocus=false
   target.activeArcaneFocus=active
   return next

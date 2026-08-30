@@ -31,7 +31,7 @@ function unitLabel(unit:MeasurementUnit,value:number){
 
 export function formatMeasurementToken(squareValue:number,unit=currentMeasurement()){
   const value=convertSquares(squareValue,unit)
-  return`[${value}]${unitLabel(unit,value)}`
+  return`[${value}] ${unitLabel(unit,value)}`
 }
 
 export function formatMeasurementText(value:string,unit=currentMeasurement()){

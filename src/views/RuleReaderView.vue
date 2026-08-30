@@ -197,7 +197,7 @@ const weaponQualitySections=computed(()=>ruleSourceDocuments.weapons.sections.ma
 const armorRuleSections=computed(()=>ruleSourceDocuments['armor-shields'].sections.filter(section=>section.heading!=='Overview'&&section.blocks.length))
 const adventuringSectionGroups=computed(()=>[
   {title:'Threadpieces & Adventuring Kit',headings:['THREADPIECES','TYPES OF THREADPIECES','WASHER PIECES (WP)','NUT PIECES (NP)','SCREW PIECES (SP)','BOLT PIECES (BP)','Standard Exchange Rate','SELLING TREASURE','ADVENTURING KIT']},
-  {title:'Traveler’s Gear',headings:['TRAVELER’S GEAR']},{title:'Field Kits',headings:['FIELD KITS']},{title:'Consumables',headings:['ALCHEMICAL LIQUIDS & CONSUMABLES']},{title:'Spellcasting Implements',headings:['SPELLCASTING IMPLEMENTS']},{title:'Accessories',headings:['ACCESSORIES']},{title:'Tools',headings:['TOOLS']},
+  {title:'Traveler’s Gear',headings:['TRAVELER’S GEAR']},{title:'Field Kits',headings:['FIELD KITS']},{title:'Consumables',headings:['ALCHEMICAL LIQUIDS & CONSUMABLES']},{title:'Spellcasting Implements',headings:['SPELLCASTING IMPLEMENTS']},{title:'Trinkets',headings:['TRINKETS']},{title:'Accessories',headings:['ACCESSORIES']},{title:'Tools',headings:['TOOLS']},
 ].map(group=>({title:group.title,sections:group.headings.map(heading=>sectionByHeading('adventuring-gear',heading)).filter((section):section is RuleSourceSection=>Boolean(section))})).filter(group=>group.sections.length))
 </script>
 

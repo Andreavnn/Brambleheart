@@ -1,21 +1,26 @@
-# Brambleheart TTRPG — Beta 0.39
+# Brambleheart TTRPG — Beta 0.40
 
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.39 is a cumulative presentation and rules-teaching release built on GitHub `main` commit `cb264ae4d57eeaa27aff789ed1f48aedcdcda01e` (Beta 0.38.0 with the 0.38 build fix).
+Beta 0.40 is a cumulative equipment, character-sheet, and rules-teaching release built on GitHub `main` commit `0f631f02a8e289f9bc35557e513667c21d728fc3` (Beta 0.39.0).
 
-## Beta 0.39 presentation work
+## Rule Updates v0.05
 
-- Character Creation Attribute boxes now use the same Attribute color identities as the shared Character Sheet.
-- Speed uses a smaller one-line `2 + AGI MOD = total` formula.
-- Rhythm of Body & Spirit path cards have distinct top-border colors and shorter Tempered Form presentation.
-- Talent card top borders use the same semantic ability colors as their ability families.
-- Rhythm Engine Character Sheet weapon Properties / Notes are rendered as pills again.
-- The Rules Layout Test Abilities page includes a responsive Selu encounter graphic showing Arcane Command used with the Hearth Touch Talent.
+Rule Updates are versioned independently from application builds. Beta 0.40 advances the rules stream to v0.05 because it changes equipment loadout rules and Trinket mechanics.
 
-## Rule Updates v0.04
+### Trinkets
 
-Rule Updates are versioned independently from application builds. Beta 0.39 does not change the underlying rule mechanics, so the current rules-update stream remains v0.04.
+Each character has one dedicated Trinket slot. A second Trinket may be equipped by using one of the character’s two Armor & Shield slots. Additional owned Trinkets remain carried and inactive until equipped. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
+
+Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy equipment names are converted at the saved-character normalization boundary.
+
+- Journey Knot — once per round, condition `+1` to one TO HIT roll made with its attached weapon.
+- Scriptweave Book — while equipped as the active arcane focus, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
+- Caster Totem — while equipped as the active arcane focus, Control `+1`.
+- Spell Charm — once per round, increase one spell’s damage by `+1`.
+- Shiny Bobble — Magic Regen `+1`.
+- Votive Icon — condition `+1` when using Renew the Heart.
+- Heartward Token — while equipped and attached to worn armor, that armor’s Guts Bonus increases by `+1`.
 
 ### Rhythm of Body & Spirit
 
@@ -26,45 +31,27 @@ Character Creation offers four starting paths, each granting at least one Talent
 - Practiced Hand — 2 new Skills at Rank 1 + 1 Talent.
 - Tempered Form — +1 Rank to one Attribute + 1 Talent, up to the normal Rank 3 creation maximum.
 
-Practiced Hand cannot choose Skills the character already knows. The selected path and its Skill/Attribute choices are persisted with the character.
-
-### Character-sheet consistency
-
-Character-sheet weapon names hide trailing parenthetical catalog identifiers while purchase surfaces retain them. External equipment effects such as Journey Knot and Sharpening Stone can modify the displayed weapon Damage value; Attribute and secondary-stat damage bonuses are not folded into the weapon profile. Threadpiece balances display exact normalized BP/SP/NP/WP remainders without denomination rounding.
+Practiced Hand cannot choose Skills the character already knows from earlier creation sources such as Homeland or Culture Traits. The selected path and its Skill/Attribute choices are persisted with the character.
 
 ### Ability economy
 
 Each character has one `CORE · INSTINCT`, one `CORE · MOVE`, and one `CORE · COMBAT` opportunity per round. `COMBAT` is the umbrella for choosing Melee Strike (`TOUCH`), Range Strike (`SHOOT`), or Arcane Command (`MAGIC`). Reactive and Passive effects resolve from their own rules.
 
-`ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round.
+`ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round. Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
 
-Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
-
-### Core Abilities
-
-The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart.
-
-Channel the Winds modifies Magic Regen. Focused Will has no Mana cost. Renew the Heart is Passive. Arcane Command delegates targeting, TO HIT, saves, damage, effects, and duration to the chosen Spell Details.
+The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. The Rules Layout Test Abilities page teaches the economy in sequence and uses small Selu examples without character artwork before an expandable shared Core Ability reference.
 
 ### Magic
 
 - Mana Pool = Magic Level + Spirit.
-- Magic Regen = Heart.
+- Magic Regen = Heart plus applicable equipped Trinket modifiers.
 - Encounters begin at full Mana Pool.
 - Start of Round resolves CORE Instinct choices, Magic Regen modifiers, Mana restoration, then turns in Initiative Order.
 - Lore Attunement remains `-2 Mana`.
 - Ordinary spells have a minimum final cost of `1 Mana`.
-- Signature Spells display `Signature` instead of `0 Mana`.
-- Zero-cost Invocation utility spells display `Cantrip` instead of `0 Mana`.
+- Signature Spells display `Signature`; zero-cost Invocation utility spells display `Cantrip`.
 - Power applies only when an individual spell explicitly says to add Power.
-- Known spells are tracked directly by Magic Level rather than through a separate slot concept.
-- Only one Arcane Focus is active at a time; focus-specific Control and Mana effects come from that active focus.
-
-Magic Level 10 grants 12 chosen Lore Spells and 6 Invocations, plus the Signature Spell from Lore Attunement.
-
-### Talents
-
-Talents primarily modify Core Abilities or resolve from their own Instinct, Reactive, or Passive triggers rather than reproducing whole attack procedures. Cleave replaces Fang Break. Beastgrasp is the canonical replacement for Primate Grip. The Cleave → Wildchain → Warpath chain is a fixed progression within one Melee Strike.
+- Only one equipped Arcane Focus is active at a time.
 
 ## Canonical Threadpiece economy
 
@@ -77,18 +64,18 @@ All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
 - Adventure Kit creation sellback = 3 sp = 150 wp
 - Maximum creation purchasing power after selling the kit = 33 sp = 1,650 wp
 
-Only one Armor and one Shield may be equipped at a time; only those equipped protective items contribute their protective gear statistics. A dedicated armor follow-up will establish final high-end Speed penalties.
+Protective loadout has two Armor & Shield slots. Normal protective gear remains limited to one armor and one shield; an optional second equipped Trinket may consume either remaining protective slot capacity.
 
 ## Measurements
 
-The game remains square-based. Display can be changed in Settings to Squares, Yards, Meters, or Feet using one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
+The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
 ## Release integrity
 
-- BUILD/export: `0.39`
-- package version: `0.39.0`
-- PWA cache: `v0.39`
-- Rule Updates: `v0.04`
+- BUILD/export: `0.40`
+- package version: `0.40.0`
+- PWA cache: `v0.40`
+- Rule Updates: `v0.05`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 
 ## Runtime
