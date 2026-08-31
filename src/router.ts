@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SplashView from './views/SplashView.vue'
+import NewsView from './views/NewsView.vue'
 import HomeView from './views/HomeView.vue'
 import CreateCharacterView from './views/CreateCharacterView.vue'
 import LevelUpView from './views/LevelUpView.vue'
@@ -18,6 +19,7 @@ const router=createRouter({
   routes:[
     {path:'/',redirect:'/characters'},
     {path:'/welcome',name:'welcome',component:SplashView},
+    {path:'/news',name:'news',component:NewsView},
     {path:'/characters',name:'characters',component:HomeView},
     {path:'/characters/create',name:'create-character',component:CreateCharacterView},
     {path:'/characters/:id/level-up',name:'level-up-character',component:LevelUpView},

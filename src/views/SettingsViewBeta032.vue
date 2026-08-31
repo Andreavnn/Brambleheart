@@ -6,7 +6,7 @@ import { MEASUREMENT_OPTIONS } from '../rules/measurements'
 import { GAME_RULES_VERSION } from '../data/gameUpdates'
 
 const router=useRouter()
-const {measurement}=useSettings()
+const {measurement,creationTips}=useSettings()
 </script>
 
 <template>
@@ -15,6 +15,7 @@ const {measurement}=useSettings()
     <p class="beta032-settings-detail">Site control: Community, display, data, storage, and optional controls.</p>
   </Teleport>
   <Teleport defer to=".settings-page .settings-group[aria-label='Display settings'] .settings-card">
+    <label class="setting-row creation-tip-setting-row"><span><strong>Tip</strong><small>Keep Character Creation detail panels expanded by default. Turn this off to start those panels collapsed.</small></span><input v-model="creationTips" type="checkbox" /></label>
     <details class="measurement-settings-panel">
       <summary><span><strong>Measurements</strong><small>Display square-based rules as Squares, Yards, Meters, or Feet. One square equals 1 yard, 1 meter, or 3 feet.</small></span><span class="value-chip">{{ MEASUREMENT_OPTIONS.find(option=>option.value===measurement)?.label||'Squares' }}</span></summary>
       <div class="measurement-option-list">
@@ -37,7 +38,7 @@ const {measurement}=useSettings()
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(2)){order:20}
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(3)){order:30}
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(4)){order:40}
-.measurement-settings-panel{order:50}
+.creation-tip-setting-row{order:45}.measurement-settings-panel{order:50}
 :deep(.settings-group[aria-label='Display settings']>.settings-card>:nth-child(5)){order:60}
 :deep(.settings-group[aria-label='Display settings'] .theme-settings-panel){order:70}
 :deep(.settings-group[aria-label='Display settings'] .background-settings-panel){order:80}

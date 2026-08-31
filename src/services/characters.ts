@@ -27,8 +27,8 @@ export interface PurchasedEquipment {
   statBonuses?:EquipmentStatBonuses
   /** Used by protective gear and Trinkets. */
   equipped?:boolean
-  /** A Trinket normally uses the dedicated slot; one optional second Trinket may use an Armor & Shield slot. */
-  trinketSlot?:'trinket'|'armor'
+  /** A Trinket normally uses the dedicated slot; one optional second Trinket may replace the Shield slot. */
+  trinketSlot?:'trinket'|'shield'
   /** Used only by Arcane Focus gear. At most one equipped focus may be active. */
   activeArcaneFocus?:boolean
 }
@@ -148,19 +148,25 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
 
   const trinketIndexes=normalized.map((item,index)=>isTrinketGear(item)?index:-1).filter(index=>index>=0)
   if(trinketIndexes.length){
+    // Beta 0.40 allowed the second Trinket to use a generic Armor & Shield slot. Migrate that
+    // legacy representation at this boundary; internally the second Trinket replaces Shield only.
+    for(const index of trinketIndexes){
+      const legacySlot=normalized[index].trinketSlot as 'trinket'|'shield'|'armor'|undefined
+      if(legacySlot==='armor')normalized[index].trinketSlot='shield'
+    }
     const hasExplicit=trinketIndexes.some(index=>typeof normalized[index].equipped==='boolean'||Boolean(normalized[index].trinketSlot))
-    const preferred=trinketIndexes.find(index=>normalized[index].equipped===true&&normalized[index].trinketSlot!=='armor')
-      ??trinketIndexes.find(index=>normalized[index].activeArcaneFocus===true)
+    const primary=trinketIndexes.find(index=>normalized[index].equipped===true&&normalized[index].trinketSlot!=='shield')
+      ??trinketIndexes.find(index=>normalized[index].activeArcaneFocus===true&&normalized[index].trinketSlot!=='shield')
       ??(!hasExplicit?trinketIndexes[0]:-1)
     for(const index of trinketIndexes){
-      if(index===preferred){normalized[index].equipped=true;normalized[index].trinketSlot='trinket'}
-      else if(normalized[index].trinketSlot!=='armor')normalized[index].equipped=false
+      if(index===primary){normalized[index].equipped=true;normalized[index].trinketSlot='trinket'}
+      else if(normalized[index].trinketSlot!=='shield')normalized[index].equipped=false
     }
-    const protectiveUsed=normalized.filter(item=>item.category==='Armor & Shield'&&item.equipped===true).length
-    const overflow=protectiveUsed<2?trinketIndexes.find(index=>index!==preferred&&normalized[index].equipped===true&&normalized[index].trinketSlot==='armor'):-1
+    const shieldEquipped=normalized.some(item=>protectiveGearKind(item)==='shield'&&item.equipped===true)
+    const secondary=!shieldEquipped?trinketIndexes.find(index=>index!==primary&&normalized[index].equipped===true&&normalized[index].trinketSlot==='shield'):-1
     for(const index of trinketIndexes){
-      if(index===overflow){normalized[index].equipped=true;normalized[index].trinketSlot='armor'}
-      else if(index!==preferred&&normalized[index].trinketSlot==='armor'){normalized[index].equipped=false;delete normalized[index].trinketSlot}
+      if(index===secondary){normalized[index].equipped=true;normalized[index].trinketSlot='shield'}
+      else if(index!==primary&&normalized[index].trinketSlot==='shield'){normalized[index].equipped=false;delete normalized[index].trinketSlot}
     }
   }
 
@@ -185,34 +191,33 @@ export function characterWealthWp(record:Pick<CharacterRecord,'wealthWp'|'wealth
   return 0
 }
 export function currentEquipmentRetailWp(item:PurchasedEquipment){return canonicalGearCostWp(item)}
-function protectiveSlotUse(items:PurchasedEquipment[]|undefined){return (items||[]).filter(item=>item.category==='Armor & Shield'&&item.equipped===true).length+(items||[]).filter(item=>isTrinketGear(item)&&item.equipped===true&&item.trinketSlot==='armor').length}
 export function canEquipProtectiveEquipment(items:PurchasedEquipment[]|undefined,index:number){
-  const list=items||[];const target=list[index];if(!target||!protectiveGearKind(target))return false
+  const list=items||[];const target=list[index];const kind=target?protectiveGearKind(target):null
+  if(!target||!kind)return false
   if(target.equipped===true)return true
-  const kind=protectiveGearKind(target)
-  const sameKindAlready=list.some((item,itemIndex)=>itemIndex!==index&&protectiveGearKind(item)===kind&&item.equipped===true)
-  return protectiveSlotUse(list)-(sameKindAlready?1:0)<2
+  if(kind==='shield'&&list.some(item=>isTrinketGear(item)&&item.equipped===true&&item.trinketSlot==='shield'))return false
+  return true
 }
 export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){
   const next=(items||[]).map(item=>({...item}))
   const target=next[index];if(!target)return next
   const kind=protectiveGearKind(target);if(!kind)return next
   if(!equipped){target.equipped=false;return next}
+  if(kind==='shield'&&next.some(item=>isTrinketGear(item)&&item.equipped===true&&item.trinketSlot==='shield'))return next
   for(const item of next)if(item!==target&&protectiveGearKind(item)===kind)item.equipped=false
-  if(protectiveSlotUse(next)>=2&&target.equipped!==true)return next
   target.equipped=true
   return next
 }
-export function canEquipTrinketInArmorSlot(items:PurchasedEquipment[]|undefined,index:number){
+export function canEquipTrinketInShieldSlot(items:PurchasedEquipment[]|undefined,index:number){
   const list=items||[];const target=list[index];if(!target||!isTrinketGear(target))return false
-  if(target.equipped===true&&target.trinketSlot==='armor')return true
-  return protectiveSlotUse(list)<2
+  if(target.equipped===true&&target.trinketSlot==='shield')return true
+  return !list.some(item=>protectiveGearKind(item)==='shield'&&item.equipped===true)
 }
-export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,slot:'trinket'|'armor'|null){
+export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,slot:'trinket'|'shield'|null){
   const next=(items||[]).map(item=>({...item}))
   const target=next[index];if(!target||!isTrinketGear(target))return next
   if(slot===null){target.equipped=false;delete target.trinketSlot;if(isArcaneFocusName(target.name))target.activeArcaneFocus=false;return next}
-  if(slot==='armor'&&!canEquipTrinketInArmorSlot(next,index))return next
+  if(slot==='shield'&&!canEquipTrinketInShieldSlot(next,index))return next
   for(const item of next){
     if(item===target||!isTrinketGear(item))continue
     if((item.trinketSlot||'trinket')===slot&&item.equipped===true){item.equipped=false;delete item.trinketSlot;if(isArcaneFocusName(item.name))item.activeArcaneFocus=false}

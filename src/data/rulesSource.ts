@@ -5356,7 +5356,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A character has one dedicated Trinket slot. A second Trinket may be equipped by using one of the character’s two Armor & Shield slots. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
+            "text": "A character has one dedicated Trinket slot. A second Trinket may be equipped in place of the character’s Shield slot. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
           },
           {
             "type": "paragraph",
@@ -5444,7 +5444,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb. Once per round, while equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon."
+            "text": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb. While equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon."
           }
         ]
       },

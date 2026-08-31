@@ -4,7 +4,6 @@ import { RouterLink, useRouter } from 'vue-router'
 import PrimaryNav from './PrimaryNav.vue'
 import { useSettings } from '../state/settings'
 import { backgroundOptions } from '../data/backgroundCatalog'
-import { BUILD } from '../data/bramble'
 import { GAME_RULES_VERSION } from '../data/gameUpdates'
 
 const props=defineProps<{compact?:boolean;backTo?:string;backLabel?:string;preferBackTo?:boolean;skipBackPrefix?:string}>()
@@ -29,7 +28,7 @@ function goBack(){
 
 <template>
   <header class="app-header-wrap bramble-site-header">
-    <div class="site-wip-toolbar"><div class="wip-banner site-wip-banner">Brambleheart is a work in progress. Beta Build {{ BUILD }} may contain unfinished rules, presentation, and tools.</div><div class="background-toolbar-actions"><button type="button" class="secondary-button background-view-button" :aria-pressed="backgroundOnly" @click="toggleBackgroundOnly">{{ backgroundOnly?'Show Page':'View Background' }}</button><button type="button" class="icon-button background-cycle-button" aria-label="Next background" title="Next background" @click="cycleBackground"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 5 7 7-7 7"/></svg></button></div></div>
+    <div class="site-wip-toolbar"><div class="wip-banner site-wip-banner">Brambleheart TTRPG is a work in progress. May contain unfinished rules, presentation, and tools.</div><div class="background-toolbar-actions"><button type="button" class="secondary-button background-view-button" :aria-pressed="backgroundOnly" @click="toggleBackgroundOnly">{{ backgroundOnly?'Show Page':'View Background' }}</button><button type="button" class="icon-button background-cycle-button" aria-label="Next background" title="Next background" @click="cycleBackground"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 5 7 7-7 7"/></svg></button></div></div>
     <div class="app-header" :class="{compact}">
       <div class="header-control-row">
         <button v-if="backTo" type="button" class="icon-button back-button" :aria-label="backLabel||'Back'" @click="goBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button>

@@ -45,7 +45,7 @@ export type CharacterSheetEquipmentSource=EquipmentProfileSource&{
   category?:string
   effect?:string
   equipped?:boolean
-  trinketSlot?:'trinket'|'armor'
+  trinketSlot?:'trinket'|'shield'
   statBonuses?:EquipmentStatBonuses
   quantity?:number
   activeArcaneFocus?:boolean
@@ -78,7 +78,7 @@ function addNumericProfileBonus(value:string,bonus:number){
   return String(value).replace(match[0],`${next>=0?'+':''}${next}`)
 }
 
-export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean;attachedTo?:string;trinketSlot?:'trinket'|'armor'}
+export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean;attachedTo?:string;trinketSlot?:'trinket'|'shield'}
 function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
   const candidates=(items||[]).filter(item=>item.category==='Armor & Shield')
   return(['armor','shield'] as const).flatMap(kind=>{
@@ -96,8 +96,8 @@ export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T
   const hasExplicit=candidates.some(item=>typeof item.equipped==='boolean')
   return hasExplicit?[]:candidates.slice(0,1)
 }
-export function dedicatedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot!=='armor')}
-export function overflowTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot==='armor')}
+export function primaryTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot!=='shield')}
+export function secondaryTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{return equippedTrinketGear(items).find(item=>item.trinketSlot==='shield')}
 export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){
   const protective=equippedProtectiveItems(items)
   const base=protective.reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0)
@@ -192,7 +192,7 @@ export function characterSheetWeaponName(name:string){return String(name||'').re
 const CHARACTER_SHEET_WEAPON_DAMAGE_ATTACHMENTS:Readonly<Record<string,number>>={'Sharpening Stone':1}
 function attachmentLabel(item:CharacterSheetEquipmentSource){
   const name=canonicalGearName(item.name)
-  if(name==='Journey Knot')return'Journey Knot (+1 TO HIT once/round)'
+  if(name==='Journey Knot')return'Journey Knot (+1 TO HIT)'
   return name
 }
 export function characterSheetWeaponProfile(item:CharacterSheetEquipmentSource|undefined,equipment:CharacterSheetEquipmentSource[]|undefined=[]){

@@ -1,10 +1,23 @@
-export const GAME_RULES_VERSION='0.05'
+export const GAME_RULES_VERSION='0.06'
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-08-30',
+    title:'Loadout, Creation & Ability Timing Clarifications',
+    summary:'Refines Trinket slot use, starting-character currency, Barkskin protection, Journey Knot timing, and the ability-economy language used by the rules preview.',
+    changes:[
+      'A character may equip up to two Trinkets: one in the dedicated Trinket slot and one additional Trinket in place of the Shield slot. The second Trinket no longer consumes a generic Armor & Shield slot.',
+      'Journey Knot grants condition [+1] to one TO HIT roll made with its attached weapon while equipped; the former once-per-round restriction is removed.',
+      'Barkskin Vest now provides Mana Syphon [+1] in addition to its existing Guts and Stealth profile.',
+      'When a character finishes creation with zero remaining Threadpieces, the saved finished character begins with 10 wp. This is applied only when character creation is completed.',
+      'Instinct abilities resolve at their printed round timing, including start- or end-of-round timing, and a character may perform eligible abilities during their turn in any order unless a rule states otherwise.',
+    ],
+  },
+  {
+    version:'0.05',
     date:'2026-08-30',
     title:'Trinkets & Equipment Loadout',
     summary:'Adds a dedicated Trinket equipment class and slot, updates converted Trinket effects, and clarifies how equipment attachments interact with character abilities and protective slots.',

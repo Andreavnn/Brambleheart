@@ -17,6 +17,7 @@ type SettingsState = {
   backgroundGrayscale:boolean
   bootAudio:boolean
   measurement:MeasurementUnit
+  creationTips:boolean
 }
 
 const defaults:SettingsState={
@@ -29,6 +30,7 @@ const defaults:SettingsState={
   backgroundGrayscale:false,
   bootAudio:true,
   measurement:'squares',
+  creationTips:true,
 }
 const roles:RoleTheme[]=['default','warrior','healer','ranger','thief']
 
@@ -65,6 +67,7 @@ function loadSettings():SettingsState{
       backgroundGrayscale:Boolean(saved.backgroundGrayscale),
       bootAudio:saved.bootAudio!==false,
       measurement:normalizeMeasurement(saved.measurement),
+      creationTips:saved.creationTips!==false,
     }
   }catch{return{...defaults}}
 }
@@ -82,6 +85,7 @@ function applySettings(){
   root.dataset.backgroundGrayscale=state.backgroundGrayscale?'true':'false'
   root.dataset.bootAudio=state.bootAudio?'true':'false'
   root.dataset.measurement=state.measurement
+  root.dataset.creationTips=state.creationTips?'true':'false'
   const url=backgroundUrl(state.backgroundImage)
   root.style.setProperty('--bh-selected-background',url?`url(${JSON.stringify(url)})`:'none')
 }
@@ -106,6 +110,7 @@ export function useSettings(){
     backgroundGrayscale:toRef(state,'backgroundGrayscale'),
     bootAudio:toRef(state,'bootAudio'),
     measurement:toRef(state,'measurement'),
+    creationTips:toRef(state,'creationTips'),
     toggleTheme:()=>{state.darkMode=!state.darkMode},
     reset:()=>Object.assign(state,defaults),
   }

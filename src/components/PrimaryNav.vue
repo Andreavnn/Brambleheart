@@ -1,5 +1,6 @@
 <template>
   <nav class="primary-nav" aria-label="Primary navigation">
+    <RouterLink to="/news">News</RouterLink>
     <RouterLink to="/characters">Character Roster</RouterLink>
     <RouterLink to="/rules">Rules</RouterLink>
     <RouterLink to="/simulator">Rhythm Engine</RouterLink>

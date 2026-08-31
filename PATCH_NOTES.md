@@ -1,37 +1,43 @@
-# Brambleheart Beta 0.40 Patch Notes
+# Brambleheart Beta 0.41 Patch Notes
 
-Baseline: GitHub `main` commit `0f631f02a8e289f9bc35557e513667c21d728fc3` (Beta 0.39.0).
+Baseline: GitHub `main` commit `eacd197438f6740ab3df9c0e9412cb03e17717fd` (Beta 0.40.0).
 
-## Rule Updates v0.05 — Trinkets
-- Adds `Trinket` as a canonical equipment category. A character has one dedicated Trinket slot and may equip one additional Trinket by consuming one of the two Armor & Shield slots.
-- Owned Trinkets may remain carried and inactive. Attachment-based Trinkets apply their effects only while equipped and attached to a legal target.
-- Converts Journey Knot, Caster Totem, Lens-Stone Arcanum, Scriptweave Book, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Spell Charm to Trinkets. Legacy saved names are converted only at the character normalization boundary.
-- Journey Knot now grants condition `[+1]` to one TO HIT roll per round with its attached weapon instead of +1 damage.
-- Scriptweave Book now grants Magic Regen `[+1]` and ordinary spell Mana cost `[-1]` while equipped as the active arcane focus; its previous Control and spell-damage bonuses are removed.
-- Adds Shiny Bobble (Magic Regen `[+1]`), Votive Icon (condition `[+1]` when using Renew the Heart), Spell Charm (one spell damage `[+1]` once per round), and Heartward Token (attached worn armor Guts Bonus `[+1]`).
+## Rule Updates v0.06
+- A character may equip one Trinket in the dedicated Trinket slot and one additional Trinket in place of the Shield slot. The second Trinket no longer consumes a generic Armor & Shield slot.
+- Journey Knot now reads: `While equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon.`
+- Barkskin Vest gains Mana Syphon `[+1]`.
+- A character that finishes creation with zero remaining Threadpieces is saved with 10 wp. The 10 wp is applied only when `Create Character (Finished)` completes creation and is not displayed during the Equipment or Review steps.
+- Instinct abilities use the timing printed by the ability, including start- or end-of-round timing. During a character’s turn, eligible abilities may be performed in any order unless an ability states otherwise.
 
-## Character Sheet & Equipment Management
-- Renames the Character Sheet section to `Armor & Shield`.
-- Adds visible dedicated and overflow Trinket slots beneath protective equipment.
-- Applies equipped Trinket effects through shared equipment helpers used by Character Creation, Character Roster, Level Up, and Rhythm Engine.
-- Adds legal attachment selectors for weapon- and armor-attached Trinkets.
+## Character Creation & Character Management
+- Moves Oath & Faith immediately after Homeland, with Attributes and Skills following it.
+- Groups the Species dropdown into `Woodlands` and `Custom` while retaining one select control.
+- Removes `AGI MOD` from the visible creation Speed equation.
+- Adds Settings → Display → Tip. When off, Character Creation help/detail panels start collapsed; the default remains on.
+- Locked characters cannot enter edit or Level Up workflows. Roster actions are disabled and direct-route guards enforce the same rule.
+- Replaces the Character Roster Filter text button with a compact filter icon.
 
-## Character Creation
-- Keeps Practiced Hand from offering Skills already granted earlier by Homeland or Culture Traits and preserves validation of that restriction.
-- Aligns Body & Spirit path-card title space so Tempered Form and Practiced Hand content begin at the same vertical position.
+## Equipment & Character Sheet
+- Displays two equal Trinket cards beneath Armor & Shield: the dedicated Trinket slot and the Shield / Trinket slot.
+- Displays Character Sheet Talents in one column.
+- Removes the generic `Mechanical effect listed below.` placeholder.
+- Replaces the Equipment & Gear category scrollbar with left/right arrow controls.
+
+## Navigation, News & Presentation
+- Adds `News` before Character Roster in primary navigation. News uses the existing changelog and Rule Updates authorities rather than a second update catalog.
+- Rule Updates keeps only the current update expanded by default and archived entries collapsed.
+- Enlarges and centers the footer Brambleheart icon and updates the global work-in-progress banner text.
+- Removes underlining from the Rules Layout Test previous/next controls.
 
 ## Rules Layout Preview — Abilities
-- Reorganizes the Abilities test page from encounter economy into Core interactions, Instinct, Move, Combat, and Reactive/Passive examples.
-- Uses small Selu markers/examples throughout without displaying a Selu character image.
-- Demonstrates a Core Ability plus Talent interaction and ends with an expandable reference rendered from the shared Core Ability data.
-
-## Measurements
-- Standardizes rule display text to include a space between bracketed distance and unit, e.g. `[3] squares`.
-- The shared measurement formatter continues to convert Squares, Yards, Meters, and Feet from either legacy unspaced or new spaced source text.
+- Removes Selu avatar/name markers and arrows from the teaching graphics while retaining Selu in supporting example text.
+- Equalizes graphic panels, centers the economy flow, and adds an example Speed value with numbered movement squares.
+- Clarifies Instinct round timing and any-order use of eligible turn abilities.
+- Colors Core Ability reference-card top borders by ability family.
 
 ## Release Integrity
-- BUILD/export: `0.40`
-- package version: `0.40.0`
-- PWA cache: `v0.40`
-- Rule Updates: `v0.05`
+- BUILD/export: `0.41`
+- package version: `0.41.0`
+- PWA cache: `v0.41`
+- Rule Updates: `v0.06`
 - Repository and in-app Site Changelog continue to use `CHANGELOG.md` as the release-history authority.

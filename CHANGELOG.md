@@ -1,3 +1,18 @@
+# Brambleheart Beta 0.41
+
+- Adds a new `News` page to primary navigation before Character Roster, sourcing its site-release summary from `CHANGELOG.md` and its current rules summary from the shared Rule Updates data.
+- Refines Rule Updates so only the current update opens by default and archived updates remain collapsed, while removing redundant page labeling.
+- Enlarges and centers the footer Brambleheart icon, updates the work-in-progress banner copy, and removes underlining from the Rules Layout Test page navigation buttons.
+- Refines Trinket loadout to two visible slots: one dedicated Trinket slot and one optional second Trinket that specifically replaces the Shield slot; Character Sheet and Review display both as equal cards.
+- Changes Character Sheet Talents to a single-column layout and removes the generic `Mechanical effect listed below.` placeholder from equipment presentation.
+- Groups Character Creation Species choices into Woodlands and Custom optgroups, moves Oath & Faith immediately after Homeland, removes `AGI MOD` from the creation Speed equation, and adds the Display → Tip preference for default help-panel expansion.
+- Changes Journey Knot to condition `[+1]` on one TO HIT roll made with its attached weapon while equipped, removing its former once-per-round restriction.
+- Adds Mana Syphon `[+1]` to Barkskin Vest and grants a finished new character 10 wp only when creation is completed with zero remaining currency.
+- Prevents locked characters from entering Character Creation edit or Level Up workflows, in addition to disabling those roster actions.
+- Reworks the Rules Layout Test Abilities teaching graphics: no Selu avatar/name markers, no connecting arrows, evenly sized panels, explicit start/end Instinct timing, any-order turn guidance, numbered Speed movement squares, and ability-family-colored Core reference cards.
+- Replaces the Equipment & Gear category scrollbar with explicit left/right controls and changes the Character Roster Filter action to a compact filter icon.
+- Advances BUILD/export to 0.41, package version to 0.41.0, PWA cache to v0.41, and Rule Updates to v0.06.
+
 # Brambleheart Beta 0.40
 
 - Adds Trinkets as a canonical equipment class with one dedicated Trinket slot and an optional second Trinket that consumes one Armor & Shield slot.

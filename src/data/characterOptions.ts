@@ -498,7 +498,7 @@ export const gearShopItems: GearShopItem[] = [
     "category": "Armor & Shield",
     "costText": "100 np",
     "costSp": 20.0,
-    "detail": "0 · +1 · +0 · -1 · 6lb"
+    "detail": "0 · +1 · +1 · -1 · 6lb"
   },
   {
     "name": "Briarhide",
@@ -999,7 +999,7 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 7.0,
     "detail": "—",
     "description": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb.",
-    "effect": "Once per round, while equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon.",
+    "effect": "While equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon.",
     "shopGroup": "Trinkets"
   },
   {
