@@ -2,7 +2,7 @@ import { readLocalStorage, removeLocalStorage, STORAGE_KEYS, writeLocalStorage, 
 
 export type CustomDataType='species'|'spell'|'talent'|'trait'
 export type CustomTraitKind='species'|'culture'
-export type CustomTalentCategory='Combat'|'Offensive Combat'|'Defensive Combat'|'Magic'|'Utility'
+export type CustomTalentCategory='Combat'|'Offensive'|'Defensive'|'Magic'|'Utility'
 
 export interface CustomSkillGrants { fixed:string[]; choices:string[][] }
 export interface CustomTraitPayload {
@@ -93,7 +93,8 @@ function normalizeOne(value:unknown):CustomDataItem|null{
   if(type==='talent'){
     const rawCategory=text(raw.category)
     const legacyUtility=['Movement','Survival','Social'].includes(rawCategory)
-    const normalizedCategory:CustomTalentCategory=legacyUtility?'Utility':(['Combat','Offensive Combat','Defensive Combat','Magic','Utility'].includes(rawCategory)?rawCategory as CustomTalentCategory:'Utility')
+    const legacyCategory=rawCategory==='Offensive Combat'?'Offensive':rawCategory==='Defensive Combat'?'Defensive':rawCategory
+    const normalizedCategory:CustomTalentCategory=legacyUtility?'Utility':(['Combat','Offensive','Defensive','Magic','Utility'].includes(legacyCategory)?legacyCategory as CustomTalentCategory:'Utility')
     return{format:'brambleheart-custom',version:1,type,id:itemId(type,name),name,custom:true,category:normalizedCategory,text:text(raw.text),keywords:stringList(raw.keywords),requires:text(raw.requires)}
   }
   const traitKind=text(raw.traitKind).toLowerCase()==='species'?'species':'culture'

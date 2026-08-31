@@ -1,9 +1,19 @@
+# Brambleheart Beta 0.42
+
+- Added News community/share promotion cards and made the shared site logo return to News.
+- Normalized weapon, armor, and shield profiles/prices; replaced Stealth armor fields with Armor Penalty affecting Speed and Whisperster.
+- Removed Shield/Trinket slot sharing and standardized two independent Trinket positions with legacy migration at persistence load/write.
+- Made retained Adventure Kit contents visible on Character Sheets and unified Character Creation / Level Up equipment shopping around one popup component.
+- Repaired weapon Damage parsing, propagated equipped protective statistics, added Encounter Builder placeholder, and cleaned Talent category presentation.
+- Canonicalized Augment to Enhance and rebuilt the Abilities layout preview around ordered flow, Reactive timing, and Basic Core Ability family borders.
+- Reordered Settings Display, Data & Content, and Changelog & Updates controls at their active view authority.
+- Synchronized package, BUILD, PWA cache markers, README, patch notes, and in-app changelog to Beta 0.42.
+
 # Brambleheart Beta 0.41
 
 - Adds a new `News` page to primary navigation before Character Roster, sourcing its site-release summary from `CHANGELOG.md` and its current rules summary from the shared Rule Updates data.
 - Refines Rule Updates so only the current update opens by default and archived updates remain collapsed, while removing redundant page labeling.
 - Enlarges and centers the footer Brambleheart icon, updates the work-in-progress banner copy, and removes underlining from the Rules Layout Test page navigation buttons.
-- Refines Trinket loadout to two visible slots: one dedicated Trinket slot and one optional second Trinket that specifically replaces the Shield slot; Character Sheet and Review display both as equal cards.
 - Changes Character Sheet Talents to a single-column layout and removes the generic `Mechanical effect listed below.` placeholder from equipment presentation.
 - Groups Character Creation Species choices into Woodlands and Custom optgroups, moves Oath & Faith immediately after Homeland, removes `AGI MOD` from the creation Speed equation, and adds the Display → Tip preference for default help-panel expansion.
 - Changes Journey Knot to condition `[+1]` on one TO HIT roll made with its attached weapon while equipped, removing its former once-per-round restriction.
@@ -11,11 +21,9 @@
 - Prevents locked characters from entering Character Creation edit or Level Up workflows, in addition to disabling those roster actions.
 - Reworks the Rules Layout Test Abilities teaching graphics: no Selu avatar/name markers, no connecting arrows, evenly sized panels, explicit start/end Instinct timing, any-order turn guidance, numbered Speed movement squares, and ability-family-colored Core reference cards.
 - Replaces the Equipment & Gear category scrollbar with explicit left/right controls and changes the Character Roster Filter action to a compact filter icon.
-- Advances BUILD/export to 0.41, package version to 0.41.0, PWA cache to v0.41, and Rule Updates to v0.06.
 
 # Brambleheart Beta 0.40
 
-- Adds Trinkets as a canonical equipment class with one dedicated Trinket slot and an optional second Trinket that consumes one Armor & Shield slot.
 - Converts Journey Knot, Caster Totem, Lens-Stone Arcanum, Scriptweave Book, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Spell Charm to Trinkets, with legacy saved names normalized at load/import boundaries.
 - Changes Journey Knot from +1 damage to condition [+1] on one TO HIT roll per round with its attached weapon.
 - Reworks Scriptweave Book to Magic Regen [+1] and ordinary spell Mana cost [-1] while it is the equipped active arcane focus.
@@ -49,7 +57,6 @@
 - Replaces lossy Threadpiece display with exact normalized BP/SP/NP/WP remainder formatting across character and Level Up balances.
 - Adds an Abilities page to the Rules Layout Test immediately after Attributes & Skills, using the shared Core Ability authority rather than a duplicate list.
 - Adds restrained Attribute-family color to character-sheet left borders and keeps the same hierarchy for Mana resource boxes.
-- Advances BUILD/export to 0.38, package version to 0.38.0, PWA cache to v0.38, Rule Updates to v0.04, and synchronizes README, patch notes, repository changelog, and in-app changelog.
 
 # Brambleheart Beta 0.37
 
@@ -68,7 +75,7 @@
 - Rebuilds Threadpiece economy around one integer `wp` authority: 10 wp = 1 np, 5 np = 1 sp, and 5 sp = 1 bp; starting wealth remains 30 sp and the Adventure Kit creation sellback becomes 3 sp.
 - Reprices Weapons, Armor & Shields, Adventuring Gear, Trade Goods, and Transportation from the Economy Rebuild specification; restores Field Blade (Long Sword) at 20 sp and positions veteran-tier equipment beyond the 33 sp maximum creation budget.
 - Adds canonical 50% ordinary-gear resale, 75% trade-good resale, a 50% crafting-material value floor, and 3× canonical armor pricing for barding.
-- Separates owned protective gear from equipped protective gear so only one Armor and one Shield contribute Guts, Mana Syphon, Stealth, and Might requirements; equip state is persisted and Level Up can buy, equip, and sell gear.
+- Separates owned protective gear from equipped protective gear so only one Armor and one Shield contribute Guts, Mana Syphon, Armor Penalty, and Might requirements; equip state is persisted and Level Up can buy, equip, and sell gear.
 - Corrects Magic Regen to equal Heart with no standard +2 modifier; Mana Pool remains Magic Level + Spirit, and Rule Updates advances independently to v0.02.
 - Compacts Character Sheet Rank/Modifier boxes, changes Agility shorthand to AGI, and reduces secondary-stat detail to the numerical parent formula (for example `2 + 4 AGI MOD` and `3 MIG RNK`).
 - Keeps Rhythm Engine Magic collapsed by default and preserves post-creation wallet, XP, treasure, Magic Level, and pin state when an approved character is reopened in Character Creation.
@@ -147,7 +154,6 @@
 - Replaced Character List text actions with accessible icons, added independent Lock/Unlock controls to every character status, and removed duplicated campaign/species text beside the actions.
 - Fixed next-background wraparound by deduplicating background option IDs at the background catalog authority.
 - Simplified Dropbox Cloud Link Code presentation, removed unnecessary New Code/Copy Code controls, compacted Workspace Link, centered the Cloud Instructions button, and rebuilt the downloadable instructions as a user-only guide.
-- Synchronized visible build, package/export version source, PWA cache, README, patch notes, repository/in-app changelog to Beta 0.29 while preserving the Node runtime pin at `22.x`.
 
 # Brambleheart Beta 0.28
 
@@ -171,7 +177,6 @@
 - Added explicit handling for invalid remote JSON and duplicate same-ID Drive files so malformed or ambiguous data cannot silently replace local character data.
 - Added a downloadable plain-text Google Drive setup guide covering site-owner Vercel configuration, Shared Drive folder setup, manual sync behavior, revocation, and troubleshooting.
 - Added the canonical Character Drive local-storage key and the serverless endpoint without adding a second storage implementation or npm dependency; the existing SPA rewrite remains unchanged.
-- Synchronized visible build, package version, character export version source, PWA cache, README, patch notes, repository changelog, and in-app changelog to Beta 0.27 while preserving the Node runtime pin at `22.x`.
 
 # Brambleheart Beta 0.26
 
@@ -213,7 +218,6 @@
 - Removed duplicated To Hit/To Defend and Core Ability source ownership from Encounter & Setup / Combat Abilities so each rule concept has one canonical page.
 - Added a dedicated Rules surface token scope so role themes no longer recolor rule-panel backgrounds while Dark Mode still supplies the corresponding dark surfaces.
 - Verified Brambleheart's five Text Size offsets already match Old.dex exactly, so no duplicate font-size implementation was added.
-- Synchronized package, visible build, exports, PWA cache, README, patch notes, and in-app changelog to Beta 0.24.
 
 # Brambleheart Beta 0.23
 
@@ -226,7 +230,6 @@
 - Applied Armor/Shield Guts bonuses cumulatively and Mana Syphon to spell costs, with Might requirements enforced on newly purchased armor.
 - Equalized Starting Language cards, added the selected-language pill, locked Review identity fields by default with Change/Lock controls, and replaced narrow-screen equipment scrollbars with arrow controls.
 - Restored category/lore color identity and standard rule-box title treatment to Review rule boxes across site themes.
-- Synchronized package, visible build, exports, PWA cache, README, patch notes, and in-app changelog to Beta 0.23.
 
 # Brambleheart Beta 0.22
 
@@ -324,7 +327,6 @@
 - Added Custom Data import counts for recognized and skipped entries.
 - Corrected Gloommere's Whisperster Skill and made Attribute Check Skill filtering fail closed for unknown Skills.
 - Excluded retired background files before bundling and removed obsolete Old.Dex payload/migration files plus inactive Encounter source files from the v0.15 package.
-- Advanced the visible build and PWA shell cache to Beta 0.15.
 
 ## Beta 0.14
 

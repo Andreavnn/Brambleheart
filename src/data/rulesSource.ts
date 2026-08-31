@@ -3754,11 +3754,11 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When you successfully strike a character that has cast an Augment or Hex spell this round."
+            "text": "TRIGGER: When you successfully strike a character that has cast an Enhance or Hex spell this round."
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: Choose one Augment or Hex spell that the target has cast this turn. End that spell’s effects immediately."
+            "text": "EFFECT: Choose one Enhance or Hex spell that the target has cast this turn. End that spell’s effects immediately."
           },
           {
             "type": "paragraph",
@@ -4299,7 +4299,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Each armor type below lists its Cost, Guts Bonus, Mana Syphon, Stealth Condition, and Weight."
+            "text": "Each armor type below lists its Cost, Guts Bonus, Mana Syphon, Armor Penalty, and Weight."
           },
           {
             "type": "paragraph",
@@ -4307,7 +4307,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Stealth Condition represents how much the armor interferes with moving unseen — a rating from 1 (minor noise or bulk) to 5 (heavy or clumsy)."
+            "text": "Armor Penalty represents how much the armor interferes with moving unseen — a rating from 1 (minor noise or bulk) to 5 (heavy or clumsy)."
           },
           {
             "type": "paragraph",
@@ -4322,7 +4322,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
                 "MIGHT Requirement",
                 "GUTS Bonus",
                 "Mana Syphon",
-                "Stealth",
+                "Armor Penalty",
                 "Weight"
               ],
               [
@@ -4442,7 +4442,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
             "type": "table",
             "rows": [
               [
-                "As a gentle healer attuned to spellwork Selu’s player equips leafsitch, a light armor that grants [+1] Guts, applies [+0] mana syphon, and imposes 0 stealth condition. If Selu is targeted by an attack while wearing the armor, their guts used to reduce the attack’s damage is increased by [+1]. For example, if Selu suffers [5] damage from an attack and they have a guts value of [3] that damage is reduced to [2] total damage, which is applied to Selu’s health."
+                "As a gentle healer attuned to spellwork Selu’s player equips leafsitch, a light armor that grants [+1] Guts, applies [+0] mana syphon, and imposes 0 Armor Penalty. If Selu is targeted by an attack while wearing the armor, their guts used to reduce the attack’s damage is increased by [+1]. For example, if Selu suffers [5] damage from an attack and they have a guts value of [3] that damage is reduced to [2] total damage, which is applied to Selu’s health."
               ]
             ]
           }
@@ -5356,7 +5356,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A character has one dedicated Trinket slot. A second Trinket may be equipped in place of the character’s Shield slot. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
+            "text": "A character has two Trinket slots. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
           },
           {
             "type": "paragraph",
@@ -6191,11 +6191,11 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         ]
       },
       {
-        "heading": "AUGMENTS & HEXES",
+        "heading": "ENHANCES & HEXES",
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Augments empower, heal, or protect. They are typically cast on the caster or allies. Hexes weaken, harm, or control. They target enemies."
+            "text": "Enhances empower, heal, or protect. They are typically cast on the caster or allies. Hexes weaken, harm, or control. They target enemies."
           },
           {
             "type": "paragraph",
@@ -6667,7 +6667,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | AUGMENT | AXALORI | TRAIT"
+            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | ENHANCE | AXALORI | TRAIT"
           },
           {
             "type": "paragraph",
@@ -6825,7 +6825,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Summon a spiritual totem within [2] squares of your character. EFFECT: While the totem is active, your character automatically passes the first compelled effect from a spell each round. ally characters within [3] squares of the totem gain [+1] to attribute saves made when using the renew the heart ability. RESTRICTIONS: A character cannot benefit from multiple stillstorm totem from different sources. DURATION: The totem remains until it until destroyed. KEYWORDS: ROOT | INSTINCT | AUGMENT | SUMMON | CULTURE"
+            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Summon a spiritual totem within [2] squares of your character. EFFECT: While the totem is active, your character automatically passes the first compelled effect from a spell each round. ally characters within [3] squares of the totem gain [+1] to attribute saves made when using the renew the heart ability. RESTRICTIONS: A character cannot benefit from multiple stillstorm totem from different sources. DURATION: The totem remains until it until destroyed. KEYWORDS: ROOT | INSTINCT | ENHANCE | SUMMON | CULTURE"
           }
         ]
       }
@@ -7049,7 +7049,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: ROOT | REACTION | AUGMENT | HEDGKIN | TRAIT"
+            "text": "KEYWORDS: ROOT | REACTION | ENHANCE | HEDGKIN | TRAIT"
           },
           {
             "type": "paragraph",
@@ -7149,7 +7149,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: ROOT | INSTINCT | AUGMENT | CULTURE |"
+            "text": "KEYWORDS: ROOT | INSTINCT | ENHANCE | CULTURE |"
           }
         ]
       }
@@ -7689,7 +7689,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] mana TRIGGER: This ability can be used during your turn. DECLARE: Target all ally characters within orb [4]. EFFECT: Each target gains [+1] to ward and attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of keeper’s roar from different sources. KEYWORDS: ROOT | INSTINCT | AUGMENT | URNATH | TRAIT"
+            "text": "COST: [2] mana TRIGGER: This ability can be used during your turn. DECLARE: Target all ally characters within orb [4]. EFFECT: Each target gains [+1] to ward and attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of keeper’s roar from different sources. KEYWORDS: ROOT | INSTINCT | ENHANCE | URNATH | TRAIT"
           },
           {
             "type": "paragraph",
@@ -7705,7 +7705,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: When an ally within [3] squares suffers damage that would reduce their health below [5], your character may redirect that damage to themselves. After resolving the damage, gain [+1] to guts until the end of the next round. KEYWORDS: REACTION | AUGMENT | CULTURE"
+            "text": "EFFECT: When an ally within [3] squares suffers damage that would reduce their health below [5], your character may redirect that damage to themselves. After resolving the damage, gain [+1] to guts until the end of the next round. KEYWORDS: REACTION | ENHANCE | CULTURE"
           },
           {
             "type": "paragraph",
@@ -7799,7 +7799,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: ROOT | REACTION | AUGMENT | TORDAN | TRAIT"
+            "text": "COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: ROOT | REACTION | ENHANCE | TORDAN | TRAIT"
           },
           {
             "type": "paragraph",
@@ -8039,7 +8039,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [1] mana DECLARE: Target one ally within [4] squares. EFFECT: The target restores [2] health. EMPOWER: Spend [+3] additional mana to increase range to [+4] squares and the target restores [4] health. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+            "text": "COST: [1] mana DECLARE: Target one ally within [4] squares. EFFECT: The target restores [2] health. EMPOWER: Spend [+3] additional mana to increase range to [+4] squares and the target restores [4] health. KEYWORDS: ENHANCE | MAGIC | INVOCATION | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8051,7 +8051,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] MANA DECLARE: Target one ally within four [4] squares. EFFECT: The target gains [+2] guts until the end of their next turn. EMPOWER: Spend [+2] additional mana to increase effect by [+2]. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+            "text": "COST: [2] MANA DECLARE: Target one ally within four [4] squares. EFFECT: The target gains [+2] guts until the end of their next turn. EMPOWER: Spend [+2] additional mana to increase effect by [+2]. KEYWORDS: ENHANCE | MAGIC | INVOCATION | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8079,7 +8079,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "EMPOWER: Spend [+2] additional mana to summon another weapon in a second hand. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR | SUMMON"
+            "text": "EMPOWER: Spend [+2] additional mana to summon another weapon in a second hand. KEYWORDS: ENHANCE | MAGIC | INVOCATION | ANCHOR | SUMMON"
           },
           {
             "type": "paragraph",
@@ -8143,7 +8143,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [0] mana DECLARE: Touch a damaged nonliving object. EFFECT: Restore one [1] break value to the object. The target must be made of natural materials and be no larger than three [3] squares. KEYWORDS: AUGMENT | MAGIC | INVOCATION"
+            "text": "COST: [0] mana DECLARE: Touch a damaged nonliving object. EFFECT: Restore one [1] break value to the object. The target must be made of natural materials and be no larger than three [3] squares. KEYWORDS: ENHANCE | MAGIC | INVOCATION"
           },
           {
             "type": "paragraph",
@@ -8155,7 +8155,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] mana DECLARE: Cast upon an ally within [4] squares. EFFECT: The target becomes invisible, gaining [+2] to all dice rolls against any characters that cannot see them. RESTRICTIONS: Effect ends if the target performs any action or otherwise reveals themselves. Lasts until combat ends. KEYWORDS: AUGMENT | COMBAT | MAGIC | INVOCATION | ANCHOR"
+            "text": "COST: [2] mana DECLARE: Cast upon an ally within [4] squares. EFFECT: The target becomes invisible, gaining [+2] to all dice rolls against any characters that cannot see them. RESTRICTIONS: Effect ends if the target performs any action or otherwise reveals themselves. Lasts until combat ends. KEYWORDS: ENHANCE | COMBAT | MAGIC | INVOCATION | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8171,7 +8171,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+            "text": "KEYWORDS: ENHANCE | MAGIC | INVOCATION | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8183,7 +8183,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] mana DECLARE: Target one ally within four [4] squares. EFFECT: The target can use the ability renew the heart immediately, without cost. KEYWORDS: AUGMENT | MAGIC | INVOCATION | ANCHOR"
+            "text": "COST: [2] mana DECLARE: Target one ally within four [4] squares. EFFECT: The target can use the ability renew the heart immediately, without cost. KEYWORDS: ENHANCE | MAGIC | INVOCATION | ANCHOR"
           }
         ]
       }
@@ -8257,7 +8257,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "DURATION: This spell lasts [1d10/2] rounds, effects end at the start of the round. Or when the caster elects to end the effects. KEYWORDS: MAGIC | FLAMES | AUGMENT"
+            "text": "DURATION: This spell lasts [1d10/2] rounds, effects end at the start of the round. Or when the caster elects to end the effects. KEYWORDS: MAGIC | FLAMES | ENHANCE"
           },
           {
             "type": "paragraph",
@@ -8273,7 +8273,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "RESTRICTION: This spell cannot trigger smolder and the target weapon’s fire damage cannot trigger smolder. KEYWORDS: AUGMENT | MAGIC | FLAMES |"
+            "text": "RESTRICTION: This spell cannot trigger smolder and the target weapon’s fire damage cannot trigger smolder. KEYWORDS: ENHANCE | MAGIC | FLAMES |"
           },
           {
             "type": "paragraph",
@@ -8435,7 +8435,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of wilds spell. DECLARE: Target [1] ally within [5] squares. EFFECT: Reduce a negative condition from the target by[-1]. This can reduce the condition to zero but does not remove the condition or ends it duration. KEYWORDS: AUGMENT | MAGIC | WILDS | SIGNATURE"
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of wilds spell. DECLARE: Target [1] ally within [5] squares. EFFECT: Reduce a negative condition from the target by[-1]. This can reduce the condition to zero but does not remove the condition or ends it duration. KEYWORDS: ENHANCE | MAGIC | WILDS | SIGNATURE"
           },
           {
             "type": "paragraph",
@@ -8447,7 +8447,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [4] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gains resistance [+2] against a chosen damage type until the start of their next turn. EMPOWER: Spend [+2] additional mana to grant resistance [+2] to a second damage type. KEYWORDS: AUGMENT | MAGIC | WILDS"
+            "text": "COST: [4] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gains resistance [+2] against a chosen damage type until the start of their next turn. EMPOWER: Spend [+2] additional mana to grant resistance [+2] to a second damage type. KEYWORDS: ENHANCE | MAGIC | WILDS"
           },
           {
             "type": "paragraph",
@@ -8531,7 +8531,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "from different sources. KEYWORDS: AUGMENT | MAGIC | WILDS | ORB"
+            "text": "from different sources. KEYWORDS: ENHANCE | MAGIC | WILDS | ORB"
           },
           {
             "type": "paragraph",
@@ -8543,7 +8543,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [9] mana DECLARE: Cast on yourself. EFFECT: Gain [+2] to strike, ward, guts, and all non-magical damage until the start of your next turn. EMPOWER: Spend [+3] additional mana to cast this spell on an ally within [5] squares. KEYWORDS: AUGMENT | MAGIC | WILDS | ANCHOR"
+            "text": "COST: [9] mana DECLARE: Cast on yourself. EFFECT: Gain [+2] to strike, ward, guts, and all non-magical damage until the start of your next turn. EMPOWER: Spend [+3] additional mana to cast this spell on an ally within [5] squares. KEYWORDS: ENHANCE | MAGIC | WILDS | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8597,7 +8597,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of oaths spell. DECLARE: Choose [1] ally character within [5] squares. EFFECT: The chosen character gains [+2] to guts until the start of the next round. RESTRICTIONS: A character cannot benefit from multiple instances of oath of protection. KEYWORDS: AUGMENT | MAGIC | OATHS | SIGNATURE"
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of oaths spell. DECLARE: Choose [1] ally character within [5] squares. EFFECT: The chosen character gains [+2] to guts until the start of the next round. RESTRICTIONS: A character cannot benefit from multiple instances of oath of protection. KEYWORDS: ENHANCE | MAGIC | OATHS | SIGNATURE"
           },
           {
             "type": "paragraph",
@@ -8621,7 +8621,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "RESTRICTION: The target weapon’s lighting damage cannot trigger oath of protection. KEYWORDS: AUGMENT | MAGIC | FLAMES |"
+            "text": "RESTRICTION: The target weapon’s lighting damage cannot trigger oath of protection. KEYWORDS: ENHANCE | MAGIC | FLAMES |"
           },
           {
             "type": "paragraph",
@@ -8633,7 +8633,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [6] MANA DECLARE: Target [1] ally character within [5] squares. EFFECT: The target decreases all damage categories by [1]. Lethal DAMAGE changes to direct and direct damage changes to standard. KEYWORDS: AUGMENT | MAGIC | OATHS"
+            "text": "COST: [6] MANA DECLARE: Target [1] ally character within [5] squares. EFFECT: The target decreases all damage categories by [1]. Lethal DAMAGE changes to direct and direct damage changes to standard. KEYWORDS: ENHANCE | MAGIC | OATHS"
           },
           {
             "type": "paragraph",
@@ -8645,7 +8645,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [4] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target selects [1] DAMAGE type and gain resistance [+2] against that type until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS"
+            "text": "COST: [4] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target selects [1] DAMAGE type and gain resistance [+2] against that type until the end of their next turn. KEYWORDS: ENHANCE | MAGIC | OATHS"
           },
           {
             "type": "paragraph",
@@ -8665,7 +8665,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "THUNDERSTORM: If the target weapon it under the effects of thunder’s fury, increase the damage condition for both spells by [+1]. The weapon is granted both damage types for the duration. KEYWORDS: AUGMENT | MAGIC | OATHS"
+            "text": "THUNDERSTORM: If the target weapon it under the effects of thunder’s fury, increase the damage condition for both spells by [+1]. The weapon is granted both damage types for the duration. KEYWORDS: ENHANCE | MAGIC | OATHS"
           },
           {
             "type": "paragraph",
@@ -8689,7 +8689,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [8] mana DECLARE: Target [1] ALLY within [5] squares. EFFECT: The target restores health [+4] and gains [+2] to strike rolls until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS"
+            "text": "COST: [8] mana DECLARE: Target [1] ALLY within [5] squares. EFFECT: The target restores health [+4] and gains [+2] to strike rolls until the end of their next turn. KEYWORDS: ENHANCE | MAGIC | OATHS"
           },
           {
             "type": "paragraph",
@@ -8705,7 +8705,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "DEFECTION: When the target of an attack that deals damage, you can be compelled[medium] to use the renew the heart ability. On failure, nothing happens. If successful you suffer no damage and half the intended damage from the attack is reflected back at the attacker KEYWORDS: AUGMENT | MAGIC | OATHS | ANCHOR"
+            "text": "DEFECTION: When the target of an attack that deals damage, you can be compelled[medium] to use the renew the heart ability. On failure, nothing happens. If successful you suffer no damage and half the intended damage from the attack is reflected back at the attacker KEYWORDS: ENHANCE | MAGIC | OATHS | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8717,7 +8717,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [12] mana DECLARE: Target all enemy characters within orb[5] of the caster EFFECT: Each target is compelled[medium] to use the renew the heart ability. On failure, their outgoing damage against targets other than the caster is reduced by [-5], to a minimum of [1], until the end of their next turn. KEYWORDS: AUGMENT | MAGIC | OATHS | ORB | ANCHOR"
+            "text": "COST: [12] mana DECLARE: Target all enemy characters within orb[5] of the caster EFFECT: Each target is compelled[medium] to use the renew the heart ability. On failure, their outgoing damage against targets other than the caster is reduced by [-5], to a minimum of [1], until the end of their next turn. KEYWORDS: ENHANCE | MAGIC | OATHS | ORB | ANCHOR"
           }
         ]
       }
@@ -8941,7 +8941,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [5] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target applies [-2] to all strike rolls against them, until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of shroud of despair from different sources. KEYWORDS: AUGMENT | MAGIC | HALLOWS"
+            "text": "COST: [5] mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target applies [-2] to all strike rolls against them, until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of shroud of despair from different sources. KEYWORDS: ENHANCE | MAGIC | HALLOWS"
           },
           {
             "type": "paragraph",
@@ -8973,7 +8973,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of PIERCE THE VEIL. KEYWORDS: AUGMENT | MAGIC | HALLOWS | ANCHOR"
+            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of PIERCE THE VEIL. KEYWORDS: ENHANCE | MAGIC | HALLOWS | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -8985,7 +8985,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [8] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gain [+3] to ward and guts until the end of the round. EMPOWER: Spend [+2] additional mana. Increase the bonus to [+1] and extend the effect until the end of the next round. KEYWORDS: AUGMENT | MAGIC | HALLOWS"
+            "text": "COST: [8] mana DECLARE: Target [1] ally within [5] squares. EFFECT: The target gain [+3] to ward and guts until the end of the round. EMPOWER: Spend [+2] additional mana. Increase the bonus to [+1] and extend the effect until the end of the next round. KEYWORDS: ENHANCE | MAGIC | HALLOWS"
           },
           {
             "type": "paragraph",
@@ -9051,7 +9051,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [0] # TRIGGER: When you successfully cast any # spell. DECLARE: Choose [1] friendly character within [6] squares. EFFECT: The chosen character reduces the # cost of their next spell by [-1], to a minimum of [1]. RESTRICTIONS: A character cannot be affected by multiple instances of chorus of harmony from different sources. KEYWORDS: AUGMENT | MAGIC | HARMONY | SIGNATURE"
+            "text": "COST: [0] # TRIGGER: When you successfully cast any # spell. DECLARE: Choose [1] friendly character within [6] squares. EFFECT: The chosen character reduces the # cost of their next spell by [-1], to a minimum of [1]. RESTRICTIONS: A character cannot be affected by multiple instances of chorus of harmony from different sources. KEYWORDS: ENHANCE | MAGIC | HARMONY | SIGNATURE"
           },
           {
             "type": "paragraph",
@@ -9063,7 +9063,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [3] mana DECLARE: Target all ally characters within orb[6] of the caster. EFFECT: Each affected ally gains [+1] to all attribute saves until the end of the next round. KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+            "text": "COST: [3] mana DECLARE: Target all ally characters within orb[6] of the caster. EFFECT: Each affected ally gains [+1] to all attribute saves until the end of the next round. KEYWORDS: ENHANCE | MAGIC | HARMONY | ORB"
           },
           {
             "type": "paragraph",
@@ -9131,7 +9131,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+            "text": "KEYWORDS: ENHANCE | MAGIC | HARMONY | ORB"
           },
           {
             "type": "paragraph",
@@ -9147,7 +9147,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY"
+            "text": "KEYWORDS: ENHANCE | MAGIC | HARMONY"
           },
           {
             "type": "paragraph",
@@ -9163,7 +9163,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ANCHOR"
+            "text": "KEYWORDS: ENHANCE | MAGIC | HARMONY | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -9179,7 +9179,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+            "text": "KEYWORDS: ENHANCE | MAGIC | HARMONY | ORB"
           },
           {
             "type": "paragraph",
@@ -9211,7 +9211,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [12] mana DECLARE: Target all ally characters within ORB[6] of the caster. EFFECT: Each affected ally restores HEALTH[+3] and gains [+2] to strike rolls until the end of their next turn. RESTRICTIONS: A character cannot be affected by multiple instances symphony of valor from different sources. KEYWORDS: AUGMENT | MAGIC | HARMONY | ORB"
+            "text": "COST: [12] mana DECLARE: Target all ally characters within ORB[6] of the caster. EFFECT: Each affected ally restores HEALTH[+3] and gains [+2] to strike rolls until the end of their next turn. RESTRICTIONS: A character cannot be affected by multiple instances symphony of valor from different sources. KEYWORDS: ENHANCE | MAGIC | HARMONY | ORB"
           }
         ]
       }
@@ -9241,7 +9241,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of life spell. DECLARE: Choose [1] ally character within [6] squares. EFFECT: The chosen character restores [+1] health. KEYWORDS: AUGMENT | MAGIC | LIFE | SIGNATURE"
+            "text": "COST: [0] mana TRIGGER: When you successfully cast any lore of life spell. DECLARE: Choose [1] ally character within [6] squares. EFFECT: The chosen character restores [+1] health. KEYWORDS: ENHANCE | MAGIC | LIFE | SIGNATURE"
           },
           {
             "type": "paragraph",
@@ -9281,7 +9281,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | CONE"
+            "text": "KEYWORDS: ENHANCE | MAGIC | LIFE | CONE"
           },
           {
             "type": "paragraph",
@@ -9293,7 +9293,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [9] mana DECLARE: Target [1] ally character within [6] squares who has [5] or less health EFFECT: The target immediately restores health[10]. RESTRICTIONS: A character cannot be affected by touch of life more than once per encounter. KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+            "text": "COST: [9] mana DECLARE: Target [1] ally character within [6] squares who has [5] or less health EFFECT: The target immediately restores health[10]. RESTRICTIONS: A character cannot be affected by touch of life more than once per encounter. KEYWORDS: ENHANCE | MAGIC | LIFE | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -9305,7 +9305,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [8] mana DECLARE: Choose [1] ally character within [6] squares. EFFECT: The target gains [10] to guts until the end of the round. RESTRICTIONS: A character cannot be affected by multiple instances of shield of protection from different sources. KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+            "text": "COST: [8] mana DECLARE: Choose [1] ally character within [6] squares. EFFECT: The target gains [10] to guts until the end of the round. RESTRICTIONS: A character cannot be affected by multiple instances of shield of protection from different sources. KEYWORDS: ENHANCE | MAGIC | LIFE | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -9317,7 +9317,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [9] mana DECLARE: Target all ally characters within orb[6]. EFFECT: Each target restores [+3] health. EMPOWER: Spend [+2] additional mana. If you do, increase restored health by [+2]. KEYWORDS: AUGMENT | MAGIC | LIFE | ORB"
+            "text": "COST: [9] mana DECLARE: Target all ally characters within orb[6]. EFFECT: Each target restores [+3] health. EMPOWER: Spend [+2] additional mana. If you do, increase restored health by [+2]. KEYWORDS: ENHANCE | MAGIC | LIFE | ORB"
           },
           {
             "type": "paragraph",
@@ -9333,7 +9333,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | ORB | ANCHOR"
+            "text": "KEYWORDS: ENHANCE | MAGIC | LIFE | ORB | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -9353,7 +9353,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: AUGMENT | MAGIC | LIFE | ANCHOR"
+            "text": "KEYWORDS: ENHANCE | MAGIC | LIFE | ANCHOR"
           },
           {
             "type": "paragraph",
@@ -9365,7 +9365,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [10] mana DECLARE: Create an orb[4] centered on the caster. EFFECT: Target(s) restore health[+2], gain [+2] to ward, and reduce all negative conditions to [0] for the duration. DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: AUGMENT | MAGIC | LIFE | ORB | ANCHOR"
+            "text": "COST: [10] mana DECLARE: Create an orb[4] centered on the caster. EFFECT: Target(s) restore health[+2], gain [+2] to ward, and reduce all negative conditions to [0] for the duration. DURATION: This effect lasts [1d10/2] rounds, effects end at the start of the round. KEYWORDS: ENHANCE | MAGIC | LIFE | ORB | ANCHOR"
           }
         ]
       }

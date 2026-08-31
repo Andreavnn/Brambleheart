@@ -150,7 +150,7 @@ export const speciesData: SpeciesDefinition[] = [
         "text": "Healing flows outward, rippling through the bonds that connect all life. TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources.",
         "keywords": [
           "Reaction",
-          "Augment",
+          "Enhance",
           "Axalori",
           "Trait"
         ]
@@ -229,7 +229,7 @@ export const speciesData: SpeciesDefinition[] = [
         "keywords": [
           "Root",
           "Instinct",
-          "Augment",
+          "Enhance",
           "Summon",
           "Culture"
         ]
@@ -309,7 +309,7 @@ export const speciesData: SpeciesDefinition[] = [
         "keywords": [
           "Root",
           "Reaction",
-          "Augment",
+          "Enhance",
           "Hedgkin",
           "Trait"
         ]
@@ -348,7 +348,7 @@ export const speciesData: SpeciesDefinition[] = [
         "keywords": [
           "Root",
           "Instinct",
-          "Augment",
+          "Enhance",
           "Culture"
         ]
       }
@@ -560,7 +560,7 @@ export const speciesData: SpeciesDefinition[] = [
         "keywords": [
           "Root",
           "Instinct",
-          "Augment",
+          "Enhance",
           "Urnath",
           "Trait"
         ]
@@ -572,7 +572,7 @@ export const speciesData: SpeciesDefinition[] = [
         "text": "To the Urnath, protection is sacred—every home, every life a flame worth defending. EFFECT: When an ally within [3] squares suffers damage that would reduce their health below [5], your character may redirect that damage to themselves. After resolving the damage, gain [+1] to guts until the end of the next round.",
         "keywords": [
           "Reaction",
-          "Augment",
+          "Enhance",
           "Culture"
         ]
       },
@@ -600,7 +600,7 @@ export const speciesData: SpeciesDefinition[] = [
         "keywords": [
           "Root",
           "Reaction",
-          "Augment",
+          "Enhance",
           "Tordan",
           "Trait"
         ]

@@ -39,7 +39,7 @@ function goBack(){
         </button>
       </div>
       <div class="brand-stack brand-update-stack">
-        <RouterLink to="/characters" class="brand-logo-link" aria-label="Brambleheart Character Roster">
+        <RouterLink to="/news" class="brand-logo-link" aria-label="Brambleheart News">
           <img src="/assets/Logo.png" alt="Brambleheart — Small Heroes, Big Adventures" class="brand-logo" />
         </RouterLink>
         <RouterLink to="/game-updates" class="game-updates-header-link">Rule Updates v{{ GAME_RULES_VERSION }}</RouterLink>

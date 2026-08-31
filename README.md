@@ -1,16 +1,15 @@
-# Brambleheart TTRPG — Beta 0.41
-
+# Brambleheart TTRPG — Beta 0.42
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.41 is a cumulative navigation, character-creation, loadout, character-management, and rules-teaching release built on GitHub `main` commit `eacd197438f6740ab3df9c0e9412cb03e17717fd` (Beta 0.40.0).
+Beta 0.42 is a cumulative equipment, character-sheet, News, Settings, and rules-layout normalization release built from the Beta 0.41 application baseline.
 
 ## Rule Updates v0.06
 
-Rule Updates are versioned independently from application builds. Beta 0.41 advances the rules stream to v0.06 for the Shield-slot Trinket refinement, Journey Knot timing change, Barkskin Mana Syphon update, finished-character walking money, and ability-timing clarification.
+Rule Updates are versioned independently from application builds. Beta 0.42 uses Rule Updates v0.06 after condensing superseded entries and making the current equipment, Armor Penalty, Trinket, and terminology rules authoritative.
 
 ### Trinkets
 
-Each character has one dedicated Trinket slot. A second Trinket may be equipped in place of the Shield slot. Additional owned Trinkets remain carried and inactive until equipped. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
+Each character has two independent Trinket slots. Additional owned Trinkets remain carried and inactive until equipped. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
 
 Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy equipment names are converted at the saved-character normalization boundary.
 
@@ -64,7 +63,7 @@ All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
 - Adventure Kit creation sellback = 3 sp = 150 wp
 - Maximum creation purchasing power after selling the kit = 33 sp = 1,650 wp
 
-Protective loadout remains limited to one armor and one shield. A character also has one dedicated Trinket slot; an optional second Trinket specifically replaces the Shield slot.
+Protective loadout remains limited to one armor and one shield. Trinkets use two independent Trinket slots and do not consume protective equipment space.
 
 ## Measurements
 
@@ -72,9 +71,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- BUILD/export: `0.41`
-- package version: `0.41.0`
-- PWA cache: `v0.41`
+- BUILD/export: `0.42`
+- package version: `0.42.0`
+- PWA cache: `v0.42`
 - Rule Updates: `v0.06`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 

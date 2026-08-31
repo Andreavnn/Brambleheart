@@ -423,6 +423,36 @@ function replaceBattleSections(){
   }
 }
 
+
+function canonicalizeBeta042Terminology(){
+  const currentText=(value:string)=>String(value||'')
+    .replace(/\bAUGMENTS\b/g,'ENHANCES')
+    .replace(/\bAugments\b/g,'Enhances')
+    .replace(/\bAUGMENT\b/g,'ENHANCE')
+    .replace(/\bAugment\b/g,'Enhance')
+    .replace(/\bWhisperstep\b/g,'Whisperster')
+    .replace(/\bStealth (?:Condition|Penalty)\b/gi,'Armor Penalty')
+  for(const document of Object.values(ruleSourceDocuments)){
+    document.sections=document.sections.map(sourceSection=>({
+      ...sourceSection,
+      heading:currentText(sourceSection.heading),
+      blocks:sourceSection.blocks.map(block=>block.type==='paragraph'?{...block,text:currentText(block.text)}:{...block,rows:block.rows.map(row=>row.map(cell=>currentText(cell)))})
+    }))
+    if(/ARMOR&SHEILDS|ARMOR.*SHIELD/i.test(document.sourceFile)){
+      document.sections=document.sections.map(sourceSection=>({
+        ...sourceSection,
+        blocks:sourceSection.blocks.map(block=>block.type==='paragraph'
+          ? {...block,text:block.text.replace(/\bStealth Condition\b/gi,'Armor Penalty')}
+          : {...block,rows:block.rows.map((row,rowIndex)=>row.map(cell=>rowIndex===0&&/^Stealth$/i.test(cell.trim())?'Armor Penalty':cell.replace(/\bStealth Condition\b/gi,'Armor Penalty')))}
+        )
+      }))
+      if(!document.sections.some(sourceSection=>sourceSection.heading==='ARMOR PENALTY')){
+        document.sections.splice(Math.min(2,document.sections.length),0,section('ARMOR PENALTY',paragraph('Armor protects the body at the cost of speed and silence. EFFECT: Add together the Armor Penalty from all equipped armor and shields. Reduce your Speed by the total Armor Penalty. Speed cannot be reduced below [1]. Apply the same total as a negative condition to all Whisperster Skill Checks. RESTRICTIONS: Only equipped armor and shields contribute to Armor Penalty. Armor Penalty does not apply to other Agility Skills unless another rule specifically says so. EXAMPLE: Root Weave (-2) plus Vinegrip (-1) produces Armor Penalty [-3]. A character with Speed [6] is reduced to Speed [3] and suffers condition [-3] to Whisperster Skill Checks. KEYWORDS: EQUIPMENT')))
+      }
+    }
+  }
+}
+
 function installCurrentRules(){
   if(ruleSourceDocuments['core-abilities'])ruleSourceDocuments['core-abilities'].sections=CURRENT_CORE_SECTIONS
   replaceBattleSections()
@@ -443,6 +473,7 @@ function installCurrentRules(){
 }
 
 installCurrentRules()
+canonicalizeBeta042Terminology()
 
 export { ruleSourceDocuments }
 export type { RuleSourceBlock, RuleSourceSection }

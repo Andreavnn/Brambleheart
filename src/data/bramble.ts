@@ -1,4 +1,5 @@
-export const BUILD = '0.41'
+import { APP_RELEASE } from './release'
+export const BUILD=APP_RELEASE
 
 export const attributes = [
   { id: 'agility', name: 'Agility', description: 'Motion & Balance' },

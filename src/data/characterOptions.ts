@@ -562,7 +562,7 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "50 np",
     "costSp": 10.0,
     "detail": "1+ · +1 · +1 · -1 · 4lb",
-    "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Stealth effects still apply."
+    "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Armor Penalty effects still apply."
   },
   {
     "name": "Vinegrip",
@@ -595,7 +595,7 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 1.0,
     "detail": "3 lb.",
     "description": "A heavy weather-ready cloak that protects against wind and cold while helping careful movement and concealment.",
-    "effect": "While worn, gain +1 to Whisperstep Skill checks.",
+    "effect": "While worn, gain +1 to Whisperster Skill checks.",
     "shopGroup": "Traveler’s Gear"
   },
   {

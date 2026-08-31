@@ -1,3 +1,3 @@
-/** Canonical runtime release markers for Beta 0.42. */
 export const APP_RELEASE='0.42'
-export const RULE_UPDATES_RELEASE='0.07'
+export const PACKAGE_RELEASE='0.42.0'
+export const RULE_UPDATES_RELEASE='0.06'
