@@ -1,14 +1,14 @@
 /** Canonical Beta 0.42 equipment profile normalization. Prices remain authoritative in rules/economy.ts. */
 export type EquipmentNormalization={detail?:string;shopGroup?:string}
-export type AdventureKitItem={name:string;category:'Adventure Kit';detail:string;costWp:number;quantity?:number}
+export type AdventureKitItem={name:string;category:'Adventure Kit';detail:string;costWp:number;costSp:number;costNp?:number;effect?:string;choice?:string;attachedTo?:string;quantity?:number}
 export const ADVENTURE_KIT_ITEMS:ReadonlyArray<AdventureKitItem>=[
-{name:'Bedroll & Groundsheet',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0},
-{name:'Traveler’s Cloak',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0},
-{name:'Torch',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,quantity:2},
-{name:'Reed Flask',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0},
-{name:'Trail Rations',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,quantity:2},
-{name:'Traveler’s Pack',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0},
-{name:'Fire-Starting Kit',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0},
+{name:'Bedroll & Groundsheet',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0},
+{name:'Traveler’s Cloak',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0},
+{name:'Torch',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0,quantity:2},
+{name:'Reed Flask',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0},
+{name:'Trail Rations',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0,quantity:2},
+{name:'Traveler’s Pack',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0},
+{name:'Fire-Starting Kit',category:'Adventure Kit',detail:'Starting Adventure Kit',costWp:0,costSp:0},
 ]
 const entries:Record<string,EquipmentNormalization>={
 'Club':{detail:'2 · 2 lb. · Bludgeoning, Versatile'},
