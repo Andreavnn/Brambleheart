@@ -1,15 +1,15 @@
-# Brambleheart TTRPG — Beta 0.42
+# Brambleheart TTRPG — Beta 0.43
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.42 is a cumulative equipment, character-sheet, News, Settings, and rules-layout normalization release built from the Beta 0.41 application baseline.
+Beta 0.43 promotes the approved Fundamentals presentation into production Rules pages, consolidates Equipment & Gear presentation, makes Trinket placement automatic at the character-data authority, adds the supplied page-header and News artwork, and completes targeted Settings/Level Up presentation repairs from the Beta 0.42 application baseline.
 
 ## Rule Updates v0.06
 
-Rule Updates are versioned independently from application builds. Beta 0.42 uses Rule Updates v0.06 after condensing superseded entries and making the current equipment, Armor Penalty, Trinket, and terminology rules authoritative.
+Rule Updates are versioned independently from application builds. Beta 0.43 continues to use Rule Updates v0.06 because this release changes application presentation and equipment-management behavior without introducing a new rules amendment.
 
 ### Trinkets
 
-Each character has two independent Trinket slots. Additional owned Trinkets remain carried and inactive until equipped. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
+Each character has two independent Trinket positions. The first two owned/eligible Trinkets are assigned to Trinket 1 and Trinket 2 automatically; real saved primary/secondary placement is respected at the normalization boundary so existing characters remain stable. Additional owned Trinkets remain carried and inactive. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
 
 Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy equipment names are converted at the saved-character normalization boundary.
 
@@ -38,7 +38,7 @@ Each character has one `CORE · INSTINCT`, one `CORE · MOVE`, and one `CORE · 
 
 `ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round. Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
 
-The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. The Rules Layout Test Abilities page teaches the economy in sequence and uses small Selu examples without character artwork before an expandable shared Core Ability reference.
+The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. Core Rules, Attributes & Skills, and Abilities now use the promoted production Fundamentals presentation instead of a separate layout-test route.
 
 ### Magic
 
@@ -63,17 +63,25 @@ All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
 - Adventure Kit creation sellback = 3 sp = 150 wp
 - Maximum creation purchasing power after selling the kit = 33 sp = 1,650 wp
 
-Protective loadout remains limited to one armor and one shield. Trinkets use two independent Trinket slots and do not consume protective equipment space.
+Protective loadout remains limited to one armor and one shield. Trinkets use two independent Trinket positions and do not consume protective equipment space.
 
 ## Measurements
 
 The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
+## Beta 0.43 application focus
+
+- Production Fundamentals pages replace the retired Rule Page Layout Test implementation.
+- Shared Equipment & Gear shopping presents labeled weapon/armor profiles and simplified categories; Sharpening Stone is a Consumable.
+- News and the primary page headers use the supplied PNG artwork.
+- The Settings Background radio uses its own radio presentation instead of inheriting the generic switch pseudo-knob.
+- Level Up groups rewards and advancement into clearer sections and presents automatic Trinket placement as status rather than a manual slot choice.
+
 ## Release integrity
 
-- BUILD/export: `0.42`
-- package version: `0.42.0`
-- PWA cache: `v0.42`
+- BUILD/export: `0.43`
+- package version: `0.43.0`
+- PWA cache: `v0.43`
 - Rule Updates: `v0.06`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 

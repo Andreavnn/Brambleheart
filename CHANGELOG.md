@@ -1,3 +1,12 @@
+# Brambleheart Beta 0.43
+
+- Promotes the approved Fundamentals presentation into production Core Rules, Attributes & Skills, and Abilities pages, retaining explicit aliases for legacy Rules URLs and removing the obsolete layout-test route.
+- Reorganizes the shared Equipment & Gear shop into clearer categories with labeled weapon/protective profiles, automatic two-position Trinket assignment, and Sharpening Stone under Consumables.
+- Rebuilds Level Up presentation around grouped rewards, advancement, Magic progression, and equipment management while keeping shared economy and advancement authorities authoritative.
+- Uses the supplied page-header character artwork across News, Character Roster, Rules, Rhythm Engine, and Settings and replaces temporary News SVG promotions with the supplied PNG artwork.
+- Fixes the Settings Background radio presentation at the actual input and enlarges the existing footer Brambleheart icon at its transitional presentation authority.
+- Removes superseded Settings/layout-test/News asset implementations and synchronizes BUILD/export 0.43, package 0.43.0, PWA cache v0.43, README, patch notes, and repository/in-app changelog while Rule Updates remains v0.06.
+
 # Brambleheart Beta 0.42
 
 - Added News community/share promotion cards and made the shared site logo return to News.

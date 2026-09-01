@@ -24,8 +24,27 @@ export function characterCreationComplete(record:Pick<CharacterRecord,'creationC
 export function characterStatus(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>):CharacterStatus{if(!characterCreationComplete(record))return'incomplete';if(record.status==='approved')return'approved';if(record.status==='unapproved')return'unapproved';return record.locked?'approved':'unapproved'}
 function legacyPaidWp(item:Pick<PurchasedEquipment,'costPaidWp'|'costNp'|'costSp'>,currentCostWp:number){if(Number.isFinite(Number(item.costPaidWp)))return wholeWp(item.costPaidWp);if(Number.isFinite(Number(item.costNp)))return wholeWp(Number(item.costNp)*WP_PER_NP);if(Number.isFinite(Number(item.costSp)))return wholeWp(Number(item.costSp)*WP_PER_SP);return currentCostWp}
 
+/** Canonical trinket equipment authority. The first two owned trinkets fill Trinket 1/2 automatically. */
+export function assignTrinketSlots(items:PurchasedEquipment[]|undefined):PurchasedEquipment[]{
+  const next=(items||[]).map(item=>({...item}))
+  const indexes=next.map((item,index)=>isTrinketGear(item)?index:-1).filter(index=>index>=0)
+  if(!indexes.length)return next
+  const explicitPrimary=indexes.find(index=>next[index].equipped===true&&next[index].trinketSlot==='primary')
+  const explicitSecondary=indexes.find(index=>index!==explicitPrimary&&next[index].equipped===true&&next[index].trinketSlot==='secondary')
+  const focus=indexes.find(index=>next[index].activeArcaneFocus===true)
+  const primary=explicitPrimary??focus??indexes[0]
+  const secondary=explicitSecondary??indexes.find(index=>index!==primary)
+  for(const index of indexes){
+    const item=next[index]
+    if(index===primary){item.equipped=true;item.trinketSlot='primary'}
+    else if(index===secondary){item.equipped=true;item.trinketSlot='secondary'}
+    else{item.equipped=false;delete item.trinketSlot;if(isArcaneFocusName(item.name))item.activeArcaneFocus=false}
+  }
+  return next
+}
+
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
-  const normalized=(items||[]).map(raw=>{
+  let normalized=(items||[]).map(raw=>{
     const item=raw as Omit<PurchasedEquipment,'trinketSlot'>&{trinketSlot?:'primary'|'secondary'|'trinket'|'shield'|'armor'}
     const name=canonicalGearName(item.name)
     const source=economyGearItems.find(candidate=>candidate.name===name&&candidate.category===item.category)||economyGearItems.find(candidate=>candidate.name===name)
@@ -37,13 +56,7 @@ function normalizeEquipment(items:PurchasedEquipment[]|undefined){
     return{...item,name,category,detail:canonicalEquipmentDetail(source?.detail??item.detail),costWp:currentCostWp,costPaidWp:legacyPaidWp(item,currentCostWp),costSp:currentCostWp/WP_PER_SP,costNp:currentCostWp/WP_PER_NP,effect:source?.effect??item.effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses:source?.statBonuses??item.statBonuses,trinketSlot}
   }) as PurchasedEquipment[]
   for(const kind of ['armor','shield'] as const){const indexes=normalized.map((item,index)=>protectiveGearKind(item)===kind?index:-1).filter(index=>index>=0);if(!indexes.length)continue;const hasExplicit=indexes.some(index=>typeof normalized[index].equipped==='boolean');const chosen=indexes.find(index=>normalized[index].equipped===true)??(!hasExplicit?indexes[0]:-1);for(const index of indexes)normalized[index].equipped=index===chosen}
-  const trinketIndexes=normalized.map((item,index)=>isTrinketGear(item)?index:-1).filter(index=>index>=0)
-  if(trinketIndexes.length){
-    const explicitlyEquipped=trinketIndexes.filter(index=>normalized[index].equipped===true)
-    const primary=trinketIndexes.find(index=>normalized[index].equipped===true&&normalized[index].trinketSlot==='primary')??trinketIndexes.find(index=>normalized[index].activeArcaneFocus===true)??explicitlyEquipped[0]??(!trinketIndexes.some(index=>typeof normalized[index].equipped==='boolean')?trinketIndexes[0]:-1)
-    const secondary=trinketIndexes.find(index=>index!==primary&&normalized[index].equipped===true&&normalized[index].trinketSlot==='secondary')??explicitlyEquipped.find(index=>index!==primary)??-1
-    for(const index of trinketIndexes){if(index===primary){normalized[index].equipped=true;normalized[index].trinketSlot='primary'}else if(index===secondary){normalized[index].equipped=true;normalized[index].trinketSlot='secondary'}else{normalized[index].equipped=false;delete normalized[index].trinketSlot;if(isArcaneFocusName(normalized[index].name))normalized[index].activeArcaneFocus=false}}
-  }
+  normalized=assignTrinketSlots(normalized)
   const focusIndexes=normalized.map((item,index)=>isArcaneFocusName(item.name)&&item.equipped===true?index:-1).filter(index=>index>=0)
   for(const item of normalized)if(isArcaneFocusName(item.name)&&item.equipped!==true)item.activeArcaneFocus=false
   if(focusIndexes.length){const chosen=focusIndexes.find(index=>normalized[index].activeArcaneFocus===true)??focusIndexes[0];for(const index of focusIndexes)normalized[index].activeArcaneFocus=index===chosen}
@@ -55,17 +68,18 @@ export function characterWealthWp(record:Pick<CharacterRecord,'wealthWp'|'wealth
 export function currentEquipmentRetailWp(item:PurchasedEquipment){return canonicalGearCostWp(item)}
 export function canEquipProtectiveEquipment(items:PurchasedEquipment[]|undefined,index:number){const target=(items||[])[index];return Boolean(target&&protectiveGearKind(target))}
 export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){const next=(items||[]).map(item=>({...item}));const target=next[index];if(!target)return next;const kind=protectiveGearKind(target);if(!kind)return next;if(!equipped){target.equipped=false;return next}for(const item of next)if(item!==target&&protectiveGearKind(item)===kind)item.equipped=false;target.equipped=true;return next}
-export function canEquipSecondTrinket(items:PurchasedEquipment[]|undefined,index:number){const list=items||[],target=list[index];if(!target||!isTrinketGear(target))return false;if(target.equipped===true&&target.trinketSlot==='secondary')return true;return !list.some((item,itemIndex)=>itemIndex!==index&&isTrinketGear(item)&&item.equipped===true&&item.trinketSlot==='secondary')}
-export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,slot:'primary'|'secondary'|null){const next=(items||[]).map(item=>({...item}));const target=next[index];if(!target||!isTrinketGear(target))return next;if(slot===null){target.equipped=false;delete target.trinketSlot;if(isArcaneFocusName(target.name))target.activeArcaneFocus=false;return next}for(const item of next){if(item===target||!isTrinketGear(item))continue;if(item.equipped===true&&item.trinketSlot===slot){item.equipped=false;delete item.trinketSlot;if(isArcaneFocusName(item.name))item.activeArcaneFocus=false}}target.equipped=true;target.trinketSlot=slot;return next}
-export function setActiveArcaneFocus(items:PurchasedEquipment[]|undefined,index:number,active=true){const next=(items||[]).map(item=>({...item}));const target=next[index];if(!target||!isArcaneFocusName(target.name)||target.equipped!==true)return next;for(const item of next)if(isArcaneFocusName(item.name))item.activeArcaneFocus=false;target.activeArcaneFocus=active;return next}
+/** Legacy UI compatibility only. Trinket slots are automatic in Beta 0.43. */
+export function canEquipSecondTrinket(items:PurchasedEquipment[]|undefined,index:number){const normalized=assignTrinketSlots(items);return normalized[index]?.trinketSlot==='secondary'}
+/** Legacy UI compatibility only. Manual slot requests no longer change trinket placement. */
+export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,_index:number,_slot:'primary'|'secondary'|null){return assignTrinketSlots(items)}
+export function setActiveArcaneFocus(items:PurchasedEquipment[]|undefined,index:number,active=true){const next=assignTrinketSlots(items);const target=next[index];if(!target||!isArcaneFocusName(target.name)||target.equipped!==true)return next;for(const item of next)if(isArcaneFocusName(item.name))item.activeArcaneFocus=false;target.activeArcaneFocus=active;return next}
 
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record),status=characterStatus({...record,creationComplete}),equipment=normalizeEquipment(record.equipment)
   const startingWealthWp=Number.isFinite(Number(record.startingWealthWp))?wholeWp(record.startingWealthWp):(legacyMoneyWp(record,'starting')??STARTING_WEALTH_WP)
   const wealthWp=Number.isFinite(Number(record.wealthWp))?wholeWp(record.wealthWp):(legacyMoneyWp(record,'remaining')??startingWealthWp)
   const currencyAddedWp=Number.isFinite(Number(record.currencyAddedWp))?wholeWp(record.currencyAddedWp):(legacyMoneyWp(record,'added')??0)
-  const skills=(record.skills||[]).map(canonicalSavedSkill)
-  const pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
+  const skills=(record.skills||[]).map(canonicalSavedSkill),pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
   const skillRanks=Object.fromEntries(Object.entries(record.skillRanks||{}).map(([key,value])=>[canonicalSavedSkill(key),value]))
   const cultureSkillChoices=Object.fromEntries(Object.entries(record.cultureSkillChoices||{}).map(([key,value])=>[key,canonicalSavedSkill(value)]))
   return{...record,equipment,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
