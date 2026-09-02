@@ -1,8 +1,24 @@
-export const GAME_RULES_VERSION='0.06'
+import { RULE_UPDATES_RELEASE } from './release'
+
+export const GAME_RULES_VERSION=RULE_UPDATES_RELEASE
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
+  {
+    version:GAME_RULES_VERSION,
+    date:'2026-09-02',
+    title:'Axalori Traits & Passive Trinkets',
+    summary:'Updates the current Axalori Trait rules and replaces numbered Trinket slots and Arcane Focus selection with a direct passive-equipped Trinket model.',
+    changes:[
+      'Heartcurrent now allows spending [-2] Health to restore [1] Mana or spending [-1] Mana to restore [2] Health.',
+      'Stillwater Renewal now restores [2] Health and [1] Mana when the character did not move during the round.',
+      'Harmonic Field now lets one ally within [3] squares choose to restore [1] Health, restore [1] Mana, or gain [+2] to Attribute Saves until the end of the next round.',
+      'Resonant Pulse now costs [2] Mana and reduces qualifying damage using the updated [-1] + Heart effect.',
+      'Trinkets no longer use Trinket 1 or Trinket 2 positions. Equipped Trinkets apply their passive effects directly.',
+      'Arcane Focus selection is removed. Scriptweave Book and Caster Totem apply their listed effects whenever they are equipped.',
+    ],
+  },
   {
     version:GAME_RULES_VERSION,
     date:'2026-08-31',

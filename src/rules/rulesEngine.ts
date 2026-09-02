@@ -1,7 +1,6 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { formatMeasurementText } from './measurements'
 import { canonicalGearName, isTrinketGear, protectiveGearKind } from './economy'
-import { isArcaneFocusName } from './magicRules'
 
 function total(values:number[]){return values.reduce((sum,value)=>sum+Number(value||0),0)}
 
@@ -25,7 +24,7 @@ export function advancementCost(type:'attribute'|'skill'|'new-skill'|'talent'|'m
 
 export type CoreAttributeRanks={agility:number;might:number;hide:number;lore:number;bravery:number}
 export type EquipmentProfileSource={name:string;detail?:string}
-export type CharacterSheetEquipmentSource=EquipmentProfileSource&{attachedTo?:string;category?:string;effect?:string;equipped?:boolean;trinketSlot?:'primary'|'secondary';statBonuses?:EquipmentStatBonuses;quantity?:number;activeArcaneFocus?:boolean}
+export type CharacterSheetEquipmentSource=EquipmentProfileSource&{attachedTo?:string;category?:string;effect?:string;equipped?:boolean;statBonuses?:EquipmentStatBonuses;quantity?:number}
 
 export function rankModifier(rank:number){return Number(rank||0)*2}
 const SKILL_ALIASES:Readonly<Record<string,string>>={Whisperstep:'Whisperster',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
@@ -50,29 +49,21 @@ function numericProfileBonus(value:string){const match=String(value||'').match(/
 function numericPenalty(value:string){const match=String(value||'').match(/[+-]?(\d+)/);if(!match)return 0;const n=Number(match[0]);return Number.isFinite(n)?Math.min(0,n):0}
 function addNumericProfileBonus(value:string,bonus:number){if(!bonus||value==='—')return value;const match=String(value).match(/[+-]?\d+/);if(!match)return value;const next=Number(match[0])+bonus;return String(value).replace(match[0],`${next>=0?'+':''}${next}`)}
 
-export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean;attachedTo?:string;trinketSlot?:'primary'|'secondary'}
+export type ProtectiveEquipmentSource={name:string;detail?:string;category?:string;equipped?:boolean;attachedTo?:string}
 function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
   const candidates=(items||[]).filter(item=>item.category==='Armor & Shield')
   return(['armor','shield'] as const).flatMap(kind=>{const matching=candidates.filter(item=>protectiveGearKind(item)===kind);if(!matching.length)return[];const hasExplicit=matching.some(item=>typeof item.equipped==='boolean');const chosen=matching.find(item=>item.equipped===true)||(!hasExplicit?matching[0]:undefined);return chosen?[chosen]:[]})
 }
-export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{
-  const candidates=(items||[]).filter(item=>isTrinketGear(item)),explicit=candidates.filter(item=>item.equipped===true)
-  if(explicit.length)return explicit.slice(0,2)
-  const hasExplicit=candidates.some(item=>typeof item.equipped==='boolean')
-  return hasExplicit?[]:candidates.slice(0,2)
-}
-export function primaryTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{const equipped=equippedTrinketGear(items);return equipped.find(item=>item.trinketSlot==='primary')||equipped[0]}
-export function secondaryTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T|undefined{const equipped=equippedTrinketGear(items);const primary=primaryTrinketGear(items);return equipped.find(item=>item.trinketSlot==='secondary')||equipped.find(item=>item!==primary)}
+export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{return(items||[]).filter(item=>isTrinketGear(item)&&item.equipped!==false)}
 export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){const protective=equippedProtectiveItems(items);const base=protective.reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0);const armor=protective.find(item=>protectiveGearKind(item)==='armor');const heartward=Boolean(armor&&equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Heartward Token'&&item.attachedTo===armor.name));return base+(heartward?1:0)}
 export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)}
 export function equipmentArmorPenalty(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericPenalty(armorProfileValues(String(item.detail||'')).armorPenalty),0)}
 export function equipmentSpeedPenalty(items:ProtectiveEquipmentSource[]|undefined,hasSteadyPace=false){const raw=Math.min(0,equipmentArmorPenalty(items));const armorComponent=hasSteadyPace?Math.min(0,raw+2):raw;return armorComponent+(hasSteadyPace?-1:0)}
 export function equippedProtectiveGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined){return equippedProtectiveItems(items)}
-export type ArcaneFocusEquipmentSource=ProtectiveEquipmentSource&{statBonuses?:EquipmentStatBonuses;quantity?:number;activeArcaneFocus?:boolean}
-export function activeArcaneFocus<T extends ArcaneFocusEquipmentSource>(items:T[]|undefined):T|undefined{const focuses=equippedTrinketGear(items).filter(item=>isArcaneFocusName(canonicalGearName(item.name)));if(!focuses.length)return undefined;return focuses.find(item=>item.activeArcaneFocus===true)||focuses[0]}
-export function equipmentControlBonus(items:ArcaneFocusEquipmentSource[]|undefined){const list=items||[];const ordinary=list.filter(item=>!isArcaneFocusName(canonicalGearName(item.name))&&!isTrinketGear(item)).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0);const focus=activeArcaneFocus(list);return ordinary+(focus?Math.max(0,Number(focus.statBonuses?.control)||0):0)}
-export function equipmentSpellManaReduction(items:ArcaneFocusEquipmentSource[]|undefined){return canonicalGearName(activeArcaneFocus(items)?.name||'')==='Scriptweave Book'?1:0}
-export function equipmentMagicRegenBonus(items:ArcaneFocusEquipmentSource[]|undefined){const equipped=equippedTrinketGear(items);let bonus=equipped.some(item=>canonicalGearName(item.name)==='Shiny Bobble')?1:0;if(canonicalGearName(activeArcaneFocus(items)?.name||'')==='Scriptweave Book')bonus+=1;return bonus}
+export type TrinketAwareEquipmentSource=ProtectiveEquipmentSource&{statBonuses?:EquipmentStatBonuses;quantity?:number}
+export function equipmentControlBonus(items:TrinketAwareEquipmentSource[]|undefined){const list=items||[];return list.filter(item=>item.equipped!==false).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)}
+export function equipmentSpellManaReduction(items:TrinketAwareEquipmentSource[]|undefined){return equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Scriptweave Book')?1:0}
+export function equipmentMagicRegenBonus(items:TrinketAwareEquipmentSource[]|undefined){const equipped=equippedTrinketGear(items);let bonus=equipped.some(item=>canonicalGearName(item.name)==='Shiny Bobble')?1:0;if(equipped.some(item=>canonicalGearName(item.name)==='Scriptweave Book'))bonus+=1;return bonus}
 export function equipmentRenewHeartConditionBonus(items:ProtectiveEquipmentSource[]|undefined){return equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Votive Icon')?1:0}
 export function equipmentSpellDamageBonus(items:ProtectiveEquipmentSource[]|undefined){return equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Spell Charm')?1:0}
 export function equipmentWeaponToHitBonus(items:ProtectiveEquipmentSource[]|undefined,weaponName:string){const names=new Set(['Journey Knot','Quickdraw Quiver','Wristloop']);return equippedTrinketGear(items).some(item=>item.attachedTo===weaponName&&names.has(canonicalGearName(item.name)))?1:0}

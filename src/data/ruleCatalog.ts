@@ -12,12 +12,14 @@ export const loreAnthroMundasPages:RulePageDefinition[]=[
 export const loreNavigation=loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
 export const quickReferencePages:RulePageDefinition[]=[loreAnthroMundasPages[0],page('faq','FAQ','Common questions answered from the currently loaded rules.'),page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.')]
 
-/* Beta 0.43: one authoritative Fundamentals menu. Production Core Rules, Attributes & Skills, and Abilities use the promoted layout-preview presentation. */
+/* Beta 0.44: one authoritative Fundamentals menu, including the Abilities, Stacking, and Chaining teaching pages. */
 const fundamentalPages:RulePageDefinition[]=[
  page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
  page('core-rules','Core Rules','The Rhythm Engine, Conditions, targets, Fortune and Misfortune, Edged and Weighted rolls, Half-Step rolls, and worked examples.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
  page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, Skills, Skill Trees, expanded Skills, and restricted Skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
- page('abilities','Abilities','How Ability types and Keywords determine when and how Abilities can be used, including the shared Core Abilities available during encounters.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES','CORE ABILITIES']}],undefined,['Keyword','Ability','Core Ability'])]
+ page('abilities','Abilities','How Ability types and Keywords determine when and how Abilities can be used, including the shared Core Abilities available during encounters.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES','CORE ABILITIES']}],undefined,['Keyword','Ability','Core Ability']),
+ page('stacking','Stacking','A visual guide to stacking multiple Abilities onto a single Core Ability during resolution.',[{document:'core-abilities',sections:['ABILITIES']}],undefined,['Ability','Stacking','Core Ability']),
+ page('chaining','Chaining','A visual guide to Abilities chaining back and forth between characters during resolution.',[{document:'core-abilities',sections:['ABILITIES']}],undefined,['Ability','Chaining','Reactive'])]
 const speciesPages=speciesData.map(item=>page(`species-${item.name.toLowerCase()}`,item.name,`${item.name} lore, Heritage Traits, Culture Traits, and language.`,[{document:`species-${item.name.toLowerCase()}`}],undefined,['Species','Trait','Culture']))
 const playableSpeciesLanding=page('playable-species','Playable Species','Choose a playable Species and open its dedicated rules page.')
 export const ruleCategories:RuleCategoryDefinition[]=[

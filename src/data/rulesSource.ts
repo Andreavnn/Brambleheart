@@ -5356,7 +5356,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A character has two Trinket slots. Trinkets may be carried unequipped, and a Trinket that requires an attachment must be attached to a legal weapon or armor before its attached effect applies."
+            "text": "Trinkets are equipped as passive gear and do not use numbered slots. An equipped Trinket applies its effect automatically; a Trinket that requires an attachment must also be attached to a legal weapon or armor before its attached effect applies."
           },
           {
             "type": "paragraph",
@@ -5364,7 +5364,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm. While equipped and used as the active arcane focus, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana."
+            "text": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm. While equipped, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana."
           },
           {
             "type": "paragraph",
@@ -5372,7 +5372,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "A crafted bone, wood, metal, or woven focus carried as a personal channel for spellwork. While equipped and used as the active arcane focus, gain [+1] Control."
+            "text": "A crafted bone, wood, metal, or woven focus carried as a personal channel for spellwork. While equipped, gain [+1] Control."
           },
           {
             "type": "paragraph",
@@ -6647,7 +6647,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [+2] and mana [+1]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
+            "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [2] and mana [1]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
           },
           {
             "type": "paragraph",
@@ -6655,7 +6655,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may transfer [2] health to restore [+1] mana or spend [1] mana to restore health [+2]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
+            "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may spend [-2] health to restore [1] mana or spend [-1] mana to restore health [2]. KEYWORDS: ROOT | INSTINCT | AXALORI | TRAIT"
           },
           {
             "type": "paragraph",
@@ -6667,7 +6667,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | ENHANCE | AXALORI | TRAIT"
+            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: One ally characters within [3] squares, may choose one of the following effects. Restore health [1], mana [1], or gain [+2] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | ENHANCE | AXALORI | TRAIT"
           },
           {
             "type": "paragraph",
@@ -6695,7 +6695,7 @@ export const ruleSourceDocuments: Record<string, RuleSourceDocument> = {
           },
           {
             "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers damage, you may spend [1] mana to reduce that damage by [-1] and restore your character health [+1]. KEYWORDS: INSTINCT | CULTURE"
+            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers three or more damage reduce that damage by [-1] + Heart). KEYWORDS: INSTINCT | CULTURE"
           }
         ]
       }

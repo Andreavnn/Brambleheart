@@ -125,7 +125,6 @@ onMounted(()=>{const shared=consumeCharacterShareFromLocation();if(shared)void h
 
     <div class="page-title-block">
       <h1>Character Roster</h1>
-      <p>Create, import, export, pin, lock, and manage Brambleheart characters stored on this device.</p>
     </div>
 
     <section class="list-launch card-surface character-action-launch">

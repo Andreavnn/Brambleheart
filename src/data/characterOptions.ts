@@ -865,7 +865,7 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 12.0,
     "detail": "1 lb.",
     "description": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm.",
-    "effect": "While equipped and used as your active arcane focus, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana.",
+    "effect": "While equipped, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana.",
     "shopGroup": "Trinkets"
   },
   {
@@ -875,7 +875,7 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 6.0,
     "detail": "—",
     "description": "A crafted bone, wood, metal, or woven focus carried as a personal channel for spellwork.",
-    "effect": "While equipped and used as your active arcane focus, gain [+1] Control.",
+    "effect": "While equipped, gain [+1] Control.",
     "statBonuses": {
       "control": 1
     },

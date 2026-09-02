@@ -127,7 +127,7 @@ export const speciesData: SpeciesDefinition[] = [
     "speciesTraits": [
       {
         "name": "Stillwater Renewal",
-        "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [+2] and mana [+1].",
+        "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [2] and mana [1].",
         "keywords": [
           "Root",
           "Instinct",
@@ -137,7 +137,7 @@ export const speciesData: SpeciesDefinition[] = [
       },
       {
         "name": "Heartcurrent",
-        "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may transfer [2] health to restore [+1] mana or spend [1] mana to restore health [+2].",
+        "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may spend [-2] health to restore [1] mana or spend [-1] mana to restore health [2].",
         "keywords": [
           "Root",
           "Instinct",
@@ -147,7 +147,7 @@ export const speciesData: SpeciesDefinition[] = [
       },
       {
         "name": "Harmonic Field",
-        "text": "Healing flows outward, rippling through the bonds that connect all life. TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: When an ally characters within [3] squares, they may choose one of the following effects. Restore health [+1], regain mana [+1], or gain [+1] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources.",
+        "text": "Healing flows outward, rippling through the bonds that connect all life. TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: One ally characters within [3] squares, may choose one of the following effects. Restore health [1], mana [1], or gain [+2] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources.",
         "keywords": [
           "Reaction",
           "Enhance",
@@ -167,7 +167,7 @@ export const speciesData: SpeciesDefinition[] = [
       },
       {
         "name": "Resonant Pulse",
-        "text": "To the Axalori, empathy is a current that binds all living things. When one heart trembles, another steadies it. COST: [1] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers damage, you may spend [1] mana to reduce that damage by [-1] and restore your character health [+1].",
+        "text": "To the Axalori, empathy is a current that binds all living things. When one heart trembles, another steadies it. COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers three or more damage reduce that damage by [-1] + Heart).",
         "keywords": [
           "Instinct",
           "Culture"

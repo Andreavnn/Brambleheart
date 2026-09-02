@@ -1304,7 +1304,8 @@ html[data-background-view="true"] body::before{display:none!important;}html[data
 .bramble-site-header{margin-bottom:8px;}
 .bramble-site-header .app-header,.bramble-site-header .app-header.compact{width:min(1440px,calc(100vw - 28px));min-height:520px;grid-template-columns:44px minmax(0,1fr) 44px;margin:0 50% 4px;transform:translateX(-50%);}
 .bramble-site-header .brand-logo-link{justify-self:center;display:flex;align-items:center;justify-content:center;width:min(1440px,calc(100vw - 112px));max-width:1440px;min-width:0;letter-spacing:0;font-size:initial;line-height:1;}
-.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{display:block;width:100%;height:auto;max-height:268px;object-fit:contain;object-position:center;transform:scale(2);transform-origin:center;}
+html[data-logo-size='smallest']{--brand-logo-user-width:52%}html[data-logo-size='small']{--brand-logo-user-width:64%}html[data-logo-size='normal']{--brand-logo-user-width:76%}html[data-logo-size='large']{--brand-logo-user-width:88%}html[data-logo-size='largest']{--brand-logo-user-width:100%}
+.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{display:block;width:var(--brand-logo-user-width,100%);height:auto;max-height:268px;object-fit:contain;object-position:center;transform:scale(2);transform-origin:center;}
 .bramble-welcome-page .welcome-panel,.welcome-page .welcome-panel{width:min(1040px,calc(100vw - 32px));max-width:1040px;margin:auto;box-sizing:border-box;overflow:visible;}
 .bramble-welcome-brand{width:100%;min-width:0;display:grid;place-items:center;text-align:center;}
 .welcome-logo{display:block;width:min(900px,100%);max-width:100%;height:auto;max-height:330px;object-fit:contain;object-position:center;margin-inline:auto;}
