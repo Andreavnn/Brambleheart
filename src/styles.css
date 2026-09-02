@@ -1304,28 +1304,28 @@ html[data-background-view="true"] body::before{display:none!important;}html[data
 .bramble-site-header{margin-bottom:8px;}
 .bramble-site-header .app-header,.bramble-site-header .app-header.compact{width:min(1440px,calc(100vw - 28px));min-height:520px;grid-template-columns:44px minmax(0,1fr) 44px;margin:0 50% 4px;transform:translateX(-50%);}
 .bramble-site-header .brand-logo-link{justify-self:center;display:flex;align-items:center;justify-content:center;width:min(1440px,calc(100vw - 112px));max-width:1440px;min-width:0;letter-spacing:0;font-size:initial;line-height:1;}
-html[data-logo-size='smallest']{--brand-logo-user-width:52%}html[data-logo-size='small']{--brand-logo-user-width:64%}html[data-logo-size='normal']{--brand-logo-user-width:76%}html[data-logo-size='large']{--brand-logo-user-width:88%}html[data-logo-size='largest']{--brand-logo-user-width:100%}
-.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{display:block;width:var(--brand-logo-user-width,100%);height:auto;max-height:268px;object-fit:contain;object-position:center;transform:scale(2);transform-origin:center;}
+html[data-logo-size='smallest']{--brand-logo-user-scale:.52}html[data-logo-size='small']{--brand-logo-user-scale:.64}html[data-logo-size='normal']{--brand-logo-user-scale:.76}html[data-logo-size='large']{--brand-logo-user-scale:.88}html[data-logo-size='largest']{--brand-logo-user-scale:1}
+.bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{display:block;width:100%;height:auto;max-height:268px;object-fit:contain;object-position:center;transform:scale(2) scale(var(--brand-logo-user-scale,1));transform-origin:center;}
 .bramble-welcome-page .welcome-panel,.welcome-page .welcome-panel{width:min(1040px,calc(100vw - 32px));max-width:1040px;margin:auto;box-sizing:border-box;overflow:visible;}
 .bramble-welcome-brand{width:100%;min-width:0;display:grid;place-items:center;text-align:center;}
 .welcome-logo{display:block;width:min(900px,100%);max-width:100%;height:auto;max-height:330px;object-fit:contain;object-position:center;margin-inline:auto;}
 @media(max-width:820px){
   .bramble-site-header .app-header,.bramble-site-header .app-header.compact{width:calc(100vw - 20px);min-height:380px;grid-template-columns:40px minmax(0,1fr) 40px;}
   .bramble-site-header .brand-logo-link{width:min(1240px,calc(100vw - 96px));}
-  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:220px;transform:scale(1.7);}
+  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:220px;transform:scale(1.7) scale(var(--brand-logo-user-scale,1));}
   .welcome-logo{max-height:280px;}
 }
 @media(max-width:620px){
   .bramble-site-header .app-header,.bramble-site-header .app-header.compact{width:calc(100vw - 12px);min-height:250px;grid-template-columns:36px minmax(0,1fr) 36px;}
   .bramble-site-header .brand-logo-link{width:min(960px,calc(100vw - 80px));}
-  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:160px;transform:scale(1.45);}
+  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:160px;transform:scale(1.45) scale(var(--brand-logo-user-scale,1));}
   .bramble-welcome-page .welcome-panel,.welcome-page .welcome-panel{width:calc(100vw - 16px);}
   .welcome-logo{max-height:220px;}
 }
 @media(max-width:390px){
   .bramble-site-header .app-header,.bramble-site-header .app-header.compact{width:calc(100vw - 8px);min-height:210px;grid-template-columns:34px minmax(0,1fr) 34px;}
   .bramble-site-header .brand-logo-link{width:calc(100vw - 76px);}
-  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:136px;transform:scale(1.3);}
+  .bramble-site-header .brand-logo,.bramble-site-header .app-header.compact .brand-logo{max-height:136px;transform:scale(1.3) scale(var(--brand-logo-user-scale,1));}
   .welcome-logo{max-height:180px;}
 }
 
