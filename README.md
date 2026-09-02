@@ -1,21 +1,21 @@
-# Brambleheart TTRPG — Beta 0.43
+# Brambleheart TTRPG — Beta 0.44
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.43 promotes the approved Fundamentals presentation into production Rules pages, consolidates Equipment & Gear presentation, makes Trinket placement automatic at the character-data authority, adds the supplied page-header and News artwork, and completes targeted Settings/Level Up presentation repairs from the Beta 0.42 application baseline.
+Beta 0.44 expands the Fundamentals ability teaching flow, adds the Rhythm Engine Ability Manager, updates Axalori Trait rules, simplifies Trinkets into passive equipped gear, adds persisted logo sizing, and refreshes the Character Roster and Rules header artwork from the Beta 0.43 application baseline.
 
-## Rule Updates v0.06
+## Rule Updates v0.07
 
-Rule Updates are versioned independently from application builds. Beta 0.43 continues to use Rule Updates v0.06 because this release changes application presentation and equipment-management behavior without introducing a new rules amendment.
+Rule Updates are versioned independently from application builds. Beta 0.44 advances Rule Updates to v0.07 for the Axalori Trait revisions and the removal of numbered Trinket slots / Arcane Focus selection.
 
 ### Trinkets
 
-Each character has two independent Trinket positions. The first two owned/eligible Trinkets are assigned to Trinket 1 and Trinket 2 automatically; real saved primary/secondary placement is respected at the normalization boundary so existing characters remain stable. Additional owned Trinkets remain carried and inactive. Attachment-based Trinkets must also be attached to a legal weapon or armor for their attached effect to apply.
+Trinkets behave as passive equipment. They do not use Trinket 1 or Trinket 2 positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to a legal weapon or armor before their attached effect applies.
 
-Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy equipment names are converted at the saved-character normalization boundary.
+Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy saved slot/focus fields are removed at the saved-character normalization boundary rather than being carried into current application logic.
 
 - Journey Knot — while equipped and attached, condition `+1` to one TO HIT roll made with that weapon.
-- Scriptweave Book — while equipped as the active arcane focus, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
-- Caster Totem — while equipped as the active arcane focus, Control `+1`.
+- Scriptweave Book — while equipped, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
+- Caster Totem — while equipped, Control `+1`.
 - Spell Charm — once per round, increase one spell’s damage by `+1`.
 - Shiny Bobble — Magic Regen `+1`.
 - Votive Icon — condition `+1` when using Renew the Heart.
@@ -38,7 +38,7 @@ Each character has one `CORE · INSTINCT`, one `CORE · MOVE`, and one `CORE · 
 
 `ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round. Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
 
-The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. Core Rules, Attributes & Skills, and Abilities now use the promoted production Fundamentals presentation instead of a separate layout-test route.
+The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. Fundamentals now includes dedicated Stacking and Chaining pages, and Rhythm Engine → Ability Manager can filter the general ability pool or a saved character’s known/inherited abilities against a selected Core Ability.
 
 ### Magic
 
@@ -50,7 +50,7 @@ The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstri
 - Ordinary spells have a minimum final cost of `1 Mana`.
 - Signature Spells display `Signature`; zero-cost Invocation utility spells display `Cantrip`.
 - Power applies only when an individual spell explicitly says to add Power.
-- Only one equipped Arcane Focus is active at a time.
+- Equipped Trinkets apply their listed passive magic effects directly; there is no separate Arcane Focus selection.
 
 ## Canonical Threadpiece economy
 
@@ -63,26 +63,27 @@ All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
 - Adventure Kit creation sellback = 3 sp = 150 wp
 - Maximum creation purchasing power after selling the kit = 33 sp = 1,650 wp
 
-Protective loadout remains limited to one armor and one shield. Trinkets use two independent Trinket positions and do not consume protective equipment space.
+Protective loadout remains limited to one armor and one shield. Trinkets are passive equipped gear and do not consume protective equipment space.
 
 ## Measurements
 
 The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
-## Beta 0.43 application focus
+## Beta 0.44 application focus
 
-- Production Fundamentals pages replace the retired Rule Page Layout Test implementation.
-- Shared Equipment & Gear shopping presents labeled weapon/armor profiles and simplified categories; Sharpening Stone is a Consumable.
-- News and the primary page headers use the supplied PNG artwork.
-- The Settings Background radio uses its own radio presentation instead of inheriting the generic switch pseudo-knob.
-- Level Up groups rewards and advancement into clearer sections and presents automatic Trinket placement as status rather than a manual slot choice.
+- Rhythm Engine adds Ability Manager between Dice Roller and Encounter Builder with optional saved-character filtering.
+- Fundamentals adds Stacking and Chaining visual teaching pages and standardizes Core Ability presentation colors/sizing.
+- Axalori Trait rules are synchronized to Rule Updates v0.07.
+- Trinkets use a passive equipped model without numbered slots or Arcane Focus selection.
+- Settings Display adds a persisted five-step Logo Size control, with the previous logo size retained as Largest/default.
+- Character Roster and Rules use the supplied replacement header characters, flipped horizontally; shared page-header art sits slightly lower and selected page-title subtitles are removed.
 
 ## Release integrity
 
-- BUILD/export: `0.43`
-- package version: `0.43.0`
-- PWA cache: `v0.43`
-- Rule Updates: `v0.06`
+- BUILD/export: `0.44`
+- package version: `0.44.0`
+- PWA cache: `v0.44`
+- Rule Updates: `v0.07`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 
 ## Runtime

@@ -1,0 +1,114 @@
+import { RULE_UPDATES_RELEASE } from './release'
+
+export const GAME_RULES_VERSION=RULE_UPDATES_RELEASE
+
+export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
+
+export const gameUpdates:GameUpdateEntry[]=[
+  {
+    version:GAME_RULES_VERSION,
+    date:'2026-09-02',
+    title:'Axalori Traits & Passive Trinkets',
+    summary:'Updates the current Axalori Trait rules and replaces numbered Trinket slots and Arcane Focus selection with a direct passive-equipped Trinket model.',
+    changes:[
+      'Heartcurrent now allows spending [-2] Health to restore [1] Mana or spending [-1] Mana to restore [2] Health.',
+      'Stillwater Renewal now restores [2] Health and [1] Mana when the character did not move during the round.',
+      'Harmonic Field now lets one ally within [3] squares choose to restore [1] Health, restore [1] Mana, or gain [+2] to Attribute Saves until the end of the next round.',
+      'Resonant Pulse now costs [2] Mana and reduces qualifying damage using the updated [-1] + Heart effect.',
+      'Trinkets no longer use Trinket 1 or Trinket 2 positions. Equipped Trinkets apply their passive effects directly.',
+      'Arcane Focus selection is removed. Scriptweave Book and Caster Totem apply their listed effects whenever they are equipped.',
+    ],
+  },
+  {
+    version:GAME_RULES_VERSION,
+    date:'2026-08-31',
+    title:'Equipment, Trinkets & Rules Normalization',
+    summary:'Normalizes ordinary weapons and protective gear, replaces the old armor Stealth field with Armor Penalty, establishes two independent Trinket slots, and standardizes current rules terminology and presentation.',
+    changes:[
+      'Characters have two independent Trinket slots. Trinkets do not replace or consume a Shield or Armor slot.',
+      'Armor Penalty replaces the former armor Stealth field. Add the Armor Penalty from equipped armor and shield; it reduces Speed to a minimum of 1 and applies the same negative condition to Whisperster Skill checks.',
+      'Ordinary weapon, armor, and shield damage/profiles and prices are normalized so a starting character can purchase a coherent weapon-and-protection loadout without selling the Adventure Kit.',
+      'Weapon Damage and Weight now remain in their Character Sheet columns instead of being interpreted as property pills; equipped armor and shield Guts, Mana Syphon, and Armor Penalty are applied to derived character statistics.',
+      'Enhance is the standardized beneficial-effect keyword. Offensive and Defensive Talent category names no longer include Combat, and category labels are not repeated inside individual Talent cards.',
+      'Journey Knot grants condition [+1] to TO HIT rolls made with its attached weapon while equipped, with no once-per-round restriction.',
+      'Barkskin Vest provides Guts [+1], Mana Syphon [+1], and Armor Penalty [-1] under the normalized protection table.',
+      'A finished new character that completes creation with zero remaining Threadpieces begins with 10 wp.',
+    ],
+  },
+  {
+    version:'0.05',
+    date:'2026-08-30',
+    title:'Trinkets & Equipment Loadout',
+    summary:'Adds a dedicated Trinket equipment class and slot, updates converted Trinket effects, and clarifies how equipment attachments interact with character abilities and protective slots.',
+    changes:[
+      'Journey Knot, Caster Totem, Lens-Stone Arcanum, Scriptweave Book, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Spell Charm are Trinkets. Legacy saved names normalize at the character-data boundary.',
+      'Scriptweave Book now increases Magic Regen by [+1] and reduces ordinary spell Mana cost by [-1] while equipped as the active arcane focus. Its previous Control and spell-damage bonuses are removed.',
+      'Shiny Bobble increases Magic Regen by [+1], Votive Icon grants condition [+1] when using Renew the Heart, Spell Charm increases one spell’s damage by [+1] once per round, and Heartward Token increases the Guts Bonus of attached worn armor by [+1].',
+      'Practiced Hand continues to exclude Skills already gained earlier in character creation from Homeland and Culture Trait sources.',
+      'Rules measurement text now displays a space between bracketed distance and unit, such as [3] squares, while the Squares/Yards/Meters/Feet display conversion continues to use the shared measurement authority.',
+    ],
+  },
+  {
+    version:'0.04',
+    date:'2026-08-29',
+    title:'Rhythm of Body & Spirit Expansion',
+    summary:'Expands character creation from two Body & Spirit paths to four while preserving the normal Rank 3 creation cap and giving every path at least one Talent.',
+    changes:[
+      'Wind-Touched remains Magic Level 1 plus 1 Talent.',
+      'Gifted Heart remains 2 Talents.',
+      'Practiced Hand grants 2 new Skills at Rank 1 plus 1 Talent; both Skills must be ones the character does not already know.',
+      'Tempered Form grants +1 Rank to one Attribute plus 1 Talent, without exceeding the normal Rank 3 character-creation maximum.',
+      'The four creation paths are persisted as canonical character path values so saved, imported, reviewed, and simulated characters retain the selected path correctly.',
+    ],
+  },
+  {
+    version:'0.03',
+    date:'2026-08-29',
+    title:'Ability Economy, Talents & Magic Framework',
+    summary:'Rebuilds Brambleheart’s Core action economy, Talent structure, Magic Level known-spell progression, spell-cost presentation, Arcane Focus authority, and shared rules grammar without performing the later spell-by-spell numerical rebalance.',
+    changes:[
+      'Each character may use one CORE Instinct, one CORE Move, and one CORE Combat ability each round. COMBAT is the umbrella for Touch, Shoot, or Magic.',
+      'ROOT no longer limits Core Abilities. It limits advanced abilities by specific family: Instinct, Move, Touch, Shoot, Magic, or Reactive.',
+      'Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and passive Renew the Heart.',
+      'Channel the Winds increases Magic Regen. Focused Will is free. Start of Round resolves Instinct choices, Magic Regen modifiers, Mana restoration, then turns.',
+      'Magic Level directly determines known Lore Spells and Invocations. Magic Level 10 allows 12 Lore Spells and 6 Invocations, plus the Signature Spell.',
+      'Lore Attunement remains -2 Mana. Ordinary spells have a minimum final cost of 1 Mana. Signature and Cantrip replace visible 0 Mana labels for their respective spell structures.',
+      'Arcane Command delegates targeting and resolution to Spell Details. Enhance is the standardized beneficial-effect keyword and TO HIT replaces Strike as the standardized rule-card field.',
+      'Only one Arcane Focus is active at a time; focus Control and Mana-cost effects do not stack across multiple owned foci.',
+      'Talents now primarily modify Core Abilities or resolve from their own triggers. Cleave replaces Fang Break; Beastgrasp is the canonical replacement for Primate Grip.',
+      'Action-family pills use consistent colors: Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.',
+      'Individual spell damage, Mana, healing, area, and Empower numerical tuning is intentionally deferred to the dedicated spell-balance pass.',
+    ],
+  },
+  {
+    version:'0.02',
+    date:'2026-08-28',
+    title:'Magic Regen & Threadpiece Economy Rebuild',
+    summary:'Clarifies Magic Regen as the Heart statistic itself and rebuilds Brambleheart’s economy around one whole-wp runtime authority, creation-safe price tiers, and equipped protective gear.',
+    changes:[
+      'Magic Regen now equals Heart. The former standard +2 is removed. Effects that increase or decrease start-of-round Mana restoration modify Magic Regen directly.',
+      'Threadpieces use one canonical conversion: 10 wp = 1 np, 5 np = 1 sp, and 5 sp = 1 bp. Runtime monetary values are stored and calculated as whole wp.',
+      'Starting wealth remains 30 sp. The Adventure Kit remains free and may be sold during creation for 3 sp, setting maximum creation purchasing power at 33 sp.',
+      'Weapons, Armor & Shields, Adventuring Gear, Trade Goods, mounts, and vehicles use the rebuilt price curve. Veteran-quality personal gear begins above the maximum creation budget.',
+      'Field Blade (Long Sword) returns to the purchasable weapon catalog at 20 sp.',
+      'A character may own multiple protective items, but only one armor and one shield may be equipped at a time. Only equipped protective gear contributes Guts, Mana Syphon, Armor Penalty, and Might requirements.',
+      'Ordinary gear normally resells for 50% of current retail value, rounded down to whole wp. Trade goods normally resell for 75% of listed base value.',
+      'Crafting a market-priced item requires eligible listed materials worth at least 50% of current retail value in addition to normal Skill, tool, time, workspace, and rule requirements.',
+      'Transportation prices are rebuilt as campaign-scale purchases. Barding remains three times the current canonical retail price of the selected armor.',
+    ],
+  },
+  {
+    version:'0.01',
+    date:'2026-08-28',
+    title:'Secondary Statistic & Mana System Clarification',
+    summary:'Established the shared secondary-stat formulas, physical and magical damage statistics, and the Bravery-based Mana Pool and Magic Regen framework.',
+    changes:[
+      'Aim equals the Agility modifier and is used to hit with ranged attacks. Accuracy equals Agility Rank and adds to ranged damage. Speed equals the Agility modifier +2.',
+      'Brawl equals the Might modifier and is used to hit with melee attacks. Fury equals Might Rank and adds to melee damage where a rule calls for it.',
+      'Ward equals the Hide modifier and is used to defend against attacks. Guts equals Hide Rank, plus applicable equipment bonuses, and reduces incoming damage where a rule calls for it.',
+      'Control equals the Lore modifier, plus applicable equipment bonuses, and is used to hit with magical attacks. Power equals Lore Rank and adds to magical damage where a rule calls for it.',
+      'Heart equals Bravery Rank. Spirit equals the Bravery modifier.',
+      'Mana Pool equals Magic Level + Spirit. The first Magic Regen framework used Heart with a standard +2; Rule Update 0.02 supersedes that standard modifier.',
+    ],
+  },
+]

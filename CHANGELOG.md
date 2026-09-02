@@ -1,3 +1,13 @@
+# Brambleheart Beta 0.44
+
+- Updates Axalori Heartcurrent, Stillwater Renewal, Harmonic Field, and Resonant Pulse to the supplied rules text; Resonant Pulse now costs 2 Mana, and Rule Updates advances to v0.07.
+- Adds Rhythm Engine → Ability Manager with optional saved-character filtering and Core Ability compatibility results.
+- Adds dedicated Fundamentals → Stacking and Chaining teaching pages, standardizes the Abilities flow-box sizing, and applies Core Ability family colors to Basic Core Ability accent bars and pills.
+- Adds Settings → Display → Logo Size with five persisted sizes while preserving the previous logo size as Largest/default.
+- Replaces and horizontally flips the Character Roster and Rules header characters, lowers shared header characters slightly, and removes page-title detail text from News, Character Roster, Rules, and Rhythm Engine.
+- Removes numbered Trinket slots and Arcane Focus selection from active character/equipment logic; equipped Trinkets now apply passively, while legacy slot/focus fields are discarded at the saved-character normalization boundary.
+- Synchronizes BUILD/export 0.44, package 0.44.0, PWA cache v0.44, README, patch notes, repository/in-app changelog, and Rule Updates v0.07.
+
 # Brambleheart Beta 0.43
 
 - Promotes the approved Fundamentals presentation into production Core Rules, Attributes & Skills, and Abilities pages, retaining explicit aliases for legacy Rules URLs and removing the obsolete layout-test route.
