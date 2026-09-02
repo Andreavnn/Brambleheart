@@ -17,8 +17,8 @@ const router=createRouter({history:createWebHistory(),scrollBehavior:()=>({top:0
  {path:'/',redirect:'/characters'},
  {path:'/welcome',name:'welcome',component:SplashView},{path:'/news',name:'news',component:NewsView},{path:'/characters',name:'characters',component:HomeView},{path:'/characters/create',name:'create-character',component:CreateCharacterView},{path:'/characters/:id/level-up',name:'level-up-character',component:LevelUpView},
  {path:'/rules',name:'rules',component:RulesView},
- {path:'/rules/read/dice-rules',redirect:'/rules/read/core-rules'},{path:'/rules/read/keyword-abilities',redirect:'/rules/read/abilities'},{path:'/rules/read/core-abilities',redirect:'/rules/read/abilities'},
- {path:'/rules/read/:slug(core-rules|attributes-skills|abilities|stacking|chaining)',name:'fundamentals-rule',component:FundamentalsRuleView},
+ {path:'/rules/read/dice-rules',redirect:'/rules/read/core-rules'},{path:'/rules/read/keyword-abilities',redirect:'/rules/read/abilities'},{path:'/rules/read/core-abilities',redirect:'/rules/read/abilities'},{path:'/rules/read/stacking',redirect:'/rules/read/abilities#abilities-chaining'},{path:'/rules/read/chaining',redirect:'/rules/read/abilities#abilities-chaining'},
+ {path:'/rules/read/:slug(core-rules|attributes-skills|abilities)',name:'fundamentals-rule',component:FundamentalsRuleView},
  {path:'/rules/read/:slug',name:'rule-reader',component:RuleReaderView},
  {path:'/simulator',name:'simulator',component:SimulatorView},{path:'/settings',name:'settings',component:SettingsView},{path:'/game-updates',name:'game-updates',component:GameUpdatesView},{path:'/changelog',name:'changelog',component:ChangelogView},{path:'/:pathMatch(.*)*',redirect:'/characters'}]})
 router.beforeEach(to=>{if(to.name==='welcome'||hasSeenWelcome())return true;return{name:'welcome',query:{continue:to.fullPath}}})
