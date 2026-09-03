@@ -1,22 +1,11 @@
-# Brambleheart Beta 0.45.2
+# Brambleheart Beta 0.45
 
 - Renames Rules → Fundamentals → Abilities to Core Actions and reorganizes the page so Core Actions, Abilities, Action/Ability examples, Reaction examples, chaining, and the Core Action reference are clearly separated.
 - Makes Core Action reference-card accent bars use the same canonical action-family colors as the corresponding pill UI.
 - Hides category landing/parent pages from all expandable Rules menus, matching the existing Fundamentals behavior.
 - Groups the current playable Species under a Woodlands subcategory and removes the repetitive per-Species detail subtitles from the Species list.
 - Restyles Species lore panels to mirror the Character Creation Step 1 presentation while retaining the existing quote-and-art side-by-side layout and the current Heritage/Cultural Trait sections.
-- Synchronizes BUILD/export 0.45.2, package 0.45.2, and PWA cache v0.45.2 while Rule Updates remains v0.08.
-
-# Brambleheart Beta 0.45.1
-
-- Removes Rhythm Engine → Ability Manager and returns the Rhythm Engine navigation to Character Sheet, Dice Roller, and Encounter Builder.
-- Removes the now-unused Ability Manager proc graph and chain-state implementation instead of leaving dead simulation code active in the repository.
 - Removes the Beta-specific ROOT callout from the Abilities chaining presentation without changing the underlying ROOT rules.
-- Keeps the Beta 0.45 Core Action, Reaction, Ability Chain, Ragebound, Snapstep, Drums of War, and Divine Grasp rules unchanged.
-- Synchronizes BUILD/export 0.45.1, package 0.45.1, and PWA cache v0.45.1 while Rule Updates remains v0.08.
-
-# Brambleheart Beta 0.45
-
 - Renames the shared Core Ability concept to Core Action and adds Reaction as a shared once-per-round Core Action for resolving eligible Reactive Abilities.
 - Establishes bounded Ability Chains: every chain begins with a Core Action, and a specific character’s copy of an Ability can resolve only once in that chain; another character’s copy is treated as a separate Ability instance.
 - Rebuilds Rhythm Engine → Ability Manager around Core Action roots, Reaction gates, and per-instance chain state so recursive proc loops terminate without using ROOT as the recursion guard.
@@ -29,8 +18,7 @@
 # Brambleheart Beta 0.44
 
 - Updates Axalori Heartcurrent, Stillwater Renewal, Harmonic Field, and Resonant Pulse to the supplied rules text; Resonant Pulse now costs 2 Mana, and Rule Updates advances to v0.07.
-- Adds Rhythm Engine → Ability Manager with optional saved-character filtering and Core Ability compatibility results.
-- Adds dedicated Fundamentals → Stacking and Chaining teaching pages, standardizes the Abilities flow-box sizing, and applies Core Ability family colors to Basic Core Ability accent bars and pills.
+- Adds dedicated Fundamentals → Stacking and Chaining teaching, standardizes the Abilities flow-box sizing, and applies Core Ability family colors to Basic Core Ability accent bars and pills.
 - Adds Settings → Display → Logo Size with five persisted sizes while preserving the previous logo size as Largest/default.
 - Replaces and horizontally flips the Character Roster and Rules header characters, lowers shared header characters slightly, and removes page-title detail text from News, Character Roster, Rules, and Rhythm Engine.
 - Removes numbered Trinket slots and Arcane Focus selection from active character/equipment logic; equipped Trinkets now apply passively, while legacy slot/focus fields are discarded at the saved-character normalization boundary.
