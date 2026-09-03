@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import RuleSurfaceScope from '../components/RuleSurfaceScope.vue'
-import { canonicalRuleSlug, findRuleCategory, findRulePage, findRuleParentPage, fundamentalsNavigation, loreNavigation, quickFaq, quickReferencePages, resolveSourceSections, ruleCategories } from '../data/ruleCatalog'
+import { canonicalRuleSlug, findRuleCategory, findRulePage, fundamentalsNavigation, loreNavigation, quickFaq, quickReferencePages, resolveSourceSections, ruleCategories } from '../data/ruleCatalog'
 import { structuredRule, visibleRuleFields } from '../rules/rulesEngine'
 import { speciesData } from '../data/speciesData'
 import { faiths, homelands, oaths, sparks } from '../data/bramble'
@@ -109,7 +109,6 @@ const breadcrumbSection=computed(()=>{
   if(findExternalMonster(canonicalSlug.value))return'The Watcher'
   return findRuleCategory(canonicalSlug.value)?.title||'Rules'
 })
-const breadcrumbParent=computed(()=>findRuleParentPage(canonicalSlug.value)||null)
 const currentCategoryLanding=computed(()=>ruleCategories.find(category=>category.landing.slug===canonicalSlug.value)||null)
 const landingEntries=computed(()=>currentCategoryLanding.value?.pages||[])
 function speciesImageUrl(name:string){return`/assets/species/${name.toLowerCase()}.png`}
@@ -207,7 +206,6 @@ const adventuringSectionGroups=computed(()=>[
     <AppHeader compact back-to="/rules" back-label="Back to Rules" prefer-back-to skip-back-prefix="/rules/read/" />
     <RuleSurfaceScope>
       <template v-if="page">
-        <nav class="rule-breadcrumb" aria-label="Breadcrumb"><RouterLink to="/rules">Rules</RouterLink><span>›</span><template v-if="breadcrumbParent&&breadcrumbParent.slug!==page.slug"><RouterLink :to="`/rules/read/${breadcrumbParent.slug}`">{{ breadcrumbSection }}</RouterLink><span>›</span></template><strong>{{ page.title }}</strong></nav>
         <div v-if="!isCharacterCreationChild" class="page-title-block rule-reader-title"><h1>{{ page.title }}</h1><p>{{ page.summary }}</p></div>
         <section v-if="isCharacterCreationChild" class="creation-rules-guide card-surface" aria-label="Character Creation rule path"><header><p class="eyebrow">CHARACTER CREATION</p><h2>{{ page.title }}</h2><p>{{ page.summary }}</p></header><div class="creation-rules-map"><RouterLink v-for="(entry,index) in characterCreationPages" :key="entry.slug" :to="`/rules/read/${entry.slug}`" class="creation-rules-step" :class="{active:index===characterCreationIndex,complete:index<characterCreationIndex}"><span>{{ index+1 }}</span><strong>{{ entry.title }}</strong></RouterLink></div></section>
 
@@ -305,7 +303,6 @@ const adventuringSectionGroups=computed(()=>[
 </template>
 
 <style scoped>
-.rule-breadcrumb{display:flex;align-items:center;gap:7px;min-width:0;margin:2px 2px 10px;color:var(--ink-soft);font-size:calc(10px + var(--font-offset));overflow:hidden;white-space:nowrap}.rule-breadcrumb a{color:var(--accent-dark);font-weight:800;text-decoration:none}.rule-breadcrumb strong{min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
 .rule-reader-title{margin-top:8px}.rule-reader-title h1{font-weight:900}.rule-reader-title p{max-width:690px}
 .rule-nav-scroll-button{text-decoration:none}.rule-nav-scroll-button.disabled{opacity:.35;pointer-events:none}
 .fundamental-inner-links{display:flex;gap:6px;padding:7px;margin:0 0 13px;overflow-x:auto}.fundamental-inner-links a{flex:1 0 auto;min-height:34px;display:flex;align-items:center;justify-content:center;padding:5px 9px;border:1px solid var(--line);border-radius:7px;background:var(--paper-2);color:var(--ink-soft);text-decoration:none;font-size:calc(9px + var(--font-offset));font-weight:750;white-space:nowrap}.fundamental-inner-links a.active{border-color:var(--accent);background:var(--accent-wash);color:var(--ink)}

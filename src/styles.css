@@ -204,17 +204,6 @@ a.list-row:hover { background: #f6f3ec; }
 .list-launch strong { font-size: calc(14px + var(--font-offset)); }
 .list-launch p { margin: 5px 0 0; color: var(--ink-soft); font-size: calc(12px + var(--font-offset)); }
 
-.rule-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
-  margin: 2px 3px -4px;
-  color: var(--ink-soft);
-  font-size: calc(11px + var(--font-offset));
-}
-.rule-breadcrumb a { color: var(--accent-dark); text-decoration: none; }
-.rule-breadcrumb a:hover { text-decoration: underline; }
 
 .rule-copy-card {
   border: 1px solid var(--line);
@@ -348,24 +337,11 @@ a.list-row:hover { background: #f6f3ec; }
   
 }
 
-.rule-breadcrumb {
-  min-width: 0;
-  margin-bottom: 6px;
-}
-.rule-breadcrumb > * { min-width: 0; }
-
-@media (max-width: 540px) {
-  .rule-breadcrumb { gap: 5px; }
-
-}
 
 :root[data-bold-text="false"] .rules-index-page .list-row-title{
   font-weight: 600;
 }
 
-:root[data-bold-text="false"] .rule-breadcrumb a{
-  font-weight: 400;
-}
 
 .rules-index-page .list-row-title{
   font-family: inherit;
@@ -376,9 +352,6 @@ a.list-row:hover { background: #f6f3ec; }
 
 .rules-index-page a.list-row .list-row-title{ font-weight: 400; }
 
-.rule-breadcrumb a{
-  font-weight: 400 !important;
-}
 
 .list-launch-actions {
   display: flex;
