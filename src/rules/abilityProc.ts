@@ -8,7 +8,7 @@ export interface AbilityProcSource {
   keywords:string[]
 }
 
-export type AbilityProcRelation='trigger'|'modifier'
+export type AbilityProcRelation='trigger'|'modifier'|'activation'
 export type AbilityProcActor='self'|'ally'|'enemy'|'any'
 export type AbilityTriggerDependency='independent'|'dependent'|'passive'
 export interface AbilityProcContext{sameOwner?:boolean}
@@ -206,7 +206,12 @@ function genericTriggerMatch(source:AbilityProcSource,candidate:AbilityProcSourc
   if(/\bcore instinct ability\b/.test(text)&&keywords.has('core')&&keywords.has('instinct'))return make(`${source.name} spends the CORE Instinct opportunity.`)
   if(/\bcore move ability\b/.test(text)&&keywords.has('core')&&keywords.has('move'))return make(`${source.name} spends the CORE Move opportunity.`)
   if(/\bcore combat ability\b/.test(text)&&keywords.has('core')&&keywords.has('combat'))return make(`${source.name} spends the CORE Combat opportunity.`)
+  if(/\bphysical combat ability\b/.test(text))return events.combat&&!events.magic?make(`${source.name} is a physical Combat ability.`):null
+  if(/\bcharge(?: combat)? ability\b/.test(text))return(keywords.has('charge')||normalizedName(source.name)==="hero's charge")?make(`${source.name} is a Charge ability.`):null
+  if(/\bmove or combat ability\b/.test(text))return(events.movement||events.combat)?make(`${source.name} is a Move or Combat ability.`):null
+  if(/\b(?:any )?move ability\b/.test(text))return events.movement?make(`${source.name} is a Move ability.`):null
   if(/\bmoves? as part of a combat ability\b/.test(text)&&events.combat&&events.movement)return make(`${source.name} is a Combat ability that can move a character.`)
+  if(/\bmagic ability that requires mana\b/.test(text))return events.magic&&events.manaCost?make(`${source.name} is a Magic ability with a Mana cost.`):null
   if(/\buses? a combat ability\b|\bcombat ability\b/.test(text)&&events.combat)return make(`${source.name} is a Combat ability.`)
   if(/\buses? a magic ability\b|\bmagic ability\b/.test(text)&&events.magic)return make(`${source.name} is a Magic ability.`)
   if(/\bspell that restores? health or grants? an enhance\b/.test(text)&&events.actualSpell&&(events.healing||events.enhance))return make(`${source.name} is a spell that can restore Health or grant an Enhance.`)
@@ -228,9 +233,23 @@ function passiveModifierMatch(source:AbilityProcSource,candidate:AbilityProcSour
   const trigger=triggerValue(candidate)
   const keywords=keywordSet(candidate)
   if(!trigger&&!keywords.has('passive'))return null
-  const text=trigger?nonTriggerText(candidate):candidate.rules
-  if(!directNameMatch(source,text))return null
-  return{relation:'modifier',actor:'self',reason:`${candidate.name} explicitly modifies ${source.name}.`,trigger:'Passive or conditional modifier',conditional:/\bif\b|\bwhile\b|\bwhen\b/.test(normalized(text)),score:80}
+  const raw=trigger?nonTriggerText(candidate):candidate.rules
+  const text=normalized(raw)
+  const events=profile(source)
+  const sourceKeywords=keywordSet(source)
+  const make=(reason:string,score=80):AbilityProcMatch=>({relation:'modifier',actor:'self',reason,trigger:'Passive or conditional modifier',conditional:/\bif\b|\bwhile\b|\bwhen\b|\bwhenever\b/.test(text),score})
+  if(directNameMatch(source,raw))return make(`${candidate.name} explicitly modifies ${source.name}.`,90)
+  if(trigger)return null
+  if(!keywords.has('passive'))return null
+  if(/\bphysical combat ability\b/.test(text))return events.combat&&!events.magic?make(`${candidate.name} passively modifies physical Combat ability use.`):null
+  if(/\bcharge(?: combat)? ability\b/.test(text))return(sourceKeywords.has('charge')||normalizedName(source.name)==="hero's charge")?make(`${candidate.name} passively modifies Charge ability use.`):null
+  if(/\bmove or combat ability\b/.test(text))return(events.movement||events.combat)?make(`${candidate.name} passively modifies Move or Combat ability use.`):null
+  if(/\b(?:any )?move ability\b/.test(text)&&events.movement)return make(`${candidate.name} passively modifies Move ability use.`)
+  if(/\bmagic ability that requires mana\b/.test(text))return events.magic&&events.manaCost?make(`${candidate.name} passively modifies a Magic ability with a Mana cost.`):null
+  if(/\bcombat ability\b/.test(text)&&events.combat)return make(`${candidate.name} passively modifies Combat ability use.`)
+  if(/\bmagic ability\b/.test(text)&&events.magic)return make(`${candidate.name} passively modifies Magic ability use.`)
+  if(/\bspell\b/.test(text)&&events.actualSpell)return make(`${candidate.name} passively modifies spell use.`)
+  return null
 }
 
 export function abilityTriggerDependency(ability:AbilityProcSource):AbilityTriggerDependency{
@@ -255,6 +274,18 @@ export function findAbilityProcMatch(source:AbilityProcSource,candidate:AbilityP
     if(triggerMatch)return triggerMatch
   }
   return passiveModifierMatch(source,candidate)
+}
+
+
+export function findCoreAbilityUseMatch(core:AbilityProcSource,candidate:AbilityProcSource):AbilityProcMatch|null{
+  if(normalizedName(core.source)!=='core ability'||normalizedName(candidate.source)==='core ability'||core.id===candidate.id)return null
+  const coreName=normalizedName(core.name)
+  const candidateSource=normalizedName(candidate.source)
+  const keywords=keywordSet(candidate)
+  if(coreName==='arcane command'&&candidateSource.includes('spell')&&!keywords.has('signature')&&!abilityRequiresPriorTrigger(candidate)){
+    return{relation:'activation',actor:'self',reason:`${candidate.name} is a non-Signature spell that can be chosen and cast through Arcane Command.`,trigger:'Arcane Command selects this spell.',conditional:false,score:110}
+  }
+  return null
 }
 
 export function abilityProcCondition(ability:AbilityProcSource){
