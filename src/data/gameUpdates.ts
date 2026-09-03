@@ -19,7 +19,6 @@ export const gameUpdates:GameUpdateEntry[]=[
       'Ragebound now builds specifically from Focused Will; its offensive bonuses are reduced to [+1] Strike and [+1] damage, and Defenseless now reduces Ward and Guts by [-1] each.',
       'Snapstep now builds from Focused Will or Channel the Winds and moves up to [2] squares.',
       'Drums of War and Divine Grasp retain their intentional rule-breaking effects that grant or compel additional Core Action use, with terminology updated to Core Action.',
-      'Ability Manager now models chains from Core Actions, gates Reactive Abilities through Reaction, and blocks repeated resolution of the same Ability instance within one chain.',
     ],
   },
   {
