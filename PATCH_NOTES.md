@@ -1,13 +1,28 @@
-**Current Site Update — Beta 0.15**
+**Site Update — Beta 0.16**
 
-- Reorganized Rules → Fundamentals → **Core Actions** so Core Actions, Abilities, Action/Ability examples, Reaction examples, chaining, and the Core Action reference are taught separately.
-- Matched Core Action reference-card accent colors to the shared action-family pill colors.
-- Removed Rules category landing pages from their own expandable menus.
-- Grouped the current playable Species beneath **Woodlands**, removed repetitive Species-list subtitles, and restyled Species lore panels to match Character Creation while retaining the quote-and-art layout.
+- Removed the decorative site icon from the bottom of pages and tightened the page-to-footer spacing around the divider, utility buttons, and build label.
+- Standardized current Ability UI terminology so Core-family pills display **CORE ACTION**, while Traits, Talents, Spells, and comparable Ability cards display a consistent **ABILITY** pill where applicable.
+- Added distinct accent identities to Heritage and Cultural Trait cards and changed Cultural Traits away from the Magic/Spell purple family.
+- Normalized page-header character positioning around the logo/header stage so the artwork does not shift down into page content when no background image is selected.
+- Changed Settings → Display → Backgrounds to switch-style exclusive choices and made header spacing respond dynamically to the selected Logo Size.
+- Added a Fundamentals-style section header and responsive Character Creation path graphic to Rules → Character Creation child pages.
+- Standardized visible update labels to **Site Updates** and **Game Updates**.
 
-**Current Game Update — v0.05**
+**Game Update — v0.06**
 
-- Renamed the shared Core Ability concept to **Core Action** and added **Reaction** as the shared once-per-round Core Action for resolving eligible Reactive Abilities.
-- Established bounded Ability Chains: every chain begins with a Core Action, and a specific character's copy of an Ability can resolve only once during that chain; another character's copy is a separate Ability instance.
-- Revised **Ragebound** to build from Focused Will with condition [+1] to Strike, [+1] damage, and [-1] Ward / [-1] Guts through Defenseless. Revised **Snapstep** to build from Focused Will or Channel the Winds and move [2] squares.
-- Kept **Drums of War** and **Divine Grasp** as intentional effects that can grant or compel Core Action use.
+- Retired **ROOT** as an active Ability keyword and removed it from current Traits and Talents.
+- Removing ROOT does not change the affected Abilities’ printed costs, Triggers, Effects, requirements, or remaining keywords.
+- Removed the former ROOT once-per-family-per-round restriction. Ability Chains remain bounded by the existing once-per-specific-Ability-instance rule.
+
+**Patch-note verification**
+
+- Previous Site Update reviewed: Beta 0.15
+- New Site Update: Beta 0.16
+- Previous Game Update reviewed: v0.05
+- New Game Update: v0.06
+- Current GitHub baseline reviewed: Yes — `c535bcf397257656f5f4efd5a6762923f0b57129`
+- Source/diff reviewed: Yes
+- Site/Game history separation checked: Yes
+- Version metadata synchronized: Yes
+- Tests actually run: Static source assertions, TypeScript syntax/semantic checks available without project dependencies, release/history checks, and repository-relative import audit. Full Vue/Vite production build and browser responsive runtime testing were not run in this environment.
+- Known unfinished work intentionally excluded: Encounter Builder remains the existing placeholder.

@@ -1,6 +1,16 @@
+# Brambleheart Beta 0.16
+
+- Removes the decorative site icon from the bottom-of-page utility area and tightens page/footer spacing so the divider and utility controls follow page content more closely.
+- Standardizes Ability presentation across current Rules, Character Creation, and Rhythm Engine surfaces: Core-family pills display `CORE ACTION`, and Traits, Talents, Spells, and comparable Ability cards receive a consistent `ABILITY` pill where applicable.
+- Gives Heritage and Cultural Trait cards distinct accent identities and moves Cultural Traits away from the purple Magic/Spell color family.
+- Normalizes page-header character anchoring so decorative header artwork stays tied to the logo/header stage regardless of whether a background image is selected.
+- Changes Settings → Display → Backgrounds to the same switch-style exclusive-choice controls used elsewhere and makes Logo Size dynamically reduce or expand the header space with the selected logo size.
+- Adds a Fundamentals-style Character Creation rules guide to Character Creation child pages, with a section header and responsive step graphic linking the full Character Creation rules path.
+- Standardizes visible update terminology to Site Updates and Game Updates and synchronizes the application release to Beta 0.16 while Game Updates advances independently to v0.06.
+
 # Brambleheart Beta 0.15
 
-- Reorganizes Rules → Fundamentals → Core Actions so Actions, Abilities, examples, Reactions, chaining, and the Core Action reference are taught in clearly separated sections, with reference-card accents using the same action-family colors as the pill UI.
+- Reorganizes Rules → Fundamentals → Core Actions so Actions, Abilities, examples, Reactions, chaining, and the Core Action reference are taught in clearly separated sections.
 - Hides category landing pages from expandable Rules menus, groups current playable Species beneath Woodlands, removes repetitive Species-list subtitles, and restyles Species lore panels to match Character Creation while retaining the quote-and-art layout.
 
 # Brambleheart Beta 0.14

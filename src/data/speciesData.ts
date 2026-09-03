@@ -33,7 +33,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Feral Resolve",
         "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Gain [+3] to strike, ward, guts, and damage until the end of the next round. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated.",
         "keywords": [
-          "Root",
           "Reaction",
           "Urnath",
           "Trait"
@@ -71,7 +70,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Wild Stride",
         "text": "Your steps echo the pulse of the forest; where you walk, the wild flows with you. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may move up to double their speed. If your character passes within [1] square of an ally during this movement, that ally gains [+1] to their next roll this round. RESTRICTIONS: This ability cannot be used if your character is within [+2] squares of an enemy and cannot end within [+2] squares of an enemy.",
         "keywords": [
-          "Root",
           "Move",
           "Auravex",
           "Trait"
@@ -90,7 +88,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Cycle Of The Beast",
         "text": "As motion stirs life in all things, the beast’s rhythm returns to you through those you guide. TRIGGER: This ability can be used at the end of the round. EFFECT: Count the total number of condition bonuses your character granted to ally characters this round. For every [2] instances of condition granted, restore either health [+1] or mana [+1] in any combination.",
         "keywords": [
-          "Root",
           "Instinct",
           "Auravex",
           "Trait"
@@ -110,7 +107,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Leaf In The Wind",
         "text": "Your voice carries a whisper among leaves, steadying a heartbeat not yet gone. COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares is compelled to use the renew the heart ability. EFFECT: The target ally’s attribute save roll for renew the heart is considered edged.",
         "keywords": [
-          "Root",
           "Reaction",
           "Culture"
         ]
@@ -129,7 +125,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Stillwater Renewal",
         "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [2] and mana [1].",
         "keywords": [
-          "Root",
           "Instinct",
           "Axalori",
           "Trait"
@@ -139,7 +134,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Heartcurrent",
         "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may spend [-2] health to restore [1] mana or spend [-1] mana to restore health [2].",
         "keywords": [
-          "Root",
           "Instinct",
           "Axalori",
           "Trait"
@@ -187,7 +181,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Thunderstep",
         "text": "Braelor hearts beat with stormlight, and the air itself trembles in their wake. COST: [3] mana TRIGGER: This ability can be used during your turn. EFFECT: Your character may move a number of squares equal to their speed plus [+5] toward a visible enemy within line of sight. If your character uses a combat ability against that target and deals damage during the same turn, increase the total damage by [+2]. POWER THROUGH: At the end of your turn, if your character moved the total movement granted by this ability, deal [3] lethal damage to the target of thunderstep. The target is forced back [1] square directly away from you. If the target cannot be moved, they suffer an [2] lethal damage instead. RESTRICTIONS: This movement must end within [1] square of the target and cannot pass through impassable terrain.",
         "keywords": [
-          "Root",
           "Move",
           "Braelor",
           "Charge",
@@ -207,7 +200,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Covine Heirs",
         "text": "Echoes of the Lich King’s dominion linger in Braelor blood. TRIGGER: This ability can be used at the end of the round. EFFECT: When your character successfully resists a hex or compelled effect, restore health [+1] for each instance of success.",
         "keywords": [
-          "Root",
           "Instinct",
           "Braelor",
           "Trait"
@@ -227,7 +219,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Stillstorm Totem",
         "text": "Braelor shamans bind the echoes of wind and forge into sacred totems humming with stormlight. COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Summon a spiritual totem within [2] squares of your character. EFFECT: While the totem is active, your character automatically passes the first compelled effect from a spell each round. ally characters within [3] squares of the totem gain [+1] to attribute saves made when using the renew the heart ability. RESTRICTIONS: A character cannot benefit from multiple stillstorm totem from different sources. DURATION: The totem remains until it until destroyed.",
         "keywords": [
-          "Root",
           "Instinct",
           "Enhance",
           "Summon",
@@ -258,7 +249,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Shadowstep",
         "text": "Your stillness is a weapon; the enemy never sees the motion that ends them. COST: [1] mana TRIGGER: This ability can be used at the end of the round. EFFECT: Select a point of origin within [5] squares and move your character to that point. This movement does not require line of sight and can pass through any terrain type. Afterwards, you may move up to [2] additional squares in any direction. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: This movement cannot end within two [2] squares of an enemy.",
         "keywords": [
-          "Root",
           "Instinct",
           "Cethra"
         ]
@@ -267,7 +257,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Poised Reflex",
         "text": "Even under pressure, your body acts with effortless control — instinct shaped by endless discipline. TRIGGER: This ability can be used when your character fails an attribute save. EFFECT: You may reroll the failed attribute save with [+1].",
         "keywords": [
-          "Root",
           "Instinct",
           "Cethra",
           "Trait"
@@ -288,7 +277,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Viled Paw",
         "text": "A flash of motion — graceful, inevitable, and unseen until it’s too late. COST: [1] mana TRIGGER: When you make a successful strike roll against an enemy character that has not yet taken their turn this round. EFFECT: Increase the total damage dealt by the strike roll by [+2]. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: This ability cannot be used with a magical or ranged ability.",
         "keywords": [
-          "Root",
           "Reactive",
           "Culture"
         ]
@@ -307,7 +295,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Hearthborn Courage",
         "text": "The Hedgkin’s bravery burns slow but never fades — a quiet ember against fear. TRIGGER: This ability can be used when an ally within [3] squares is compelled. EFFECT: The affected ally gains [+2] to the roll made to resist the effect. If that roll succeeds, the ally gains [+1] to strike or ward until the end of their next turn. RESTRICTIONS: A character cannot be affected by multiple instances of hearthborn courage from different sources.",
         "keywords": [
-          "Root",
           "Reaction",
           "Enhance",
           "Hedgkin",
@@ -346,7 +333,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Thriving Harmony",
         "text": "A warm word, a full belly, a safe fire — such things keep the darkness away. COST: [2] mana TRIGGER: This ability can be used at the end of the round. DECLARE: Choose [1] ally within [3] squares. EFFECT: Target ally restores health [+2] and gains [+1] to their next attribute save, until the end of the next round. If your character is within [1] square of another ally when targeted by this ability, you also restore health [+1].",
         "keywords": [
-          "Root",
           "Instinct",
           "Enhance",
           "Culture"
@@ -376,7 +362,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Haphazard Genius",
         "text": "You might not know what you’re doing — but somehow, it works. TRIGGER: This ability can be used at the start of the round. DECLEAR: Select [1] enemy character within [3] squares. EFFECT: The targeted character suffers [-1] when making ward rolls against you. Additionally, each time you make a successful strike roll against the target, you may move [1] square. RESTICTION: This ability cannot be used against the same target in back-to-back rounds.",
         "keywords": [
-          "Root",
           "Instinct",
           "Ravari",
           "Trait"
@@ -386,7 +371,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Crooktail Bound",
         "text": "When the Ravari work together, they do so by instinct — a flick, a nod, a jump. COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares performs a move or combat ability. EFFECT: Your character may move [1] square. If the move ends within an adjacent square of a different ally that didn’t trigger this ability, you and that ally gain [+1] to the next roll made this round.",
         "keywords": [
-          "Root",
           "Reaction",
           "Ravari"
         ]
@@ -442,7 +426,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Double Lilly",
         "text": "When the first jump fails, the second one lands. TRIGGER: This ability can be used when your character fails a roll. EFFECT: Gain [+2] to your next roll of the same type (combat, spell, or attribute) made within the next round. If that follow-up roll succeeds, restore mana [+2].",
         "keywords": [
-          "Root",
           "Reaction",
           "Rivkan",
           "Trait"
@@ -491,7 +474,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Heatbloom",
         "text": "Slow, heat-fueled reptilian healing that rewards good positioning and the desert identity. TRIGGER: This ability can be used at the end of the round, if your character suffer [5] or more damage during the round. EFFECT: Immediately restore health [+2] and mana [+1]. If you are within [3] or at least two or more allies increase the health you restore by [+1]. If your Vurox is within [3] increase the mana you restore by [+1]. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated.",
         "keywords": [
-          "Root",
           "Instinct",
           "Sauren",
           "Trait"
@@ -548,7 +530,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Blood Of The North",
         "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Immediately restore health [+3] and gain [+2] to guts until the end of your next turn. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated.",
         "keywords": [
-          "Root",
           "Reaction",
           "Urnath",
           "Trait"
@@ -558,7 +539,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Keeper’s Roar",
         "text": "Your bellow carries the weight of ancestral duty, shaking both fear and frost from the hearts of your allies. COST: [2] mana TRIGGER: This ability can be used during your turn. DECLARE: Target all ally characters within orb [4]. EFFECT: Each target gains [+1] to ward and attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of keeper’s roar from different sources.",
         "keywords": [
-          "Root",
           "Instinct",
           "Enhance",
           "Urnath",
@@ -598,7 +578,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Dreamshell",
         "text": "When the world strikes, the Tordan retreat inward — wrapped in the calm of their second sight. COST: [1] mana TRIGGER: This ability can be used when your character suffers direct or standard damage. EFFECT: Reduce the total damage dealt by [-2]. Additionally, after that ability is resolved, you can select one damage type and gain resistance [1] against the selected type until the end of the round. COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated.",
         "keywords": [
-          "Root",
           "Reaction",
           "Enhance",
           "Tordan",
@@ -638,7 +617,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Deep Trance",
         "text": "The Tordan’s meditation bridges the seen and unseen, mending more than flesh. TRIGGER: This ability can be used at the end of the round. EFFECT: Reduce your characters speed by [-1] until the end of the next round and increase the amount of mana they generate at the start of the next round by [+2]",
         "keywords": [
-          "Root",
           "Instinct",
           "Culture"
         ]
@@ -666,7 +644,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Skyborn Reflexes",
         "text": "The Virelan react with a dancer’s poise — their movements guided by air and instinct alike. EFFECT: When your character is required to make an attribute save with a target of easy or medium, your dice roll for that save is considered edged.",
         "keywords": [
-          "Root",
           "Instinct",
           "Virelan",
           "Trait"
@@ -676,7 +653,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Composed Mind",
         "text": "When the moment falters, you breathe, adjust, and let the flow return. trigger: This ability can be used when your character casts a spell or uses a magical ability that requires mana as a cost. EFFECT: If the spell or ability fails to strike or affect its target(s), restore half of the, actually, mana cost of the ability. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: If the triggering spell or magical ability can affect more than one target, you must fail all strike rolls or all targets must successfully resist the effect.",
         "keywords": [
-          "Root",
           "Reaction",
           "Culture"
         ]
@@ -695,7 +671,6 @@ export const speciesData: SpeciesDefinition[] = [
         "name": "Arcane Affinity",
         "text": "TRIGGER: This ability can be used at the start of the round. EFFECT: Generate [+1] additional mana. Roll [1d10] on a result of [5] or higher generate another additional [2] mana.",
         "keywords": [
-          "Root",
           "Instinct",
           "Virelan",
           "Trait"

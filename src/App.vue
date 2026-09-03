@@ -22,7 +22,6 @@ async function shareSite(){const result=await shareBrambleheart();if(!result.ok&
     <RouterView />
 
     <section v-if="showGlobalPageTools" class="page-utility-shell" aria-label="Brambleheart page tools">
-      <img class="page-utility-icon" src="/assets/Icon.png" alt="" aria-hidden="true" />
       <div class="page-utility-divider" aria-hidden="true"></div>
       <div class="page-utility-actions">
         <button type="button" class="secondary-button footer-tool-button" @click="reportIssue">Report</button>

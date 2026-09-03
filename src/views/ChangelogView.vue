@@ -27,7 +27,7 @@ const releases=parseReleases(changelogRaw)
     <div class="page-title-block">
       <p class="eyebrow">CHANGELOG &amp; UPDATES</p>
       <h1>Site Changelog</h1>
-      <p>Application, interface, data, and deployment changes. Brambleheart rules amendments are listed separately under Rule Updates.</p>
+      <p>Application, interface, data, and deployment changes. Brambleheart game-rule changes are listed separately under Game Updates.</p>
     </div>
     <section class="changelog-stack">
       <details v-for="(release,index) in releases" :key="release.label" class="changelog-entry settings-card" :open="index===0">

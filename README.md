@@ -1,18 +1,21 @@
-# Brambleheart TTRPG — Beta 0.15
+# Brambleheart TTRPG — Beta 0.16
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.15 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.16 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.15
+## Current Site Update — Beta 0.16
 
-- Rules → Fundamentals → Core Actions presents Core Actions, Abilities, examples, Reactions, chaining, and the Core Action reference as distinct teaching sections.
-- Core Action reference cards use the same action-family color authority as the pill UI.
-- Rules category landing pages are hidden from their own expandable menus.
-- Current playable Species are grouped beneath Woodlands, and Species lore panels use the Character Creation visual language while retaining the quote-and-art layout.
+- Removes the decorative bottom-of-page site icon and tightens the page-to-footer utility spacing.
+- Standardizes current Ability presentation so Core-family pills display `CORE ACTION`, while applicable Traits, Talents, Spells, and other Ability cards display an `ABILITY` pill.
+- Gives Heritage and Cultural Trait cards distinct accent identities; Cultural Traits now use a teal identity rather than the Magic/Spell purple family.
+- Anchors page-header character artwork to the logo/header stage so background selection does not change its vertical relationship to page content.
+- Uses switch-style exclusive choices for Background selection and makes header space respond dynamically to the selected Logo Size.
+- Adds a Fundamentals-style Character Creation rules guide with a responsive path graphic to Character Creation child pages.
+- Uses Site Update / Game Update terminology consistently in the current update surfaces.
 
-## Current Game Update — v0.05
+## Current Game Update — v0.06
 
-Game Updates are versioned independently from Site Updates. Game Update v0.05 contains the current Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions.
+Game Updates are versioned independently from Site Updates. Game Update v0.06 retires ROOT as an active Ability keyword. Current Traits and Talents no longer use ROOT, and the former ROOT once-per-family-per-round restriction no longer applies. The existing rule that a specific character’s copy of an Ability can resolve only once during an Ability Chain remains the global repeat limit.
 
 ### Trinkets
 
@@ -80,10 +83,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.15`
-- package version: `0.15.0`
-- PWA cache: `v0.15`
-- Game Update: `v0.05`
+- Site Update / BUILD/export: `0.16`
+- package version: `0.16.0`
+- PWA cache: `v0.16`
+- Game Update: `v0.06`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

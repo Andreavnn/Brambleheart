@@ -1,12 +1,24 @@
-import { RULE_UPDATES_RELEASE } from './release'
+import { GAME_UPDATES_RELEASE } from './release'
 
-export const GAME_RULES_VERSION=RULE_UPDATES_RELEASE
+export const GAME_RULES_VERSION=GAME_UPDATES_RELEASE
 
 export type GameUpdateEntry={version:string;date:string;title:string;summary:string;changes:string[]}
 
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-03',
+    title:'ROOT Keyword Retirement',
+    summary:'Retires ROOT as an active Ability keyword while keeping the existing once-per-Ability-instance chain rule as the global repeat limit.',
+    changes:[
+      'ROOT is retired as an active keyword and is removed from current Traits and Talents.',
+      'Removing ROOT does not alter those Abilities’ printed costs, Triggers, Effects, requirements, or other keywords.',
+      'The former ROOT once-per-family-per-round restriction no longer applies.',
+      'Ability Chains remain bounded by the existing rule that a specific character’s copy of an Ability can resolve only once during the same Ability Chain.',
+    ],
+  },
+  {
+    version:'0.05',
     date:'2026-09-03',
     title:'Core Actions & Ability Chain Limits',
     summary:'Establishes Core Actions as the shared starting points for Ability Chains, adds Reaction, and prevents repeated resolution of the same Ability instance within one chain.',

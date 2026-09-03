@@ -7,12 +7,12 @@ import { GAME_RULES_VERSION, gameUpdates } from '../data/gameUpdates'
   <main class="page game-updates-page">
     <AppHeader compact back-to="/characters" back-label="Back to Character Roster" />
     <div class="page-title-block">
-      <h1>Rule Updates</h1>
+      <h1>Game Updates</h1>
       <p>Rules changes to Brambleheart itself. Site-interface and companion changes remain in the Site Changelog.</p>
     </div>
     <section class="game-update-stack">
       <details v-for="update in gameUpdates" :key="update.version" class="game-update-entry card-surface" :open="update.version===GAME_RULES_VERSION">
-        <summary><div><span class="eyebrow">RULES UPDATE {{ update.version }}</span><h2>{{ update.title }}</h2><small>{{ update.date }}</small></div><span class="value-chip">{{ update.version===GAME_RULES_VERSION?'CURRENT':'ARCHIVED' }}</span></summary>
+        <summary><div><span class="eyebrow">GAME UPDATE {{ update.version }}</span><h2>{{ update.title }}</h2><small>{{ update.date }}</small></div><span class="value-chip">{{ update.version===GAME_RULES_VERSION?'CURRENT':'ARCHIVED' }}</span></summary>
         <div class="game-update-body"><p>{{ update.summary }}</p><ul><li v-for="change in update.changes" :key="change">{{ change }}</li></ul></div>
       </details>
     </section>

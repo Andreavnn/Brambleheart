@@ -22,7 +22,6 @@ const CURRENT_CORE_SECTIONS:RuleSourceSection[]=[
   ),
   section('KEYWORDS',
     paragraph('CORE: CORE identifies a Core Action. Each character may use one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action each round unless a more specific rule grants another use.'),
-    paragraph('ROOT: Existing ROOT Abilities keep their current once-per-family-per-round restriction unless their own rule is specifically revised. ROOT is not the recursion guard for an Ability Chain; Beta 0.45 does not remove ROOT from any existing Ability.'),
     paragraph('TOUCH: Close-range physical combat, normally resolved through Melee Strike.'),
     paragraph('SHOOT: Ranged physical combat, normally resolved through Range Strike.'),
     paragraph('MAGIC: Spellcasting and magical combat, normally resolved through Arcane Command.'),
@@ -33,7 +32,7 @@ const CURRENT_CORE_SECTIONS:RuleSourceSection[]=[
     paragraph('PASSIVE: A rule that is always available or resolves automatically when its stated condition is met. Passive Abilities do not spend a Core Action unless a specific rule says otherwise.'),
   ),
   section('What Keywords Do',
-    paragraph('Keywords tell you when an Ability can be used, which Core Action it builds from, and which other rules may interact with it.'),
+    paragraph('Keywords tell you when an Ability can be used, which Core Action or event it relates to, and which other rules may interact with it.'),
     paragraph('Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once during that Ability Chain, even if later events would make its Trigger valid again.'),
     paragraph('The same named Ability possessed by another character is a separate Ability instance and may resolve once in that chain. When no unresolved Ability instance has a legal Trigger, the Ability Chain ends.'),
   ),
@@ -59,13 +58,11 @@ const BATTLE_REPLACEMENTS:Record<string,RuleSourceSection>={
     paragraph('Every Ability Chain begins with a Core Action. Abilities from Talents, Traits, Spells, equipment, and other effects may modify that Core Action or trigger later in the chain.'),
     paragraph('A specific character’s copy of an Ability can resolve only once during the same Ability Chain. The same named Ability on another character is a separate Ability instance.'),
     paragraph('Reactive Abilities require the character to spend their Reaction Core Action. Each character has one Reaction Core Action per round unless another rule explicitly grants an additional use.'),
-    paragraph('Existing ROOT Abilities keep their current round-level family restrictions. ROOT is not used to determine whether an Ability may repeat inside the same Ability Chain.'),
   ),
   'PERFORMING ABILITIES':section('PERFORMING ABILITIES',
     paragraph('Every Ability Chain begins with a Core Action. Abilities from Talents, Traits, Spells, equipment, and other effects may modify that Core Action or trigger later in the chain.'),
     paragraph('A specific character’s copy of an Ability can resolve only once during the same Ability Chain. The same named Ability on another character is a separate Ability instance.'),
     paragraph('Reactive Abilities require the character to spend their Reaction Core Action. Each character has one Reaction Core Action per round unless another rule explicitly grants an additional use.'),
-    paragraph('Existing ROOT Abilities keep their current round-level family restrictions. ROOT is not used to determine whether an Ability may repeat inside the same Ability Chain.'),
   ),
   'MANA':section('MANA',
     paragraph('Mana Pool is the maximum Mana a character can normally hold and equals Magic Level + Spirit. Spirit is the Bravery modifier.'),
@@ -131,7 +128,7 @@ const TALENTS:ReadonlyArray<{name:string;flavor:string;rules:string}>=[
   {name:`ANCHOR SPIRIT`,flavor:`Your presence steadies those who falter.`,rules:`COST: [1] Mana
 TRIGGER: When an ally within [3] squares fails an Attribute Save.
 EFFECT: That ally may reroll the Attribute Save with condition [-1]. They must use the new result.
-KEYWORDS: ROOT | REACTIVE | TALENT`},
+KEYWORDS: REACTIVE | TALENT`},
   {name:`BATTLEBANE`,flavor:`You trust your body’s rhythm over the mind’s delay.`,rules:`COST: [1] Mana
 TRIGGER: When an enemy within [3] squares uses a Combat ability with a declared target.
 EFFECT: Move up to [2] squares toward that enemy. If you end adjacent to them, gain condition [+1] to your next Strike against that enemy until the end of the round.
@@ -164,7 +161,7 @@ KEYWORDS: REACTIVE | TALENT`},
 TRIGGER: Successfully dealing damage with Melee Strike.
 EFFECT: Move up to [1] square and make an additional melee Strike against a second enemy.
 RESTRICTIONS: You cannot target the same enemy more than once with this effect.
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`FIELDCRAFT`,flavor:`You refine one discipline until every motion in it cuts true.`,rules:`EFFECT: Choose one roll type when you take this Talent: Strike, Ward, Skill, or Attribute Save. When making that type of roll, an Exceptional Result is achieved on [7+].
 RESTRICTIONS: You may take this Talent up to four times, choosing a different roll type each time.
 KEYWORDS: PASSIVE | TALENT`},
@@ -193,7 +190,7 @@ KEYWORDS: PASSIVE | MAGIC | TALENT`},
   {name:`HEARTSEEKER`,flavor:`Your eyes find the smallest openings, and your arrows never forget them.`,rules:`COST: [1] Mana
 TRIGGER: When using Range Strike.
 EFFECT: Reduce the range of the weapon used for that Range Strike by [3] squares. If the Range Strike successfully deals damage, increase its total damage by [+2].
-KEYWORDS: ROOT | SHOOT | TALENT`},
+KEYWORDS: SHOOT | TALENT`},
   {name:`HEARTHWALL`,flavor:`You fight shoulder to shoulder with your allies to form an unbroken wall.`,rules:`TRIGGER: While you are within [1] square of an ally and both characters are wielding shields.
 EFFECT: You and that ally gain condition [+1] to Ward rolls against Shoot and Magic abilities.
 RESTRICTIONS: A character cannot be affected by multiple instances of this effect.
@@ -203,16 +200,16 @@ TRIGGER: When using Range Strike.
 EFFECT: Apply the effect of Breakgrip to that Range Strike.
 RESTRICTIONS: Long Range cannot be used with this Range Strike.
 REQUIRES: Breakgrip Talent
-KEYWORDS: ROOT | SHOOT | TALENT`},
+KEYWORDS: SHOOT | TALENT`},
   {name:`HEROIC SURGE`,flavor:`Before impact is not hesitation — it is the gathering of every heartbeat into one unstoppable step.`,rules:`COST: [2] Mana
 TRIGGER: When using Hero’s Charge.
 EFFECT: Increase the movement granted by Hero’s Charge by [+1] square and increase its damage bonus by [+1]. If you move at least half the movement granted by Hero’s Charge and then successfully deal damage to its target this turn, force that target [1] square directly away from you and deal [1] Lethal damage. If the target cannot be moved, deal [1] additional Lethal damage instead.
-KEYWORDS: ROOT | MOVE | TALENT`},
+KEYWORDS: MOVE | TALENT`},
   {name:`HOLLOWING CLAW`,flavor:`You strike from silence, instinct, or distraction — the heart always finds the gap.`,rules:`COST: [2] Mana
 TRIGGER: When using Melee Strike against an enemy that is also within [2] squares of one of your allies.
 EFFECT: If the Melee Strike successfully deals damage, increase its total damage by [+1]. Increase this bonus by another [+1] for every [2] ranks of Agility you have.
 RESTRICTIONS: You must be wielding a melee weapon.
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`HUNTER’S MARK`,flavor:`Every shot you loose follows intent more than aim.`,rules:`TRIGGER: When a ranged Strike achieves an Exceptional Result [8+].
 EFFECT: Increase the total damage by [+1]. If the weapon deals Lethal damage, increase the total damage by [+2] instead.
 KEYWORDS: PASSIVE | SHOOT | TALENT`},
@@ -222,7 +219,7 @@ KEYWORDS: PASSIVE | TALENT`},
   {name:`IRON WILL`,flavor:`You refuse to fall even when your body fails you.`,rules:`TRIGGER: When you are reduced to [0] Health.
 EFFECT: After fully resolving the triggering effect, restore your Health to [1].
 COOLDOWN: This Talent cannot be used again for [1d10/2+2] rounds.
-KEYWORDS: ROOT | REACTIVE | TALENT`},
+KEYWORDS: REACTIVE | TALENT`},
   {name:`JUMPSTART`,flavor:`Your instincts fire before your mind can act — motion born of pure reflex.`,rules:`EFFECT: Your Initiative roll is Edged.
 KEYWORDS: PASSIVE | TALENT`},
   {name:`KEEN EDGE`,flavor:`You fight by instinct and trained judgment, turning precision into rhythm.`,rules:`TRIGGER: Before making a roll.
@@ -245,10 +242,10 @@ TRIGGER: When using Range Strike.
 DECLARE: Choose a second legal enemy within the weapon’s normal range.
 EFFECT: Resolve a separate TO HIT roll against each target using the same weapon. Each successful Strike deals the Range Strike’s normal damage.
 RESTRICTIONS: Long Range cannot be used for either target.
-KEYWORDS: ROOT | SHOOT | TALENT`},
+KEYWORDS: SHOOT | TALENT`},
   {name:`POUNCER`,flavor:`You never waste the instant between defense and attack.`,rules:`TRIGGER: When an enemy within [3] squares fails a Ward roll.
 EFFECT: Gain condition [+1] to your next Strike roll against that enemy until the end of the round.
-KEYWORDS: ROOT | REACTIVE | TALENT`},
+KEYWORDS: REACTIVE | TALENT`},
   {name:`PULSE OF ATTUNEMENT`,flavor:`You learn to quiet your body and open your spirit to the flow of Mana around you.`,rules:`TRIGGER: When the first spell you cast each round from your attuned Lore is successful.
 EFFECT: Restore [1] Mana.
 KEYWORDS: PASSIVE | MAGIC | TALENT`},
@@ -256,17 +253,17 @@ KEYWORDS: PASSIVE | MAGIC | TALENT`},
 EFFECT: Reduce that spell’s Mana cost by [-2]. If you do, increase the Mana cost of the next spell you cast by [+3].
 RESTRICTIONS: An ordinary spell’s final Mana cost cannot be reduced below [1].
 COOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.
-KEYWORDS: ROOT | MAGIC | TALENT`},
+KEYWORDS: MAGIC | TALENT`},
   {name:`RAGEBOUND`,flavor:`Rage becomes rhythm; pain becomes purpose.`,rules:`COST: [1] Mana
 TRIGGER: When using the Focused Will Core Action at the start of the round.
 EFFECT: Gain condition [+1] to Strike rolls and [+1] to damage until the end of the round.
 DEFENSELESS: Until the end of the round, your Ward and Guts are each reduced by [-1].
-KEYWORDS: ROOT | INSTINCT | TALENT`},
+KEYWORDS: INSTINCT | TALENT`},
   {name:`RAMHORN`,flavor:`Your shield drives forward like a wall in motion, scattering your foes and shielding your advance.`,rules:`COST: [1] Mana
 TRIGGER: When using Hero’s Charge while wielding a shield.
 EFFECT: If you successfully deal damage to the target of Hero’s Charge this turn, force them [1] square directly away from you. If they move, deal [1] Lethal damage. If they cannot be moved, deal [2] Lethal damage instead.
 REQUIRES: Guardbreaker Talent
-KEYWORDS: ROOT | MOVE | TALENT`},
+KEYWORDS: MOVE | TALENT`},
   {name:`RHYTHM OF BLADES`,flavor:`You fight with a rhythm few can follow — one hand finishing what the other begins.`,rules:`EFFECT: While wielding a one-handed weapon in each hand, increase damage successfully dealt by Melee Strike by [+1].
 REQUIRES: Bond Of Blades Talent
 KEYWORDS: PASSIVE | TOUCH | TALENT`},
@@ -291,20 +288,20 @@ KEYWORDS: PASSIVE | TALENT`},
 TRIGGER: When using the Focused Will or Channel the Winds Core Action at the start of the round.
 EFFECT: Move up to [2] squares.
 RESTRICTIONS: This movement cannot end within [2] squares of an enemy.
-KEYWORDS: ROOT | INSTINCT | TALENT`},
+KEYWORDS: INSTINCT | TALENT`},
   {name:`SPELL BREAKER`,flavor:`The hum of magic finds no purchase in your iron will.`,rules:`EFFECT: Gain condition [+1] to Ward rolls against spells and Magic abilities. When you succeed on such a Ward roll, restore [1] Mana.
 KEYWORDS: PASSIVE | TALENT`},
   {name:`SPELL CLEAVE`,flavor:`Your strike cuts through the threads of magic still clinging to your foe.`,rules:`COST: [1] Mana
 TRIGGER: Successfully dealing damage with Melee Strike to an enemy that has cast an Enhance or Hex spell this round.
 EFFECT: Choose one Enhance or Hex spell cast by that enemy this round and end its effects immediately. If there is no eligible spell to end, deal [2] Lethal damage to that enemy instead.
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`SPELLFORGE`,flavor:`You read the world’s magic through patterns others overlook.`,rules:`TRIGGER: When a spell cast through Arcane Command is successful.
 EFFECT: Choose one: restore [1] Mana, or gain condition [+2] to the TO HIT roll of the next spell you cast before the end of the round.
-KEYWORDS: ROOT | MAGIC | TALENT`},
+KEYWORDS: MAGIC | TALENT`},
   {name:`SPELLWINDS`,flavor:`You’ve learned to weave motion and current into your casting.`,rules:`TRIGGER: When a spell cast through Arcane Command is successful.
 EFFECT: Move up to [2] squares.
 RESTRICTIONS: This movement cannot end within [2] squares of an enemy unless another rule allows it.
-KEYWORDS: ROOT | MAGIC | TALENT`},
+KEYWORDS: MAGIC | TALENT`},
   {name:`STEELWEAVER`,flavor:`You channel magic through the weight of steel.`,rules:`TRIGGER: When a spell or Magic ability that costs Mana successfully deals damage or applies an effect to another character.
 EFFECT: Gain condition [+1] to your next Ward roll.
 KEYWORDS: PASSIVE | MAGIC | TALENT`},
@@ -315,21 +312,21 @@ KEYWORDS: PASSIVE | TALENT`},
 TRIGGER: When you are targeted by a Combat ability that requires a Ward roll.
 EFFECT: Gain condition [+3] to that Ward roll. If the ability misses, move up to [2] squares after it resolves.
 RESTRICTIONS: This movement cannot end within [2] squares of an enemy.
-KEYWORDS: ROOT | REACTIVE | TALENT`},
+KEYWORDS: REACTIVE | TALENT`},
   {name:`SURE HAND`,flavor:`Weapons are extensions of your intent — no motion wasted.`,rules:`EFFECT: Choose one weapon type when you take this Talent: blade, hammer, spear, or bow. While wielding that type, gain condition [+1] to Strike rolls.
 KEYWORDS: PASSIVE | TALENT`},
   {name:`THREADSEER`,flavor:`You link spellwork together in seamless rhythm.`,rules:`TRIGGER: After a spell cast through Arcane Command is successful.
 EFFECT: You may cast one additional known non-Signature spell as part of the same Arcane Command. Increase that spell’s Mana cost by [+4].
 COOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.
-KEYWORDS: ROOT | MAGIC | TALENT`},
+KEYWORDS: MAGIC | TALENT`},
   {name:`THUNDEROUS CHARGE`,flavor:`Your momentum pierces armor and resolve alike.`,rules:`TRIGGER: When using Hero’s Charge while wielding a weapon with the Penetration quality.
 EFFECT: If you successfully deal damage to the target of Hero’s Charge this turn, deal [2] Lethal damage to that target. If a different enemy is adjacent to the target, deal [1] Lethal damage to that enemy.
-KEYWORDS: ROOT | MOVE | TALENT`},
+KEYWORDS: MOVE | TALENT`},
   {name:`TITAN’S WAKE`,flavor:`Two great weapons become an avalanche of destruction in your hands.`,rules:`COST: [2] Mana
 TRIGGER: When using Melee Strike while wielding [2] two-handed weapons.
 EFFECT: Roll [1d10/2+1] and add the result to the total damage dealt by that Melee Strike.
 REQUIRES: Beastgrasp Talent
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`TURNSTRIKE`,flavor:`Precision guides every motion — defense and strike flow in the same breath.`,rules:`COST: [2] Mana
 TRIGGER: When you are targeted by a Combat ability while wielding only a one-handed weapon and no shield.
 EFFECT: Increase your Ward against that ability by half the damage value of the weapon you are wielding.
@@ -338,7 +335,7 @@ KEYWORDS: REACTIVE | TALENT`},
 TRIGGER: When using Melee Strike while wielding a one-handed weapon in each hand.
 EFFECT: For that TO HIT roll, reroll each natural die result of [2] or lower once and use the new result.
 REQUIRES: Bond Of Blades Talent
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`UNDYING RESOLVE`,flavor:`Your will endures beyond flesh.`,rules:`EFFECT: Gain condition [+1] to Attribute Saves against Compelled effects. When you succeed on an Attribute Save against a Compelled effect, restore [+1] Health.
 KEYWORDS: PASSIVE | TALENT`},
   {name:`VICTORY ROAR`,flavor:`A single success ignites the will of those nearby.`,rules:`TRIGGER: When you reduce an enemy to [0] Health.
@@ -349,7 +346,7 @@ KEYWORDS: PASSIVE | TALENT`},
   {name:`WARHOWL`,flavor:`You drive forward with reckless conviction, turning pain into power.`,rules:`COST: [1] Mana
 TRIGGER: When using Melee Strike.
 EFFECT: You may suffer [2] Lethal damage. If you do, choose either condition [+2] to that Melee Strike’s TO HIT roll or [+2] to its total damage.
-KEYWORDS: ROOT | TOUCH | TALENT`},
+KEYWORDS: TOUCH | TALENT`},
   {name:`WARPATH`,flavor:`You move through the fray like a storm given form, each strike feeding the next.`,rules:`COST: [2] Mana
 TRIGGER: Successfully dealing damage with the additional Strike granted by Wildchain.
 EFFECT: Move up to [1] square and make one additional melee Strike against a different enemy with condition [-4] to the TO HIT roll.
@@ -430,7 +427,7 @@ function replaceBattleSections(){
 }
 
 
-function canonicalizeBeta042Terminology(){
+function canonicalizeCurrentTerminology(){
   const currentText=(value:string)=>String(value||'')
     .replace(/\bAUGMENTS\b/g,'ENHANCES')
     .replace(/\bAugments\b/g,'Enhances')
@@ -438,6 +435,8 @@ function canonicalizeBeta042Terminology(){
     .replace(/\bAugment\b/g,'Enhance')
     .replace(/\bWhisperstep\b/g,'Whisperster')
     .replace(/\bStealth (?:Condition|Penalty)\b/gi,'Armor Penalty')
+    .replace(/(KEYWORDS?:\s*)ROOT\s*\|\s*/g,'$1')
+    .replace(/\s*\|\s*ROOT(?=\s*(?:\||$))/g,'')
   for(const document of Object.values(ruleSourceDocuments)){
     document.sections=document.sections.map(sourceSection=>({
       ...sourceSection,
@@ -469,7 +468,6 @@ function installCurrentRules(){
       section('Overview',table(['TALENTS'])),
       section('TALENTS',
         paragraph('Talents are practiced gifts, hard-earned techniques, and instinctive advantages that modify Core Actions or resolve from their own Triggers.'),
-        paragraph('Existing ROOT Talents retain their current once-per-family-per-round restriction. Ability Chain recursion is controlled separately: each specific Ability instance can resolve only once in the same chain.'),
       ),
       ...TALENTS.map(talent=>section(talent.name,paragraph(talent.flavor),paragraph(talent.rules))),
     ]
@@ -479,7 +477,7 @@ function installCurrentRules(){
 }
 
 installCurrentRules()
-canonicalizeBeta042Terminology()
+canonicalizeCurrentTerminology()
 
 export { ruleSourceDocuments }
 export type { RuleSourceBlock, RuleSourceSection }

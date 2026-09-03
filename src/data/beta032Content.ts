@@ -79,13 +79,13 @@ const movedTalentSections:RuleSourceSection[]=[
   {
     heading:'Verdant Surge',
     blocks:[
-      {type:'paragraph',text:'Life flows through the green, mending all things. COST: [1] Mana TRIGGER: This ability can be used at the start of the round. EFFECT: Choose one ability type (melee, shoot, magic) and gain [+2] to all strike rolls of that type until the end of the round. KEYWORDS: Root | Instinct | Enhance'},
+      {type:'paragraph',text:'Life flows through the green, mending all things. COST: [1] Mana TRIGGER: This ability can be used at the start of the round. EFFECT: Choose one ability type (melee, shoot, magic) and gain [+2] to all strike rolls of that type until the end of the round. KEYWORDS: Instinct | Enhance'},
     ],
   },
   {
     heading:'Rooted Resolve',
     blocks:[
-      {type:'paragraph',text:'Breathe in the calm before the storm. COST: [1] Mana TRIGGER: This ability can be used at the start of the round. EFFECT: Until the end of the round, your character gains [+1] to guts and resistance [+1] against a damage type of your choice. KEYWORDS: Root | Instinct | Enhance'},
+      {type:'paragraph',text:'Breathe in the calm before the storm. COST: [1] Mana TRIGGER: This ability can be used at the start of the round. EFFECT: Until the end of the round, your character gains [+1] to guts and resistance [+1] against a damage type of your choice. KEYWORDS: Instinct | Enhance'},
     ],
   },
 ]
