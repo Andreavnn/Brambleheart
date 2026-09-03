@@ -1,63 +1,48 @@
-# Brambleheart Beta 0.16
-
-- Renames the shared Core Ability concept to Core Action and adds Reaction as the shared once-per-round Core Action used to resolve eligible Reactive Abilities.
-- Establishes bounded Ability Chains: every chain begins with a Core Action, and a specific character's copy of an Ability may resolve only once in that chain; another character's copy is a separate Ability instance.
-- Revises Ragebound to build from Focused Will with [+1] Strike, [+1] damage, and [-1] Ward / [-1] Guts through Defenseless, and revises Snapstep to build from Focused Will or Channel the Winds and move [2] squares.
-- Keeps Drums of War and Divine Grasp as intentional rule-breaking effects that can grant or compel Core Action use.
-- Reorganizes Rules → Fundamentals → Core Actions so Actions, Abilities, examples, Reactions, chaining, and the Core Action reference are taught separately, with reference-card accents using the same action-family colors as the pill UI.
-- Hides category landing pages from expandable Rules menus, groups current playable Species beneath Woodlands, removes repetitive Species-list subtitles, and restyles Species lore panels to match Character Creation while retaining the quote-and-art layout.
-
 # Brambleheart Beta 0.15
 
-- Updates Axalori Heartcurrent, Stillwater Renewal, Harmonic Field, and Resonant Pulse to their current rules; Resonant Pulse costs [2] Mana.
-- Replaces numbered Trinket slots and separate Arcane Focus selection with the current passive-equipped Trinket model; legacy slot/focus fields are discarded at the saved-character normalization boundary.
-- Adds Settings → Display → Logo Size with five persisted choices while retaining the previous logo size as Largest/default.
-- Replaces the Character Roster and Rules header artwork, aligns/flips the requested page-header characters, and removes page-title detail text from News, Character Roster, Rules, and Rhythm Engine.
+- Reorganizes Rules → Fundamentals → Core Actions so Actions, Abilities, examples, Reactions, chaining, and the Core Action reference are taught in clearly separated sections, with reference-card accents using the same action-family colors as the pill UI.
+- Hides category landing pages from expandable Rules menus, groups current playable Species beneath Woodlands, removes repetitive Species-list subtitles, and restyles Species lore panels to match Character Creation while retaining the quote-and-art layout.
 
 # Brambleheart Beta 0.14
 
-- Promotes the approved Fundamentals presentation into production Core Rules, Attributes & Skills, and the shared Abilities reference while retaining explicit aliases for legacy Rules URLs and removing the obsolete layout-test route.
+- Updates character/equipment persistence and presentation for the current passive-equipped Trinket model, removing legacy numbered-slot and Arcane Focus fields at the saved-character normalization boundary rather than carrying obsolete fields through current application logic.
+- Adds Settings → Display → Logo Size with five persisted choices while retaining the previous logo size as Largest/default.
+- Replaces the Character Roster and Rules header artwork, aligns/flips the requested page-header characters, and removes page-title detail text from News, Character Roster, Rules, and Rhythm Engine.
+
+# Brambleheart Beta 0.13
+
+- Promotes the approved Fundamentals presentation into production Core Rules, Attributes & Skills, and the shared action/ability reference while retaining explicit aliases for legacy Rules URLs and removing the obsolete layout-test route.
 - Reorganizes the shared Equipment & Gear shop into clearer categories with labeled weapon/protective profiles and shared purchasing behavior.
 - Rebuilds Level Up presentation around grouped rewards, advancement, Magic progression, and equipment management while keeping shared economy and advancement authorities canonical.
 - Fixes Settings background controls at their active implementation and removes superseded layout-test and transitional presentation code.
 
-# Brambleheart Beta 0.13
-
-- Adds News to primary navigation with site-release and Rule Update summaries plus community/share promotion cards.
-- Normalizes ordinary weapon, armor, and shield profiles and prices, replaces the former armor Stealth field with Armor Penalty, and applies equipped protective statistics consistently to derived character values.
-- Makes retained Adventure Kit contents visible on Character Sheets and unifies Character Creation and Level Up equipment purchasing around one shared shop component.
-- Adds the Encounter Builder placeholder, cleans Talent category presentation, and standardizes Enhance terminology and ability-family presentation in the Rules teaching UI.
-- Reorders Settings Display, Data & Content, and Changelog & Updates controls at their active view authority.
-
 # Brambleheart Beta 0.12
 
-- Expands Rhythm of Body & Spirit to Wind-Touched, Gifted Heart, Practiced Hand, and Tempered Form, with persisted Skill/Attribute selections and the normal Rank 3 creation cap.
-- Standardizes Heritage and Cultural Trait card presentation, semantic action-family pills, and independent card sizing.
-- Centralizes character-sheet weapon damage modifiers from equipment effects and hides parenthetical weapon identifiers on Character Sheets while retaining full catalog names elsewhere.
-- Replaces lossy Threadpiece display with exact BP/SP/NP/WP remainder formatting.
-- Aligns Character Creation Attribute colors, Talent-card ability-family accents, and weapon-property pills with the Character Sheet and Rules presentation.
+- Adds News to primary navigation with separate Site Update and Game Update summaries plus community/share promotion cards.
+- Moves Character Sheet and equipment-shopping presentation to shared normalized equipment/profile data so purchased and equipped gear display consistently across character workflows.
+- Makes retained Adventure Kit contents visible on Character Sheets and unifies Character Creation and Level Up equipment purchasing around one shared shop component.
+- Adds the Encounter Builder placeholder, cleans Talent category presentation, and refines the Rules teaching UI around the shared action-family presentation.
+- Reorders Settings Display, Data & Content, and Changelog & Updates controls at their active view authority.
 
 # Brambleheart Beta 0.11
 
-- Establishes the current Magic Level known-spell progression through 12 Lore Spells and 6 Invocations at Magic Level 10, plus the separate Signature Spell.
-- Standardizes Lore Attunement, Signature, Cantrip, Enhance, Hex, TO HIT, and the minimum final ordinary spell cost of [1] Mana.
-- Reconstructs the Talent catalog around shared action modifiers and triggered effects, including Cleave as the Fang Break replacement and Beastgrasp as the Primate Grip replacement.
-- Standardizes Start of Round Magic Regen handling and the shared spell/Talent grammar used by later Core Action rules.
+- Persists Rhythm of Body & Spirit path selections and their Skill/Attribute choices across saved, imported, reviewed, and advanced characters.
+- Standardizes Heritage and Cultural Trait card presentation, semantic action-family pills, and independent card sizing.
+- Centralizes Character Sheet weapon-modifier presentation through the shared equipment-effect authority and hides parenthetical weapon identifiers on Character Sheets while retaining full catalog names elsewhere.
+- Replaces lossy Threadpiece display with exact BP/SP/NP/WP remainder formatting.
+- Aligns Character Creation Attribute colors, Talent-card action-family accents, and weapon-property pills with the Character Sheet and Rules presentation.
 
 # Brambleheart Beta 0.10
 
-- Separates application releases from Brambleheart Rule Updates so site and game-rule histories advance independently.
-- Establishes the current secondary-stat authority: Aim/Accuracy/Speed, Brawl/Fury, Ward/Guts, Control/Power, and Heart/Spirit, with Heart = Bravery Rank and Spirit = Bravery modifier.
-- Establishes Mana Pool = Magic Level + Spirit and Magic Regen = Heart, with no standard +2 restoration modifier.
-- Rebuilds Threadpiece economy around whole wp: 10 wp = 1 np, 5 np = 1 sp, and 5 sp = 1 bp; starting wealth is 30 sp and the Adventure Kit creation sellback is 3 sp.
-- Reprices the equipment/economy catalog, establishes ordinary/trade resale and crafting-value rules, and makes only equipped armor/shield contribute protective statistics.
+- Separates application releases from Brambleheart Game Updates so site and game-rule histories advance independently.
+- Centralizes derived-stat, Mana, and Threadpiece calculations so Character Creation, Character Roster, Rhythm Engine, and Level Up consume shared implementations; currency persistence uses one whole-wp authority.
 - Renames Character List to Character Roster and expands approved-character Level Up with persistent post-creation currency, treasure, Magic Level, and equipment management.
 
 # Brambleheart Beta 0.09
 
 - Adds compressed Character Share Codes and consolidates character import/export through the shared imported-character normalizer.
-- Adds persistent Squares, Yards, Meters, and Feet display options while keeping square-based rules canonical at 1 square = 1 yard = 1 meter = 3 feet.
-- Adds the versioned Rule Updates page and links it beneath the Brambleheart logo and from Settings without adding it to primary navigation.
+- Adds persistent Squares, Yards, Meters, and Feet display options for square-based rule text through one shared measurement-conversion authority.
+- Adds the versioned Game Updates page and links it beneath the Brambleheart logo and from Settings without adding it to primary navigation.
 - Adds character filtering, lock/unlock controls, persistent creation-completion state, and accessible transfer/share controls.
 - Adds the canonical Brambleheart site/share origin, footer share control, and Settings community/share access while preserving install support.
 
@@ -74,12 +59,12 @@
 - Consolidates Rules concepts into canonical pages with explicit aliases for superseded URLs, including combined damage/health references and the canonical Ability Targeting route.
 - Reworks Character Creation Culture/Homeland Skill handling, path progression, language presentation, Attribute controls, and Review identity locking.
 - Rebuilds Settings → Data & Content around backup/reset actions and removes obsolete nested data managers.
-- Hardens equipment profile parsing, quantity-aware purchasing, attached-item presentation, Mana Syphon handling, and Armor/Shield statistics without maintaining duplicate profile implementations.
-- Fixes spell-source boundary parsing and registers Power Word: Reinforcement in the Oath spell catalog so neighboring spell data remains isolated.
+- Hardens equipment profile parsing, quantity-aware purchasing, attached-item presentation, and Armor/Shield data handling without maintaining duplicate profile implementations.
+- Fixes spell-source boundary parsing and isolates Oath spell records so neighboring spell data cannot be merged by the reader/parser.
 
 # Brambleheart Beta 0.06
 
-- Consolidates Rules, Settings, storage, derived-stat, equipment-profile, and structured Ability parsing around shared authoritative implementations instead of parallel helpers and patch-layer overrides.
+- Consolidates Rules, Settings, storage, derived-stat, equipment-profile, and structured rule parsing around shared authoritative implementations instead of parallel helpers and patch-layer overrides.
 - Replaces the earlier role palettes with the current Default, Warrior, Healer, Ranger, and Thief theme model while isolating legacy theme migration at Settings.
 - Restores fixed content-category color identity for rules/detail cards so theme changes do not rewrite Species, Spell, Talent, Spark, Homeland, Oath, Faith, or equipment identity.
 - Normalizes backgrounds, dark surfaces, separators, Rules child-row presentation, and Recent Rules cards while retaining one active responsive style authority.
@@ -96,7 +81,7 @@
 # Brambleheart Beta 0.04
 
 - Rebuilds the Rhythm Engine around the saved Character Sheet instead of the earlier dedicated Combat Encounter implementation.
-- Adds Approved characters and Beyond Character Creation Level Up with source-backed advancement costs.
+- Adds Approved characters and Beyond Character Creation Level Up with source-backed advancement-cost presentation.
 - Adds typed downloadable JSON templates and import support for custom Species, Spells, Talents, and Traits with explicit Custom labeling and per-character custom-data permission.
 - Rebuilds Background selection around automatic asset discovery and adds the supplied background artwork while retaining grayscale/display controls.
 - Refines Character Creation, Character Review, spell/talent presentation, and responsive popup layouts around the shared character-sheet language.

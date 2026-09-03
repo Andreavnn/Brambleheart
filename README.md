@@ -1,17 +1,24 @@
-# Brambleheart TTRPG — Beta 0.16
+# Brambleheart TTRPG — Beta 0.15
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.16 is the current application build. It uses Core Actions as the shared encounter starting points, bounds Ability Chains so a specific character's copy of an Ability cannot resolve repeatedly in the same chain, and presents the current Rules and playable Species structure.
+Beta 0.15 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Rule Updates v0.05
+## Current Site Update — Beta 0.15
 
-Rule Updates are versioned independently from application builds. Rule Update v0.05 contains the current Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions.
+- Rules → Fundamentals → Core Actions presents Core Actions, Abilities, examples, Reactions, chaining, and the Core Action reference as distinct teaching sections.
+- Core Action reference cards use the same action-family color authority as the pill UI.
+- Rules category landing pages are hidden from their own expandable menus.
+- Current playable Species are grouped beneath Woodlands, and Species lore panels use the Character Creation visual language while retaining the quote-and-art layout.
+
+## Current Game Update — v0.05
+
+Game Updates are versioned independently from Site Updates. Game Update v0.05 contains the current Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions.
 
 ### Trinkets
 
 Trinkets behave as passive equipment. They do not use numbered Trinket positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to a legal weapon or armor before their attached effect applies.
 
-Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy saved slot/focus fields are removed at the saved-character normalization boundary rather than being carried into current application logic.
+Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot.
 
 - Journey Knot — while equipped and attached, condition `+1` to TO HIT rolls made with that weapon.
 - Scriptweave Book — while equipped, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
@@ -30,7 +37,7 @@ Character Creation offers four starting paths, each granting at least one Talent
 - Practiced Hand — 2 new Skills at Rank 1 + 1 Talent.
 - Tempered Form — +1 Rank to one Attribute + 1 Talent, up to the normal Rank 3 creation maximum.
 
-Practiced Hand cannot choose Skills the character already knows from earlier creation sources such as Homeland or Culture Traits. The selected path and its Skill/Attribute choices are persisted with the character.
+Practiced Hand cannot choose Skills the character already knows from earlier creation sources such as Homeland or Culture Traits.
 
 ### Core Actions & Ability Chains
 
@@ -58,37 +65,27 @@ Ragebound builds from Focused Will, granting condition [+1] to Strike and [+1] t
 
 ## Canonical Threadpiece economy
 
-All runtime money calculations use whole Washer Pieces (`wp`) as the authority:
-
 - 10 wp = 1 np
 - 5 np = 1 sp
 - 5 sp = 1 bp
-- Starting wealth = 30 sp = 1,500 wp
-- Adventure Kit creation sellback = 3 sp = 150 wp
-- Maximum creation purchasing power after selling the kit = 33 sp = 1,650 wp
+- Starting wealth = 30 sp
+- Adventure Kit creation sellback = 3 sp
+- Maximum creation purchasing power after selling the kit = 33 sp
 
 Protective loadout remains limited to one armor and one shield. Trinkets are passive equipped gear and do not consume protective equipment space.
 
 ## Measurements
 
-The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
-
-## Beta 0.16 application focus
-
-- Uses Core Action as the shared action terminology and Reaction as the Core Action for eligible Reactive Abilities.
-- Bounds Ability Chains so one character's copy of an Ability cannot repeatedly resolve in the same chain.
-- Presents Rules → Fundamentals → Core Actions as separate Action, Ability, example, Reaction, chaining, and Core Action reference sections.
-- Uses the shared action-family color authority for Core Action reference cards and pill UI.
-- Hides Rules category landing pages from their own expandable menus.
-- Groups current playable Species beneath Woodlands and presents Species lore panels in the Character Creation visual language.
+The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. The site can display Squares, Yards, Meters, or Feet through the shared measurement display setting.
 
 ## Release integrity
 
-- BUILD/export: `0.16`
-- package version: `0.16.0`
-- PWA cache: `v0.16`
-- Rule Updates: `v0.05`
-- Repository and in-app Site Changelog: `CHANGELOG.md`
+- Site Update / BUILD/export: `0.15`
+- package version: `0.15.0`
+- PWA cache: `v0.15`
+- Game Update: `v0.05`
+- Site Update history: `CHANGELOG.md`
+- Game Update history: `src/data/gameUpdates.ts`
 
 ## Runtime
 
