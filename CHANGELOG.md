@@ -1,3 +1,20 @@
+# Brambleheart Beta 0.45.2
+
+- Renames Rules → Fundamentals → Abilities to Core Actions and reorganizes the page so Core Actions, Abilities, Action/Ability examples, Reaction examples, chaining, and the Core Action reference are clearly separated.
+- Makes Core Action reference-card accent bars use the same canonical action-family colors as the corresponding pill UI.
+- Hides category landing/parent pages from all expandable Rules menus, matching the existing Fundamentals behavior.
+- Groups the current playable Species under a Woodlands subcategory and removes the repetitive per-Species detail subtitles from the Species list.
+- Restyles Species lore panels to mirror the Character Creation Step 1 presentation while retaining the existing quote-and-art side-by-side layout and the current Heritage/Cultural Trait sections.
+- Synchronizes BUILD/export 0.45.2, package 0.45.2, and PWA cache v0.45.2 while Rule Updates remains v0.08.
+
+# Brambleheart Beta 0.45.1
+
+- Removes Rhythm Engine → Ability Manager and returns the Rhythm Engine navigation to Character Sheet, Dice Roller, and Encounter Builder.
+- Removes the now-unused Ability Manager proc graph and chain-state implementation instead of leaving dead simulation code active in the repository.
+- Removes the Beta-specific ROOT callout from the Abilities chaining presentation without changing the underlying ROOT rules.
+- Keeps the Beta 0.45 Core Action, Reaction, Ability Chain, Ragebound, Snapstep, Drums of War, and Divine Grasp rules unchanged.
+- Synchronizes BUILD/export 0.45.1, package 0.45.1, and PWA cache v0.45.1 while Rule Updates remains v0.08.
+
 # Brambleheart Beta 0.45
 
 - Renames the shared Core Ability concept to Core Action and adds Reaction as a shared once-per-round Core Action for resolving eligible Reactive Abilities.

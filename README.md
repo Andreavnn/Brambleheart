@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.45
+# Brambleheart TTRPG — Beta 0.45.2
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.45 restructures the encounter action model around Core Actions and bounded Ability Chains. It adds Reaction as a shared Core Action, prevents recursive proc loops by allowing each specific Ability instance to resolve only once per chain, updates the Ability Manager to model that chain state, and revises Ragebound and Snapstep for the new Core Action structure.
+Beta 0.45.2 keeps the Beta 0.45 Core Action and bounded Ability Chain rules while refining the Rules presentation: the Fundamentals page is now titled Core Actions, Rules chapter menus no longer repeat their parent landing pages, and the current playable Species are grouped under Woodlands with a Character Creation-style lore presentation.
 
 ## Rule Updates v0.08
 
-Rule Updates are versioned independently from application builds. Beta 0.45 advances Rule Updates to v0.08 for the Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions. Existing ROOT keywords remain on current Abilities and retain their current round-level restrictions; ROOT is no longer used as the Ability Chain recursion guard.
+Rule Updates are versioned independently from application builds. Beta 0.45 advanced Rule Updates to v0.08 for the Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions. Beta 0.45.2 does not change the game-rule version.
 
 ### Trinkets
 
@@ -44,8 +44,6 @@ Reactive Abilities resolve through Reaction when their printed Trigger is met. E
 
 Ragebound now builds from Focused Will, granting condition [+1] to Strike and [+1] to damage while reducing Ward and Guts by [-1] each through Defenseless. Snapstep now builds from Focused Will or Channel the Winds and moves up to [2] squares. Drums of War and Divine Grasp intentionally retain their rules that grant or compel Core Action use.
 
-Rhythm Engine → Ability Manager uses the same Core Action authority. Character mode evaluates only the selected character’s actual Traits, Talents, and known Spells; Ability mode traces a selected Ability back to a legal Core Action route. Reactive branches are gated through Reaction and repeated resolution of the same Ability instance is blocked within a chain.
-
 ### Magic
 
 - Mana Pool = Magic Level + Spirit.
@@ -75,21 +73,20 @@ Protective loadout remains limited to one armor and one shield. Trinkets are pas
 
 The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
-## Beta 0.45 application focus
+## Beta 0.45.2 application focus
 
-- Renames the shared Core Ability concept to Core Action throughout current rules and UI presentation.
-- Adds Reaction as a shared Core Action and routes Reactive Ability use through that once-per-round opportunity.
-- Establishes the once-per-Ability-instance chain rule so Ability Chains terminate without relying on ROOT as a recursion guard.
-- Updates Rhythm Engine → Ability Manager to model Core Action roots, Reaction gates, and per-instance chain state.
-- Revises Ragebound and Snapstep for the Core Action model while preserving ROOT on both Abilities.
-- Keeps Drums of War and Divine Grasp as explicit rule-breaking effects that can grant or compel additional Core Action use.
-- Synchronizes BUILD/export 0.45, package 0.45.0, PWA cache v0.45, and Rule Updates v0.08.
+- Renames the Fundamentals Abilities page to Core Actions and separates the Core Action definition, Ability definition, examples, chaining, and Core Action reference more clearly.
+- Uses one shared action-family color authority for Core Action card accent bars and the matching pill UI.
+- Hides category parent/landing pages from all expandable Rules menus.
+- Groups the current playable Species under Woodlands and removes repetitive Species-list subtitles.
+- Restyles Species lore panels to match the Character Creation Step 1 visual language while preserving the existing quote, artwork, lore, and Trait structure.
+- Synchronizes BUILD/export 0.45.2, package 0.45.2, and PWA cache v0.45.2 while Rule Updates remains v0.08.
 
 ## Release integrity
 
-- BUILD/export: `0.45`
-- package version: `0.45.0`
-- PWA cache: `v0.45`
+- BUILD/export: `0.45.2`
+- package version: `0.45.2`
+- PWA cache: `v0.45.2`
 - Rule Updates: `v0.08`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 

@@ -1,4 +1,4 @@
 /** Canonical release markers. Runtime BUILD values derive from this file. */
-export const APP_RELEASE='0.45.1' as const
-export const PACKAGE_RELEASE='0.45.1' as const
+export const APP_RELEASE='0.45.2' as const
+export const PACKAGE_RELEASE='0.45.2' as const
 export const RULE_UPDATES_RELEASE='0.08' as const
