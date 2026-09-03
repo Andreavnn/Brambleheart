@@ -1,18 +1,11 @@
-**Beta 0.45.2 — Rules Navigation & Core Actions Presentation**
+**Beta 0.16 — Core Actions, Rules & Species**
 
-- Renamed Rules → Fundamentals → Abilities to **Core Actions** and reorganized its teaching sections: Core Actions & Abilities now defines Actions, **Abilities** defines Ability behavior, and the examples are labeled **Action & Ability Example**, **Reaction Example**, and **Chaining Abilities**. The reference section is now simply **Core Actions**.
-- Updated Core Action reference-card accent bars to derive from the same action-family color authority used by the pill UI, so Instinct, Move, Touch, Shoot, Magic, Reaction, and Passive cards match their corresponding pills.
-- Removed category landing/parent pages from every expandable Rules chapter menu. The landing routes remain available for navigation/search where needed, but they are no longer duplicated inside their own chapter menus.
-- Added a **Woodlands** subcategory under Playable Species and placed the current Species list within it. Removed the repeated “lore, Heritage Traits, Culture Traits, and language” subtitle from individual Species entries.
-- Restyled individual Species lore panels to visually match the Character Creation Step 1 information panels while retaining the existing Species page structure, the artwork beside the quote on wider screens, and the current Heritage Traits and Cultural Traits sections.
-- Updated BUILD/export, package, and PWA cache metadata to Beta 0.45.2. Rule Updates remains v0.08 because this patch changes presentation/navigation rather than game mechanics.
-
-**Patch-note verification**
-
-- Previous version reviewed: 0.45.1
-- New version: 0.45.2
-- Source/diff reviewed: Yes
-- Changelog synchronized: Yes
-- Version metadata synchronized: Yes
-- Tests actually run: TypeScript semantic checks for the changed Rules catalog/release data; TypeScript syntax transpilation for FundamentalsRuleView, RuleReaderView, and RulesView; runtime assertions for the Core Actions page metadata, Woodlands Species grouping, Species subtitle removal, and core-actions route alias; source assertions for requested section titles/menu cleanup; shared action-family color checks; release/version integrity checks; repository-relative import scan. Dependency installation was attempted but failed with `EAI_AGAIN` because the npm registry was unreachable, and `npm run build` could not run because `vue-tsc`/Vite dependencies are not installed. Browser-responsive runtime testing was therefore not performed.
-- Known unfinished work intentionally excluded: Encounter Builder remains the existing placeholder.
+- Renamed the shared Core Ability concept to **Core Action** and added **Reaction** as the shared once-per-round Core Action for resolving eligible Reactive Abilities.
+- Established bounded Ability Chains: every chain begins with a Core Action, and a specific character's copy of an Ability can resolve only once during that chain; another character's copy is a separate Ability instance.
+- Revised **Ragebound** to build from Focused Will with condition [+1] to Strike, [+1] damage, and [-1] Ward / [-1] Guts through Defenseless. Revised **Snapstep** to build from Focused Will or Channel the Winds and move [2] squares.
+- Kept **Drums of War** and **Divine Grasp** as intentional effects that can grant or compel Core Action use.
+- Reorganized Rules → Fundamentals → **Core Actions** so Core Actions, Abilities, Action/Ability examples, Reaction examples, chaining, and the Core Action reference are taught separately.
+- Matched Core Action reference-card accent colors to the shared action-family pill colors.
+- Removed Rules category landing pages from their own expandable menus.
+- Grouped the current playable Species beneath **Woodlands**, removed repetitive Species-list subtitles, and restyled Species lore panels to match Character Creation while retaining the quote-and-art layout.
+- Current application release: Beta 0.16. Current Rule Updates release: v0.05.

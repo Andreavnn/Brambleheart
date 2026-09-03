@@ -1,19 +1,19 @@
-# Brambleheart TTRPG — Beta 0.45.2
+# Brambleheart TTRPG — Beta 0.16
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.45.2 keeps the Beta 0.45 Core Action and bounded Ability Chain rules while refining the Rules presentation: the Fundamentals page is now titled Core Actions, Rules chapter menus no longer repeat their parent landing pages, and the current playable Species are grouped under Woodlands with a Character Creation-style lore presentation.
+Beta 0.16 is the current application build. It uses Core Actions as the shared encounter starting points, bounds Ability Chains so a specific character's copy of an Ability cannot resolve repeatedly in the same chain, and presents the current Rules and playable Species structure.
 
-## Rule Updates v0.08
+## Rule Updates v0.05
 
-Rule Updates are versioned independently from application builds. Beta 0.45 advanced Rule Updates to v0.08 for the Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions. Beta 0.45.2 does not change the game-rule version.
+Rule Updates are versioned independently from application builds. Rule Update v0.05 contains the current Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions.
 
 ### Trinkets
 
-Trinkets behave as passive equipment. They do not use Trinket 1 or Trinket 2 positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to a legal weapon or armor before their attached effect applies.
+Trinkets behave as passive equipment. They do not use numbered Trinket positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to a legal weapon or armor before their attached effect applies.
 
 Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot. Legacy saved slot/focus fields are removed at the saved-character normalization boundary rather than being carried into current application logic.
 
-- Journey Knot — while equipped and attached, condition `+1` to one TO HIT roll made with that weapon.
+- Journey Knot — while equipped and attached, condition `+1` to TO HIT rolls made with that weapon.
 - Scriptweave Book — while equipped, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
 - Caster Totem — while equipped, Control `+1`.
 - Spell Charm — once per round, increase one spell’s damage by `+1`.
@@ -40,9 +40,9 @@ A normal round provides one Core Instinct Action, one Core Move Action, one Core
 
 Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once during that chain, even if later events would make its Trigger legal again. Another character’s copy of the same named Ability is a separate Ability instance and may resolve once. The chain ends when no unresolved Ability instance has a legal Trigger.
 
-Reactive Abilities resolve through Reaction when their printed Trigger is met. Each character has one Reaction Core Action per round unless a more specific rule grants another use. Existing ROOT keywords are preserved and still apply their current round-level family limits, but ROOT is not used to stop recursive chains.
+Reactive Abilities resolve through Reaction when their printed Trigger is met. Each character has one Reaction Core Action per round unless a more specific rule grants another use.
 
-Ragebound now builds from Focused Will, granting condition [+1] to Strike and [+1] to damage while reducing Ward and Guts by [-1] each through Defenseless. Snapstep now builds from Focused Will or Channel the Winds and moves up to [2] squares. Drums of War and Divine Grasp intentionally retain their rules that grant or compel Core Action use.
+Ragebound builds from Focused Will, granting condition [+1] to Strike and [+1] to damage while reducing Ward and Guts by [-1] each through Defenseless. Snapstep builds from Focused Will or Channel the Winds and moves up to [2] squares. Drums of War and Divine Grasp intentionally retain their rules that grant or compel Core Action use.
 
 ### Magic
 
@@ -73,21 +73,21 @@ Protective loadout remains limited to one armor and one shield. Trinkets are pas
 
 The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
-## Beta 0.45.2 application focus
+## Beta 0.16 application focus
 
-- Renames the Fundamentals Abilities page to Core Actions and separates the Core Action definition, Ability definition, examples, chaining, and Core Action reference more clearly.
-- Uses one shared action-family color authority for Core Action card accent bars and the matching pill UI.
-- Hides category parent/landing pages from all expandable Rules menus.
-- Groups the current playable Species under Woodlands and removes repetitive Species-list subtitles.
-- Restyles Species lore panels to match the Character Creation Step 1 visual language while preserving the existing quote, artwork, lore, and Trait structure.
-- Synchronizes BUILD/export 0.45.2, package 0.45.2, and PWA cache v0.45.2 while Rule Updates remains v0.08.
+- Uses Core Action as the shared action terminology and Reaction as the Core Action for eligible Reactive Abilities.
+- Bounds Ability Chains so one character's copy of an Ability cannot repeatedly resolve in the same chain.
+- Presents Rules → Fundamentals → Core Actions as separate Action, Ability, example, Reaction, chaining, and Core Action reference sections.
+- Uses the shared action-family color authority for Core Action reference cards and pill UI.
+- Hides Rules category landing pages from their own expandable menus.
+- Groups current playable Species beneath Woodlands and presents Species lore panels in the Character Creation visual language.
 
 ## Release integrity
 
-- BUILD/export: `0.45.2`
-- package version: `0.45.2`
-- PWA cache: `v0.45.2`
-- Rule Updates: `v0.08`
+- BUILD/export: `0.16`
+- package version: `0.16.0`
+- PWA cache: `v0.16`
+- Rule Updates: `v0.05`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 
 ## Runtime
