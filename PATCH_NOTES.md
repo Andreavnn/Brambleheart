@@ -1,22 +1,22 @@
-**Beta 0.44 — Ability Chaining & Passive Trinkets**
+**Beta 0.45 — Core Actions & Bounded Ability Chains**
 
-- Updated the Axalori Heritage Traits Heartcurrent, Stillwater Renewal, and Harmonic Field to the supplied effect text; Resonant Pulse now uses the supplied damage-reduction wording and costs 2 Mana.
-- Added Rhythm Engine → Ability Manager between Dice Roller and Encounter Builder. It can be used with no character for the general rules pool or with a saved character to narrow the compatible ability list, then filters that list against the selected Core Ability.
-- Added Rules → Fundamentals → Stacking and Chaining as dedicated visual teaching pages showing multiple abilities layered onto one Core Ability and Reactive/triggered abilities chaining between characters.
-- Standardized the Abilities teaching graphics so flow boxes share consistent sizing, and tied Basic Core Ability accent bars and ability pills to their Core Ability color families.
-- Added Settings → Display → Logo Size with five size choices from Smallest through Largest; Largest preserves the previous site-logo size and remains the default.
-- Replaced the Character Roster and Rules header character artwork with the supplied images, flipped those two header characters horizontally, and lowered shared page-header characters slightly to reduce navigation-bar clipping.
-- Removed the subtitle/detail text beneath the News, Character Roster, Rules, and Rhythm Engine page titles.
-- Replaced the numbered Trinket 1/Trinket 2 model with simple equipped Trinkets. Equipped Trinkets now apply their passive effects directly, and saved legacy slot/focus fields are discarded at the character normalization boundary instead of continuing through application logic.
-- Removed Arcane Focus selection. Scriptweave Book and Caster Totem now apply their listed effects whenever equipped rather than requiring a separately selected active focus.
-- Updated Rule Updates to v0.07 for the Axalori and Trinket rules changes and synchronized application BUILD/export, package, PWA cache, README, patch notes, and changelog metadata to Beta 0.44.
+- Renamed the shared Core Ability concept to **Core Action**. Core Actions are now the explicit starting points for Ability Chains, while Ability remains the term for Traits, Talents, Spells, equipment effects, and other rules that modify or trigger from them.
+- Added **Reaction** as a shared Core Action. Each character may use one Reaction Core Action per round to resolve one eligible Reactive Ability whose printed Trigger has been met, unless a more specific rule grants another use.
+- Added the global Ability Chain limit: a specific character’s copy of an Ability can resolve only once during the same Ability Chain. Another character’s copy of the same named Ability is a separate instance and may resolve once. The chain ends when no unresolved Ability instance has a legal Trigger.
+- Reworked Rhythm Engine → Ability Manager around the Core Action/Ability Chain model. Chains begin at Core Actions, Reactive branches pass through Reaction, and chain state prevents the same Ability instance from recursively resolving again in that chain.
+- Revised **Ragebound** to trigger from Focused Will. Its bonuses are now condition [+1] to Strike rolls and [+1] to damage, while Defenseless reduces Ward and Guts by [-1] each until the end of the round. ROOT remains on the Ability.
+- Revised **Snapstep** to trigger from Focused Will or Channel the Winds and reduced its movement to [2] squares. ROOT remains on the Ability.
+- Preserved **Drums of War** and **Divine Grasp** as intentional rule-breaking effects that grant or compel Core Action use; their current mechanics remain intact while their Core Action terminology is normalized.
+- Existing ROOT keywords remain on current Abilities and retain their current round-level family restrictions. ROOT is no longer used as the mechanism that prevents Ability Chain recursion.
+- Updated Fundamentals, Rules presentation, in-app Rule Updates, and supporting rule metadata for Core Actions and Ability Chains.
+- Updated BUILD/export to 0.45, package version to 0.45.0, PWA cache to v0.45, and Rule Updates to v0.08.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.43
-- New version: 0.44
+- Previous version reviewed: 0.44.11 runtime / 0.44.0 package metadata on current main
+- New version: 0.45
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Not run. Dependency installation was attempted but timed out before typecheck/build could run.
-- Known unfinished work intentionally excluded: Encounter Builder remains the existing placeholder; no Encounter Builder implementation was requested in this patch.
+- Tests actually run: TypeScript semantic checks for all changed `.ts` authorities; TypeScript syntax checks for the modified Vue scripts; 18 targeted Core Action/Ability Chain runtime assertions; synthetic A ↔ B proc-cycle termination test; repository-relative import scan. `npm install` was attempted but timed out, so the full Vue/Vite production build and responsive browser runtime tests were not run.
+- Known unfinished work intentionally excluded: No existing Ability had ROOT removed. Other ROOT Abilities were not individually rebalanced; only Ragebound and Snapstep received the approved mechanical revisions. Drums of War and Divine Grasp intentionally retain their rule-breaking Core Action effects.

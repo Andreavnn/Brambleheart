@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.45
+
+- Renames the shared Core Ability concept to Core Action and adds Reaction as a shared once-per-round Core Action for resolving eligible Reactive Abilities.
+- Establishes bounded Ability Chains: every chain begins with a Core Action, and a specific character’s copy of an Ability can resolve only once in that chain; another character’s copy is treated as a separate Ability instance.
+- Rebuilds Rhythm Engine → Ability Manager around Core Action roots, Reaction gates, and per-instance chain state so recursive proc loops terminate without using ROOT as the recursion guard.
+- Revises Ragebound to build from Focused Will with [+1] Strike, [+1] damage, and [-1] Ward / [-1] Guts through Defenseless; revises Snapstep to build from Focused Will or Channel the Winds and move [2] squares. ROOT remains on both Abilities.
+- Keeps Drums of War and Divine Grasp as intentional rule-breaking effects that can grant or compel Core Action use, with terminology normalized to Core Action.
+- Preserves existing ROOT keywords and their current round-level family restrictions while separating those restrictions from Ability Chain recursion control.
+- Updates Fundamentals and Rules presentation to teach the Core Action / Ability distinction, Reaction timing, and the once-per-Ability-instance chain rule.
+- Synchronizes BUILD/export 0.45, package 0.45.0, PWA cache v0.45, and Rule Updates v0.08.
+
 # Brambleheart Beta 0.44
 
 - Updates Axalori Heartcurrent, Stillwater Renewal, Harmonic Field, and Resonant Pulse to the supplied rules text; Resonant Pulse now costs 2 Mana, and Rule Updates advances to v0.07.

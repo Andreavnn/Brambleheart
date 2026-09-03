@@ -4,7 +4,7 @@ import AppHeader from '../components/AppHeader.vue'
 import CharacterAttributePanel from '../components/CharacterAttributePanel.vue'
 import { attributes, passiveTargets } from '../data/bramble'
 import { skillDefinitions } from '../data/characterOptions'
-import { coreAbilities } from '../data/coreAbilities'
+import { coreActions } from '../data/coreAbilities'
 import { speciesData } from '../data/speciesData'
 import { loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
@@ -12,7 +12,8 @@ import { ruleSourceDocuments } from '../data/rulesSource'
 import { canonicalTalentName, talentNameMatches } from '../data/talentCategories'
 import { characterSheetArmorProfile, characterSheetWeaponProfile, derivedStats, equippedProtectiveGear, equipmentControlBonus, equipmentGutsBonus, equipmentMagicRegenBonus, equipmentManaSyphon, equipmentRenewHeartConditionBonus, equipmentSpellManaReduction, magicResources, normalizeSkillName, rankModifier, rhythmResult, structuredRule, visibleRuleFields, equipmentArmorPenalty, equipmentSpeedPenalty } from '../rules/rulesEngine'
 import { resolveSpellManaCost, spellCostLabel } from '../rules/magicRules'
-import { abilityProcActorLabel, abilityProcCondition, findAbilityProcMatch, findCoreAbilityUseMatch, type AbilityProcMatch, type AbilityProcSource } from '../rules/abilityProc'
+import { abilityProcActorLabel, abilityProcCondition, findAbilityProcMatch, findCoreActionUseMatch, findGrantedCoreActionMatch, isCoreActionSource, isReactiveAbility, type AbilityProcMatch, type AbilityProcSource } from '../rules/abilityProc'
+import { canResolveAbilityInChain, canSpendReaction, createAbilityChainState, recordAbilityResolution, recordReaction, type AbilityChainState } from '../rules/abilityChain'
 import { canonicalGearCostWp } from '../rules/economy'
 import { formatThreadpieceWp } from '../rules/threadpieces'
 import { characterStatus, loadCharacters, type CharacterRecord } from '../services/characters'
@@ -157,120 +158,143 @@ const loreCharacterSpells=computed(()=>characterSpells.value.filter(name=>!selec
 const invocationCharacterSpells=computed(()=>characterSpells.value.filter(name=>selectedCharacter.value?.invocationSpells?.includes(name)||name===selectedCharacter.value?.invocationSpell).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
 const selectedPathName=computed(()=>({magic:'Wind-Touched',talents:'Gifted Heart',skills:'Practiced Hand',attribute:'Tempered Form'} as const)[selectedCharacter.value?.path||'magic']||'Gifted Heart')
 
-type AbilityManagerEntry=AbilityProcSource&{characterSpecific:boolean}
+type AbilityManagerEntry=AbilityProcSource&{characterSpecific:boolean;ownerKey:string}
 type AbilityManagerMode='character'|'ability'|''
-type AbilityChainRow={key:string;entry:AbilityManagerEntry;match:AbilityProcMatch|null;depth:number;parentName:string}
+type AbilityManagerResult={entry:AbilityManagerEntry;match:AbilityProcMatch;requiresReaction:boolean;actorScope:string}
+type AbilityChainRow={key:string;entry:AbilityManagerEntry;match:AbilityProcMatch|null;depth:number;parentName:string;actorScope:string}
 type AbilityChainGroup={id:string;root:AbilityManagerEntry;rows:AbilityChainRow[]}
+type ChainQueueItem={entry:AbilityManagerEntry;depth:number;key:string;state:AbilityChainState;actorScope:string}
 const abilityManagerMode=ref<AbilityManagerMode>('')
 const abilityManagerCharacterId=ref('')
 const selectedAbilityManagerId=ref('')
 const abilityManagerCharacter=computed(()=>abilityManagerCharacterId.value?characters.value.find(character=>character.id===abilityManagerCharacterId.value)||null:null)
 function managerAbilityKeywords(values:string[]){return Array.from(new Set(values.map(value=>canonicalAbilityType(value)).filter(Boolean)))}
 function managerId(source:string,name:string){return`${source}:${name}`.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
-function managerEntry(name:string,source:string,rules:string,keywords:string[],characterSpecific:boolean):AbilityManagerEntry{return{id:managerId(source,name),name,source,keywords:managerAbilityKeywords(keywords),rules,characterSpecific}}
-function coreAbilityRules(ability:(typeof coreAbilities)[number]){return[ability.cost?`COST: ${ability.cost}`:'',...ability.fields.map(field=>`${field.label}: ${field.value}`),`KEYWORDS: ${ability.keywords.join(' | ')}`].filter(Boolean).join(' ')}
-function coreManagerEntries(){return coreAbilities.map(ability=>managerEntry(ability.name,'Core Ability',coreAbilityRules(ability),ability.keywords,false))}
+function managerEntry(name:string,source:string,rules:string,keywords:string[],characterSpecific:boolean,ownerKey='rules'):AbilityManagerEntry{return{id:managerId(source,name),name,source,keywords:managerAbilityKeywords(keywords),rules,characterSpecific,ownerKey}}
+function coreActionRules(action:(typeof coreActions)[number]){return[action.cost?`COST: ${action.cost}`:'',...action.fields.map(field=>`${field.label}: ${field.value}`),`KEYWORDS: ${action.keywords.join(' | ')}`].filter(Boolean).join(' ')}
+function coreActionEntries(){return coreActions.map(action=>managerEntry(action.name,'Core Action',coreActionRules(action),action.keywords,false,'core'))}
 function managerTraitEntries(character:CharacterRecord|null){
   if(!character)return[] as AbilityManagerEntry[]
   const builtInSpecies=speciesData.find(item=>item.name===character.species)
   const customSpeciesEntry=customSpecies.find(item=>item.name===character.species)
-  const speciesEntries=(builtInSpecies?.speciesTraits||customSpeciesEntry?.speciesTraits||[]).map(trait=>managerEntry(trait.name,'Heritage Trait',trait.text,trait.keywords,true))
+  const speciesEntries=(builtInSpecies?.speciesTraits||customSpeciesEntry?.speciesTraits||[]).map(trait=>managerEntry(trait.name,'Heritage Trait',trait.text,trait.keywords,true,character.id))
   const selectedCultureNames=new Set(character.cultureTraits||[])
   const culturePool=[...(builtInSpecies?.cultureTraits||[]),...(customSpeciesEntry?.cultureTraits||[])].filter(trait=>selectedCultureNames.has(trait.name))
-  const cultureEntries=culturePool.map(trait=>managerEntry(trait.name,'Cultural Trait',trait.text,trait.keywords,true))
+  const cultureEntries=culturePool.map(trait=>managerEntry(trait.name,'Cultural Trait',trait.text,trait.keywords,true,character.id))
   return [...speciesEntries,...cultureEntries]
 }
-function allSpeciesEntries(){return[...speciesData.flatMap(species=>species.speciesTraits.map(trait=>managerEntry(trait.name,`${species.name} Heritage Trait`,trait.text,trait.keywords,false))),...speciesData.flatMap(species=>species.cultureTraits.map(trait=>managerEntry(trait.name,`${species.name} Cultural Trait`,trait.text,trait.keywords,false))),...customSpecies.flatMap(species=>species.speciesTraits.map(trait=>managerEntry(trait.name,`${species.name} Heritage Trait`,trait.text,trait.keywords,false))),...customSpecies.flatMap(species=>species.cultureTraits.map(trait=>managerEntry(trait.name,`${species.name} Cultural Trait`,trait.text,trait.keywords,false)))]}
+function allSpeciesEntries(){return[...speciesData.flatMap(species=>species.speciesTraits.map(trait=>managerEntry(trait.name,`${species.name} Heritage Trait`,trait.text,trait.keywords,false,`species:${species.name}`))),...speciesData.flatMap(species=>species.cultureTraits.map(trait=>managerEntry(trait.name,`${species.name} Cultural Trait`,trait.text,trait.keywords,false,`species:${species.name}`))),...customSpecies.flatMap(species=>species.speciesTraits.map(trait=>managerEntry(trait.name,`${species.name} Heritage Trait`,trait.text,trait.keywords,false,`custom-species:${species.name}`))),...customSpecies.flatMap(species=>species.cultureTraits.map(trait=>managerEntry(trait.name,`${species.name} Cultural Trait`,trait.text,trait.keywords,false,`custom-species:${species.name}`)))]}
 function talentEntriesFor(character:CharacterRecord|null){
   const names=character?(character.talents||[]):talentSections.filter(section=>section.heading!=='Overview'&&section.heading!=='TALENTS').map(section=>section.heading)
-  return names.map(name=>managerEntry(canonicalTalentName(name),'Talent',talentText(name),talentKeywords(name),Boolean(character)))
+  return names.map(name=>managerEntry(canonicalTalentName(name),'Talent',talentText(name),talentKeywords(name),Boolean(character),character?.id||'rules:talents'))
 }
 function spellEntriesFor(character:CharacterRecord|null){
   const names=character?spellNamesForCharacter(character):Array.from(new Set([...Object.keys(spellDetails),...customSpells.map(item=>item.name)]))
-  return names.map(name=>{const detail=spellDetail(name);return managerEntry(name,'Spell',detail?.rules||'',detail?.keywords||[],Boolean(character))})
+  return names.map(name=>{const detail=spellDetail(name);return managerEntry(name,'Spell',detail?.rules||'',detail?.keywords||[],Boolean(character),character?.id||'rules:spells')})
 }
 function uniqueManagerEntries(entries:AbilityManagerEntry[]){const seen=new Set<string>();return entries.filter(entry=>{if(seen.has(entry.id)||!entry.rules.trim())return false;seen.add(entry.id);return true})}
-const generalAbilityLibrary=computed(()=>uniqueManagerEntries([...coreManagerEntries(),...allSpeciesEntries(),...talentEntriesFor(null),...spellEntriesFor(null)]).sort((a,b)=>a.source.localeCompare(b.source)||a.name.localeCompare(b.name)))
-const characterAbilityPool=computed(()=>{const character=abilityManagerCharacter.value;if(!character)return[];return uniqueManagerEntries([...coreManagerEntries(),...managerTraitEntries(character),...talentEntriesFor(character),...spellEntriesFor(character)]).sort((a,b)=>a.source.localeCompare(b.source)||a.name.localeCompare(b.name))})
-const selectedManagerAbility=computed(()=>generalAbilityLibrary.value.find(entry=>entry.id===selectedAbilityManagerId.value)||null)
-function coreRootEntries(pool:AbilityManagerEntry[]){const byId=new Map(pool.map(entry=>[entry.id,entry]));return coreManagerEntries().map(core=>byId.get(core.id)).filter((entry):entry is AbilityManagerEntry=>Boolean(entry))}
-function procResultsFor(source:AbilityManagerEntry,pool:AbilityManagerEntry[],sameOwner=false){
-  const matches=new Map<string,{entry:AbilityManagerEntry;match:AbilityProcMatch}>()
+const generalAbilityLibrary=computed(()=>uniqueManagerEntries([...coreActionEntries(),...allSpeciesEntries(),...talentEntriesFor(null),...spellEntriesFor(null)]).sort((a,b)=>a.source.localeCompare(b.source)||a.name.localeCompare(b.name)))
+const selectableAbilityLibrary=computed(()=>generalAbilityLibrary.value.filter(entry=>!isCoreActionSource(entry)))
+const characterAbilityPool=computed(()=>{const character=abilityManagerCharacter.value;if(!character)return[];return uniqueManagerEntries([...coreActionEntries(),...managerTraitEntries(character),...talentEntriesFor(character),...spellEntriesFor(character)]).sort((a,b)=>a.source.localeCompare(b.source)||a.name.localeCompare(b.name))})
+const characterKnownAbilityCount=computed(()=>characterAbilityPool.value.filter(entry=>!isCoreActionSource(entry)).length)
+const selectedManagerAbility=computed(()=>selectableAbilityLibrary.value.find(entry=>entry.id===selectedAbilityManagerId.value)||null)
+function coreRootEntries(pool:AbilityManagerEntry[]){const byId=new Map(pool.map(entry=>[entry.id,entry]));return coreActionEntries().map(core=>byId.get(core.id)).filter((entry):entry is AbilityManagerEntry=>Boolean(entry))}
+function reactionCoreAction(pool:AbilityManagerEntry[]){return pool.find(entry=>isCoreActionSource(entry)&&entry.name.toUpperCase()==='REACTION')||null}
+function reactionScopeFor(match:AbilityProcMatch,entry:AbilityManagerEntry,sameOwner:boolean,ownerScope:string){
+  if(sameOwner)return ownerScope
+  if(match.actor==='ally'||match.actor==='enemy')return`${match.actor}:${entry.ownerKey}`
+  return`self:${entry.ownerKey}`
+}
+function procResultsFor(source:AbilityManagerEntry,pool:AbilityManagerEntry[],sameOwner=false,ownerScope='self'){
+  const matches=new Map<string,AbilityManagerResult>()
+  const sourceIsReaction=isCoreActionSource(source)&&source.name.toUpperCase()==='REACTION'
   for(const entry of pool){
-    const triggered=findAbilityProcMatch(source,entry,generalAbilityLibrary.value,{sameOwner})
-    const activated=findCoreAbilityUseMatch(source,entry)
+    if(isCoreActionSource(entry)){
+      const granted=findGrantedCoreActionMatch(source,entry)
+      if(!granted)continue
+      const actorScope=reactionScopeFor(granted,entry,false,ownerScope)
+      matches.set(entry.id,{entry,match:granted,requiresReaction:false,actorScope})
+      continue
+    }
+    const triggered=sourceIsReaction?null:findAbilityProcMatch(source,entry,generalAbilityLibrary.value,{sameOwner})
+    const activated=findCoreActionUseMatch(source,entry)
     const match=!triggered?activated:!activated?triggered:(activated.score>triggered.score?activated:triggered)
     if(!match)continue
+    const requiresReaction=Boolean(triggered&&isReactiveAbility(entry)&&!sourceIsReaction)
+    const actorScope=reactionScopeFor(match,entry,sameOwner,ownerScope)
     const current=matches.get(entry.id)
-    if(!current||match.score>current.match.score)matches.set(entry.id,{entry,match})
+    if(!current||match.score>current.match.score)matches.set(entry.id,{entry,match,requiresReaction,actorScope})
   }
   return Array.from(matches.values()).sort((a,b)=>b.match.score-a.match.score||a.entry.source.localeCompare(b.entry.source)||a.entry.name.localeCompare(b.entry.name))
 }
-const MAX_CHAIN_DEPTH=7
-const MAX_CHAIN_ROWS=180
-function buildCompleteChain(root:AbilityManagerEntry,pool:AbilityManagerEntry[],sameOwner=false,blockedIds:Set<string>=new Set()):AbilityChainRow[]{
+function reactionGateMatch(triggered:AbilityProcMatch):AbilityProcMatch{return{relation:'activation',actor:triggered.actor,reason:'The triggering event opens this character’s Reaction Core Action. Choose one eligible Reactive Ability to resolve.',trigger:'Reaction Core Action',conditional:true,score:triggered.score+1}}
+const MAX_RENDERED_CHAIN_ROWS=260
+function buildCompleteChain(root:AbilityManagerEntry,pool:AbilityManagerEntry[],sameOwner=false,ownerScope='self'):AbilityChainRow[]{
   const rootKey=root.id
-  const rows:AbilityChainRow[]=[{key:rootKey,entry:root,match:null,depth:0,parentName:''}]
-  const queue:Array<{entry:AbilityManagerEntry;depth:number;key:string;path:Set<string>}>=[{entry:root,depth:0,key:rootKey,path:new Set([...blockedIds,root.id])}]
-  while(queue.length&&rows.length<MAX_CHAIN_ROWS){
+  let rootState=createAbilityChainState(root)
+  if(root.name.toUpperCase()==='REACTION')rootState=recordReaction(rootState,ownerScope)
+  const rows:AbilityChainRow[]=[{key:rootKey,entry:root,match:null,depth:0,parentName:'',actorScope:ownerScope}]
+  const queue:ChainQueueItem[]=[{entry:root,depth:0,key:rootKey,state:rootState,actorScope:ownerScope}]
+  while(queue.length&&rows.length<MAX_RENDERED_CHAIN_ROWS){
     const current=queue.shift()!
-    if(current.depth>=MAX_CHAIN_DEPTH)continue
-    for(const result of procResultsFor(current.entry,pool,sameOwner)){
-      if(current.path.has(result.entry.id))continue
-      const key=`${current.key}>${result.entry.id}`
+    for(const result of procResultsFor(current.entry,pool,sameOwner,ownerScope)){
+      const externalCoreAction=isCoreActionSource(result.entry)&&result.match.actor!=='self'
+      const abilityScope=sameOwner&&!externalCoreAction?ownerScope:result.actorScope
+      if(!canResolveAbilityInChain(current.state,result.entry,abilityScope))continue
+      if(result.requiresReaction){
+        if(!canSpendReaction(current.state,abilityScope))continue
+        const reaction=reactionCoreAction(pool);if(!reaction)continue
+        const reactionKey=`${current.key}>reaction:${abilityScope}`
+        const reactionDepth=current.depth+1
+        const gatedState=recordReaction(current.state,abilityScope)
+        rows.push({key:reactionKey,entry:reaction,match:reactionGateMatch(result.match),depth:reactionDepth,parentName:current.entry.name,actorScope:abilityScope})
+        if(rows.length>=MAX_RENDERED_CHAIN_ROWS)break
+        const resolvedState=recordAbilityResolution(gatedState,result.entry,abilityScope)
+        const abilityKey=`${reactionKey}>${abilityScope}:${result.entry.id}`
+        rows.push({key:abilityKey,entry:result.entry,match:result.match,depth:reactionDepth+1,parentName:reaction.name,actorScope:abilityScope})
+        if(rows.length>=MAX_RENDERED_CHAIN_ROWS)break
+        queue.push({entry:result.entry,depth:reactionDepth+1,key:abilityKey,state:resolvedState,actorScope:abilityScope})
+        continue
+      }
+      const nextState=recordAbilityResolution(current.state,result.entry,abilityScope)
+      const key=`${current.key}>${abilityScope}:${result.entry.id}`
       const depth=current.depth+1
-      rows.push({key,entry:result.entry,match:result.match,depth,parentName:current.entry.name})
-      if(rows.length>=MAX_CHAIN_ROWS)break
-      queue.push({entry:result.entry,depth,key,path:new Set([...current.path,result.entry.id])})
+      rows.push({key,entry:result.entry,match:result.match,depth,parentName:current.entry.name,actorScope:abilityScope})
+      if(rows.length>=MAX_RENDERED_CHAIN_ROWS)break
+      // Character mode knows only the selected character's Abilities. An explicitly granted
+      // ally/enemy Core Action is shown as part of the chain but is not expanded into unknown Abilities.
+      if(sameOwner&&externalCoreAction)continue
+      queue.push({entry:result.entry,depth,key,state:nextState,actorScope:abilityScope})
     }
   }
   return rows
 }
-function findCoreRoutes(root:AbilityManagerEntry,target:AbilityManagerEntry,pool:AbilityManagerEntry[],sameOwner=false){
-  const first:AbilityChainRow={key:root.id,entry:root,match:null,depth:0,parentName:''}
-  if(root.id===target.id)return[[first]]
-  const routes:AbilityChainRow[][]=[]
-  const queue:Array<{entry:AbilityManagerEntry;rows:AbilityChainRow[];path:Set<string>}>=[{entry:root,rows:[first],path:new Set([root.id])}]
-  while(queue.length&&routes.length<12){
-    const current=queue.shift()!
-    if(current.rows.length-1>=MAX_CHAIN_DEPTH)continue
-    for(const result of procResultsFor(current.entry,pool,sameOwner)){
-      if(current.path.has(result.entry.id))continue
-      const depth=current.rows.length
-      const key=`${current.rows.at(-1)?.key||root.id}>${result.entry.id}`
-      const row:AbilityChainRow={key,entry:result.entry,match:result.match,depth,parentName:current.entry.name}
-      const rows=[...current.rows,row]
-      if(result.entry.id===target.id){routes.push(rows);if(routes.length>=12)break;continue}
-      queue.push({entry:result.entry,rows,path:new Set([...current.path,result.entry.id])})
-    }
-  }
-  return routes
+function routeRowsForTarget(rows:AbilityChainRow[],target:AbilityManagerEntry){
+  return rows.filter(row=>row.entry.id===target.id).map(targetRow=>rows.filter(row=>targetRow.key===row.key||targetRow.key.startsWith(`${row.key}>`)||row.key.startsWith(`${targetRow.key}>`)))
 }
-function extendCoreRoute(route:AbilityChainRow[],pool:AbilityManagerEntry[],sameOwner=false,routeIndex=0){
-  const selected=route.at(-1)?.entry
-  if(!selected)return route
-  const ancestors=new Set(route.slice(0,-1).map(row=>row.entry.id))
-  const downstream=buildCompleteChain(selected,pool,sameOwner,ancestors).slice(1)
-  const baseDepth=route.length-1
-  const prefix=`route-${routeIndex}-${route.map(row=>row.entry.id).join('>')}`
-  const routeIds=new Set(route.map(row=>row.entry.id))
-  const appended=downstream.filter(row=>!routeIds.has(row.entry.id)).map(row=>({...row,key:`${prefix}>${row.key}`,depth:baseDepth+row.depth}))
-  return [...route,...appended]
-}
-const characterChainGroups=computed<AbilityChainGroup[]>(()=>{const pool=characterAbilityPool.value;if(!abilityManagerCharacter.value||!pool.length)return[];return coreRootEntries(pool).map(root=>({id:`character-${root.id}`,root,rows:buildCompleteChain(root,pool,true)}))})
+const characterChainGroups=computed<AbilityChainGroup[]>(()=>{
+  const pool=characterAbilityPool.value,character=abilityManagerCharacter.value
+  if(!character||!pool.length)return[]
+  const ownerScope=`character:${character.id}`
+  return coreRootEntries(pool).map(root=>({id:`character-${root.id}`,root,rows:buildCompleteChain(root,pool,true,ownerScope)}))
+})
 const selectedAbilityCoreChains=computed<AbilityChainGroup[]>(()=>{
   const target=selectedManagerAbility.value,pool=generalAbilityLibrary.value
   if(!target)return[]
   const groups:AbilityChainGroup[]=[]
   for(const root of coreRootEntries(pool)){
-    const routes=findCoreRoutes(root,target,pool,false)
-    routes.forEach((route,index)=>groups.push({id:`selected-${root.id}-${index}-${target.id}`,root,rows:extendCoreRoute(route,pool,false,index)}))
+    const rows=buildCompleteChain(root,pool,false,'rules')
+    for(const [index,route] of routeRowsForTarget(rows,target).entries()){
+      groups.push({id:`selected-${root.id}-${index}-${target.id}`,root,rows:route})
+      if(groups.length>=16)return groups
+    }
   }
   return groups
 })
 function selectAbilityManagerMode(mode:Exclude<AbilityManagerMode,''>){abilityManagerMode.value=mode;if(mode==='character')selectedAbilityManagerId.value='';else abilityManagerCharacterId.value=''}
 function clearAbilityManager(){abilityManagerMode.value='';abilityManagerCharacterId.value='';selectedAbilityManagerId.value=''}
 function abilityChainIndent(depth:number){return{marginLeft:`${Math.min(Math.max(0,depth)*12,48)}px`}}
+
 
 
 
@@ -295,26 +319,26 @@ function abilityChainIndent(depth:number){return{marginLeft:`${Math.min(Math.max
     </section>
 
     <section v-else-if="sheet==='ability'" class="tool-panel card-surface ability-manager-card">
-      <div class="tool-heading"><div><p class="eyebrow">ABILITY MANAGER</p><h2>Core Ability Chain Simulator</h2></div></div><button v-if="abilityManagerMode" type="button" class="secondary-button compact-action ability-manager-start-over" @click="clearAbilityManager">Start Over</button>
-      <p class="tool-explainer">Every chain begins with a Core Ability. Character mode shows what that character can trigger from each Core Ability using only abilities they actually know. Ability mode traces the selected ability back to the Core Ability route that can reach it, then continues through its downstream procs.</p>
+      <div class="tool-heading"><div><p class="eyebrow">ABILITY MANAGER</p><h2>Core Action Chain Simulator</h2></div></div><button v-if="abilityManagerMode" type="button" class="secondary-button compact-action ability-manager-start-over" @click="clearAbilityManager">Start Over</button>
+      <p class="tool-explainer">Every Ability Chain begins with a Core Action. Character mode uses only abilities the selected character actually possesses. Ability mode traces the selected Ability back to the Core Action that can begin its chain. Each specific Ability instance can resolve only once in that chain, and Reactive Abilities must pass through the Reaction Core Action.</p>
 
       <div class="ability-manager-mode-grid" role="group" aria-label="Ability Manager selection mode">
-        <button type="button" class="ability-manager-mode-card" :class="{active:abilityManagerMode==='character'}" @click="selectAbilityManagerMode('character')"><strong>Select Character from Roster</strong><span>Show Core Ability chains using only this character’s Traits, Talents, and known Spells.</span></button>
-        <button type="button" class="ability-manager-mode-card" :class="{active:abilityManagerMode==='ability'}" @click="selectAbilityManagerMode('ability')"><strong>Select Ability</strong><span>Choose any ability and trace the complete legal route back to its Core Ability starting point.</span></button>
+        <button type="button" class="ability-manager-mode-card" :class="{active:abilityManagerMode==='character'}" @click="selectAbilityManagerMode('character')"><strong>Select Character from Roster</strong><span>Show Core Action chains using only this character’s Traits, Talents, and known Spells.</span></button>
+        <button type="button" class="ability-manager-mode-card" :class="{active:abilityManagerMode==='ability'}" @click="selectAbilityManagerMode('ability')"><strong>Select Ability</strong><span>Choose any non-Core Ability and trace the complete legal route back to its Core Action starting point.</span></button>
       </div>
 
       <template v-if="abilityManagerMode==='character'">
         <label class="field-label">Character from Roster<select v-model="abilityManagerCharacterId" class="field-control"><option value="">Select Character</option><option v-for="character in characters" :key="`ability-manager-${character.id}`" :value="character.id">{{ character.name }} · {{ character.species }}</option></select></label>
-        <div v-if="abilityManagerCharacter" class="ability-manager-summary"><article class="ability-manager-focus"><small>Selected Character</small><strong>{{ abilityManagerCharacter.name }}</strong><span>{{ abilityManagerCharacter.species }} · {{ abilityManagerCharacter.campaignName||'No Campaign' }}</span><div class="keyword-pill-row"><span class="keyword-pill">{{ characterAbilityPool.length }} usable abilities</span><span class="keyword-pill">{{ characterChainGroups.length }} Core chains</span></div></article><article class="ability-manager-focus"><small>Chain Authority</small><strong>Core Ability → known ability → proc</strong><span>Only the selected character’s actual Heritage Traits, chosen Cultural Traits, Talents, and known Spells can appear after the shared Core Ability starting point.</span></article></div>
-        <div v-if="abilityManagerCharacter&&characterChainGroups.length" class="ability-complete-chain-list"><section v-for="group in characterChainGroups" :key="group.id" class="ability-complete-chain"><header><div><small>CORE CHAIN</small><strong>{{ group.root.name }}</strong><span>{{ Math.max(0,group.rows.length-1)===1?'1 linked ability':`${Math.max(0,group.rows.length-1)} linked abilities` }}</span></div><span class="keyword-pill">{{ group.rows.length }} step{{ group.rows.length===1?'':'s' }}</span></header><div class="ability-chain-tree"><article v-for="(row,index) in group.rows" :key="row.key" class="ability-chain-node" :class="{root:index===0}" :style="abilityChainIndent(row.depth)"><div class="ability-chain-node-step">{{ index+1 }}</div><div class="ability-chain-node-copy"><strong>{{ row.entry.name }}</strong><small>{{ row.entry.source }}<template v-if="row.parentName"> · follows {{ row.parentName }}</template></small><span v-if="row.match">{{ row.match.reason }}</span><span v-else>{{ abilityProcCondition(row.entry)||'Core Ability starting point' }}</span></div><div v-if="row.match" class="manager-badge-row"><span v-if="row.match.relation==='activation'" class="custom-content-badge manager-badge">CORE USE</span><span v-else class="custom-content-badge manager-badge">{{ abilityProcActorLabel(row.match.actor) }}</span><span v-if="row.match.conditional" class="custom-content-badge manager-badge">CONDITIONAL</span></div></article></div></section></div>
-        <div v-else-if="abilityManagerCharacter" class="empty-inline sim-empty-inline">No Core Ability chains were found for this character’s current abilities.</div>
+        <div v-if="abilityManagerCharacter" class="ability-manager-summary"><article class="ability-manager-focus"><small>Selected Character</small><strong>{{ abilityManagerCharacter.name }}</strong><span>{{ abilityManagerCharacter.species }} · {{ abilityManagerCharacter.campaignName||'No Campaign' }}</span><div class="keyword-pill-row"><span class="keyword-pill">{{ characterKnownAbilityCount }} known abilities</span><span class="keyword-pill">{{ characterChainGroups.length }} Core Action chains</span></div></article><article class="ability-manager-focus"><small>Chain Authority</small><strong>Core Action → Ability → proc</strong><span>Only the selected character’s actual Heritage Traits, chosen Cultural Traits, Talents, and known Spells can appear after the shared Core Action starting point. ROOT remains visible on existing abilities but is not used as the chain loop guard.</span></article></div>
+        <div v-if="abilityManagerCharacter&&characterChainGroups.length" class="ability-complete-chain-list"><section v-for="group in characterChainGroups" :key="group.id" class="ability-complete-chain"><header><div><small>CORE ACTION CHAIN</small><strong>{{ group.root.name }}</strong><span>{{ Math.max(0,group.rows.length-1)===1?'1 linked ability':`${Math.max(0,group.rows.length-1)} linked abilities` }}</span></div><span class="keyword-pill">{{ group.rows.length }} step{{ group.rows.length===1?'':'s' }}</span></header><div class="ability-chain-tree"><article v-for="(row,index) in group.rows" :key="row.key" class="ability-chain-node" :class="{root:index===0}" :style="abilityChainIndent(row.depth)"><div class="ability-chain-node-step">{{ index+1 }}</div><div class="ability-chain-node-copy"><strong>{{ row.entry.name }}</strong><small>{{ row.entry.source }}<template v-if="row.parentName"> · follows {{ row.parentName }}</template></small><span v-if="row.match">{{ row.match.reason }}</span><span v-else>{{ abilityProcCondition(row.entry)||'Core Action starting point' }}</span></div><div v-if="row.match" class="manager-badge-row"><span v-if="row.match.relation==='activation'" class="custom-content-badge manager-badge">{{ row.entry.name==='REACTION'?'REACTION':'CORE ACTION' }}</span><span v-else class="custom-content-badge manager-badge">{{ abilityProcActorLabel(row.match.actor) }}</span><span v-if="row.match.conditional" class="custom-content-badge manager-badge">CONDITIONAL</span></div></article></div></section></div>
+        <div v-else-if="abilityManagerCharacter" class="empty-inline sim-empty-inline">No linked Ability chains were found beyond this character’s Core Actions.</div>
       </template>
 
       <template v-else-if="abilityManagerMode==='ability'">
-        <label class="field-label">Ability to Trace<select v-model="selectedAbilityManagerId" class="field-control"><option value="">Select Ability</option><option v-for="entry in generalAbilityLibrary" :key="entry.id" :value="entry.id">{{ entry.name }} — {{ entry.source }}</option></select></label>
-        <div v-if="selectedManagerAbility" class="ability-manager-summary"><article class="ability-manager-focus"><small>Selected Ability</small><strong>{{ selectedManagerAbility.name }}</strong><span>{{ selectedManagerAbility.source }}</span><div class="keyword-pill-row"><span v-for="keyword in selectedManagerAbility.keywords" :key="keyword" :class="talentAbilityKeywords.has(canonicalAbilityType(keyword))?['ability-cost-pill',`type-${canonicalAbilityType(keyword).toLowerCase().replace(/[^a-z0-9]+/g,'-')}`]:'keyword-pill'">{{ canonicalAbilityType(keyword) }}</span></div></article><article class="ability-manager-focus"><small>Core Routes</small><strong>{{ selectedAbilityCoreChains.length }} Core-rooted chain{{ selectedAbilityCoreChains.length===1?'':'s' }}</strong><span>Every result begins with the Core Ability that can legally lead to the selected ability, then continues through downstream proc steps.</span></article></div>
-        <div v-if="selectedManagerAbility&&selectedAbilityCoreChains.length" class="ability-complete-chain-list"><section v-for="group in selectedAbilityCoreChains" :key="group.id" class="ability-complete-chain selected-ability-chain"><header><div><small>CORE-ROOTED CHAIN</small><strong>{{ group.root.name }} → {{ selectedManagerAbility.name }}</strong><span>Complete reachable route</span></div><span class="keyword-pill">{{ group.rows.length }} steps</span></header><div class="ability-chain-tree"><article v-for="(row,index) in group.rows" :key="row.key" class="ability-chain-node" :class="{root:index===0,selected:row.entry.id===selectedManagerAbility.id}" :style="abilityChainIndent(row.depth)"><div class="ability-chain-node-step">{{ index+1 }}</div><div class="ability-chain-node-copy"><strong>{{ row.entry.name }}</strong><small>{{ row.entry.source }}<template v-if="row.parentName"> · follows {{ row.parentName }}</template></small><span v-if="row.match">{{ row.match.reason }}</span><span v-else>{{ abilityProcCondition(row.entry)||'Core Ability starting point' }}</span></div><div class="manager-badge-row"><span v-if="row.entry.id===selectedManagerAbility.id" class="custom-content-badge manager-badge">SELECTED</span><template v-if="row.match"><span v-if="row.match.relation==='activation'" class="custom-content-badge manager-badge">CORE USE</span><span v-else class="custom-content-badge manager-badge">{{ abilityProcActorLabel(row.match.actor) }}</span><span v-if="row.match.conditional" class="custom-content-badge manager-badge">CONDITIONAL</span></template></div></article></div></section></div>
-        <div v-else-if="selectedManagerAbility" class="empty-inline sim-empty-inline">No Core Ability route currently reaches this ability. It is not being presented as an independent chain starter.</div>
+        <label class="field-label">Ability to Trace<select v-model="selectedAbilityManagerId" class="field-control"><option value="">Select Ability</option><option v-for="entry in selectableAbilityLibrary" :key="entry.id" :value="entry.id">{{ entry.name }} — {{ entry.source }}</option></select></label>
+        <div v-if="selectedManagerAbility" class="ability-manager-summary"><article class="ability-manager-focus"><small>Selected Ability</small><strong>{{ selectedManagerAbility.name }}</strong><span>{{ selectedManagerAbility.source }}</span><div class="keyword-pill-row"><span v-for="keyword in selectedManagerAbility.keywords" :key="keyword" :class="talentAbilityKeywords.has(canonicalAbilityType(keyword))?['ability-cost-pill',`type-${canonicalAbilityType(keyword).toLowerCase().replace(/[^a-z0-9]+/g,'-')}`]:'keyword-pill'">{{ canonicalAbilityType(keyword) }}</span></div></article><article class="ability-manager-focus"><small>Core Action Routes</small><strong>{{ selectedAbilityCoreChains.length }} Core Action chain{{ selectedAbilityCoreChains.length===1?'':'s' }}</strong><span>Every result begins with the Core Action that can legally lead to the selected Ability, then continues through downstream proc steps without repeating the same Ability instance.</span></article></div>
+        <div v-if="selectedManagerAbility&&selectedAbilityCoreChains.length" class="ability-complete-chain-list"><section v-for="group in selectedAbilityCoreChains" :key="group.id" class="ability-complete-chain selected-ability-chain"><header><div><small>CORE ACTION CHAIN</small><strong>{{ group.root.name }} → {{ selectedManagerAbility.name }}</strong><span>Complete reachable route</span></div><span class="keyword-pill">{{ group.rows.length }} steps</span></header><div class="ability-chain-tree"><article v-for="(row,index) in group.rows" :key="row.key" class="ability-chain-node" :class="{root:index===0,selected:row.entry.id===selectedManagerAbility.id}" :style="abilityChainIndent(row.depth)"><div class="ability-chain-node-step">{{ index+1 }}</div><div class="ability-chain-node-copy"><strong>{{ row.entry.name }}</strong><small>{{ row.entry.source }}<template v-if="row.parentName"> · follows {{ row.parentName }}</template></small><span v-if="row.match">{{ row.match.reason }}</span><span v-else>{{ abilityProcCondition(row.entry)||'Core Action starting point' }}</span></div><div class="manager-badge-row"><span v-if="row.entry.id===selectedManagerAbility.id" class="custom-content-badge manager-badge">SELECTED</span><template v-if="row.match"><span v-if="row.match.relation==='activation'" class="custom-content-badge manager-badge">{{ row.entry.name==='REACTION'?'REACTION':'CORE ACTION' }}</span><span v-else class="custom-content-badge manager-badge">{{ abilityProcActorLabel(row.match.actor) }}</span><span v-if="row.match.conditional" class="custom-content-badge manager-badge">CONDITIONAL</span></template></div></article></div></section></div>
+        <div v-else-if="selectedManagerAbility" class="empty-inline sim-empty-inline">No Core Action route currently reaches this Ability. Non-Core Abilities are never presented as independent chain starters.</div>
       </template>
 
       <div v-else class="empty-inline sim-empty-inline">Choose Select Character from Roster or Select Ability to begin.</div>

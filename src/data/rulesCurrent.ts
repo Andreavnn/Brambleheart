@@ -15,54 +15,57 @@ const table=(...rows:string[][]):RuleSourceBlock=>({type:'table',rows})
 const section=(heading:string,...blocks:RuleSourceBlock[]):RuleSourceSection=>({heading,blocks})
 
 const CURRENT_CORE_SECTIONS:RuleSourceSection[]=[
-  section('Overview',table(['CORE ABILITIES'])),
+  section('Overview',table(['CORE ACTIONS'])),
   section('ABILITIES',
-    paragraph('Abilities describe what a character can do during an encounter. Brambleheart uses four active ability families — Instinct, Move, Combat, and Reactive — plus Passive abilities.'),
-    paragraph('CORE abilities are the shared baseline actions available to every character. Talents, Traits, Spells, equipment, and other rules may modify a CORE ability or trigger from its use.'),
+    paragraph('Core Actions are the shared starting actions available to every character. Abilities are the Traits, Talents, Spells, equipment effects, and other rules that can modify a Core Action or trigger from events created during its Ability Chain.'),
+    paragraph('Every Ability Chain begins with a Core Action. An Ability may then modify that Core Action or trigger another Ability as its printed rules allow.'),
   ),
   section('KEYWORDS',
-    paragraph('CORE: A CORE ability spends the character’s CORE opportunity for its matching family. Each character may use one CORE Instinct, one CORE Move, and one CORE Combat ability each round.'),
-    paragraph('ROOT: ROOT limits advanced abilities and modifiers rather than CORE actions. A character may use only one ROOT ability of the same specific family each round. ROOT families include Instinct, Move, Touch, Shoot, Magic, and Reactive.'),
+    paragraph('CORE: CORE identifies a Core Action. Each character may use one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action each round unless a more specific rule grants another use.'),
+    paragraph('ROOT: Existing ROOT Abilities keep their current once-per-family-per-round restriction unless their own rule is specifically revised. ROOT is not the recursion guard for an Ability Chain; Beta 0.45 does not remove ROOT from any existing Ability.'),
     paragraph('TOUCH: Close-range physical combat, normally resolved through Melee Strike.'),
     paragraph('SHOOT: Ranged physical combat, normally resolved through Range Strike.'),
     paragraph('MAGIC: Spellcasting and magical combat, normally resolved through Arcane Command.'),
-    paragraph('INSTINCT: An ability used at its stated encounter timing, such as the start or end of a round or turn.'),
-    paragraph('MOVE: An ability that uses the character’s CORE Move opportunity during their turn.'),
-    paragraph('COMBAT: The structural umbrella for a character’s one CORE Combat opportunity. Melee Strike, Range Strike, and Arcane Command are different ways to spend that opportunity.'),
-    paragraph('REACTIVE: An ability that resolves when its stated Trigger occurs. Reactive abilities do not have a universal one-per-round limit; ROOT, Mana cost, cooldown, or another specific rule may limit them.'),
-    paragraph('PASSIVE: A rule that is always available or resolves automatically when its stated condition is met. Passive abilities do not spend a CORE opportunity.'),
+    paragraph('INSTINCT: An Ability or Core Action used at its stated encounter timing, such as the start or end of a round or turn.'),
+    paragraph('MOVE: Movement-related Abilities normally build from a Core Move Action.'),
+    paragraph('COMBAT: Combat-related Abilities normally build from the character’s Core Combat Action. Melee Strike, Range Strike, and Arcane Command are the shared Core Combat Actions.'),
+    paragraph('REACTIVE: A Reactive Ability can resolve only when its printed Trigger occurs and that character can spend their Reaction Core Action. Each character has one Reaction Core Action per round unless a specific rule grants another use.'),
+    paragraph('PASSIVE: A rule that is always available or resolves automatically when its stated condition is met. Passive Abilities do not spend a Core Action unless a specific rule says otherwise.'),
   ),
   section('What Keywords Do',
-    paragraph('Keywords tell you when an ability can be used, which CORE opportunity it spends, and which other rules may interact with it. When two rules describe the same mechanical function, use the same keyword and standard rule wording.'),
-    paragraph('A single triggering event can trigger each individual ability only once unless that ability explicitly states otherwise.'),
+    paragraph('Keywords tell you when an Ability can be used, which Core Action it builds from, and which other rules may interact with it.'),
+    paragraph('Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once during that Ability Chain, even if later events would make its Trigger valid again.'),
+    paragraph('The same named Ability possessed by another character is a separate Ability instance and may resolve once in that chain. When no unresolved Ability instance has a legal Trigger, the Ability Chain ends.'),
   ),
   section('PASSIVE ABILITIES',
-    paragraph('Passive abilities do not spend CORE Instinct, Move, or Combat opportunities. They resolve whenever their Trigger, condition, or another rule instructs them to resolve. Renew the Heart is a Passive Core Ability because another effect may compel it or the character may use it when a rule permits.'),
+    paragraph('Passive Abilities do not normally spend Core Instinct, Move, Combat, or Reaction opportunities. They resolve whenever their Trigger, condition, or another rule instructs them to resolve. Renew the Heart is a shared Passive Core Action because another effect may Compel it or the character may use it when a rule permits.'),
   ),
-  section('CORE ABILITIES',
-    paragraph('Every character has the following CORE abilities: Channel the Winds and Focused Will (Instinct); Stride, Swiftstride, and Hero’s Charge (Move); Melee Strike, Range Strike, and Arcane Command (Combat); and Renew the Heart (Passive).'),
-    paragraph('During a normal round, a character may therefore choose one CORE Instinct, one CORE Move, and one CORE Combat ability, while eligible Reactive and Passive effects resolve around those choices.'),
+  section('CORE ACTIONS',
+    paragraph('Every character has the following Core Actions: Channel the Winds and Focused Will (Instinct); Stride, Swiftstride, and Hero’s Charge (Move); Melee Strike, Range Strike, and Arcane Command (Combat); Reaction (Reaction); and Renew the Heart (Passive).'),
+    paragraph('During a normal round, a character may choose one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action. Reaction is spent only when an eligible Reactive Ability meets its printed Trigger.'),
   ),
 ]
 
 const BATTLE_REPLACEMENTS:Record<string,RuleSourceSection>={
   'ROUNDS & TURNS':section('ROUNDS & TURNS',
     paragraph('At the start of each round, resolve the Start of Round sequence before beginning turns in Initiative Order.'),
-    paragraph('START OF ROUND: First, each character may choose and resolve one eligible CORE Instinct ability in Initiative Order. Second, apply effects that increase or decrease Magic Regen for this round. Third, each character restores Mana equal to their current Magic Regen, without exceeding Mana Pool unless a rule explicitly allows it. Then begin turns in Initiative Order.'),
+    paragraph('START OF ROUND: First, each character may choose and resolve one eligible Core Instinct Action in Initiative Order. Second, apply effects that increase or decrease Magic Regen for this round. Third, each character restores Mana equal to their current Magic Regen, without exceeding Mana Pool unless a rule explicitly allows it. Then begin turns in Initiative Order.'),
   ),
   'TAKING YOUR TURN':section('TAKING YOUR TURN',
-    paragraph('During your turn, you may use one CORE Move ability and one CORE Combat ability in either legal order. A rule may allow movement to be split, add movement, or modify the chosen CORE ability.'),
-    paragraph('Your CORE Combat opportunity may be spent on Melee Strike (Touch), Range Strike (Shoot), or Arcane Command (Magic). Using one prevents using another CORE Combat ability that round unless a specific rule explicitly grants an additional use.'),
+    paragraph('During your turn, you may use one Core Move Action and one Core Combat Action in either legal order. A rule may allow movement to be split, add movement, or modify the chosen Core Action.'),
+    paragraph('Your Core Combat Action may be Melee Strike (Touch), Range Strike (Shoot), or Arcane Command (Magic). Using one spends that Core Combat opportunity for the round unless a specific rule explicitly grants another use.'),
   ),
   'PREFORMING ABILITIES':section('PREFORMING ABILITIES',
-    paragraph('CORE establishes the shared action economy. Each round a character may use one CORE Instinct, one CORE Move, and one CORE Combat ability.'),
-    paragraph('Talents, Traits, Spells, equipment, and other effects generally modify those CORE abilities or resolve from their own Triggers. ROOT limits stacking: only one ROOT ability of the same specific family may be used each round.'),
-    paragraph('Reactive abilities resolve when their Trigger occurs. Passive abilities resolve automatically or when another rule instructs them to resolve.'),
+    paragraph('Every Ability Chain begins with a Core Action. Abilities from Talents, Traits, Spells, equipment, and other effects may modify that Core Action or trigger later in the chain.'),
+    paragraph('A specific character’s copy of an Ability can resolve only once during the same Ability Chain. The same named Ability on another character is a separate Ability instance.'),
+    paragraph('Reactive Abilities require the character to spend their Reaction Core Action. Each character has one Reaction Core Action per round unless another rule explicitly grants an additional use.'),
+    paragraph('Existing ROOT Abilities keep their current round-level family restrictions. ROOT is not used to determine whether an Ability may repeat inside the same Ability Chain.'),
   ),
   'PERFORMING ABILITIES':section('PERFORMING ABILITIES',
-    paragraph('CORE establishes the shared action economy. Each round a character may use one CORE Instinct, one CORE Move, and one CORE Combat ability.'),
-    paragraph('Talents, Traits, Spells, equipment, and other effects generally modify those CORE abilities or resolve from their own Triggers. ROOT limits stacking: only one ROOT ability of the same specific family may be used each round.'),
-    paragraph('Reactive abilities resolve when their Trigger occurs. Passive abilities resolve automatically or when another rule instructs them to resolve.'),
+    paragraph('Every Ability Chain begins with a Core Action. Abilities from Talents, Traits, Spells, equipment, and other effects may modify that Core Action or trigger later in the chain.'),
+    paragraph('A specific character’s copy of an Ability can resolve only once during the same Ability Chain. The same named Ability on another character is a separate Ability instance.'),
+    paragraph('Reactive Abilities require the character to spend their Reaction Core Action. Each character has one Reaction Core Action per round unless another rule explicitly grants an additional use.'),
+    paragraph('Existing ROOT Abilities keep their current round-level family restrictions. ROOT is not used to determine whether an Ability may repeat inside the same Ability Chain.'),
   ),
   'MANA':section('MANA',
     paragraph('Mana Pool is the maximum Mana a character can normally hold and equals Magic Level + Spirit. Spirit is the Bravery modifier.'),
@@ -71,11 +74,11 @@ const BATTLE_REPLACEMENTS:Record<string,RuleSourceSection>={
     paragraph('Increase Magic Regen and Decrease Magic Regen modify the round’s normal restoration. Restore Mana immediately recovers spent Mana outside that restoration step.'),
   ),
   'COMBAT ABILITIES':section('COMBAT ABILITIES',
-    paragraph('A character has one CORE Combat opportunity each round. Melee Strike spends it as Touch combat, Range Strike spends it as Shoot combat, and Arcane Command spends it as Magic combat.'),
-    paragraph('Talents and other effects may modify the chosen CORE Combat ability. An additional Strike granted by a Talent is part of the triggering CORE Combat ability unless the rule explicitly says otherwise.'),
+    paragraph('A character has one Core Combat Action each round. Melee Strike uses it as Touch combat, Range Strike uses it as Shoot combat, and Arcane Command uses it as Magic combat.'),
+    paragraph('Combat Abilities from Talents, Traits, Spells, equipment, and other rules can modify or chain from the chosen Core Combat Action when their requirements and Triggers are met.'),
   ),
   'TO HIT':section('TO HIT',
-    paragraph('Melee Strike: roll (3d10) + Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). Brawl is the Might modifier. On a successful Melee Strike, add Fury to weapon damage where the ability calls for it. Fury is Might Rank.'),
+    paragraph('Melee Strike: roll (3d10) + Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). Brawl is the Might modifier. On a successful Melee Strike, add Fury to weapon damage where the action calls for it. Fury is Might Rank.'),
     paragraph('Range Strike: roll (3d10) + Aim + condition(s) against the target’s (3d10) + Ward + condition(s). Aim is the Agility modifier. On a successful Range Strike, add Accuracy to weapon damage. Accuracy is Agility Rank.'),
     paragraph('Magic: a spell that includes TO HIT makes the roll stated in that spell’s details. A Magic Strike normally uses (3d10) + Control + condition(s) against (3d10) + Ward + condition(s). Control is the Lore modifier plus applicable equipment bonuses.'),
     paragraph('The defender wins ties unless a more specific rule states otherwise.'),
@@ -255,9 +258,9 @@ RESTRICTIONS: An ordinary spell’s final Mana cost cannot be reduced below [1].
 COOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.
 KEYWORDS: ROOT | MAGIC | TALENT`},
   {name:`RAGEBOUND`,flavor:`Rage becomes rhythm; pain becomes purpose.`,rules:`COST: [1] Mana
-TRIGGER: When using a CORE Instinct ability at the start of the round.
-EFFECT: Gain condition [+2] to Strike rolls and [+2] to damage until the end of the round.
-DEFENSELESS: Until the end of the round, enemies gain condition [+1] to Strike rolls made against you and your Ward is reduced by [-2].
+TRIGGER: When using the Focused Will Core Action at the start of the round.
+EFFECT: Gain condition [+1] to Strike rolls and [+1] to damage until the end of the round.
+DEFENSELESS: Until the end of the round, your Ward and Guts are each reduced by [-1].
 KEYWORDS: ROOT | INSTINCT | TALENT`},
   {name:`RAMHORN`,flavor:`Your shield drives forward like a wall in motion, scattering your foes and shielding your advance.`,rules:`COST: [1] Mana
 TRIGGER: When using Hero’s Charge while wielding a shield.
@@ -285,8 +288,8 @@ RESTRICTIONS: You may take this Talent up to four times, choosing a different Sk
 REQUIRES: Fieldcraft Talent
 KEYWORDS: PASSIVE | TALENT`},
   {name:`SNAPSTEP`,flavor:`Your hand moves before thought — a blur that catches the first beat of battle.`,rules:`COST: [1] Mana
-TRIGGER: When using a CORE Instinct ability at the start of the round.
-EFFECT: Move up to [3] squares.
+TRIGGER: When using the Focused Will or Channel the Winds Core Action at the start of the round.
+EFFECT: Move up to [2] squares.
 RESTRICTIONS: This movement cannot end within [2] squares of an enemy.
 KEYWORDS: ROOT | INSTINCT | TALENT`},
   {name:`SPELL BREAKER`,flavor:`The hum of magic finds no purchase in your iron will.`,rules:`EFFECT: Gain condition [+1] to Ward rolls against spells and Magic abilities. When you succeed on such a Ward roll, restore [1] Mana.
@@ -387,6 +390,9 @@ function safeSpellText(value:string,currentSpell=''){
     .replace(/\bAUGMENTS\b/gi,'ENHANCES')
     .replace(/\bAUGMENT\b/gi,'ENHANCE')
     .replace(/\bSTRIKE:\s*/gi,'TO HIT: ')
+    .replace(/\bhero(?:’|')s charge core ability\b/gi,'Hero’s Charge Core Action')
+    .replace(/\bstride core ability\b/gi,'Stride Core Action')
+    .replace(/\brenew the heart ability\b/gi,'Renew the Heart Core Action')
   if(SIGNATURE_SPELLS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
   if(INVOCATION_CANTRIPS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
   text=text.replace(/\bKEYWORDS?:\s*([^\n]+)/gi,(_match,keywords:string)=>`KEYWORDS: ${normalizeKeywordList(keywords,currentSpell)}`)
@@ -462,8 +468,8 @@ function installCurrentRules(){
     ruleSourceDocuments.talents.sections=[
       section('Overview',table(['TALENTS'])),
       section('TALENTS',
-        paragraph('Talents are practiced gifts, hard-earned techniques, and instinctive advantages that modify CORE abilities or resolve from their own Triggers.'),
-        paragraph('ROOT Talents limit stacking: only one ROOT Talent of the same specific family may be used each round. A prerequisite Talent that is designed to extend a ROOT Talent may be Passive so the progression can function as one coherent effect.'),
+        paragraph('Talents are practiced gifts, hard-earned techniques, and instinctive advantages that modify Core Actions or resolve from their own Triggers.'),
+        paragraph('Existing ROOT Talents retain their current once-per-family-per-round restriction. Ability Chain recursion is controlled separately: each specific Ability instance can resolve only once in the same chain.'),
       ),
       ...TALENTS.map(talent=>section(talent.name,paragraph(talent.flavor),paragraph(talent.rules))),
     ]

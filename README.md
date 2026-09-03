@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.44
+# Brambleheart TTRPG — Beta 0.45
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.44 expands the Fundamentals ability teaching flow, adds the Rhythm Engine Ability Manager, updates Axalori Trait rules, simplifies Trinkets into passive equipped gear, adds persisted logo sizing, and refreshes the Character Roster and Rules header artwork from the Beta 0.43 application baseline.
+Beta 0.45 restructures the encounter action model around Core Actions and bounded Ability Chains. It adds Reaction as a shared Core Action, prevents recursive proc loops by allowing each specific Ability instance to resolve only once per chain, updates the Ability Manager to model that chain state, and revises Ragebound and Snapstep for the new Core Action structure.
 
-## Rule Updates v0.07
+## Rule Updates v0.08
 
-Rule Updates are versioned independently from application builds. Beta 0.44 advances Rule Updates to v0.07 for the Axalori Trait revisions and the removal of numbered Trinket slots / Arcane Focus selection.
+Rule Updates are versioned independently from application builds. Beta 0.45 advances Rule Updates to v0.08 for the Core Action terminology, Reaction Core Action, Ability Chain limits, and the approved Ragebound/Snapstep revisions. Existing ROOT keywords remain on current Abilities and retain their current round-level restrictions; ROOT is no longer used as the Ability Chain recursion guard.
 
 ### Trinkets
 
@@ -32,20 +32,26 @@ Character Creation offers four starting paths, each granting at least one Talent
 
 Practiced Hand cannot choose Skills the character already knows from earlier creation sources such as Homeland or Culture Traits. The selected path and its Skill/Attribute choices are persisted with the character.
 
-### Ability economy
+### Core Actions & Ability Chains
 
-Each character has one `CORE · INSTINCT`, one `CORE · MOVE`, and one `CORE · COMBAT` opportunity per round. `COMBAT` is the umbrella for choosing Melee Strike (`TOUCH`), Range Strike (`SHOOT`), or Arcane Command (`MAGIC`). Instinct abilities resolve at their printed round timing, including start or end of a round. During a character’s turn, eligible abilities may be performed in any order unless an ability states otherwise. Reactive abilities resolve from their triggers, while Passive abilities remain active at all times.
+Core Action is the canonical name for the shared actions every character can use. Ability remains the term for Traits, Talents, Spells, equipment effects, and other rules that modify a Core Action or trigger from events in its chain.
 
-`ROOT` is not used by Core Abilities. It limits advanced Talents and modifiers: only one ROOT ability of the same specific family may be used each round. Canonical action colors are Touch red, Shoot teal, Magic purple, Instinct blue, Move green, Reactive orange, and Passive gray.
+A normal round provides one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action. The shared Core Actions are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, Reaction, and Renew the Heart.
 
-The shared Core Abilities are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, and Renew the Heart. Fundamentals now includes dedicated Stacking and Chaining pages, and Rhythm Engine → Ability Manager can filter the general ability pool or a saved character’s known/inherited abilities against a selected Core Ability.
+Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once during that chain, even if later events would make its Trigger legal again. Another character’s copy of the same named Ability is a separate Ability instance and may resolve once. The chain ends when no unresolved Ability instance has a legal Trigger.
+
+Reactive Abilities resolve through Reaction when their printed Trigger is met. Each character has one Reaction Core Action per round unless a more specific rule grants another use. Existing ROOT keywords are preserved and still apply their current round-level family limits, but ROOT is not used to stop recursive chains.
+
+Ragebound now builds from Focused Will, granting condition [+1] to Strike and [+1] to damage while reducing Ward and Guts by [-1] each through Defenseless. Snapstep now builds from Focused Will or Channel the Winds and moves up to [2] squares. Drums of War and Divine Grasp intentionally retain their rules that grant or compel Core Action use.
+
+Rhythm Engine → Ability Manager uses the same Core Action authority. Character mode evaluates only the selected character’s actual Traits, Talents, and known Spells; Ability mode traces a selected Ability back to a legal Core Action route. Reactive branches are gated through Reaction and repeated resolution of the same Ability instance is blocked within a chain.
 
 ### Magic
 
 - Mana Pool = Magic Level + Spirit.
 - Magic Regen = Heart plus applicable equipped Trinket modifiers.
 - Encounters begin at full Mana Pool.
-- Start of Round resolves CORE Instinct choices, Magic Regen modifiers, Mana restoration, then turns in Initiative Order.
+- Start of Round resolves the Core Instinct Action, Magic Regen modifiers, Mana restoration, then turns in Initiative Order.
 - Lore Attunement remains `-2 Mana`.
 - Ordinary spells have a minimum final cost of `1 Mana`.
 - Signature Spells display `Signature`; zero-cost Invocation utility spells display `Cantrip`.
@@ -69,21 +75,22 @@ Protective loadout remains limited to one armor and one shield. Trinkets are pas
 
 The game remains square-based. Rule text displays bracketed distances with a space before the unit, such as `[3] squares`. Settings can display Squares, Yards, Meters, or Feet through one conversion authority: 1 square = 1 yard = 1 meter = 3 feet.
 
-## Beta 0.44 application focus
+## Beta 0.45 application focus
 
-- Rhythm Engine adds Ability Manager between Dice Roller and Encounter Builder with optional saved-character filtering.
-- Fundamentals adds Stacking and Chaining visual teaching pages and standardizes Core Ability presentation colors/sizing.
-- Axalori Trait rules are synchronized to Rule Updates v0.07.
-- Trinkets use a passive equipped model without numbered slots or Arcane Focus selection.
-- Settings Display adds a persisted five-step Logo Size control, with the previous logo size retained as Largest/default.
-- Character Roster and Rules use the supplied replacement header characters, flipped horizontally; shared page-header art sits slightly lower and selected page-title subtitles are removed.
+- Renames the shared Core Ability concept to Core Action throughout current rules and UI presentation.
+- Adds Reaction as a shared Core Action and routes Reactive Ability use through that once-per-round opportunity.
+- Establishes the once-per-Ability-instance chain rule so Ability Chains terminate without relying on ROOT as a recursion guard.
+- Updates Rhythm Engine → Ability Manager to model Core Action roots, Reaction gates, and per-instance chain state.
+- Revises Ragebound and Snapstep for the Core Action model while preserving ROOT on both Abilities.
+- Keeps Drums of War and Divine Grasp as explicit rule-breaking effects that can grant or compel additional Core Action use.
+- Synchronizes BUILD/export 0.45, package 0.45.0, PWA cache v0.45, and Rule Updates v0.08.
 
 ## Release integrity
 
-- BUILD/export: `0.44`
-- package version: `0.44.0`
-- PWA cache: `v0.44`
-- Rule Updates: `v0.07`
+- BUILD/export: `0.45`
+- package version: `0.45.0`
+- PWA cache: `v0.45`
+- Rule Updates: `v0.08`
 - Repository and in-app Site Changelog: `CHANGELOG.md`
 
 ## Runtime

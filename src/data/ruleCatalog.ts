@@ -12,12 +12,12 @@ export const loreAnthroMundasPages:RulePageDefinition[]=[
 export const loreNavigation=loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
 export const quickReferencePages:RulePageDefinition[]=[loreAnthroMundasPages[0],page('faq','FAQ','Common questions answered from the currently loaded rules.'),page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.')]
 
-/* Beta 0.44.5: one authoritative Fundamentals menu. Chaining is taught on the Abilities page; standalone Stacking and Chaining pages are removed. */
+/* Beta 0.45: Fundamentals teaches the Core Action economy and Ability Chain rules on one authoritative Abilities page. */
 const fundamentalPages:RulePageDefinition[]=[
  page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
  page('core-rules','Core Rules','The Rhythm Engine, Conditions, targets, Fortune and Misfortune, Edged and Weighted rolls, Half-Step rolls, and worked examples.',[{document:'fundamentals',sections:['THE CORE ROLL','CONDITIONS','FORTUNE & MISFORTUNE RESULTS','EDGED & WEIGHTED ROLLS','HALF-STEP ROLLS']}],undefined,['Rhythm Engine','3d10','Fortune','Misfortune']),
  page('attributes-skills','Attributes & Skills','Attributes, ranks, modifiers, Skills, Skill Trees, expanded Skills, and restricted Skills.',[{document:'fundamentals',sections:['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED']}],undefined,['Attribute','Skill']),
- page('abilities','Abilities','How Ability types and Keywords determine when and how Abilities can be used, including the shared Core Abilities available during encounters and how a chain of abilities can form between allies and enemies.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES','CORE ABILITIES']}],undefined,['Keyword','Ability','Core Ability','Chaining'])]
+ page('abilities','Abilities','How Core Actions begin Ability Chains, how Abilities stack and trigger from them, how Reaction gates Reactive Abilities, and how once-per-chain resolution prevents recursive proc loops.',[{document:'core-abilities',sections:['ABILITIES','KEYWORDS','What Keywords Do','PASSIVE ABILITIES','CORE ACTIONS']}],undefined,['Keyword','Ability','Core Action','Reaction','Chaining'])]
 const speciesPages=speciesData.map(item=>page(`species-${item.name.toLowerCase()}`,item.name,`${item.name} lore, Heritage Traits, Culture Traits, and language.`,[{document:`species-${item.name.toLowerCase()}`}],undefined,['Species','Trait','Culture']))
 const playableSpeciesLanding=page('playable-species','Playable Species','Choose a playable Species and open its dedicated rules page.')
 export const ruleCategories:RuleCategoryDefinition[]=[

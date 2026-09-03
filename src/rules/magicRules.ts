@@ -114,7 +114,7 @@ export function spellCostLabel(input:ResolveSpellManaInput):string{
 }
 
 export const START_OF_ROUND_SEQUENCE=[
-  'Choose and resolve one eligible CORE Instinct ability.',
+  'Choose and resolve one eligible Core Instinct Action.',
   'Apply effects that increase or decrease Magic Regen for this round.',
   'Restore Mana equal to the character’s current Magic Regen, without exceeding Mana Pool unless a rule explicitly allows it.',
   'Begin turns in Initiative Order.',

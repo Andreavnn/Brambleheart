@@ -7,6 +7,23 @@ export type GameUpdateEntry={version:string;date:string;title:string;summary:str
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-03',
+    title:'Core Actions & Ability Chain Limits',
+    summary:'Renames the shared Core Ability concept to Core Actions, adds Reaction as a shared Core Action, and establishes a once-per-Ability-instance chain rule so triggered abilities cannot recurse forever.',
+    changes:[
+      'Core Ability is now called Core Action. Core Actions are the shared starting points for Ability Chains; Ability remains the term for Traits, Talents, Spells, equipment effects, and other rules that stack or trigger from them.',
+      'Reaction is added as a Core Action. Each character may spend Reaction once per round to resolve one eligible Reactive Ability whose printed Trigger has been met.',
+      'Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once in the same Ability Chain, even if later effects would make its Trigger valid again.',
+      'The same named Ability on a different character is a separate Ability instance and may resolve once in that chain. The chain ends when no unresolved Ability instance has a legal Trigger.',
+      'ROOT remains on existing Abilities and is not relied upon as the recursion guard for Ability Chains. No existing Ability has ROOT removed in this update.',
+      'Ragebound now builds specifically from Focused Will; its offensive bonuses are reduced to [+1] Strike and [+1] damage, and Defenseless now reduces Ward and Guts by [-1] each.',
+      'Snapstep now builds from Focused Will or Channel the Winds and moves up to [2] squares.',
+      'Drums of War and Divine Grasp retain their intentional rule-breaking effects that grant or compel additional Core Action use, with terminology updated to Core Action.',
+      'Ability Manager now models chains from Core Actions, gates Reactive Abilities through Reaction, and blocks repeated resolution of the same Ability instance within one chain.',
+    ],
+  },
+  {
+    version:'0.07',
     date:'2026-09-02',
     title:'Axalori Traits & Passive Trinkets',
     summary:'Updates the current Axalori Trait rules and replaces numbered Trinket slots and Arcane Focus selection with a direct passive-equipped Trinket model.',
@@ -20,7 +37,7 @@ export const gameUpdates:GameUpdateEntry[]=[
     ],
   },
   {
-    version:GAME_RULES_VERSION,
+    version:'0.06',
     date:'2026-08-31',
     title:'Equipment, Trinkets & Rules Normalization',
     summary:'Normalizes ordinary weapons and protective gear, replaces the old armor Stealth field with Armor Penalty, establishes two independent Trinket slots, and standardizes current rules terminology and presentation.',

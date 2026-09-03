@@ -75,6 +75,16 @@ function nonTriggerText(ability:AbilityProcSource){
 
 function keywordSet(ability:AbilityProcSource){return new Set(ability.keywords.map(normalizedName))}
 
+export function isCoreActionSource(ability:AbilityProcSource){
+  const source=normalizedName(ability.source)
+  return source==='core action'||source==='core ability'
+}
+
+export function isReactiveAbility(ability:AbilityProcSource){
+  const keywords=keywordSet(ability)
+  return keywords.has('reactive')||keywords.has('reaction')
+}
+
 function targetRelations(ability:AbilityProcSource){
   const targets=new Set<TargetRelation>()
   const parsed=parsedRule(ability)
@@ -203,9 +213,9 @@ function genericTriggerMatch(source:AbilityProcSource,candidate:AbilityProcSourc
   if(directNameMatch(source,trigger))return make(`The trigger explicitly names ${source.name}.`,100,/\bif\b|\bwhen\b.*\bsuccess|\bfail|\bdamage|\bexceptional/.test(text))
   if(namedOther)return null
 
-  if(/\bcore instinct ability\b/.test(text)&&keywords.has('core')&&keywords.has('instinct'))return make(`${source.name} spends the CORE Instinct opportunity.`)
-  if(/\bcore move ability\b/.test(text)&&keywords.has('core')&&keywords.has('move'))return make(`${source.name} spends the CORE Move opportunity.`)
-  if(/\bcore combat ability\b/.test(text)&&keywords.has('core')&&keywords.has('combat'))return make(`${source.name} spends the CORE Combat opportunity.`)
+  if(/\bcore instinct (?:action|ability)\b/.test(text)&&keywords.has('core')&&keywords.has('instinct'))return make(`${source.name} spends the Core Instinct Action opportunity.`)
+  if(/\bcore move (?:action|ability)\b/.test(text)&&keywords.has('core')&&keywords.has('move'))return make(`${source.name} spends the Core Move Action opportunity.`)
+  if(/\bcore combat (?:action|ability)\b/.test(text)&&keywords.has('core')&&keywords.has('combat'))return make(`${source.name} spends the Core Combat Action opportunity.`)
   if(/\bphysical combat ability\b/.test(text))return events.combat&&!events.magic?make(`${source.name} is a physical Combat ability.`):null
   if(/\bcharge(?: combat)? ability\b/.test(text))return(keywords.has('charge')||normalizedName(source.name)==="hero's charge")?make(`${source.name} is a Charge ability.`):null
   if(/\bmove or combat ability\b/.test(text))return(events.movement||events.combat)?make(`${source.name} is a Move or Combat ability.`):null
@@ -277,15 +287,50 @@ export function findAbilityProcMatch(source:AbilityProcSource,candidate:AbilityP
 }
 
 
-export function findCoreAbilityUseMatch(core:AbilityProcSource,candidate:AbilityProcSource):AbilityProcMatch|null{
-  if(normalizedName(core.source)!=='core ability'||normalizedName(candidate.source)==='core ability'||core.id===candidate.id)return null
+export function findCoreActionUseMatch(core:AbilityProcSource,candidate:AbilityProcSource):AbilityProcMatch|null{
+  if(!isCoreActionSource(core)||isCoreActionSource(candidate)||core.id===candidate.id)return null
   const coreName=normalizedName(core.name)
   const candidateSource=normalizedName(candidate.source)
   const keywords=keywordSet(candidate)
-  if(coreName==='arcane command'&&candidateSource.includes('spell')&&!keywords.has('signature')&&!abilityRequiresPriorTrigger(candidate)){
-    return{relation:'activation',actor:'self',reason:`${candidate.name} is a non-Signature spell that can be chosen and cast through Arcane Command.`,trigger:'Arcane Command selects this spell.',conditional:false,score:110}
+  const dependency=abilityTriggerDependency(candidate)
+  const activation=(reason:string,trigger:string,conditional=false,score=108):AbilityProcMatch=>({relation:'activation',actor:'self',reason,trigger,conditional,score})
+
+  if(coreName==='reaction'&&isReactiveAbility(candidate)){
+    const trigger=triggerValue(candidate)||'The Reactive Ability meets its printed Trigger.'
+    return activation(`${candidate.name} is an eligible Reactive Ability that may be resolved through the Reaction Core Action.`,trigger,true,120)
   }
+  if(isReactiveAbility(candidate))return null
+
+  if(coreName==='arcane command'&&candidateSource.includes('spell')&&!keywords.has('signature')&&!abilityRequiresPriorTrigger(candidate)){
+    return activation(`${candidate.name} is a non-Signature spell that can be chosen and cast through Arcane Command.`,'Arcane Command selects this spell.',false,118)
+  }
+  if(coreName==='arcane command'&&keywords.has('magic')&&dependency==='independent')return activation(`${candidate.name} is a Magic Ability that can be used from the Arcane Command Core Action.`,'Arcane Command opens a Magic Ability.',true,98)
+  if(coreName==='melee strike'&&dependency==='independent'&&keywords.has('combat')&&(keywords.has('touch')||keywords.has('physical'))&&!keywords.has('shoot')&&!keywords.has('magic'))return activation(`${candidate.name} is a melee or physical Combat Ability that can build from Melee Strike.`,'Melee Strike opens a compatible Combat Ability.',true,96)
+  if(coreName==='range strike'&&dependency==='independent'&&keywords.has('combat')&&keywords.has('shoot'))return activation(`${candidate.name} is a Shoot Combat Ability that can build from Range Strike.`,'Range Strike opens a compatible Shoot Ability.',true,96)
+  if(coreName==="hero's charge"&&dependency==='independent'&&keywords.has('move')&&keywords.has('charge'))return activation(`${candidate.name} is a Charge Move Ability that can build from Hero’s Charge.`,'Hero’s Charge opens a compatible Charge Ability.',true,97)
+  if((coreName==='stride'||coreName==='swiftstride')&&dependency==='independent'&&keywords.has('move')&&!keywords.has('charge'))return activation(`${candidate.name} is a Move Ability that can build from ${core.name}.`,`${core.name} opens a compatible Move Ability.`,true,94)
+  if((coreName==='channel winds'||coreName==='focused will')&&dependency==='independent'&&keywords.has('instinct'))return activation(`${candidate.name} is an Instinct Ability that can build from ${core.name}.`,`${core.name} opens a compatible Instinct Ability.`,true,94)
   return null
+}
+
+/** Compatibility alias for older imports. Core Action is the canonical term in Beta 0.45+. */
+export const findCoreAbilityUseMatch=findCoreActionUseMatch
+
+export function findGrantedCoreActionMatch(source:AbilityProcSource,candidate:AbilityProcSource):AbilityProcMatch|null{
+  if(isCoreActionSource(source)||!isCoreActionSource(candidate)||source.id===candidate.id)return null
+  const text=normalizedName(nonTriggerText(source))
+  const candidateName=normalizedName(candidate.name)
+  const named=abilityAliases(candidate.name).some(alias=>containsAlias(text,alias))
+  if(!named)return null
+  const corePhrase=abilityAliases(candidate.name).some(alias=>text.includes(`${alias} core action`)||text.includes(`use ${alias}`)||text.includes(`use the ${alias}`))
+  if(!corePhrase)return null
+  const grants=/\bmay\b[^.]{0,55}\buse\b|\bimmediately\b[^.]{0,55}\buse\b|\bcompel(?:led|s)?\b[^.]{0,75}\buse\b/.test(text)
+  if(!grants)return null
+  let actor:AbilityProcActor='any'
+  if(candidateName==='renew heart'&&/\benemy\b[^.]{0,100}\brenew heart\b/.test(text))actor='enemy'
+  else if(candidateName==='stride'&&/\bally\b[^.]{0,100}\bstride\b/.test(text))actor='ally'
+  else if(/\bfriendly character\b|\btarget ally\b|\ban ally\b/.test(text))actor='ally'
+  return{relation:'activation',actor,reason:`${source.name} explicitly grants or compels the ${candidate.name} Core Action.`,trigger:`${source.name} explicitly permits this additional Core Action.`,conditional:/\bif\b|\bon failure\b|\bon success\b/.test(text),score:125}
 }
 
 export function abilityProcCondition(ability:AbilityProcSource){

@@ -1,12 +1,11 @@
-import { allRulePages, fundamentalsNavigation } from './ruleCatalog'
-import { coreAbilities } from './coreAbilities'
+import { coreActions } from './coreAbilities'
 import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from './rulesSource'
 import { currentMeasurement, formatMeasurementText } from '../rules/measurements'
 import { gearShopItems } from './characterOptions'
 import { ADVENTURE_KIT_SELL_WP, CRAFTING_MATERIAL_FLOOR_PERCENT, STARTING_WEALTH_WP, canonicalRulePriceLabel, economyGearCatalog } from '../rules/economy'
 import { formatThreadpieceWp, formatThreadpieceWpAs } from '../rules/threadpieces'
 
-const movedCoreAbilityNames=new Set([
+const movedCoreActionNames=new Set([
   'ROOTED RESOLVE',
   'VERDANT SURGE',
   'WANDER STEP',
@@ -17,10 +16,10 @@ const movedCoreAbilityNames=new Set([
   'ECHO STRIKE',
 ])
 
-for(let index=coreAbilities.length-1;index>=0;index--){
-  if(movedCoreAbilityNames.has(coreAbilities[index].name.toUpperCase()))coreAbilities.splice(index,1)
+for(let index=coreActions.length-1;index>=0;index--){
+  if(movedCoreActionNames.has(coreActions[index].name.toUpperCase()))coreActions.splice(index,1)
 }
-for(const ability of coreAbilities){
+for(const ability of coreActions){
   if(ability.name.toUpperCase()==='SWIFT RUSH')ability.name='SWIFTSTRIDE'
   if(ability.name.toUpperCase()==='SURE SHOT')ability.name='RANGE STRIKE'
 }
@@ -45,14 +44,6 @@ for(const source of Object.values(ruleSourceDocuments)){
     }
   }
 }
-
-const coreAbilityPage=allRulePages.find(page=>page.slug==='keyword-abilities')
-if(coreAbilityPage){
-  coreAbilityPage.title='Core Abilities'
-  coreAbilityPage.summary='How Ability types and Keywords determine when and how Abilities can be used, including the shared Core Abilities available during encounters.'
-}
-const fundamentalCoreAbilityLink=fundamentalsNavigation.find(page=>page.slug==='keyword-abilities')
-if(fundamentalCoreAbilityLink)fundamentalCoreAbilityLink.title='Core Abilities'
 
 const movedTalentSections:RuleSourceSection[]=[
   {
@@ -226,8 +217,8 @@ if(fundamentals){
 }
 
 
-function amendCoreAbilityRules(){
-  for(const ability of coreAbilities){
+function amendCoreActionRules(){
+  for(const ability of coreActions){
     for(const field of ability.fields){
       if(ability.name.toUpperCase()==='MELEE STRIKE'&&field.label.toUpperCase()==='EFFECT')field.value=field.value.replace(/\bmettle\b/gi,'Brawl')
       if(ability.name.toUpperCase()==='MELEE STRIKE'&&field.label.toUpperCase()==='DAMAGE')field.value=field.value.replace(/\bpower\b/gi,'Fury')
@@ -235,7 +226,7 @@ function amendCoreAbilityRules(){
     }
   }
 }
-amendCoreAbilityRules()
+amendCoreActionRules()
 for(const source of Object.values(ruleSourceDocuments)){
   for(const section of source.sections){
     section.heading=applyGameRuleAmendments(section.heading)
@@ -247,7 +238,7 @@ for(const source of Object.values(ruleSourceDocuments)){
 }
 
 const coreFieldOriginals=new Map<object,string>()
-for(const ability of coreAbilities)for(const field of ability.fields)coreFieldOriginals.set(field,field.value)
+for(const ability of coreActions)for(const field of ability.fields)coreFieldOriginals.set(field,field.value)
 const paragraphOriginals=new WeakMap<object,string>()
 const tableOriginals=new WeakMap<object,string[][]>()
 for(const source of Object.values(ruleSourceDocuments)){
@@ -260,7 +251,7 @@ for(const source of Object.values(ruleSourceDocuments)){
 }
 function applyMeasurementDisplay(){
   const unit=currentMeasurement()
-  for(const ability of coreAbilities)for(const field of ability.fields)field.value=formatMeasurementText(coreFieldOriginals.get(field)||field.value,unit)
+  for(const ability of coreActions)for(const field of ability.fields)field.value=formatMeasurementText(coreFieldOriginals.get(field)||field.value,unit)
   for(const source of Object.values(ruleSourceDocuments)){
     for(const section of source.sections){
       for(const block of section.blocks){
