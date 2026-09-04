@@ -3,7 +3,7 @@ const SHELL=['/','/assets/Logo.png','/icons/favicon-64.png','/icons/icon-192.png
 const CACHEABLE_DESTINATIONS=new Set(['script','style','image','font','manifest','worker','audio'])
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>undefined))
+  event.waitUntil(caches.delete(CACHE).then(()=>caches.open(CACHE)).then(cache=>cache.addAll(SHELL)).catch(()=>undefined))
   self.skipWaiting()
 })
 self.addEventListener('activate',event=>{
