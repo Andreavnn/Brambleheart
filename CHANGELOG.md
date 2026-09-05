@@ -1,3 +1,11 @@
+# Brambleheart Beta 0.18
+
+- Makes the canonical current-rules layer the runtime authority for Rules, Character Creation, Character Sheets, Level Up, and spell detail data so the approved Game Update v0.07 Spell `TO HIT` and balance changes no longer depend on module load order.
+- Corrects shared pill presentation: Cultural Traits that grant Skills show only `SKILL`, `CULTURAL`, and `TRAIT`; Passive Traits no longer also show `ABILITY`; Talent and Spell Ability/type pills render in their card footer; and pill-style labels are consistently uppercase.
+- Restores consistent Rules navigation with breadcrumbs on dedicated Fundamentals pages, rebuilds Introduction in the Fundamentals layout, makes Core Rules return directly to Introduction, and removes the obsolete Character Creation eight-step rule-page navigation and redundant previous/next controls.
+- Removes obsolete Adventure Kit category/detail metadata from Character Creation and Character Sheet item cards, and migrates legacy saved Adventure Kit equipment entries back to the canonical `adventureKit` package state during character normalization.
+- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.18 while Game Update remains v0.07.
+
 # Brambleheart Beta 0.17
 
 - Restores breadcrumb navigation beneath the main Rules navigation and removes the redundant previous/next rule-page navigation controls.

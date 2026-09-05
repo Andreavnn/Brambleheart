@@ -1,14 +1,15 @@
+import './beta032Content'
 import { loreSpells } from './magicOptions'
 import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from './rulesSource'
 import { INVOCATION_CANTRIPS, SIGNATURE_SPELLS } from '../rules/magicRules'
 
 /**
- * Beta 0.37 canonical rules boundary.
+ * Canonical current-rules boundary.
  *
  * rulesSource.ts remains the generated transcription of the supplied source
  * documents. This module converts that one in-memory source object to the
- * current canonical rules before Vue mounts. Consumers continue to read the
- * same ruleSourceDocuments authority.
+ * current canonical rules before runtime consumers read it. Consumers import
+ * this module so the normalized current rules remain the single runtime authority.
  */
 const paragraph=(text:string):RuleSourceBlock=>({type:'paragraph',text})
 const table=(...rows:string[][]):RuleSourceBlock=>({type:'table',rows})

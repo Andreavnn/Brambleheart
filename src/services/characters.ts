@@ -53,14 +53,15 @@ export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefi
 export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){const next=normalizeTrinketEquipment(items);const target=next[index];if(!target||!isTrinketGear(target))return next;target.equipped=equipped;return next}
 
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
-  const creationComplete=characterCreationComplete(record),status=characterStatus({...record,creationComplete}),equipment=normalizeEquipment(record.equipment)
+  const creationComplete=characterCreationComplete(record),status=characterStatus({...record,creationComplete})
+  const equipment=normalizeEquipment((record.equipment||[]).filter(item=>item.category!=='Adventure Kit'))
   const startingWealthWp=Number.isFinite(Number(record.startingWealthWp))?wholeWp(record.startingWealthWp):(legacyMoneyWp(record,'starting')??STARTING_WEALTH_WP)
   const wealthWp=Number.isFinite(Number(record.wealthWp))?wholeWp(record.wealthWp):(legacyMoneyWp(record,'remaining')??startingWealthWp)
   const currencyAddedWp=Number.isFinite(Number(record.currencyAddedWp))?wholeWp(record.currencyAddedWp):(legacyMoneyWp(record,'added')??0)
   const skills=(record.skills||[]).map(canonicalSavedSkill),pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
   const skillRanks=Object.fromEntries(Object.entries(record.skillRanks||{}).map(([key,value])=>[canonicalSavedSkill(key),value]))
   const cultureSkillChoices=Object.fromEntries(Object.entries(record.cultureSkillChoices||{}).map(([key,value])=>[key,canonicalSavedSkill(value)]))
-  return{...record,equipment,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  return{...record,equipment,adventureKit:record.adventureKit!==false,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.');const source=raw as Partial<CharacterRecord>;if(!source.name||!source.attributes)throw new Error('Invalid Brambleheart character data.');const now=new Date().toISOString();return normalizeCharacterRecord({...source,id:crypto.randomUUID(),name:String(source.name),attributes:source.attributes,createdAt:now,updatedAt:now,pinned:Boolean(source.pinned)} as CharacterRecord)}
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{return(JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)}

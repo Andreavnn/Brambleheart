@@ -1,4 +1,4 @@
-import { ruleSourceDocuments, type RuleSourceSection } from './rulesSource'
+import { ruleSourceDocuments, type RuleSourceSection } from './rulesCurrent'
 import { speciesData } from './speciesData'
 import { externalMonsters, monsterSlug } from './externalMonsters'
 

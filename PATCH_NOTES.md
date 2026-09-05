@@ -1,31 +1,22 @@
-# Brambleheart Beta 0.17 — Rules Presentation & Game Data Update
+# Brambleheart Beta 0.18 — Rules Authority & Presentation Corrections
 
-**Site Update — Beta 0.17**
+**Site Update — Beta 0.18**
 
-- Restored breadcrumb navigation beneath the main Rules navigation and removed the redundant previous/next navigation controls from Rules pages.
-- Applied the established Core Rules section-header/card presentation to the remaining Rule Reader pages without altering the dedicated Core Rules, Attributes & Skills, or Core Actions layouts.
-- Restored Species-page detail summaries while keeping those summaries hidden from the expandable Playable Species menu; removed the Woodlands Species-count subtitle.
-- Standardized pill UI text to uppercase across shared presentation surfaces.
-
-**Game Update — v0.07**
-
-- Updated all 60 Heritage and Cultural Traits for the 12 current Woodlands Species from the approved v0.16 Species Trait document.
-- Renamed the Fundamentals section The Core Roll to The Rhythm Engine.
-- Added the global rule that effects from the same named Ability or Spell do not stack unless a more specific rule says otherwise.
-- Added an explicit TO HIT resolution to all 86 current Spells and standardized Automatic, Magical Strike, Renew the Heart, and mixed Strike + Renew resolution.
-- Applied the approved Spell balance pass across Flames, Wilds, Oaths, Frost, Hallows, Harmony, Life, and Invocation, including the universal one-active-summon rule.
-- Intentionally left unresolved spell-design decisions unchanged: Deathly Shadow Empower, Orb of Impurity damage/outcome order, Spectral Hand manipulation range, and Spectral Grasp Empower redesign.
+- Corrected the repeated Spell presentation failure at its source: Rules, Character Creation, Character Sheets, Level Up, and spell detail data now consume the canonical current-rules authority instead of importing the raw rules transcription directly. The already-approved Game Update v0.07 `TO HIT` and Spell balance changes therefore no longer depend on module initialization order.
+- Corrected shared pill presentation. Cultural Traits that grant Skills now show only `SKILL`, `CULTURAL`, and `TRAIT`; Passive Traits no longer also show `ABILITY`; Talent and Spell Ability/type pills are placed in the lower card pill row rather than the title/cost area; and pill-style labels are consistently uppercase.
+- Restored Rules navigation consistency. Dedicated Fundamentals pages now display the shared breadcrumb trail, Introduction uses the same Fundamentals presentation as Core Rules and related pages, Core Rules' back control returns directly to Introduction, and the obsolete Character Creation eight-step rule-page bar and redundant previous/next rule controls were removed.
+- Removed the obsolete `Adventure Kit` category line and `Starting Adventure Kit` detail line from Adventure Kit item cards. Legacy saved Adventure Kit item entries are removed at the character normalization boundary so the package-level `adventureKit` state remains the single current representation.
+- Updated Site Update / BUILD / character export, package, README, changelog, patch-note, and PWA cache metadata to Beta 0.18. Game Update remains v0.07 because this patch corrects consumption and presentation of the already-approved rules rather than introducing a new game-rule revision.
 
 **Patch-note verification**
 
-- Previous Site Update reviewed: Beta 0.16
-- New Site Update: Beta 0.17
-- Previous Game Update reviewed: v0.06
-- New Game Update: v0.07
-- Current GitHub baseline reviewed: Yes — `ecef3ea94b93f48dfea874526cdeda324c6514d5`
+- Previous Site Update reviewed: Beta 0.17
+- New Site Update: Beta 0.18
+- Game Update: v0.07 (unchanged)
+- Current GitHub baseline reviewed: Yes — `ece2a38e1487f89fcc610f68bbbc6250d1f3fa47`
 - Source/diff reviewed: Yes
-- Species Trait source reviewed: Yes — supplied 18-page v0.16 trait document
+- Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: TypeScript compilation of the current-rules spell authority and dependencies; 86-spell TO HIT/Hex validation; Vue script syntax transpilation; Species Trait count/name verification; release/version checks; repository-relative import scan using the available repository scaffold.
-- Not run: Full Vue/Vite production build and browser-based desktop/tablet/mobile runtime verification.
-- Known unfinished work intentionally excluded: the four unresolved spell-design items listed above; Encounter Builder remains the existing placeholder.
+- Tests actually run: TypeScript compilation of the changed current-rules/data/persistence graph; all 86 current Spells checked for `TO HIT`; Cultural Skill/Passive Trait pill-rule checks; representative legacy Adventure Kit storage migration followed by write → reload → read verification; Vue script syntax transpilation; repository-relative import and authority/reference scans.
+- Not run: Full Vue/Vite production build and browser-based desktop/tablet/mobile runtime verification; the repository ZIP does not include installed dependencies, and the dependency-installation attempt timed out in this environment.
+- Known unfinished work intentionally excluded: the four unresolved v0.07 Spell-design items already documented for later approval; Encounter Builder remains the existing placeholder.

@@ -1,14 +1,14 @@
-# Brambleheart TTRPG — Beta 0.17
+# Brambleheart TTRPG — Beta 0.18
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.17 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.18 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.17
+## Current Site Update — Beta 0.18
 
-- Restores Rules breadcrumbs and removes redundant previous/next rule-page navigation.
-- Extends the established Core Rules presentation language across the remaining Rule Reader pages while preserving the dedicated Fundamentals layouts.
-- Restores Species-page summaries without repeating them in the Playable Species menu and removes the Woodlands count subtitle.
-- Standardizes pill UI text to uppercase.
+- Makes the canonical current-rules layer the runtime authority so approved v0.07 Spell `TO HIT` and balance updates are used consistently across Rules and character-facing views.
+- Corrects Trait, Talent, and Spell pill content, placement, and capitalization, including the exact `SKILL` / `CULTURAL` / `TRAIT` set for Cultural Traits that grant Skills and removal of `ABILITY` from Passive Traits.
+- Restores Rules breadcrumbs across both general and Fundamentals pages, rebuilds Introduction in the Fundamentals presentation, routes Core Rules back to Introduction, and removes obsolete rule-page navigation controls.
+- Removes Adventure Kit category/detail metadata from item cards and normalizes legacy saved Adventure Kit entries back to the package-level character state.
 
 ## Current Game Update — v0.07
 
@@ -87,9 +87,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.17`
-- package version: `0.17.0`
-- PWA cache: `v0.17`
+- Site Update / BUILD/export: `0.18`
+- package version: `0.18.0`
+- PWA cache: `v0.18`
 - Game Update: `v0.07`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

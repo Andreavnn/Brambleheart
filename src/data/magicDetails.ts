@@ -1,5 +1,5 @@
 import { loreSpells } from './magicOptions'
-import { ruleSourceDocuments } from './rulesSource'
+import { ruleSourceDocuments } from './rulesCurrent'
 
 export interface SpellDetail {
   name:string
