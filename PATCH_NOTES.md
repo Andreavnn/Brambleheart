@@ -1,28 +1,31 @@
-**Site Update — Beta 0.16**
+# Brambleheart Beta 0.17 — Rules Presentation & Game Data Update
 
-- Removed the decorative site icon from the bottom of pages and tightened the page-to-footer spacing around the divider, utility buttons, and build label.
-- Standardized current Ability UI terminology so Core-family pills display **CORE ACTION**, while Traits, Talents, Spells, and comparable Ability cards display a consistent **ABILITY** pill where applicable.
-- Added distinct accent identities to Heritage and Cultural Trait cards and changed Cultural Traits away from the Magic/Spell purple family.
-- Normalized page-header character positioning around the logo/header stage so the artwork does not shift down into page content when no background image is selected.
-- Changed Settings → Display → Backgrounds to switch-style exclusive choices and made header spacing respond dynamically to the selected Logo Size.
-- Added a Fundamentals-style section header and responsive Character Creation path graphic to Rules → Character Creation child pages.
-- Standardized visible update labels to **Site Updates** and **Game Updates**.
+**Site Update — Beta 0.17**
 
-**Game Update — v0.06**
+- Restored breadcrumb navigation beneath the main Rules navigation and removed the redundant previous/next navigation controls from Rules pages.
+- Applied the established Core Rules section-header/card presentation to the remaining Rule Reader pages without altering the dedicated Core Rules, Attributes & Skills, or Core Actions layouts.
+- Restored Species-page detail summaries while keeping those summaries hidden from the expandable Playable Species menu; removed the Woodlands Species-count subtitle.
+- Standardized pill UI text to uppercase across shared presentation surfaces.
 
-- Retired **ROOT** as an active Ability keyword and removed it from current Traits and Talents.
-- Removing ROOT does not change the affected Abilities’ printed costs, Triggers, Effects, requirements, or remaining keywords.
-- Removed the former ROOT once-per-family-per-round restriction. Ability Chains remain bounded by the existing once-per-specific-Ability-instance rule.
+**Game Update — v0.07**
+
+- Updated all 60 Heritage and Cultural Traits for the 12 current Woodlands Species from the approved v0.16 Species Trait document.
+- Renamed the Fundamentals section The Core Roll to The Rhythm Engine.
+- Added the global rule that effects from the same named Ability or Spell do not stack unless a more specific rule says otherwise.
+- Added an explicit TO HIT resolution to all 86 current Spells and standardized Automatic, Magical Strike, Renew the Heart, and mixed Strike + Renew resolution.
+- Applied the approved Spell balance pass across Flames, Wilds, Oaths, Frost, Hallows, Harmony, Life, and Invocation, including the universal one-active-summon rule.
+- Intentionally left unresolved spell-design decisions unchanged: Deathly Shadow Empower, Orb of Impurity damage/outcome order, Spectral Hand manipulation range, and Spectral Grasp Empower redesign.
 
 **Patch-note verification**
 
-- Previous Site Update reviewed: Beta 0.15
-- New Site Update: Beta 0.16
-- Previous Game Update reviewed: v0.05
-- New Game Update: v0.06
-- Current GitHub baseline reviewed: Yes — `c535bcf397257656f5f4efd5a6762923f0b57129`
+- Previous Site Update reviewed: Beta 0.16
+- New Site Update: Beta 0.17
+- Previous Game Update reviewed: v0.06
+- New Game Update: v0.07
+- Current GitHub baseline reviewed: Yes — `ecef3ea94b93f48dfea874526cdeda324c6514d5`
 - Source/diff reviewed: Yes
-- Site/Game history separation checked: Yes
+- Species Trait source reviewed: Yes — supplied 18-page v0.16 trait document
 - Version metadata synchronized: Yes
-- Tests actually run: Static source assertions, TypeScript syntax/semantic checks available without project dependencies, release/history checks, and repository-relative import audit. Full Vue/Vite production build and browser responsive runtime testing were not run in this environment.
-- Known unfinished work intentionally excluded: Encounter Builder remains the existing placeholder.
+- Tests actually run: TypeScript compilation of the current-rules spell authority and dependencies; 86-spell TO HIT/Hex validation; Vue script syntax transpilation; Species Trait count/name verification; release/version checks; repository-relative import scan using the available repository scaffold.
+- Not run: Full Vue/Vite production build and browser-based desktop/tablet/mobile runtime verification.
+- Known unfinished work intentionally excluded: the four unresolved spell-design items listed above; Encounter Builder remains the existing placeholder.

@@ -1,9 +1,9 @@
-const CACHE='brambleheart-shell-v0.16'
+const CACHE='brambleheart-shell-v0.17'
 const SHELL=['/','/assets/Logo.png','/icons/favicon-64.png','/icons/icon-192.png','/icons/icon-512.png','/icons/icon-maskable-512.png','/icons/apple-touch-icon.png','/manifest.webmanifest','/audio/brambleheart-launch.wav']
 const CACHEABLE_DESTINATIONS=new Set(['script','style','image','font','manifest','worker','audio'])
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.delete(CACHE).then(()=>caches.open(CACHE)).then(cache=>cache.addAll(SHELL)).catch(()=>undefined))
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>undefined))
   self.skipWaiting()
 })
 self.addEventListener('activate',event=>{

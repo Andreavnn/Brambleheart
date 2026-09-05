@@ -1,3 +1,10 @@
+# Brambleheart Beta 0.17
+
+- Restores breadcrumb navigation beneath the main Rules navigation and removes the redundant previous/next rule-page navigation controls.
+- Applies the established Core Rules presentation language to the remaining Rule Reader pages while leaving Core Rules, Attributes & Skills, and Core Actions on their existing dedicated layouts.
+- Restores Species-page detail summaries without repeating them in the expandable Playable Species menu and removes the Woodlands Species-count subtitle.
+- Standardizes pill UI text to uppercase across shared Rules and character-facing surfaces.
+
 # Brambleheart Beta 0.16
 
 - Removes the decorative site icon from the bottom-of-page utility area and tightens page/footer spacing so the divider and utility controls follow page content more closely.

@@ -19,6 +19,7 @@ const CURRENT_CORE_SECTIONS:RuleSourceSection[]=[
   section('ABILITIES',
     paragraph('Core Actions are the shared starting actions available to every character. Abilities are the Traits, Talents, Spells, equipment effects, and other rules that can modify a Core Action or trigger from events created during its Ability Chain.'),
     paragraph('Every Ability Chain begins with a Core Action. An Ability may then modify that Core Action or trigger another Ability as its printed rules allow.'),
+    paragraph('Unless otherwise stated, effects from the same named Ability or Spell do not stack. If a character would be affected by multiple instances of the same Ability or Spell at the same time, apply only one instance.'),
   ),
   section('KEYWORDS',
     paragraph('CORE: CORE identifies a Core Action. Each character may use one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action each round unless a more specific rule grants another use.'),
@@ -112,6 +113,7 @@ const CURRENT_MAGIC_SECTIONS:RuleSourceSection[]=[
     paragraph('MAGIC identifies spellcasting. A Lore keyword identifies the spell’s Lore. TOUCH, DIRECT, LINE, CONE, and ORB describe targeting or area geometry where applicable.'),
     paragraph('HEX identifies a hostile magical effect normally resisted by Renew the Heart when the spell says the target is Compelled. ENHANCE identifies a beneficial magical effect, usually applied to a legal friendly target without a hostile TO HIT roll.'),
     paragraph('SIGNATURE and CANTRIP identify the two explicit zero-Mana spell structures. Arcane Command already spends the character’s CORE Combat opportunity, so spells do not require a second action-limiting keyword.'),
+    paragraph('SUMMON: A caster may only have one summon spell active at a time. Casting another summon spell ends the previous summon unless a more specific rule states otherwise.'),
   ),
   section('ENHANCES & HEXES',
     paragraph('ENHANCE: DECLARE a legal friendly or self target, then apply the spell’s EFFECT and DURATION. An Enhance does not require a hostile TO HIT roll unless the spell specifically says otherwise.'),
@@ -372,14 +374,134 @@ const normalizeKeywordList=(value:string,currentSpell='')=>{
     .map(item=>item==='AUGMENT'?'ENHANCE':item==='REACTION'?'REACTIVE':item)
   const role=['HEX','ENHANCE'].filter(item=>source.includes(item))
   const geometry=['TOUCH','DIRECT','LINE','CONE','ORB'].filter(item=>source.includes(item))
-  const lore=spellLoreByName.get(currentSpell)?.toUpperCase()
+  const spellLore=spellLoreByName.get(currentSpell)
+  const lore=spellLore==='Oath'?'OATHS':spellLore?.toUpperCase()
   const items=[...role,'MAGIC',...(lore?[lore]:[]),...geometry]
   if(SIGNATURE_SPELLS.has(currentSpell))items.push('SIGNATURE')
   if(INVOCATION_CANTRIPS.has(currentSpell))items.push('CANTRIP')
   return Array.from(new Set(items)).join(' | ')
 }
 
-function safeSpellText(value:string,currentSpell=''){
+
+function currentSpellToHit(currentSpell:string,text:string){
+  const upper=text.toUpperCase()
+  const hasHex=/\bHEX\b/.test(upper)
+  const hasEnhance=/\bENHANCE\b/.test(upper)
+  const hasDamage=/\b(?:DEAL|SUFFER|SUFFERS|DAMAGE:)\b[^.]*\bDAMAGE\b|\b(?:DIRECT|STANDARD|LETHAL|FIRE|COLD|LIGHTNING|LIGHT|PSYCHIC|NATURE|ARCANE)\s+DAMAGE\b/i.test(text)
+  const hasCompelled=/\bCOMPELLED?\b/i.test(text)
+  const hostile=/\bTARGET(?:S|ED)?\s+(?:\[[^\]]+\]\s+)?(?:ENEMY|ALL ENEMY)|\bENEMY CHARACTERS?\b/i.test(text)
+  const friendlyOrUtility=/\bDECLARE:[^.]*(?:ally|friendly|cast on yourself|empty square|point of origin|summon|object|nonliving)/i.test(text)
+  const area=/\b(?:LINE|CONE|ORB)\s*\[/i.test(text)
+  if(['Smolder','Hypothermia','Scary Face'].includes(currentSpell))return'Renew the Heart. On a failed save, apply the Signature Hex.'
+  if(['Infernal Rebuke','Immolation'].includes(currentSpell))return'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the Hex effect.'
+  if(friendlyOrUtility&&!/\btarget all characters\b/i.test(text))return'Automatic. No roll required.'
+  if(hasEnhance&&!hostile)return'Automatic. No roll required.'
+  if(hasHex&&hasDamage)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward for the initial damage. Renew the Heart resolves the Hex effect.':'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the Hex effect.'
+  if(hasDamage&&hasCompelled)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward for the initial damage. Renew the Heart resolves the printed compelled or Hex effect.':'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the printed compelled or Hex effect.'
+  if(hasDamage)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward.':'Magical Strike against the target’s Ward.'
+  if(hasHex||hasCompelled)return'Renew the Heart. On a failed printed save, apply the Hex or compelled effect.'
+  if(hostile)return'Magical Strike against the target’s Ward.'
+  return'Automatic. No roll required.'
+}
+
+function patchCurrentSpellRules(currentSpell:string,value:string){
+  let text=value
+  const replace=(from:RegExp,to:string)=>{text=text.replace(from,to)}
+  if(spellLoreByName.get(currentSpell)==='Flames'){
+    text=text.replace(/(DECLARE:[^.!?]*?within\s*)\[(?:5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)\](\s+squares)/gi,'$1[4]$2')
+    text=text.replace(/(point of origin within\s*)\[(?:5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20)\](\s+squares)/gi,'$1[4]$2')
+  }
+  switch(currentSpell){
+    case 'Smolder':
+      replace(/maximum of \[5\] times per round/i,'maximum of [3] times per round')
+      break
+    case 'Flaming Shroud':
+      replace(/Any character that passes through, is within or ends a movement within \[1\] square of the caster suffers \[2\] lethal fire damage\. Additionally, all attacks with the shoot or magic keyword suffer \[-1\] on all strike rolls against the caster\./i,'Any enemy that passes through or moves through a square within [1] square of the caster suffers [1] lethal fire damage. Shooting attacks against the caster reduce Standard and Direct damage by [-1]. This does not reduce Lethal damage.')
+      if(/^RESTRICTION: This spell can only trigger smolder when cast/i.test(text.trim()))text='RESTRICTION: This spell can only trigger Smolder when cast.'
+      break
+    case 'Inferno Strike':
+      replace(/Deal \[5\] direct fire damage/i,'Deal [4] direct fire damage')
+      replace(/BURNED:/i,'BURN:')
+      replace(/\[2\] lethal fire damage at the start of the following round/i,'[1] lethal fire damage at the start of the following round')
+      replace(/DURATION: This effect lasts \[1d10\/2\] rounds, effects end at the start of the round\./i,'DURATION: This effect lasts [1d10/2] rounds, ending at the start of the resulting round.')
+      break
+    case 'Detonation':
+      if(/\bCOST:/i.test(text))text='COST: [8] mana DECLARE: Target [1] enemy character within [4] squares. TO HIT: Renew the Heart. EFFECT: On a failed Renew the Heart roll, roll [1d10] and consult the Detonation results. BURST (1–3): Deal [3] lethal fire damage immediately. At the start of the next round, the target must make another Renew the Heart roll; on failure, roll on the Detonation table again. PRESSURE (4–7): Nothing happens immediately. At the start of the next round, the target makes another Renew the Heart roll; on failure, roll on the Detonation table again, and on success the spell ends. CATASTROPHE (8–10): Deal [6] lethal fire damage immediately and the spell ends. DURATION: This effect lasts [1d10/2+1] rounds. Effects end at the start of the resulting round. KEYWORDS: HEX | MAGIC | FLAMES';
+      else if(/^(?:1[–-]3|4[–-]6|7[–-]9|10|DURATION:)/i.test(text.trim()))text=''
+      break
+    case 'Immolation':
+      replace(/\[3\] lethal fire damage/g,'[1] lethal fire damage')
+      replace(/A character cannot be affected by multiple instances of immolation at the same time or from different sources\./i,'A character cannot be affected by multiple instances of Immolation at the same time or from different sources. Immolation cannot affect more than [3] characters per caster at the same time.')
+      break
+    case 'Curse Of Patronus': replace(/compelled\[medium\]/i,'compelled[easy]'); break
+    case 'Entangling Roots':
+      replace(/\[-2\] to ward/i,'[-1] to Ward')
+      replace(/\[2\] lethal nature damage/i,'[1] lethal nature damage')
+      replace(/DURATION: This effect lasts \[1d10\] rounds, effects end at the start of the round\./i,'REPEAT SAVE: At the start of each round, a Rooted target uses Renew the Heart at Medium difficulty. On success, Rooted ends. DURATION: This effect lasts [1d10/2] rounds, ending at the start of the resulting round.')
+      break
+    case "Thunder’s Fury":
+      replace(/Increase the target weapons Damage by \[\+2\]/i,'Increase the target weapon’s damage by [+1]')
+      replace(/RESTRICTION:[^K]*?(?=KEYWORDS:)/i,'')
+      text=text.replace(/\bFLAMES\b/gi,'OATHS')
+      break
+    case 'Wind Scaring':
+      replace(/Increase the target weapons damage by \[\+2\]/i,'Increase the target weapon’s damage by [+1]')
+      if(/^DUALING ELEMENTS:/i.test(text.trim()))text=''
+      if(/^THUNDERSTORM:/i.test(text.trim()))text='THUNDERSTORM: If the target weapon is affected by both Thunder’s Fury and Wind Scaring, increase the total bonus damage from the combined effects by [+1]. The weapon has both damage types for the duration. KEYWORDS: ENHANCE | MAGIC | OATHS'
+      break
+    case 'Power Word: Reinforcement':
+      text=text.replace(/(EFFECT:[^K]*?)(?=KEYWORDS:)/i,'$1 DURATION: Until the target suffers its next incoming damaging attack, or until the start of its next turn, whichever comes first. ')
+      break
+    case 'Earth Grasp':
+      text=text.replace(/(EFFECT:[^K]*?)(?=KEYWORDS:)/i,'$1 DURATION: The totem remains active for [1d10/2+1] rounds, until destroyed, dismissed, or ended by the universal Summon rule. ')
+      break
+    case 'The Immortal Warrior':
+      if(/^DEFECTION:/i.test(text.trim())&&!/Defection can only be used once per round/i.test(text))text=text.replace(/KEYWORDS:/i,'RESTRICTIONS: Defection can only be used once per round. KEYWORDS:')
+      break
+    case 'Hypothermia':
+      text=text.replace(/(?=KEYWORDS:)/i,'RESTRICTIONS: A single character can suffer a maximum of [3] Hypothermia applications per round. ')
+      break
+    case 'Scary Face':
+      replace(/\[-1\] plus one-half the value of their magic level/i,'[-1]')
+      text=text.replace(/RESTRICTIONS:[^K]*?(?=KEYWORDS:)/i,'RESTRICTIONS: A character can only be affected by Scary Face once per round. ')
+      break
+    case 'Soulfire Bolt':
+      replace(/\[8\] psychic damage/i,'[6] psychic damage')
+      replace(/additional \[2\] lethal psychic damage/i,'additional [1] lethal psychic damage')
+      break
+    case 'Ballad Of The Courageous':
+      replace(/orb\[6\]/ig,'ORB[5]')
+      replace(/all attribute saves/ig,'Renew the Heart rolls')
+      text=text.replace(/(?=KEYWORDS:)/i,"DURATION: The bonus applies to the target’s next Renew the Heart roll, or until the start of their next turn, whichever comes first. ")
+      break
+    case 'Note Of Force':
+      replace(/\[7\] direct/i,'[6] direct')
+      replace(/\[-2\] to strike/ig,'[-1] to Strike')
+      break
+    case 'Ode To The Lores': replace(/\[-2\]/g,'[-4]'); break
+    case 'Song Of Storms':
+      replace(/DURATION: This effect lasts \[1d10\/2\] rounds, effects end at the start of the round\./i,'DURATION: This effect lasts [2] rounds.')
+      if(/^ROLLING STORM:/i.test(text.trim()))text='ROLLING STORM: Characters still within the Orb at the start of the following round use Renew the Heart at Difficult difficulty. On failure, suffer [4] direct lightning damage and the Speed reduction. Reduce the Renew the Heart difficulty by one step for each repeat, to a minimum of Easy.'
+      break
+    case 'Light Spear': replace(/\[6\] direct light damage/i,'[3] direct light damage'); break
+    case 'Shield Of Protection': replace(/\[10\] to guts/i,'[5] to Guts'); break
+    case 'Spectral Armament':
+      text=text.replace(/(?=KEYWORDS:)/i,'RESTRICTIONS: The summoned weapon obeys normal Might, hand, weapon, and equipment requirements. It cannot be sold or permanently retained. DURATION: Until the end of the encounter, until dismissed, or until ended by the universal Summon rule. ')
+      break
+    case 'Hearth Vow':
+      text=text.replace(/\s*Lasts until combat ends\.?/i,'')
+      break
+    case 'Chorus Of Harmony':
+      if(/\bCOST:|\bTRIGGER:/i.test(text))text='TRIGGER: When you successfully cast any Lore of Harmony spell. DECLARE: Choose [1] friendly character within [6] squares. EFFECT: The chosen character reduces the Mana cost of their next spell by [-1], to a minimum of [1]. RESTRICTIONS: A character cannot be affected by multiple instances of Chorus of Harmony from different sources. KEYWORDS: ENHANCE | MAGIC | HARMONY | SIGNATURE'
+      break
+    case 'Melody Of Superiority':
+      text=text.replace(/Prowess rolls/gi,'Agility rolls').replace(/Strength:/gi,'Might:').replace(/Endurance:/gi,'Hide:').replace(/Wisdom:/gi,'Lore:').replace(/Heroism:/gi,'Bravery:').replace(/Splendor:/gi,'Renew the Heart:').replace(/Renew the Heart: \[\+1\] to all attribute saves/gi,'Renew the Heart: [+1] to Renew the Heart rolls')
+      break
+  }
+  return text
+}
+
+function safeSpellText(value:string,currentSpell='',addToHit=false){
   let text=String(value||'')
     .replace(/\bDECLEAR:/gi,'DECLARE:')
     .replace(/\bRESTICTIONS?:/gi,'RESTRICTIONS:')
@@ -392,6 +514,13 @@ function safeSpellText(value:string,currentSpell=''){
     .replace(/\brenew the heart ability\b/gi,'Renew the Heart Core Action')
   if(SIGNATURE_SPELLS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
   if(INVOCATION_CANTRIPS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
+  text=patchCurrentSpellRules(currentSpell,text)
+  if(addToHit&&currentSpell&&!/\bTO HIT:/i.test(text)){
+    const toHit=currentSpellToHit(currentSpell,text)
+    const declare=text.match(/\bDECLARE:[^]*?(?=\b(?:EFFECT|TRIGGER|SUMMON|RESTRICTIONS?|DURATION|EMPOWER|KEYWORDS):|$)/i)
+    if(declare)text=text.replace(declare[0],`${declare[0].trim()} TO HIT: ${toHit} `)
+    else text=`TO HIT: ${toHit} ${text}`
+  }
   text=text.replace(/\bKEYWORDS?:\s*([^\n]+)/gi,(_match,keywords:string)=>`KEYWORDS: ${normalizeKeywordList(keywords,currentSpell)}`)
   return text.replace(/\s{2,}/g,' ').trim()
 }
@@ -399,16 +528,20 @@ function safeSpellText(value:string,currentSpell=''){
 function canonicalizeSpellDocument(documentKey:string){
   const doc=ruleSourceDocuments[documentKey]
   if(!doc)return
-  const known=new Set(Object.values(loreSpells).flat())
+  const known=new Map(Object.values(loreSpells).flat().map(name=>[name.toLowerCase(),name] as const))
   let currentSpell=''
+  let toHitAdded=false
   doc.sections=doc.sections.map(sourceSection=>({
     ...sourceSection,
     blocks:sourceSection.blocks.map(block=>{
       if(block.type!=='paragraph')return block
       const trimmed=block.text.trim()
-      if(known.has(trimmed))currentSpell=trimmed
-      return{...block,text:safeSpellText(block.text,currentSpell)}
-    }),
+      const canonicalSpell=known.get(trimmed.toLowerCase())
+      if(canonicalSpell){currentSpell=canonicalSpell;toHitAdded=false;return{...block,text:canonicalSpell}}
+      const addToHit=Boolean(currentSpell&&!toHitAdded&&/\b(?:DECLARE|TRIGGER|EFFECT|SUMMON):/i.test(block.text))
+      if(addToHit)toHitAdded=true
+      return{...block,text:safeSpellText(block.text,currentSpell,addToHit)}
+    }).filter(block=>block.type!=='paragraph'||block.text.trim().length>0),
   }))
 }
 
@@ -434,6 +567,7 @@ function canonicalizeCurrentTerminology(){
     .replace(/\bAUGMENT\b/g,'ENHANCE')
     .replace(/\bAugment\b/g,'Enhance')
     .replace(/\bWhisperstep\b/g,'Whisperster')
+    .replace(/\bTHE CORE ROLL\b/g,'THE RHYTHM ENGINE')
     .replace(/\bStealth (?:Condition|Penalty)\b/gi,'Armor Penalty')
     .replace(/(KEYWORDS?:\s*)ROOT\s*\|\s*/g,'$1')
     .replace(/\s*\|\s*ROOT(?=\s*(?:\||$))/g,'')

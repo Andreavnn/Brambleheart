@@ -7,6 +7,22 @@ export type GameUpdateEntry={version:string;date:string;title:string;summary:str
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-05',
+    title:'Species Traits & Spell Resolution',
+    summary:'Updates all Woodlands Heritage and Cultural Traits, standardizes spell TO HIT resolution, and adds the global same-name Ability and Spell stacking rule.',
+    changes:[
+      'All 60 current Heritage and Cultural Traits across the 12 Woodlands Species are updated to the approved v0.16 trait document.',
+      'Unless otherwise stated, effects from the same named Ability or Spell do not stack; when multiple instances would affect a character at the same time, apply only one instance.',
+      'The Fundamentals section formerly titled The Core Roll is renamed The Rhythm Engine.',
+      'Every current Spell now exposes one explicit TO HIT resolution: Automatic for willing/self/utility uses, Magical Strike for damaging attacks, Renew the Heart for Hexes, or both where damage and a separate hostile effect are resolved.',
+      'Lore of Flames receives its approved range and balance pass, including Smolder cap [3], Flaming Shroud damage/defense changes, Inferno Strike/Burn reductions, Detonation rebuild, and Immolation reductions and caster cap.',
+      'Wilds, Oaths, Frost, Hallows, Harmony, Life, and Invocation receive the approved spell corrections for damage, durations, defensive rolls, summon limits, and stale rule text.',
+      'A caster may only have one summon spell active at a time unless a more specific rule states otherwise.',
+      'Unresolved design items remain unchanged: Deathly Shadow Empower, Orb of Impurity missing damage/order, Spectral Hand [24]-square manipulation range, and Spectral Grasp Empower redesign.',
+    ],
+  },
+  {
+    version:'0.06',
     date:'2026-09-03',
     title:'ROOT Keyword Retirement',
     summary:'Retires ROOT as an active Ability keyword while keeping the existing once-per-Ability-instance chain rule as the global repeat limit.',

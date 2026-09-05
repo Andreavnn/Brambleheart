@@ -1,21 +1,25 @@
-# Brambleheart TTRPG — Beta 0.16
+# Brambleheart TTRPG — Beta 0.17
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.16 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.17 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.16
+## Current Site Update — Beta 0.17
 
-- Removes the decorative bottom-of-page site icon and tightens the page-to-footer utility spacing.
-- Standardizes current Ability presentation so Core-family pills display `CORE ACTION`, while applicable Traits, Talents, Spells, and other Ability cards display an `ABILITY` pill.
-- Gives Heritage and Cultural Trait cards distinct accent identities; Cultural Traits now use a teal identity rather than the Magic/Spell purple family.
-- Anchors page-header character artwork to the logo/header stage so background selection does not change its vertical relationship to page content.
-- Uses switch-style exclusive choices for Background selection and makes header space respond dynamically to the selected Logo Size.
-- Adds a Fundamentals-style Character Creation rules guide with a responsive path graphic to Character Creation child pages.
-- Uses Site Update / Game Update terminology consistently in the current update surfaces.
+- Restores Rules breadcrumbs and removes redundant previous/next rule-page navigation.
+- Extends the established Core Rules presentation language across the remaining Rule Reader pages while preserving the dedicated Fundamentals layouts.
+- Restores Species-page summaries without repeating them in the Playable Species menu and removes the Woodlands count subtitle.
+- Standardizes pill UI text to uppercase.
 
-## Current Game Update — v0.06
+## Current Game Update — v0.07
 
-Game Updates are versioned independently from Site Updates. Game Update v0.06 retires ROOT as an active Ability keyword. Current Traits and Talents no longer use ROOT, and the former ROOT once-per-family-per-round restriction no longer applies. The existing rule that a specific character’s copy of an Ability can resolve only once during an Ability Chain remains the global repeat limit.
+Game Updates are versioned independently from Site Updates. Game Update v0.07 updates Species Traits and Spell resolution while preserving unresolved spell-design decisions for later approval.
+
+
+### Species Traits & Spell Resolution
+
+All 60 current Heritage and Cultural Traits use the approved Woodlands v0.16 definitions. The Core Rules also state that effects from the same named Ability or Spell do not stack unless a more specific rule says otherwise.
+
+Every current Spell has an explicit TO HIT field. Hostile damage uses Magical Strike, Hexes use Renew the Heart, mixed damage/Hex effects separate those resolutions, and willing/self/utility Spells resolve automatically. The approved Spell balance pass is applied across all eight spell groups, and casters are limited to one active summon spell unless a specific rule overrides that limit.
 
 ### Trinkets
 
@@ -83,10 +87,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.16`
-- package version: `0.16.0`
-- PWA cache: `v0.16`
-- Game Update: `v0.06`
+- Site Update / BUILD/export: `0.17`
+- package version: `0.17.0`
+- PWA cache: `v0.17`
+- Game Update: `v0.07`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 
