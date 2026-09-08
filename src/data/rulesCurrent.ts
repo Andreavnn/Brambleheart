@@ -2,6 +2,8 @@ import './beta032Content'
 import { loreSpells } from './magicOptions'
 import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from './rulesSource'
 import { INVOCATION_CANTRIPS, RETIRED_OFFICIAL_SPELLS, SIGNATURE_SPELLS, canonicalSpellBaseMana } from '../rules/magicRules'
+import { ADVENTURE_KIT_SELL_WP, STARTING_WEALTH_WP } from '../rules/economy'
+import { WP_PER_SP } from '../rules/threadpieces'
 
 /**
  * Canonical current-rules boundary.
@@ -130,10 +132,13 @@ const CURRENT_MAGIC_SECTIONS:RuleSourceSection[]=[
     paragraph('Invocation Spells with an explicit base cost of [0] Mana are Cantrips. They display CANTRIP instead of 0 Mana and remain explicit zero-cost exceptions to the normal minimum spell cost.'),
   ),
   section('SPELL KEYWORDS',
-    paragraph('MAGIC identifies spellcasting. A Lore keyword identifies the spell’s Lore. TOUCH, DIRECT, LINE, CONE, and ORB describe targeting or area geometry where applicable.'),
-    paragraph('HEX identifies a hostile magical effect normally resisted by Renew the Heart when the spell says the target is Compelled. ENHANCE identifies a beneficial magical effect, usually applied to a legal friendly target without a hostile TO HIT roll.'),
-    paragraph('SIGNATURE and CANTRIP identify the two explicit zero-Mana spell structures. Arcane Command already spends the character’s CORE Combat opportunity, so spells do not require a second action-limiting keyword.'),
-    paragraph('SUMMON: A caster may only have one summon spell active at a time. Casting another summon spell ends the previous summon unless a more specific rule states otherwise.'),
+    paragraph('MAGIC identifies a spell or spellcasting ability. Like other abilities in Brambleheart, spells use keywords to define how they function. A Lore keyword identifies the Lore of Magic from which the spell is derived, while other keywords describe the spell’s structure, effect, or method of application.'),
+    paragraph('SIGNATURE identifies a spell that follows the Signature spell rules.'),
+    paragraph('CANTRIP identifies a spell that follows the Cantrip rules.'),
+    paragraph('ENHANCE identifies a beneficial magical effect, normally applied to a legal friendly subject.'),
+    paragraph('HEX identifies a hostile magical effect. If the spell states that the subject is Compelled, the effect is normally resisted with Renew the Heart.'),
+    paragraph('AREA OF EFFECT keywords, such as LINE, CONE, and ORB, define the shape or region affected by the spell.'),
+    paragraph('SUMMON identifies a spell that creates or calls a summoned entity. A caster may have only one SUMMON spell active at a time. Casting another SUMMON spell ends the previous summon unless a more specific rule states otherwise.'),
   ),
   section('SPELL RESOLUTION',
     paragraph('AUTOMATIC: Self-targeting, willing-ally, utility, summon, object, and other non-hostile spell effects resolve without an attack roll unless the Spell specifically says otherwise.'),
@@ -869,10 +874,81 @@ function canonicalizeCurrentTerminology(){
   }
 }
 
+
+const STARTING_WEALTH_SP=STARTING_WEALTH_WP/WP_PER_SP
+const ADVENTURE_KIT_SELL_SP=ADVENTURE_KIT_SELL_WP/WP_PER_SP
+const MAX_STARTING_WEALTH_SP=STARTING_WEALTH_SP+ADVENTURE_KIT_SELL_SP
+
+const CURRENT_SPARK_OVERVIEW=section('WHAT IS A SPARK?',
+  paragraph('ROLEPLAY: A Spark is your personality archetype — the way your character tends to think, feel, and act. It is a roleplaying anchor that rewards a consistent personality without limiting what the character may attempt.'),
+  paragraph('KEYWORDS: Every Spark uses two descriptive keywords. Premade Sparks provide their pair automatically; a custom Spark chooses any two from the current Spark Keyword Library.'),
+  paragraph('DEEDS: When you complete a Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+3] bonus Experience.'),
+)
+
+function installCurrentSparkAndDeedRules(){
+  const sparks=ruleSourceDocuments.sparks
+  if(sparks)sparks.sections=sparks.sections.map(sourceSection=>sourceSection.heading==='WHAT IS A SPARK?'?CURRENT_SPARK_OVERVIEW:sourceSection)
+
+  const deeds=ruleSourceDocuments.deeds
+  if(!deeds)return
+  const firstIndex=deeds.sections.findIndex(sourceSection=>sourceSection.heading==='DEEDS')
+  const deedBlocks=deeds.sections.filter(sourceSection=>sourceSection.heading==='DEEDS').flatMap(sourceSection=>sourceSection.blocks)
+  const resolutionBlocks=deeds.sections.find(sourceSection=>sourceSection.heading==='DEED RESOLUTION')?.blocks||[]
+  const structuredResolution=resolutionBlocks.flatMap(block=>{
+    if(block.type!=='paragraph')return[block]
+    if(/^Each Deed has two paths/i.test(block.text))return[paragraph('COMPLETION: Each Deed has two valid paths to completion — narrative or mechanical.')]
+    if(/^The narrative function/i.test(block.text))return[paragraph('NARRATIVE COMPLETION: A Deed may be fulfilled through story and character choice at the Watcher’s discretion. If the character’s actions clearly embody the Deed, the Watcher may declare it complete without requiring the listed mechanical objective.')]
+    if(/^The mechanical function/i.test(block.text))return[paragraph('MECHANICAL COMPLETION: The listed objective provides a clear rules-based way to complete the same Deed through rolls, Abilities, or defined actions.')]
+    if(/^Together, these paths/i.test(block.text))return[]
+    return[block]
+  })
+  const merged=section('DEEDS',...deedBlocks,...structuredResolution)
+  const remaining=deeds.sections.filter(sourceSection=>sourceSection.heading!=='DEEDS'&&sourceSection.heading!=='DEED RESOLUTION')
+  remaining.splice(Math.max(0,firstIndex),0,merged)
+  deeds.sections=remaining
+}
+
+const CURRENT_CHARACTER_CREATION_SECTIONS:Record<string,RuleSourceSection>={
+  '1. CHOOSE YOUR SPECIES':section('1. CHOOSE YOUR SPECIES',
+    paragraph('Your Species describes the Beastfolk lineage your hero belongs to and establishes the inherited features, learned traditions, and native language that shape the beginning of play.'),
+    paragraph('Choose one playable Species. Heritage Traits are inherent features of that Species. Cultural Traits represent learned traditions and may be exchanged during Character Creation according to the Culture Trait rules. Your Species also provides its native language, and every character knows Commonspeak.'),
+  ),
+  '2. CHOOSE YOUR SPARK':section('2. CHOOSE YOUR SPARK',
+    paragraph('Your Spark is the personality archetype that describes what most often moves your hero into action. Each Spark carries two keywords that describe its nature.'),
+    paragraph('Deeds reward meaningful actions during play. When a completed Deed shares a keyword with your Spark, it grants the normal reward plus the Spark-alignment bonus.'),
+  ),
+  '3. SELECT YOUR HOMELAND':section('3. SELECT YOUR HOMELAND',
+    paragraph('Your Homeland is the place, road, settlement, or community that shaped your hero before the adventure began. It provides context for the habits, knowledge, and practical experience your character carries into the wider world.'),
+    paragraph('Choose one Homeland. It grants two starting Skills at Rank [1]. A Homeland is not tied to Species and may represent birth, upbringing, travel, apprenticeship, exile, or another formative home.'),
+  ),
+  '4. CHOOSE YOUR FAITH & OATH':section('4. CHOOSE YOUR FAITH & OATH',
+    paragraph('Choose a Faith and an Oath to describe what your hero believes gives meaning to the world and the principle they have chosen to live by.'),
+    paragraph('Faith frames belief, ritual, and belonging. An Oath frames personal conviction and the standard your hero tries to uphold. Neither replaces roleplay; both give the Watcher and player clear anchors for choices, consequences, and character growth.'),
+  ),
+  '6. THE RHYTHM OF BODY & SPIRIT':section('6. THE RHYTHM OF BODY & SPIRIT',
+    paragraph('Choose one Path to decide how your hero first expresses exceptional ability. Each Path grants a different starting package, but all four lead into the same advancement system after Character Creation.'),
+    paragraph('Talents represent trained techniques, instincts, and specialized gifts. If your Path grants Talents, choose them from the Talent rules and meet any listed requirements.'),
+    paragraph('Magic begins with the Wind-Touched Path. Gain Magic Level [1], choose a Lore Attunement, gain that Lore’s Signature Spell, choose the starting Spells allowed by Magic Level, and then choose the Talent granted by the Path.'),
+  ),
+  '7. EQUIPMENT & ITEMS':section('7. EQUIPMENT & ITEMS',
+    paragraph(`Every character begins with an Adventure Kit and [${STARTING_WEALTH_SP}] sp of starting Threadpieces, equal to [${STARTING_WEALTH_WP.toLocaleString('en-US')}] wp, to spend on additional equipment.`),
+    paragraph(`You may return the Adventure Kit during Character Creation for an additional [${ADVENTURE_KIT_SELL_SP}] sp, equal to [${ADVENTURE_KIT_SELL_WP}] wp. Returning it increases the available starting budget to [${MAX_STARTING_WEALTH_SP}] sp before other purchases.`),
+    paragraph('Use the Weapons, Armor & Shields, and Adventuring Gear references when choosing equipment. Starting purchases use their normal listed prices and are recorded as owned equipment. The Adventure Kit already supplies its listed travel essentials, so purchase duplicates only when you want extra copies.'),
+  ),
+}
+
+function installCurrentCharacterCreationRules(){
+  const doc=ruleSourceDocuments['character-creation']
+  if(!doc)return
+  doc.sections=doc.sections.map(sourceSection=>CURRENT_CHARACTER_CREATION_SECTIONS[sourceSection.heading]||sourceSection)
+}
+
 function installCurrentRules(){
   if(ruleSourceDocuments['core-abilities'])ruleSourceDocuments['core-abilities'].sections=CURRENT_CORE_SECTIONS
   replaceBattleSections()
   if(ruleSourceDocuments['winds-of-magic'])ruleSourceDocuments['winds-of-magic'].sections=CURRENT_MAGIC_SECTIONS
+  installCurrentCharacterCreationRules()
+  installCurrentSparkAndDeedRules()
 
   if(ruleSourceDocuments.talents){
     ruleSourceDocuments.talents.sections=[

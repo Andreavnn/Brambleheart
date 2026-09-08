@@ -35,3 +35,12 @@ export const speciesImagePaths: Record<string,string> = {
   Urnath:'/assets/species/urnath.png',
   Virelan:'/assets/species/virelan.png',
 }
+
+export const startingPathOptions = [
+  {id:'magic',kicker:'WIND-TOUCHED',title:'Magic Level 1 + 1 Talent',description:'Attune to a Lore, gain its Signature Spell, choose starting Spells, then select one Talent.'},
+  {id:'talents',kicker:'GIFTED HEART',title:'2 Talents',description:'Build around training, instinct, and practiced gifts by selecting two Talents.'},
+  {id:'skills',kicker:'PRACTICED HAND',title:'2 New Skills + 1 Talent',description:'Learn two Skills you do not already know, then select one Talent.'},
+  {id:'attribute',kicker:'TEMPERED FORM',title:'Attribute Point + 1 Talent',description:'Strengthen one Attribute, then select one Talent.'},
+] as const
+
+export type StartingPathId=(typeof startingPathOptions)[number]['id']

@@ -1,14 +1,14 @@
-# Brambleheart TTRPG — Beta 0.20
+# Brambleheart TTRPG — Beta 0.21
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.20 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.21 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.20
+## Current Site Update — Beta 0.21
 
-- Consolidates related Rules pages in The Battles and Winds of Magic while preserving existing old rule URLs through explicit aliases.
-- Brings rule-page section styling, page-detail headers, callout typography, and content-link weight into closer alignment with Fundamentals.
-- Reworks To Damage with Damage Category/Guts graphics and an integrated worked formula, and reorganizes playable Species lore around a stable lore/art/quote layout.
-- Renames the Anthro Mundas reference to `Lore - Anthro Mundas` and updates internal rule links to the new canonical page routes.
+- Refines Introduction and Character Creation rules presentation with structured Principles of Play, visual Character Creation examples, shared Path cards, and corrected starting-equipment values.
+- Reworks Sparks & Deeds and the remaining Character Creation reference pages toward the Fundamentals visual language, combining Deeds and Deed Resolution and adding visual examples.
+- Collapses Species Trait panels by default and adds the requested per-Species Lore placeholder panel.
+- Replaces Spell Types & Targeting → Spell Keywords with the approved keyword definitions while retaining the existing v0.10 spell balance rules.
 
 ## Current Game Update — v0.10
 
@@ -90,9 +90,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.20`
-- package version: `0.20.0`
-- PWA cache: `v0.20`
+- Site Update / BUILD/export: `0.21`
+- package version: `0.21.0`
+- PWA cache: `v0.21`
 - Game Update: `v0.10`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

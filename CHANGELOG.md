@@ -1,3 +1,12 @@
+# Brambleheart Beta 0.21
+
+- Refines Fundamentals → Introduction by restoring normal-weight Watcher dialogue, renaming Core Principles of Play to Principles of Play, and presenting the principles as a structured bullet list.
+- Rebuilds Character Creation → Step-by-Step presentation with visual Heritage/Cultural Trait, Spark/Deed, Homeland, Faith/Oath, Path, and starting-equipment examples; the Path cards now share one data authority with Character Creation itself, and starting wealth is corrected to 30 sp / 1,500 wp with the Adventure Kit return worth 3 sp / 150 wp.
+- Reworks Sparks & Deeds and the remaining Character Creation reference pages toward the Fundamentals presentation, combines Deeds and Deed Resolution into one Deeds section, and adds three visual Deed examples.
+- Collapses Heritage and Cultural Trait panels by default on Species pages and adds the requested expandable Species Lore placeholder panel above them.
+- Replaces Winds of Magic → Spell Types & Targeting → Spell Keywords with the approved MAGIC, SIGNATURE, CANTRIP, ENHANCE, HEX, AREA OF EFFECT, and SUMMON definitions.
+- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.21 while Game Update remains v0.10.
+
 # Brambleheart Beta 0.20
 
 - Consolidates related Rules pages in The Battles and Winds of Magic, renaming the combined references to Encounter & Rounds, Combat Abilities & Targeting, Attacking & Defending, Magical Levels, and Spell Types & Targeting while preserving legacy rule URLs through explicit aliases.
