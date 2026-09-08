@@ -1,24 +1,28 @@
-# Brambleheart TTRPG — Beta 0.19
+# Brambleheart TTRPG — Beta 0.20
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.19 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.20 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.19
+## Current Site Update — Beta 0.20
 
-- Adds the canonical Game Update history to Rules → References → Changes & Updates and presents Game Updates before Site Updates on News.
-- Adds shared Previous/Next navigation to rule pages while retaining breadcrumbs and section-to-section progression.
-- Adds a temporary interactive Attribute allocation example to Character Creation → Step-by-Step → Step 5, with no persistence into Character Creation or saved characters.
-- Replaces the empty Damage − Guts rule heading with a visual formula and Selu example.
+- Consolidates related Rules pages in The Battles and Winds of Magic while preserving existing old rule URLs through explicit aliases.
+- Brings rule-page section styling, page-detail headers, callout typography, and content-link weight into closer alignment with Fundamentals.
+- Reworks To Damage with Damage Category/Guts graphics and an integrated worked formula, and reorganizes playable Species lore around a stable lore/art/quote layout.
+- Renames the Anthro Mundas reference to `Lore - Anthro Mundas` and updates internal rule links to the new canonical page routes.
 
-## Current Game Update — v0.08
+## Current Game Update — v0.10
 
-Game Updates are versioned independently from Site Updates. Game Update v0.08 standardizes Spell TO HIT wording, adds Heart to printed Spell damage values, and defines the category of that added Heart damage.
+Game Updates are versioned independently from Site Updates. Game Update v0.10 completes the post-TO HIT Spell balance review and makes the current spell roster, base Mana costs, and primary-versus-On-Going damage rules authoritative.
 
-### Spell Strikes & Heart Damage
+### Complete Magic Rebalance
 
-Magic Strike Spells state the complete opposed roll: `(3d10) + Control + condition(s)` against the target’s `(3d10) + Ward + condition(s)`. Spells whose resolution uses Renew the Heart state that save directly and apply the Signature Hex on failure.
+The current built-in roster contains 76 Spells: 13 Invocations and 9 Spells in each of the seven attunable Lores. Flaming Shroud, Nature’s Fury, Entangling Roots, Earth Grasp, Frozen Blood, Deathly Shadow, Orb Of Impurity, Ode To The Lores, and Chant Of Sanctuary are retired from the current roster. Smolder is replaced by the Flames Signature Spell Immolation; the former ordinary Immolation is retired.
 
-Printed Spell damage values add Heart. Unless a Spell specifically states otherwise, the Heart portion is Standard damage even when the printed damage value is Direct, Lethal, or another listed damage type/category; the printed portion retains its own listed category and type.
+Current built-in Spell costs come from one canonical base-Mana table before Lore Attunement and equipment modifiers. Signature Spells and Invocation Cantrips remain zero-cost exceptions; ordinary Spells retain the normal minimum final Mana cost after modifiers.
+
+A damaging Spell adds Heart once to its primary damage value unless a more specific rule states otherwise. The Heart portion is Standard while the Spell’s printed portion keeps its listed Damage Category and damage type. On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summoned damage uses exactly its printed value and does not add Heart, Fury, Accuracy, or another normal Attribute-derived damage addition unless its rule explicitly says so.
+
+The completed pass also applies the approved individual cost, damage, range, save, duration, stacking, summon, and wording changes across Invocation, Flames, Wilds, Oaths, Frost, Hallows, Harmony, and Life. Hybrid Spells separate initial Magic Strike resolution from later Renew the Heart riders, and persistent effects state their repeat-save and repeat-damage behavior explicitly.
 
 ### Trinkets
 
@@ -86,10 +90,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.19`
-- package version: `0.19.0`
-- PWA cache: `v0.19`
-- Game Update: `v0.08`
+- Site Update / BUILD/export: `0.20`
+- package version: `0.20.0`
+- PWA cache: `v0.20`
+- Game Update: `v0.10`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

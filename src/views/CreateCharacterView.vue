@@ -280,24 +280,24 @@ const selectedPathName=computed(()=>({magic:'Wind-Touched',talents:'Gifted Heart
 const secondaryStats:Record<AttributeId,Array<{name:string;formula:string;description:string;slug?:string}>>={
   agility:[
     {name:'Accuracy',formula:'Agility Rank',description:'Accuracy adds to ranged attack damage.',slug:'to-damage'},
-    {name:'Aim',formula:'Agility Modifier',description:'Aim is the stat used by ranged Strike rolls.',slug:'to-strike'},
-    {name:'Speed',formula:'Agility Modifier +2',description:'Speed equals 2 + the Agility modifier and is used when determining movement and Initiative.',slug:'rounds-turns'},
+    {name:'Aim',formula:'Agility Modifier',description:'Aim is the stat used by ranged Strike rolls.',slug:'attacking-defending'},
+    {name:'Speed',formula:'Agility Modifier +2',description:'Speed equals 2 + the Agility modifier and is used when determining movement and Initiative.',slug:'encounter-rounds'},
   ],
   might:[
     {name:'Fury',formula:'Might Rank',description:'Fury adds to melee damage where a rule calls for it.',slug:'to-damage'},
-    {name:'Brawl',formula:'Might Modifier',description:'Brawl is the stat used by melee Strike rolls.',slug:'to-strike'},
+    {name:'Brawl',formula:'Might Modifier',description:'Brawl is the stat used by melee Strike rolls.',slug:'attacking-defending'},
   ],
   hide:[
     {name:'Guts',formula:'Hide Rank',description:'Guts reduces incoming damage according to the damage rules.',slug:'to-damage'},
-    {name:'Ward',formula:'Hide Modifier',description:'Ward is used for opposed defensive rolls.',slug:'to-ward'},
+    {name:'Ward',formula:'Hide Modifier',description:'Ward is used for opposed defensive rolls.',slug:'attacking-defending'},
   ],
   lore:[
     {name:'Power',formula:'Lore Rank',description:'Power adds to magical attack damage where a rule calls for it.',slug:'to-damage'},
-    {name:'Control',formula:'Lore Modifier',description:'Control is used by magical Strike rolls and magical interactions.',slug:'to-strike'},
+    {name:'Control',formula:'Lore Modifier',description:'Control is used by magical Strike rolls and magical interactions.',slug:'attacking-defending'},
   ],
   bravery:[
-    {name:'Heart',formula:'Bravery Rank',description:'Heart is the Bravery Rank and contributes to Magic Regen.',slug:'rounds-turns'},
-    {name:'Spirit',formula:'Bravery Modifier',description:'Spirit is the Bravery modifier and contributes to the Mana Pool.',slug:'rounds-turns'},
+    {name:'Heart',formula:'Bravery Rank',description:'Heart is the Bravery Rank and contributes to Magic Regen.',slug:'encounter-rounds'},
+    {name:'Spirit',formula:'Bravery Modifier',description:'Spirit is the Bravery modifier and contributes to the Mana Pool.',slug:'encounter-rounds'},
   ],
 }
 function secondaryValue(name:string){
@@ -837,7 +837,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
         <template v-else-if="stepId==='lore'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Lore Attunement</h1></div></div>
-          <details class="creation-info-panel help-panel" :open="creationTips"><summary>Magic Level 1 &amp; Mana</summary><div class="creation-info-body"><p>Magic draws on Mana. At Magic Level 1, your hero gains magical spellcasting and attunes to one Lore. Spells from the attuned Lore reduce their Mana cost by 2, and the Lore’s Signature Spell is gained automatically and tracked separately from chosen Lore Spells.</p><RouterLink to="/rules/read/lore-attunement" class="inline-rule-link">Read Lore Attunement →</RouterLink></div></details>
+          <details class="creation-info-panel help-panel" :open="creationTips"><summary>Magic Level 1 &amp; Mana</summary><div class="creation-info-body"><p>Magic draws on Mana. At Magic Level 1, your hero gains magical spellcasting and attunes to one Lore. Spells from the attuned Lore reduce their Mana cost by 2, and the Lore’s Signature Spell is gained automatically and tracked separately from chosen Lore Spells.</p><RouterLink to="/rules/read/magical-levels" class="inline-rule-link">Read Magical Levels →</RouterLink></div></details>
           <label class="field-label">Lore Attunement<select v-model="form.loreAttunement" class="field-control"><option value="">Select Lore Attunement</option><option v-for="lore in availableAttunableLores" :key="lore" :value="lore">{{ lore }}</option></select></label>
           <template v-if="form.loreAttunement"><article class="choice-summary lore-fluff-card"><h2>Lore of {{ form.loreAttunement }}</h2><p>{{ loreDescription(form.loreAttunement) }}</p></article><article v-if="signatureDetail" class="spell-detail-card signature-spell-card" :class="spellLoreClass(signatureDetail.name)"><div class="spell-detail-head"><div><span class="eyebrow">SIGNATURE SPELL</span><h2>{{ signatureDetail.name }}</h2></div><div class="trait-title-costs"><span class="mana-badge">{{ spellCostText(signatureDetail.name) }}</span></div></div><p class="rule-flavor">{{ signatureDetail.flavor }}</p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(signatureDetail.rules)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in abilityFeaturePillKeywords(signatureDetail.keywords)" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div></article></template>
         </template>

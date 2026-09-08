@@ -3,6 +3,7 @@ import { gearShopItems as legacyGearShopItems } from '../data/characterOptions'
 import { canonicalTalentName } from '../data/talentCategories'
 import type { EquipmentStatBonuses } from '../data/equipment'
 import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, economyGearCatalog, isTrinketGear, protectiveGearKind } from '../rules/economy'
+import { LEGACY_SIGNATURE_SPELLS, RETIRED_OFFICIAL_SPELLS, SIGNATURE_SPELLS } from '../rules/magicRules'
 import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
@@ -18,6 +19,7 @@ const wholeWp=(value:unknown)=>Math.max(0,Math.floor(Number(value)||0))
 const skillAliases:Readonly<Record<string,string>>={Whisperstep:'Whisperster',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
 function canonicalSavedSkill(value:string){const source=String(value||'').replace(/^Crafting\s*\(Blacksmithing\)$/i,'Tradeskill (Blacksmithing)').trim();return skillAliases[source]||source}
 function canonicalEquipmentDetail(value:string|undefined){return String(value||'').replace(/\bStealth Condition\b/gi,'Armor Penalty').replace(/\bStealth Penalty\b/gi,'Armor Penalty')}
+function normalizeLoreSpellSelection(values:string[]|undefined){return Array.from(new Set((values||[]).filter(Boolean).filter(name=>!RETIRED_OFFICIAL_SPELLS.has(name)&&!SIGNATURE_SPELLS.has(name)&&!LEGACY_SIGNATURE_SPELLS.has(name))))}
 
 export function characterCreationComplete(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>){if(typeof record.creationComplete==='boolean')return record.creationComplete;if(record.status&&validStatuses.has(record.status))return record.status!=='incomplete';if(record.draft)return false;return true}
 export function characterStatus(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>):CharacterStatus{if(!characterCreationComplete(record))return'incomplete';if(record.status==='approved')return'approved';if(record.status==='unapproved')return'unapproved';return record.locked?'approved':'unapproved'}
@@ -61,7 +63,7 @@ export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord
   const skills=(record.skills||[]).map(canonicalSavedSkill),pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
   const skillRanks=Object.fromEntries(Object.entries(record.skillRanks||{}).map(([key,value])=>[canonicalSavedSkill(key),value]))
   const cultureSkillChoices=Object.fromEntries(Object.entries(record.cultureSkillChoices||{}).map(([key,value])=>[key,canonicalSavedSkill(value)]))
-  return{...record,equipment,adventureKit:record.adventureKit!==false,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  return{...record,equipment,adventureKit:record.adventureKit!==false,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),spells:normalizeLoreSpellSelection(record.spells),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.');const source=raw as Partial<CharacterRecord>;if(!source.name||!source.attributes)throw new Error('Invalid Brambleheart character data.');const now=new Date().toISOString();return normalizeCharacterRecord({...source,id:crypto.randomUUID(),name:String(source.name),attributes:source.attributes,createdAt:now,updatedAt:now,pinned:Boolean(source.pinned)} as CharacterRecord)}
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{return(JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)}

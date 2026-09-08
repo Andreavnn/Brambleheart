@@ -8,6 +8,32 @@ export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
     date:'2026-09-08',
+    title:'Complete Magic Rebalance',
+    summary:'Completes the post-TO HIT spell balance pass with a smaller current spell roster, canonical base Mana costs, revised primary and On-Going damage handling, and final spell-by-spell tuning across all eight spell groups.',
+    changes:[
+      'The current built-in spell roster contains 76 Spells: 13 Invocations and 9 Spells in each current Lore. Flaming Shroud, Nature’s Fury, Entangling Roots, Earth Grasp, Frozen Blood, Deathly Shadow, Orb Of Impurity, Ode To The Lores, and Chant Of Sanctuary are retired from the current roster.',
+      'Smolder is replaced by the Flames Signature Spell Immolation. The former ordinary Immolation is retired; legacy saved Smolder/retired Signature selections are removed at character normalization so current Signature Spells remain derived from Lore.',
+      'One canonical base-Mana table now defines all current built-in Spell costs before Lore Attunement and equipment modifiers, including the revised costs from this balance pass.',
+      'Heart is added once to a Spell’s primary damage value. On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summoned damage uses exactly its printed value unless a more specific rule explicitly adds an Attribute-derived bonus.',
+      'Flames, Wilds, Oaths, Frost, Hallows, Harmony, Life, and Invocation receive the approved damage, range, save, duration, stacking, summon, and source-text corrections from the completed spell review.',
+      'Hybrid Spells separate their initial Magic Strike from any later Renew the Heart rider; area and persistent effects state their repeat-save and repeat-damage behavior explicitly.',
+    ],
+  },
+  {
+    version:'0.09',
+    date:'2026-09-08',
+    title:'Damage Additions & Categories',
+    summary:'Defines damage additions by the action or effect that deals damage rather than by Ability keywords and clarifies how Damage Categories, damage types, Guts, and Spell Heart damage interact.',
+    changes:[
+      'Damage additions now come from the printed action, Ability, or Spell. TOUCH, SHOOT, MAGIC, and other keywords do not add damage by themselves.',
+      'Melee Strike adds Fury to weapon damage, Range Strike adds Accuracy to weapon damage, and damaging Spells add Heart to their printed damage value unless a more specific rule states otherwise.',
+      'Standard, Direct, and Lethal remain Damage Categories that determine how Guts applies; fire, frost, nature, and similar damage types remain separate from those categories.',
+      'When a Spell adds Heart to a damage value, the Heart portion is Standard unless the Spell specifically states otherwise; the Spell’s printed damage value keeps its listed category and damage type.',
+    ],
+  },
+  {
+    version:'0.08',
+    date:'2026-09-08',
     title:'Spell Strikes & Heart Damage',
     summary:'Standardizes hostile Spell TO HIT wording, adds Heart to printed Spell damage values, and defines how that added Heart damage is categorized.',
     changes:[

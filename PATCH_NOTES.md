@@ -1,30 +1,32 @@
-# Brambleheart Beta 0.19 — Rules Navigation, Spell Damage & Reference Updates
+# Brambleheart Beta 0.20 — Rules Consolidation & Complete Magic Rebalance
 
-**Site Update — Beta 0.19**
+**Site Update — Beta 0.20**
 
-- Rules → References → Changes & Updates now uses the canonical Game Update history directly. The current Game Update appears first and expanded; archived updates remain collapsed beneath it. The standalone Game Updates page uses the same shared presentation rather than maintaining a duplicate implementation.
-- Rule pages now use one shared Previous/Next navigation sequence in addition to breadcrumbs. Navigation moves through pages inside a rule section and carries the final page of each section into the next rule section; Core Actions advances to Character Creation.
-- Character Creation → Step-by-Step now gives numbered steps a stronger visual hierarchy. Step 5 replaces the static Attribute table with a self-contained interactive five-point Attribute allocator modeled on Character Creation; its values are intentionally temporary and reset on route exit or reload.
-- News now presents the current Game Update before the latest Site Update.
+- Rules → References labels Anthro Mundas as `Lore - Anthro Mundas`. General rule pages use a more consistent Fundamentals-style section treatment, dedicated Fundamentals headers display their catalog detail text, Watcher/Selu callouts use normal body typography with only their labels emphasized, and rule-content navigation links are no longer unnecessarily bold where they function as links rather than headings.
+- The Battles is consolidated into `Encounter & Rounds`, `Combat Abilities & Targeting`, `Attacking & Defending`, `To Damage`, and `Health`. Winds of Magic uses `Magical Levels` and `Spell Types & Targeting`. Existing old rule URLs resolve through explicit aliases rather than duplicate page implementations.
+- To Damage uses visual Damage Category/Guts comparisons and an integrated Damage − Guts example. The Spell Heart rule is presented once in a dedicated callout and now distinguishes primary Spell damage from On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summon damage.
+- Playable Species pages use a stable lore/art/quote layout with quote-area pill UI removed, and internal rule links target the canonical combined-page routes.
 
-**Game Update — v0.08**
+**Game Update — v0.10**
 
-- Hostile Spells resolved by Magic Strike now state the complete TO HIT roll: `(3d10) + Control + condition(s)` against the target’s `(3d10) + Ward + condition(s)`.
-- Spells resolved through Renew the Heart use the approved save wording: `Renew the Heart save. On a failed save, apply the Signature Hex.`
-- Printed Spell damage clauses now add Heart to the listed damage value. The added Heart portion is Standard damage unless a Spell specifically states otherwise; the printed damage amount retains its listed category and damage type.
-- The Battles → To Damage → Damage Category now states that Heart-damage rule explicitly. The former empty `Damage − Guts = Total Damage` section heading is replaced by a visual formula and Selu example.
-- Updated Site Update / BUILD / character export, package, README, changelog, patch-note, and PWA cache metadata to Beta 0.19; Game Update metadata advances to v0.08.
+- Completes the post-TO HIT spell balance pass across Invocation, Flames, Wilds, Oaths, Frost, Hallows, Harmony, and Life. The current built-in roster contains 76 Spells: 13 Invocations and 9 Spells in each current Lore.
+- Retires `Flaming Shroud`, `Nature’s Fury`, `Entangling Roots`, `Earth Grasp`, `Frozen Blood`, `Deathly Shadow`, `Orb Of Impurity`, `Ode To The Lores`, and `Chant Of Sanctuary` from the current roster. `Smolder` is replaced by the Flames Signature Spell `Immolation`; the former ordinary `Immolation` is retired.
+- Adds one canonical base-Mana table for the current built-in spell roster before Lore Attunement and equipment modifiers. Signature Spells and Invocation Cantrips remain zero-cost exceptions and ordinary Spells retain the normal minimum final Mana cost after modifiers.
+- Adds Heart once to a Spell’s primary damage value unless a more specific rule states otherwise. On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summoned damage uses exactly its printed value and does not add Heart or another normal Attribute-derived damage addition unless explicitly stated.
+- Applies the approved individual damage, range, save, duration, stacking, summon, and source-text corrections, including explicit separation of initial Magic Strike resolution from later Renew the Heart riders on hybrid Spells.
+- Normalizes legacy saved Lore selections at the character-storage boundary so retired Spells, the legacy `Smolder` Signature selection, and current Signature Spells do not persist as ordinary learned Lore Spells.
+- Site Update / BUILD / character export, package, and PWA cache metadata remain Beta 0.20; Game Update metadata advances to v0.10.
 
 **Patch-note verification**
 
-- Previous Site Update reviewed: Beta 0.18
-- New Site Update: Beta 0.19
-- Previous Game Update reviewed: v0.07
-- New Game Update: v0.08
-- Current GitHub baseline reviewed: Yes — `6a158f1a689a2624f6f8071bd8ec9219b6179ea2`
+- Previous Site Update reviewed: Beta 0.19
+- New Site Update: Beta 0.20
+- Previous Game Update reviewed: v0.09
+- New Game Update: v0.10
+- Current GitHub baseline reviewed: Yes — `9a4e3a401f0d668c6c57568436d5d9fa1c4f4103`
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Node 22 execution audit of the canonical current-rules/data graph; all 86 current Spells checked for exactly one canonical `TO HIT` resolution; 41 printed Deal/Suffer Spell-damage clauses checked for `Heart +` inclusion; Fundamentals and full rule-neighbor navigation target audit; Game Update ordering/current-version audit; changed Vue script syntax checks; changed scoped-CSS parse checks; changed template tag-balance checks; repository-relative import scan; `git diff --check`.
-- Not run: Full Vue/Vite production build and browser-based desktop/tablet/mobile runtime verification. Dependency installation was attempted with `npm install --no-package-lock --ignore-scripts` and timed out before dependencies were installed.
-- Known unfinished work intentionally excluded: the four unresolved spell-design items already documented for later approval; Encounter Builder remains the existing placeholder.
+- Tests actually run: TypeScript compilation of the changed current-rules/magic/data/storage graph; complete 76-Spell roster/cost/TO HIT/Heart/On-Going and spell-specific regression audit; 76-entry `spellDetails` authority audit; retired/legacy spell reference scan; representative legacy Spell selection load → normalize/write → reload verification; changed Vue script syntax checks; changed Vue template/style structural checks; repository-relative import scan; release/version synchronization audit.
+- Not run: Full Vue/Vite production build and browser-based desktop/tablet/mobile runtime verification. Dependency installation was attempted for the production build and timed out before `node_modules` was installed.
+- Known unfinished work intentionally excluded: `Spectral Hand` retains its existing `[24]`-square manipulation range because no final replacement range was approved; Encounter Builder remains the existing placeholder.

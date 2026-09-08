@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.20
+
+- Consolidates related Rules pages in The Battles and Winds of Magic, renaming the combined references to Encounter & Rounds, Combat Abilities & Targeting, Attacking & Defending, Magical Levels, and Spell Types & Targeting while preserving legacy rule URLs through explicit aliases.
+- Brings general rule-page presentation closer to the Fundamentals layout, restores page-summary text to dedicated Fundamentals headers, normalizes Watcher/Selu callout typography, and reduces unnecessary bolding in rule-content navigation links.
+- Rebuilds To Damage presentation with category/Guts graphics, an integrated Damage − Guts example, and a dedicated Spell Heart-damage callout while defining primary versus On-Going Spell damage from one current-rules authority.
+- Reorganizes playable Species lore into a stable lore column beside artwork with the Species quote beneath the image, removes the quote-area pill UI, and renames the References entry to Lore - Anthro Mundas.
+- Completes the current magic rebalance: the built-in roster is reduced to 76 Spells, Smolder becomes the Flames Signature Spell Immolation, nine superseded Spells are retired, and one canonical base-Mana table supplies current built-in Spell costs.
+- Applies the approved spell-by-spell damage, save, duration, stacking, range, summon, and source-text changes across Invocation, Flames, Wilds, Oaths, Frost, Hallows, Harmony, and Life; primary Spell damage adds Heart once while later On-Going/recurring damage uses its printed value unless explicitly overridden.
+- Migrates legacy saved Lore selections at character normalization so retired Spells and legacy Signature selections do not continue into the current spell model.
+- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.20 and advances Game Update metadata to v0.10.
+
 # Brambleheart Beta 0.19
 
 - Adds current Game Updates to Rules → References → Changes & Updates, ordered newest first with the current update expanded, and places the current Game Update above the Site Update on News.

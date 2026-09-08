@@ -29,7 +29,7 @@ export const MAGIC_LEVEL_PROGRESSION:ReadonlyArray<{level:number;lore:number;inv
 ]
 
 export const SIGNATURE_SPELLS=new Set([
-  'Smolder',
+  'Immolation',
   'Flourishing Earth',
   'Oath Of Protection',
   'Hypothermia',
@@ -39,12 +39,47 @@ export const SIGNATURE_SPELLS=new Set([
 ])
 
 export const INVOCATION_CANTRIPS=new Set([
-  'Whispering Wind',
-  'Veil Of Glimmer',
-  'Spectral Hand',
   'Forager’s Gift',
   'Mendcraft',
+  'Spectral Hand',
+  'Veil Of Glimmer',
+  'Whispering Wind',
 ])
+
+/** Current built-in base Mana costs before Lore Attunement or equipment modifiers. */
+export const SPELL_BASE_MANA_COSTS:Readonly<Record<string,number>>={
+  // Invocation
+  'Forager’s Gift':0, Mendcraft:0, 'Spectral Hand':0, 'Veil Of Glimmer':0, 'Whispering Wind':0,
+  'Soothing Bloom':1, 'Barkskin Ward':2, 'Hearth Vow':2, 'Kinbound Call':2, Shadeveil:2, 'Spectral Armament':2, 'Unraveling Word':2, 'Wyrd Bolt':3,
+  // Flames
+  Immolation:0, 'Scorching Hand':4, 'Blazing Weapon':5, 'Fire Bolt':6, 'Infernal Rebuke':6, 'Inferno Strike':6, 'Cascading Fire':7, 'Sun Burst':8, Detonation:9,
+  // Wilds
+  'Flourishing Earth':0, 'Elemental Armor':4, 'Curse Of Patronus':5, 'Wild Shape':6, 'Moon Bolt':7, 'Blessing Of The Wilds':8, 'Hallowing Thorns':9, 'Breath Of Life':10, 'Call Of The Beast':11,
+  // Oath
+  'Oath Of Protection':0, 'Vow Of Elements':4, 'Wind Scaring':4, 'Word Of Challenge':4, 'Thunder’s Fury':5, 'Power Word: Reinforcement':6, 'Primal Surge':7, 'The Immortal Warrior':9, Oathkeeper:10,
+  // Frost
+  Hypothermia:0, 'Mind Freeze':3, 'Biting Blade':4, 'Frost Shock':4, Frostbite:6, 'Torrent Of Frost':7, 'Ice Wall':8, 'Polar Vortex':8, 'Icy Tomb':10,
+  // Hallows
+  'Scary Face':0, 'Hex Of Misfortune':4, 'Eerie Apparition':5, 'Pierce The Veil':6, 'Shroud Of Despair':6, 'Soulfire Bolt':6, 'Spectral Grasp':7, 'Spectral Reckoning':9, 'Vortex Of Shadows':10,
+  // Harmony
+  'Chorus Of Harmony':0, 'Ballad Of The Courageous':3, 'Hymn Of Scorn':5, 'Note Of Force':5, 'Drums Of War':6, 'Melody Of Superiority':7, 'Chant Of Resilience':8, 'Song Of Storms':10, 'Symphony Of Valor':11,
+  // Life
+  Regrowth:0, 'Divine Grasp':5, 'Light Spear':5, 'Radiant Breath':6, 'Shield Of Protection':7, 'Touch Of Life':8, 'Mass Restoration':9, Sanctuary:11, 'Spare The Perishing':12,
+}
+
+/** Official spells retired by the Complete Magic Rebalance. */
+export const RETIRED_OFFICIAL_SPELLS=new Set([
+  'Flaming Shroud', 'Nature’s Fury', 'Entangling Roots', 'Earth Grasp', 'Frozen Blood',
+  'Deathly Shadow', 'Orb Of Impurity', 'Ode To The Lores', 'Chant Of Sanctuary',
+])
+
+/** Old Signature name kept only at the save-data/source migration boundary. */
+export const LEGACY_SIGNATURE_SPELLS=new Set(['Smolder'])
+
+export function canonicalSpellBaseMana(name:string,fallback:number|null|undefined){
+  const value=SPELL_BASE_MANA_COSTS[String(name||'')]
+  return Number.isFinite(value)?value:(fallback??null)
+}
 
 function clampLevel(level:number){return Math.max(0,Math.min(MAGIC_LEVEL_MAX,Math.floor(Number(level)||0)))}
 
