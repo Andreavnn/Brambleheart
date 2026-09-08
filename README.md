@@ -1,25 +1,24 @@
-# Brambleheart TTRPG — Beta 0.18
+# Brambleheart TTRPG — Beta 0.19
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.18 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.19 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.18
+## Current Site Update — Beta 0.19
 
-- Makes the canonical current-rules layer the runtime authority so approved v0.07 Spell `TO HIT` and balance updates are used consistently across Rules and character-facing views.
-- Corrects Trait, Talent, and Spell pill content, placement, and capitalization, including the exact `SKILL` / `CULTURAL` / `TRAIT` set for Cultural Traits that grant Skills and removal of `ABILITY` from Passive Traits.
-- Restores Rules breadcrumbs across both general and Fundamentals pages, rebuilds Introduction in the Fundamentals presentation, routes Core Rules back to Introduction, and removes obsolete rule-page navigation controls.
-- Removes Adventure Kit category/detail metadata from item cards and normalizes legacy saved Adventure Kit entries back to the package-level character state.
+- Adds the canonical Game Update history to Rules → References → Changes & Updates and presents Game Updates before Site Updates on News.
+- Adds shared Previous/Next navigation to rule pages while retaining breadcrumbs and section-to-section progression.
+- Adds a temporary interactive Attribute allocation example to Character Creation → Step-by-Step → Step 5, with no persistence into Character Creation or saved characters.
+- Replaces the empty Damage − Guts rule heading with a visual formula and Selu example.
 
-## Current Game Update — v0.07
+## Current Game Update — v0.08
 
-Game Updates are versioned independently from Site Updates. Game Update v0.07 updates Species Traits and Spell resolution while preserving unresolved spell-design decisions for later approval.
+Game Updates are versioned independently from Site Updates. Game Update v0.08 standardizes Spell TO HIT wording, adds Heart to printed Spell damage values, and defines the category of that added Heart damage.
 
+### Spell Strikes & Heart Damage
 
-### Species Traits & Spell Resolution
+Magic Strike Spells state the complete opposed roll: `(3d10) + Control + condition(s)` against the target’s `(3d10) + Ward + condition(s)`. Spells whose resolution uses Renew the Heart state that save directly and apply the Signature Hex on failure.
 
-All 60 current Heritage and Cultural Traits use the approved Woodlands v0.16 definitions. The Core Rules also state that effects from the same named Ability or Spell do not stack unless a more specific rule says otherwise.
-
-Every current Spell has an explicit TO HIT field. Hostile damage uses Magical Strike, Hexes use Renew the Heart, mixed damage/Hex effects separate those resolutions, and willing/self/utility Spells resolve automatically. The approved Spell balance pass is applied across all eight spell groups, and casters are limited to one active summon spell unless a specific rule overrides that limit.
+Printed Spell damage values add Heart. Unless a Spell specifically states otherwise, the Heart portion is Standard damage even when the printed damage value is Direct, Lethal, or another listed damage type/category; the printed portion retains its own listed category and type.
 
 ### Trinkets
 
@@ -87,10 +86,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.18`
-- package version: `0.18.0`
-- PWA cache: `v0.18`
-- Game Update: `v0.07`
+- Site Update / BUILD/export: `0.19`
+- package version: `0.19.0`
+- PWA cache: `v0.19`
+- Game Update: `v0.08`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

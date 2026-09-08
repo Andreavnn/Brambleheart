@@ -32,6 +32,28 @@ export const ruleCategories:RuleCategoryDefinition[]=[
  {id:'watcher',title:'The Watcher',summary:'Encounter design, Encounter Ratings, creatures, Monsters, environments, and rewards.',landing:page('watcher-overview','The Watcher','Browse encounter design, Threat Level guidance, creatures, Monsters, environments, and rewards.'),pages:[page('encounters-threat-level','Encounters & Threat Level','Encounter Rating guidance adapted from the Woodlands encounter reference.'),page('critters','Critters & Companions','Companions and creature references from the Woodlands monster index.'),page('traps-environments','Traps & Environments','Hazards and environments used when building encounters.',undefined,'Detailed standalone trap and environment source text has not yet been supplied.'),page('monsters','Monsters','Monster categories and individual creature pages sourced from the Woodlands monster index.'),page('rewards','Rewards','Rewards and post-encounter guidance.',undefined,'Detailed standalone Watcher reward source text has not yet been supplied.')]}]
 const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`))
 export const allRulePages=[...quickReferencePages,...loreAnthroMundasPages.slice(1),...ruleCategories.flatMap(category=>[category.landing,...category.pages]),...monsterRulePages]
+
+export interface RuleNavigationLink {slug:string;title:string;section:string}
+export interface RulePageNavigation {previous:RuleNavigationLink|null;next:RuleNavigationLink|null}
+const referenceNavigationPages=[...loreAnthroMundasPages,...quickReferencePages.filter(item=>item.slug!=='lore-anthro-mundas')]
+const categoryNavigationPages=ruleCategories.flatMap(category=>[
+  category.landing,
+  ...category.pages.flatMap(item=>item.slug==='monsters'?[item,...monsterRulePages]:[item]),
+])
+const ruleNavigationPages=[...referenceNavigationPages,...categoryNavigationPages]
+function navigationSectionFor(page:RulePageDefinition){
+  if(referenceNavigationPages.some(item=>item.slug===page.slug))return'References'
+  if(monsterRulePages.some(item=>item.slug===page.slug))return'The Watcher'
+  return findRuleCategory(page.slug)?.title||'Rules'
+}
+export function rulePageNavigation(slug:string):RulePageNavigation{
+  const canonical=canonicalRuleSlug(slug)
+  const index=ruleNavigationPages.findIndex(item=>item.slug===canonical)
+  if(index<0)return{previous:null,next:null}
+  const link=(item:RulePageDefinition|undefined):RuleNavigationLink|null=>item?{slug:item.slug,title:item.title,section:navigationSectionFor(item)}:null
+  return{previous:link(ruleNavigationPages[index-1]),next:link(ruleNavigationPages[index+1])}
+}
+
 export const fundamentalsNavigation=fundamentalPages.map(({slug,title})=>({slug,title}))
 const ruleAliases:Record<string,string>={'references-overview':'lore-anthro-mundas','dice-rules':'core-rules','keywords-ability-types':'abilities','keyword-abilities':'abilities','core-abilities':'abilities','core-actions':'abilities','stacking':'abilities','chaining':'abilities','damage-category':'to-damage','damage-type':'to-damage','resistance-weakness':'to-damage','healing':'health','defeated':'health','encounter-end':'health','area-of-effect':'ability-targeting','initiative-order':'rounds-turns','your-turn':'rounds-turns','mana':'rounds-turns'}
 export function canonicalRuleSlug(slug:string){return ruleAliases[slug]||slug}

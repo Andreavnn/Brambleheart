@@ -1,3 +1,12 @@
+# Brambleheart Beta 0.19
+
+- Adds current Game Updates to Rules → References → Changes & Updates, ordered newest first with the current update expanded, and places the current Game Update above the Site Update on News.
+- Adds shared Previous/Next navigation to rule pages while preserving breadcrumbs, carrying readers through each rule section and into the next section at section boundaries.
+- Adds an interactive, non-persistent Attribute allocation example to Character Creation → Step-by-Step → Step 5 and gives numbered Character Creation steps a clearer visual treatment.
+- Updates Spell resolution so Magic Strike TO HIT fields use the full Control-versus-Ward roll, Renew the Heart Spells use the approved save wording, and printed Spell damage values add Heart.
+- Clarifies Spell Heart damage under The Battles → To Damage → Damage Category and replaces the empty Damage − Guts = Total Damage heading with a Selu-based visual example.
+- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.19 and advances Game Update metadata to v0.08.
+
 # Brambleheart Beta 0.18
 
 - Makes the canonical current-rules layer the runtime authority for Rules, Character Creation, Character Sheets, Level Up, and spell detail data so the approved Game Update v0.07 Spell `TO HIT` and balance changes no longer depend on module load order.

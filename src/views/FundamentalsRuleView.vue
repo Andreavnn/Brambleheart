@@ -2,7 +2,9 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
+import RulePageNavigation from '../components/RulePageNavigation.vue'
 import { coreActions } from '../data/coreAbilities'
+import { rulePageNavigation } from '../data/ruleCatalog'
 import { ruleSourceDocuments, type RuleSourceBlock, type RuleSourceSection } from '../data/rulesCurrent'
 import diceStrip from '../assets/rules/brambleheart-dice-strip.webp'
 import { useSettings } from '../state/settings'
@@ -14,6 +16,7 @@ const {measurement}=useSettings()
 const slug=computed(()=>String(route.params.slug||'core-rules'))
 const mode=computed(()=>slug.value==='introduction'?'introduction':slug.value==='attributes-skills'?'attributes':slug.value==='abilities'?'abilities':'core')
 const title=computed(()=>mode.value==='introduction'?'Introduction':mode.value==='attributes'?'Attributes & Skills':mode.value==='abilities'?'Core Actions':'Core Rules')
+const pageNavigation=computed(()=>rulePageNavigation(slug.value))
 const sourceSections=computed(()=>mode.value==='introduction'?(ruleSourceDocuments.introduction?.sections||[]):(ruleSourceDocuments.fundamentals?.sections||[]))
 const ATTRIBUTE_HEADINGS=new Set(['ATTRIBUTES','RANKS & MODIFIERS','SKILLS','SKILL TREES','EXPANDED & RESTRICTED'])
 
@@ -142,6 +145,7 @@ const backLabel=computed(()=>backPage.value?`Back to ${backPage.value.label}`:'B
         </article>
       </section>
       <nav class="fundamentals-contents card-surface"><h2>Contents</h2><div v-if="mode==='abilities'" class="fundamentals-links"><a href="#abilities-what">Core Actions &amp; Abilities</a><a href="#abilities-how">Abilities</a><a href="#abilities-example">Action &amp; Ability Example</a><a href="#abilities-reactive">Reaction Example</a><a href="#abilities-chaining">Chaining Abilities</a><a href="#abilities-core">Core Actions</a></div><div v-else class="fundamentals-links"><a v-for="(section,index) in bodySections" :key="`${section.heading}-${index}`" :href="`#${sectionId(section.heading,index)}`">{{ displayHeading(section.heading) }}</a></div></nav>
+      <RulePageNavigation :navigation="pageNavigation" />
     </article>
   </main>
 </template>

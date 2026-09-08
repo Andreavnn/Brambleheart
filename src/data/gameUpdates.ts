@@ -7,6 +7,19 @@ export type GameUpdateEntry={version:string;date:string;title:string;summary:str
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-08',
+    title:'Spell Strikes & Heart Damage',
+    summary:'Standardizes hostile Spell TO HIT wording, adds Heart to printed Spell damage values, and defines how that added Heart damage is categorized.',
+    changes:[
+      'Spells resolved with a Magic Strike now state the full opposed roll: (3d10) + Control + condition(s) against the target’s (3d10) + Ward + condition(s).',
+      'Spells resolved through Renew the Heart now state that save directly and apply the Signature Hex on a failed save.',
+      'Printed Spell damage values now add Heart to the listed damage amount.',
+      'Heart added to a Spell damage value is Standard damage unless that Spell specifically states otherwise; the printed damage amount keeps its listed category and damage type.',
+      'The To Damage rules now present Damage − Guts = Total Damage as a visual resolution example rather than an empty section heading.',
+    ],
+  },
+  {
+    version:'0.07',
     date:'2026-09-05',
     title:'Species Traits & Spell Resolution',
     summary:'Updates all Woodlands Heritage and Cultural Traits, standardizes spell TO HIT resolution, and adds the global same-name Ability and Spell stacking rule.',

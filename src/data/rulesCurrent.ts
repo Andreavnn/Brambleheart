@@ -79,7 +79,7 @@ const BATTLE_REPLACEMENTS:Record<string,RuleSourceSection>={
   'TO HIT':section('TO HIT',
     paragraph('Melee Strike: roll (3d10) + Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). Brawl is the Might modifier. On a successful Melee Strike, add Fury to weapon damage where the action calls for it. Fury is Might Rank.'),
     paragraph('Range Strike: roll (3d10) + Aim + condition(s) against the target’s (3d10) + Ward + condition(s). Aim is the Agility modifier. On a successful Range Strike, add Accuracy to weapon damage. Accuracy is Agility Rank.'),
-    paragraph('Magic: a spell that includes TO HIT makes the roll stated in that spell’s details. A Magic Strike normally uses (3d10) + Control + condition(s) against (3d10) + Ward + condition(s). Control is the Lore modifier plus applicable equipment bonuses.'),
+    paragraph('Magic Strike: roll (3d10) + Control + condition(s) against the target’s (3d10) + Ward + condition(s). Control is the Lore modifier plus applicable equipment bonuses. Spells that use Renew the Heart state that save in their own TO HIT field instead.'),
     paragraph('The defender wins ties unless a more specific rule states otherwise.'),
   ),
 }
@@ -389,20 +389,27 @@ function currentSpellToHit(currentSpell:string,text:string){
   const hasHex=/\bHEX\b/.test(upper)
   const hasEnhance=/\bENHANCE\b/.test(upper)
   const hasDamage=/\b(?:DEAL|SUFFER|SUFFERS|DAMAGE:)\b[^.]*\bDAMAGE\b|\b(?:DIRECT|STANDARD|LETHAL|FIRE|COLD|LIGHTNING|LIGHT|PSYCHIC|NATURE|ARCANE)\s+DAMAGE\b/i.test(text)
-  const hasCompelled=/\bCOMPELLED?\b/i.test(text)
   const hostile=/\bTARGET(?:S|ED)?\s+(?:\[[^\]]+\]\s+)?(?:ENEMY|ALL ENEMY)|\bENEMY CHARACTERS?\b/i.test(text)
   const friendlyOrUtility=/\bDECLARE:[^.]*(?:ally|friendly|cast on yourself|empty square|point of origin|summon|object|nonliving)/i.test(text)
-  const area=/\b(?:LINE|CONE|ORB)\s*\[/i.test(text)
-  if(['Smolder','Hypothermia','Scary Face'].includes(currentSpell))return'Renew the Heart. On a failed save, apply the Signature Hex.'
-  if(['Infernal Rebuke','Immolation'].includes(currentSpell))return'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the Hex effect.'
-  if(friendlyOrUtility&&!/\btarget all characters\b/i.test(text))return'Automatic. No roll required.'
-  if(hasEnhance&&!hostile)return'Automatic. No roll required.'
-  if(hasHex&&hasDamage)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward for the initial damage. Renew the Heart resolves the Hex effect.':'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the Hex effect.'
-  if(hasDamage&&hasCompelled)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward for the initial damage. Renew the Heart resolves the printed compelled or Hex effect.':'Magical Strike against the target’s Ward for the initial damage. Renew the Heart resolves the printed compelled or Hex effect.'
-  if(hasDamage)return area?'Magical Strike: make one spell Strike roll and compare it separately against each affected enemy’s Ward.':'Magical Strike against the target’s Ward.'
-  if(hasHex||hasCompelled)return'Renew the Heart. On a failed printed save, apply the Hex or compelled effect.'
-  if(hostile)return'Magical Strike against the target’s Ward.'
+  const effect=text.match(/\bEFFECT:?\s*([^]*?)(?=\b(?:DURATION|EMPOWER|AFTERBURN|PURIFY|RESTRICTIONS?|COOLDOWN|KEYWORDS):|$)/i)?.[1]||''
+  const renewResolution=hasHex||/\b(?:compel(?:led)?|Renew the Heart)\b/i.test(effect)||['Smolder','Hypothermia','Scary Face','Detonation'].includes(currentSpell)
+  if(friendlyOrUtility&&!hostile&&!renewResolution&&!/\btarget all characters\b/i.test(text))return'Automatic. No roll required.'
+  if(hasEnhance&&!hostile&&!renewResolution)return'Automatic. No roll required.'
+  if(renewResolution)return'Renew the Heart save. On a failed save, apply the Signature Hex.'
+  if(hasDamage||hostile)return'Make a Magic Strike using (3d10) + Control + condition(s) against the target’s (3d10) + Ward + condition(s).'
   return'Automatic. No roll required.'
+}
+
+function addHeartToSpellDamage(value:string){
+  return value.replace(/\b(Deal|Deals|Suffer|Suffers)\s+((?:an\s+)?additional\s+)?(\[[^\]]+\])\s+((?:(?:standard|direct|lethal)\s+)?(?:[A-Za-z][A-Za-z’'’-]*\s+)?damage)\b/gi,(_match,verb:string,additional:string|undefined,amount:string,damage:string)=>{
+    return `${verb} ${additional||''}Heart + ${amount} ${damage}`.replace(/\s{2,}/g,' ')
+  })
+}
+
+function setSpellToHitField(value:string,currentSpell:string){
+  const toHit=currentSpellToHit(currentSpell,value)
+  const field=/\bTO HIT:\s*[^]*?(?=\b(?:COST|TRIGGER|DECLARE|TARGET|AREA|SAVE|HEX|ON FAILURE|EFFECT|DAMAGE|RESTRICTIONS?|DURATION|EMPOWER|COOLDOWN|AFTERBURN|PURIFY|REQUIRES|KEYWORDS):|$)/i
+  return field.test(value)?value.replace(field,`TO HIT: ${toHit} `):value
 }
 
 function patchCurrentSpellRules(currentSpell:string,value:string){
@@ -427,7 +434,7 @@ function patchCurrentSpellRules(currentSpell:string,value:string){
       replace(/DURATION: This effect lasts \[1d10\/2\] rounds, effects end at the start of the round\./i,'DURATION: This effect lasts [1d10/2] rounds, ending at the start of the resulting round.')
       break
     case 'Detonation':
-      if(/\bCOST:/i.test(text))text='COST: [8] mana DECLARE: Target [1] enemy character within [4] squares. TO HIT: Renew the Heart. EFFECT: On a failed Renew the Heart roll, roll [1d10] and consult the Detonation results. BURST (1–3): Deal [3] lethal fire damage immediately. At the start of the next round, the target must make another Renew the Heart roll; on failure, roll on the Detonation table again. PRESSURE (4–7): Nothing happens immediately. At the start of the next round, the target makes another Renew the Heart roll; on failure, roll on the Detonation table again, and on success the spell ends. CATASTROPHE (8–10): Deal [6] lethal fire damage immediately and the spell ends. DURATION: This effect lasts [1d10/2+1] rounds. Effects end at the start of the resulting round. KEYWORDS: HEX | MAGIC | FLAMES';
+      if(/\bCOST:/i.test(text))text='COST: [8] mana DECLARE: Target [1] enemy character within [4] squares. TO HIT: Renew the Heart save. On a failed save, apply the Signature Hex. EFFECT: On a failed Renew the Heart roll, roll [1d10] and consult the Detonation results. BURST (1–3): Deal [3] lethal fire damage immediately. At the start of the next round, the target must make another Renew the Heart roll; on failure, roll on the Detonation table again. PRESSURE (4–7): Nothing happens immediately. At the start of the next round, the target makes another Renew the Heart roll; on failure, roll on the Detonation table again, and on success the spell ends. CATASTROPHE (8–10): Deal [6] lethal fire damage immediately and the spell ends. DURATION: This effect lasts [1d10/2+1] rounds. Effects end at the start of the resulting round. KEYWORDS: HEX | MAGIC | FLAMES';
       else if(/^(?:1[–-]3|4[–-]6|7[–-]9|10|DURATION:)/i.test(text.trim()))text=''
       break
     case 'Immolation':
@@ -510,18 +517,21 @@ function safeSpellText(value:string,currentSpell='',addToHit=false){
     .replace(/\bAUGMENTS\b/gi,'ENHANCES')
     .replace(/\bAUGMENT\b/gi,'ENHANCE')
     .replace(/\bSTRIKE:\s*/gi,'TO HIT: ')
+    .replace(/\bEFFECT\s+(?=[A-Z])/g,'EFFECT: ')
     .replace(/\bhero(?:’|')s charge core ability\b/gi,'Hero’s Charge Core Action')
     .replace(/\bstride core ability\b/gi,'Stride Core Action')
     .replace(/\brenew the heart ability\b/gi,'Renew the Heart Core Action')
   if(SIGNATURE_SPELLS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
   if(INVOCATION_CANTRIPS.has(currentSpell))text=text.replace(/\bCOST:\s*\[?0\]?\s*mana\b\s*/gi,'')
   text=patchCurrentSpellRules(currentSpell,text)
+  if(currentSpell&&/\bTO HIT:/i.test(text))text=setSpellToHitField(text,currentSpell)
   if(addToHit&&currentSpell&&!/\bTO HIT:/i.test(text)){
     const toHit=currentSpellToHit(currentSpell,text)
     const declare=text.match(/\bDECLARE:[^]*?(?=\b(?:EFFECT|TRIGGER|SUMMON|RESTRICTIONS?|DURATION|EMPOWER|KEYWORDS):|$)/i)
     if(declare)text=text.replace(declare[0],`${declare[0].trim()} TO HIT: ${toHit} `)
     else text=`TO HIT: ${toHit} ${text}`
   }
+  if(currentSpell)text=addHeartToSpellDamage(text)
   text=text.replace(/\bKEYWORDS?:\s*([^\n]+)/gi,(_match,keywords:string)=>`KEYWORDS: ${normalizeKeywordList(keywords,currentSpell)}`)
   return text.replace(/\s{2,}/g,' ').trim()
 }
@@ -553,6 +563,10 @@ function replaceBattleSections(){
   doc.sections=doc.sections.map(sourceSection=>{
     const replacement=BATTLE_REPLACEMENTS[sourceSection.heading]
     if(replacement){seen.add(sourceSection.heading);return replacement}
+    if(sourceSection.heading==='DAMAGE CATEGORY'&&!sourceSection.blocks.some(block=>block.type==='paragraph'&&/Heart portion of that damage is Standard/i.test(block.text))){
+      const heartRule=paragraph('When a Spell adds Heart to a damage value, the Heart portion of that damage is Standard unless the Spell specifically states otherwise. The Spell’s printed damage value keeps its listed category and damage type.')
+      return{...sourceSection,blocks:[...sourceSection.blocks.slice(0,2),heartRule,...sourceSection.blocks.slice(2)]}
+    }
     return sourceSection
   })
   for(const [heading,replacement] of Object.entries(BATTLE_REPLACEMENTS)){
