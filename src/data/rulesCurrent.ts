@@ -818,7 +818,7 @@ function canonicalizeSpellDocument(documentKey:string){
       const addToHit=Boolean(currentSpell&&!toHitAdded&&!NO_TO_HIT_SPELLS.has(currentSpell)&&/\b(?:DECLARE|TRIGGER|EFFECT|SUMMON):/i.test(block.text))
       if(addToHit)toHitAdded=true
       return{...block,text:safeSpellText(block.text,currentSpell,addToHit)}
-    }).filter((block):block is RuleSourceBlock=>Boolean(block)&&!(block.type==='paragraph'&&block.text.trim().length===0)),
+    }).filter((block):block is RuleSourceBlock=>block!==null&&!(block.type==='paragraph'&&block.text.trim().length===0)),
   }))
 }
 
