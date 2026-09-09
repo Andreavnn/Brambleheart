@@ -152,14 +152,16 @@ const CURRENT_MAGIC_SECTIONS:RuleSourceSection[]=[
     paragraph('HEX: DECLARE a legal target. The target uses Renew the Heart at the Spell’s printed passive difficulty. Apply the listed ON FAILURE effect if that save fails.'),
     paragraph('A Spell may intentionally combine a Magic Strike with a Hex. When it does, the Spell states separately what the successful Strike does and what the Renew the Heart roll controls.'),
   ),
+  section('SUMMON',
+    paragraph('Expanded Summon rules will be added here.'),
+  ),
   section('SPELL DAMAGE',
     paragraph('Heart is added once to a Spell’s primary damage value unless the Spell specifically states otherwise. The Heart portion is Standard damage; the Spell’s printed damage value keeps its printed Damage Category and damage type.'),
     paragraph('On-Going damage is exactly the printed value. Later or repeated damage caused by a duration, start-of-round trigger, terrain, movement, reflection, summon, or another delayed event does not add Heart or another normal Strike-damage addition unless the Spell explicitly says it does.'),
     paragraph('A recurring Spell zone or movement trigger can affect the same character no more than once during a turn unless the Spell explicitly permits more. Start-of-round and start-of-turn recurring effects resolve only at their stated timing.'),
   ),
   section('SPELL RANGE',
-    paragraph('Each spell states its legal target, range, and area. TOUCH originates at close range. DIRECT affects the declared target or point. LINE, CONE, and ORB use the shared Ability Targeting rules.'),
-    paragraph('Arcane Command does not impose a universal enemy target or universal TO HIT roll; resolve targeting, TO HIT, saves, damage, effects, and duration from the chosen Spell Details.'),
+    paragraph('Each spell will state its legal target, range or area. Some spells will have both a range and an area. Range is the distance at which a spell can be cast at a target or square (point) of the battlefield and the area is the space which the spell covers from that point.'),
   ),
 ]
 
@@ -456,10 +458,10 @@ function currentSpellToHit(currentSpell:string,text:string){
     if(currentSpell==='Song Of Storms')return`${MAGIC_STRIKE_TEXT} Resolve this separately against each enemy in the Orb. Rolling Storm uses its separately printed Renew the Heart save.`
     return MAGIC_STRIKE_TEXT
   }
-  if(currentSpell==='Divine Grasp')return`Enemy target: ${renewTheHeartText(currentSpell)} Ally target: Automatic. No roll required.`
-  if(currentSpell==='Radiant Breath')return`Enemy target: ${renewTheHeartText(currentSpell)} Ally target: Automatic. No roll required.`
+  if(currentSpell==='Divine Grasp')return`Enemy target: ${renewTheHeartText(currentSpell)} Ally target resolves without a roll.`
+  if(currentSpell==='Radiant Breath')return`Enemy target: ${renewTheHeartText(currentSpell)} Ally target resolves without a roll.`
   if(HEX_DIFFICULTY[currentSpell])return renewTheHeartText(currentSpell)
-  return'Automatic. No roll required.'
+  return''
 }
 
 function addHeartToPrimarySpellDamage(value:string,currentSpell:string){
@@ -786,9 +788,11 @@ function safeSpellText(value:string,currentSpell='',addToHit=false){
   if(currentSpell&&/\bTO HIT:/i.test(text))text=setSpellToHitField(text,currentSpell)
   if(addToHit&&currentSpell&&!NO_TO_HIT_SPELLS.has(currentSpell)&&!/\bTO HIT:/i.test(text)){
     const toHit=currentSpellToHit(currentSpell,text)
-    const declare=text.match(/\bDECLARE:[^]*?(?=\b(?:EFFECT|TRIGGER|SUMMON|RESTRICTIONS?|DURATION|EMPOWER|KEYWORDS):|$)/i)
-    if(declare)text=text.replace(declare[0],`${declare[0].trim()} TO HIT: ${toHit} `)
-    else text=`TO HIT: ${toHit} ${text}`
+    if(toHit){
+      const declare=text.match(/\bDECLARE:[^]*?(?=\b(?:EFFECT|TRIGGER|SUMMON|RESTRICTIONS?|DURATION|EMPOWER|KEYWORDS):|$)/i)
+      if(declare)text=text.replace(declare[0],`${declare[0].trim()} TO HIT: ${toHit} `)
+      else text=`TO HIT: ${toHit} ${text}`
+    }
   }
   if(currentSpell)text=addHeartToPrimarySpellDamage(text,currentSpell)
   text=text.replace(/\bKEYWORDS?:\s*([^\n]+)/gi,(_match,keywords:string)=>`KEYWORDS: ${normalizeKeywordList(keywords,currentSpell)}`)
@@ -910,30 +914,49 @@ function installCurrentSparkAndDeedRules(){
 
 const CURRENT_CHARACTER_CREATION_SECTIONS:Record<string,RuleSourceSection>={
   '1. CHOOSE YOUR SPECIES':section('1. CHOOSE YOUR SPECIES',
-    paragraph('Your Species describes the Beastfolk lineage your hero belongs to and establishes the inherited features, learned traditions, and native language that shape the beginning of play.'),
-    paragraph('Choose one playable Species. Heritage Traits are inherent features of that Species. Cultural Traits represent learned traditions and may be exchanged during Character Creation according to the Culture Trait rules. Your Species also provides its native language, and every character knows Commonspeak.'),
+    paragraph('Your Species is the first broad shape of your hero: the Beastfolk lineage they come from, the traits they carry, the traditions they grew up around, and the language that feels like home.'),
+    paragraph('Choose one playable Species that fits the character you want to bring to the table. Its Heritage Traits are part of that Species by nature, while Cultural Traits are learned traditions and may be exchanged during Character Creation when the Culture Trait rules allow. You also gain the Species’s native language, and every character knows Commonspeak.'),
   ),
   '2. CHOOSE YOUR SPARK':section('2. CHOOSE YOUR SPARK',
-    paragraph('Your Spark is the personality archetype that describes what most often moves your hero into action. Each Spark carries two keywords that describe its nature.'),
-    paragraph('Deeds reward meaningful actions during play. When a completed Deed shares a keyword with your Spark, it grants the normal reward plus the Spark-alignment bonus.'),
+    paragraph('Your Spark is the little truth at the center of your hero—the instinct, outlook, or desire that most often pulls them into the story.'),
+    paragraph('Choose the Spark that feels closest to the character you want to play. Its two keywords connect your personality to Deeds during play. When you complete a Deed that shares a keyword with your Spark, you earn the normal reward plus the Spark-alignment bonus.'),
   ),
   '3. SELECT YOUR HOMELAND':section('3. SELECT YOUR HOMELAND',
-    paragraph('Your Homeland is the place, road, settlement, or community that shaped your hero before the adventure began. It provides context for the habits, knowledge, and practical experience your character carries into the wider world.'),
-    paragraph('Choose one Homeland. It grants two starting Skills at Rank [1]. A Homeland is not tied to Species and may represent birth, upbringing, travel, apprenticeship, exile, or another formative home.'),
+    paragraph('Think about where your hero learned how to live before the adventure began. A Homeland can be a village, a city, a road, a wilderness, a community, or simply the place that taught them the habits they still carry.'),
+    paragraph('Choose one Homeland. It grants two starting Skills at Rank [1]. Your Homeland does not have to be where you were born; it can represent upbringing, travel, apprenticeship, exile, adoption, or another place that left a lasting mark.'),
   ),
   '4. CHOOSE YOUR FAITH & OATH':section('4. CHOOSE YOUR FAITH & OATH',
-    paragraph('Choose a Faith and an Oath to describe what your hero believes gives meaning to the world and the principle they have chosen to live by.'),
-    paragraph('Faith frames belief, ritual, and belonging. An Oath frames personal conviction and the standard your hero tries to uphold. Neither replaces roleplay; both give the Watcher and player clear anchors for choices, consequences, and character growth.'),
+    paragraph('Faith and Oath answer two different questions about your hero: what do they believe gives meaning to the world, and what promise or principle do they try to live by?'),
+    paragraph('Choose one Faith and one Oath. Faith gives you a language for belief, ritual, and belonging. Your Oath gives you a personal standard to return to when choices become difficult. Neither tells you how to roleplay; they give you and the Watcher useful anchors for character decisions, consequences, and growth.'),
+  ),
+  '5. ATTRIBUTES DISTRIBUTION':section('5. ATTRIBUTES DISTRIBUTION',
+    paragraph('Attributes show the different ways your hero meets the world—through movement, strength, endurance, knowledge, and courage. You do not need a perfect spread; the goal is to make the numbers feel like the character you have in mind.'),
+    paragraph('Every Attribute begins at Rank [1]. You have [5] points to spend, and no Attribute can begin above Rank [3]. Try the example below and move the points around until the shape of the character feels right.'),
+    table(
+      ['Attribute','Description'],
+      ['Agility','Motion, grace, precision, and reflex.'],
+      ['Might','Strength, endurance, and raw resolve.'],
+      ['Hide','Toughness, vitality, and the will to withstand harm.'],
+      ['Lore','Intellect, intuition, and command of knowledge or magic.'],
+      ['Bravery','Spirit, courage, and the power of conviction.'],
+    ),
+    paragraph('Your final ranks become the foundation for your modifiers and secondary stats, so this is a good moment to check whether the character feels quick, forceful, resilient, learned, brave—or some mix of all five.'),
   ),
   '6. THE RHYTHM OF BODY & SPIRIT':section('6. THE RHYTHM OF BODY & SPIRIT',
-    paragraph('Choose one Path to decide how your hero first expresses exceptional ability. Each Path grants a different starting package, but all four lead into the same advancement system after Character Creation.'),
-    paragraph('Talents represent trained techniques, instincts, and specialized gifts. If your Path grants Talents, choose them from the Talent rules and meet any listed requirements.'),
-    paragraph('Magic begins with the Wind-Touched Path. Gain Magic Level [1], choose a Lore Attunement, gain that Lore’s Signature Spell, choose the starting Spells allowed by Magic Level, and then choose the Talent granted by the Path.'),
+    paragraph('Now choose the direction your hero’s early training, talent, or awakening takes. This is not a permanent class; it is simply the strongest note in your character’s starting rhythm.'),
+    paragraph('Choose one Path below. Each gives a different starting package, and all four lead into the same advancement system once play begins.'),
+    paragraph('Talents represent practiced techniques, instincts, and unusual gifts. If your Path grants Talents, choose them from the Talent rules and make sure you meet any listed requirements. Think of them as the things your hero already knows how to do when the story opens.'),
+    paragraph('Magic begins with the Wind-Touched Path. If you choose it, gain Magic Level [1], choose a Lore Attunement, gain that Lore’s Signature Spell, choose the starting Spells allowed by your Magic Level, and then choose the Talent granted by the Path. The rules will guide the choices, but the important part is deciding what kind of magic feels like your character.'),
   ),
   '7. EQUIPMENT & ITEMS':section('7. EQUIPMENT & ITEMS',
-    paragraph(`Every character begins with an Adventure Kit and [${STARTING_WEALTH_SP}] sp of starting Threadpieces, equal to [${STARTING_WEALTH_WP.toLocaleString('en-US')}] wp, to spend on additional equipment.`),
-    paragraph(`You may return the Adventure Kit during Character Creation for an additional [${ADVENTURE_KIT_SELL_SP}] sp, equal to [${ADVENTURE_KIT_SELL_WP}] wp. Returning it increases the available starting budget to [${MAX_STARTING_WEALTH_SP}] sp before other purchases.`),
-    paragraph('Use the Weapons, Armor & Shields, and Adventuring Gear references when choosing equipment. Starting purchases use their normal listed prices and are recorded as owned equipment. The Adventure Kit already supplies its listed travel essentials, so purchase duplicates only when you want extra copies.'),
+    paragraph(`Your first loadout should feel like what your hero would actually carry into the opening adventure. Every character begins with an Adventure Kit plus [${STARTING_WEALTH_SP}] sp of starting Threadpieces, equal to [${STARTING_WEALTH_WP.toLocaleString('en-US')}] wp, for weapons, armor, tools, supplies, and personal gear.`),
+    paragraph(`If the Adventure Kit does not fit your character, you may return it during Character Creation for an additional [${ADVENTURE_KIT_SELL_SP}] sp, equal to [${ADVENTURE_KIT_SELL_WP}] wp. That gives you [${MAX_STARTING_WEALTH_SP}] sp to work with before making any purchases.`),
+    paragraph('Use the Weapons, Armor & Shields, and Adventuring Gear references as a catalogue rather than a checklist. Buy what supports the character you have built, remember that the Adventure Kit already covers its listed travel essentials, and add personal items whenever they help tell us who this hero is.'),
+  ),
+  '8. CHARACTER DETAILS':section('8. CHARACTER DETAILS',
+    paragraph('With the rules pieces in place, give your hero the final details that make them feel like a person rather than a collection of choices.'),
+    paragraph('Fill in the details that matter at your table: • Name & Pronunciation • Age, Appearance, and Pronouns • Pack, Herd, or Kinship (optional) • Confirm the Homeland chosen in Step 3 • Confirm the Spark chosen in Step 2 • Confirm the Faith and Oath chosen in Step 4 • Review the character’s Secondary Stats, such as Speed, Power, Guts, and Ward'),
+    paragraph('Once those details feel settled, your character is ready to step into Anthro Mundas. You can always discover more about them through play; Character Creation only needs to give you a strong place to begin.'),
   ),
 }
 

@@ -8,6 +8,18 @@ export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
     date:'2026-09-08',
+    title:'Spell Targeting & Character Creation Clarity',
+    summary:'Clarifies spell range and targeting presentation, removes redundant Automatic TO HIT fields from non-hostile Spells, and makes Character Creation guidance more readable without changing the established build choices.',
+    changes:[
+      'Spell Range now distinguishes a Spell’s legal target, cast range, and area, and the shared Targeting reference is presented inside the Spell Range section rather than as a separate panel.',
+      'Spell Types & Targeting no longer repeats Touch or Direct terminology. Enhances & Hexes now shows the canonical Renew the Heart Core Action, and a Summon placeholder is reserved for expanded Summon rules.',
+      'Spells that resolve automatically no longer display the redundant TO HIT: Automatic. No roll required field. Spells that actually use Magic Strike or Renew the Heart retain their required resolution text.',
+      'Character Creation Step-by-Step keeps the same rules and choices while using friendlier guidance, cleaner example cards, a centered Homeland example, and a bulleted Character Details checklist.',
+    ],
+  },
+  {
+    version:'0.10',
+    date:'2026-09-08',
     title:'Complete Magic Rebalance',
     summary:'Completes the post-TO HIT spell balance pass with a smaller current spell roster, canonical base Mana costs, revised primary and On-Going damage handling, and final spell-by-spell tuning across all eight spell groups.',
     changes:[

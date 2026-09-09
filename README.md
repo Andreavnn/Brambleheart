@@ -1,18 +1,26 @@
-# Brambleheart TTRPG — Beta 0.21
+# Brambleheart TTRPG — Beta 0.22
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.21 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.22 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.21
+## Current Site Update — Beta 0.22
 
-- Refines Introduction and Character Creation rules presentation with structured Principles of Play, visual Character Creation examples, shared Path cards, and corrected starting-equipment values.
-- Reworks Sparks & Deeds and the remaining Character Creation reference pages toward the Fundamentals visual language, combining Deeds and Deed Resolution and adding visual examples.
-- Collapses Species Trait panels by default and adds the requested per-Species Lore placeholder panel.
-- Replaces Spell Types & Targeting → Spell Keywords with the approved keyword definitions while retaining the existing v0.10 spell balance rules.
+- Refines Spell Types & Targeting so range, area, targeting, Enhances/Hexes, and the Renew the Heart reference are presented together without redundant Touch/Direct terminology on that page.
+- Removes redundant Automatic TO HIT fields from Spells that do not require an attack or save while preserving actual Magic Strike and Renew the Heart resolution.
+- Rewrites Character Creation → Step-by-Step into a friendlier player-facing guide and simplifies its Species, Spark/Deed, Homeland, Faith, and Oath visual examples.
+- Keeps Character Details concise with a bulleted checklist while preserving the existing interactive Attribute example, Path choices, and starting-equipment economy.
 
-## Current Game Update — v0.10
+## Current Game Update — v0.11
 
-Game Updates are versioned independently from Site Updates. Game Update v0.10 completes the post-TO HIT Spell balance review and makes the current spell roster, base Mana costs, and primary-versus-On-Going damage rules authoritative.
+Game Updates are versioned independently from Site Updates. Game Update v0.11 clarifies spell range and automatic resolution presentation and improves player-facing Character Creation guidance without changing the v0.10 spell roster or base-Mana balance.
+
+### Spell Targeting & Character Creation Clarity
+
+Spell Range now distinguishes a Spell’s legal target, cast range, and area, with the shared Targeting reference embedded directly in that section. The Spell Types & Targeting page no longer repeats Touch or Direct terminology; Enhances & Hexes presents the canonical Renew the Heart Core Action, and the Summon heading is reserved for expanded rules.
+
+Automatically resolving Spells no longer display a redundant `TO HIT: Automatic. No roll required.` field. Magic Strike and Renew the Heart fields remain wherever those rolls are actually required.
+
+Character Creation → Step-by-Step keeps its established rules and choices but uses more conversational guidance, cleaner example cards, a centered Homeland example, and a short Character Details checklist.
 
 ### Complete Magic Rebalance
 
@@ -90,10 +98,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.21`
-- package version: `0.21.0`
-- PWA cache: `v0.21`
-- Game Update: `v0.10`
+- Site Update / BUILD/export: `0.22`
+- package version: `0.22.0`
+- PWA cache: `v0.22`
+- Game Update: `v0.11`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

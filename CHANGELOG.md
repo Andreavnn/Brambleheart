@@ -1,3 +1,11 @@
+# Brambleheart Beta 0.22
+
+- Refines Winds of Magic → Spell Types & Targeting: Spell Range now explains legal targets, cast range, and area directly; the shared Targeting link is embedded in that section; Touch and Direct terminology is removed from this page; Enhances & Hexes shows the canonical Renew the Heart Core Action; and a Summon placeholder is added for future rules.
+- Removes redundant `TO HIT: Automatic. No roll required.` fields from automatically resolving Spells while preserving Magic Strike and Renew the Heart resolution where those rolls are actually required.
+- Rewrites Character Creation → Step-by-Step guidance into a friendlier player-facing tone while retaining its rules, interactive Attribute example, Path choices, and starting-equipment values.
+- Simplifies the Step-by-Step visual examples: Species Trait cards no longer repeat Heritage/Cultural labels, Spark and Deed share the same card treatment without “example” labels, Homeland is centered and compact, and Faith/Oath follow the same cleaner presentation.
+- Structures Character Details as a short bulleted checklist and updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.22 while Game Update advances to v0.11.
+
 # Brambleheart Beta 0.21
 
 - Refines Fundamentals → Introduction by restoring normal-weight Watcher dialogue, renaming Core Principles of Play to Principles of Play, and presenting the principles as a structured bullet list.

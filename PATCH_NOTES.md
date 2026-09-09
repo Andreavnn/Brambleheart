@@ -1,24 +1,32 @@
-# Brambleheart Beta 0.21 — Character Creation & Rules Presentation
+# Brambleheart Beta 0.22 — Spell Targeting & Character Creation Clarity
 
-**Site Update — Beta 0.21**
+**Site Update — Beta 0.22**
 
-- Fundamentals → Introduction now presents the Watcher dialogue at normal body weight, renames `CORE PRINCIPLES OF PLAY` to `PRINCIPLES OF PLAY`, and structures the principles as a bullet list.
-- Character Creation → Step-by-Step removes the repeated `CHARACTER CREATION` eyebrow and adds visual examples for Heritage/Cultural Traits, Spark/Deed, Homeland, Faith/Oath, Paths, and starting equipment. The four Path cards share the same canonical option data used by Character Creation.
-- Step 6 text is tightened around Path choice, Talents, and Magic. Step 7 now uses the application’s canonical starting values: Adventure Kit + 30 sp (1,500 wp), with the option to return the kit for +3 sp (150 wp), for 33 sp total before purchases.
-- Sparks & Deeds is reorganized around a structured Spark explanation and one combined `Deeds` section with three visual Deed examples; the full Deed list remains available in a collapsed reference panel. Homeland, Oath, Faith, Talents, Adventuring Gear, and Beyond Character Creation retain their canonical data while using the shared Character Creation/Fundamentals presentation treatment.
-- Species pages now keep Heritage and Cultural Trait panels collapsed by default and include an expandable `<Species> Lore` placeholder above them for future content.
-- Winds of Magic → Spell Types & Targeting → Spell Keywords now uses the approved definitions for `MAGIC`, `SIGNATURE`, `CANTRIP`, `ENHANCE`, `HEX`, area-of-effect keywords, and `SUMMON`. Game Update remains v0.10 because this release does not alter the current Spell roster or v0.10 balance values.
-- Site Update / BUILD / character export, package, README, changelog, patch-note, and PWA cache metadata advance to Beta 0.21.
+- Winds of Magic → Spell Types & Targeting now keeps the shared `Targeting` reference inside the `SPELL RANGE` section. Spell Range uses the approved target/range/area wording, and this page no longer repeats `TOUCH` or `DIRECT` terminology.
+- `ENHANCES & HEXES` now includes the canonical `RENEW THE HEART` Core Action as a rules card. A visible `SUMMON` placeholder section is reserved immediately after Enhances & Hexes for later expanded Summon rules.
+- Automatically resolving Spells no longer receive or retain the redundant `TO HIT: Automatic. No roll required.` field. Magic Strike, Renew the Heart, and hybrid resolution text remains authoritative where a roll is actually required.
+- Character Creation → Step-by-Step has been rewritten in a friendlier player-facing voice while preserving the existing rules, interactive Attribute example, Path choices, and starting-equipment economy.
+- Step-by-Step example cards were simplified: Heritage/Cultural Trait cards no longer repeat those labels in the card body; Spark and Deed use matching card treatment without “example” labels; Homeland is compact and centered; and Faith/Oath use the same cleaner presentation.
+- Character Details now presents its final record/review items as a short bullet list, including the optional Pack/Herd/Kinship entry.
+- Site Update / BUILD / character export, package, README, changelog, patch-note, and PWA cache metadata advance to Beta 0.22.
+
+**Game Update — v0.11**
+
+- Spell Range now explicitly distinguishes a Spell’s legal target, casting range, and affected area.
+- Automatically resolving Spells no longer display a redundant TO HIT field. Spells that require Magic Strike or Renew the Heart continue to show those resolution rules.
+- Spell Types & Targeting now presents the canonical Renew the Heart Core Action alongside Enhance/Hex guidance and reserves a Summon section for the expanded Summon rules.
+- Character Creation rules text is clarified for readability without changing the established Character Creation choices or numerical values.
 
 **Patch-note verification**
 
-- Previous Site Update reviewed: Beta 0.20
-- New Site Update: Beta 0.21
-- Game Update: v0.10 (unchanged)
-- Current GitHub baseline reviewed: Yes — `b69454cefc7aeb77a9fb76c189cf420cf8c7653f`
+- Previous Site Update reviewed: Beta 0.21
+- New Site Update: Beta 0.22
+- Previous Game Update reviewed: v0.10
+- New Game Update: v0.11
+- Current GitHub baseline reviewed: Yes — `995cabe1f27bcab38fdac78c612ff3d3b4acf205`
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: TypeScript compilation of the changed current-rules/Character Creation data graph; compiled runtime audit of canonical Character Creation, Spark/Deed, Spell Keyword, Path, and starting-economy data; changed Vue script TypeScript checks using local Vue shims; changed Vue HTML structural parsing; changed scoped-CSS parsing with PostCSS; 204 repository-relative import checks; requested-content/reference scans; release/version synchronization audit; `git diff --check`; patch ZIP integrity check.
-- Not run: Full `vue-tsc && vite build` and browser-based desktop/tablet/mobile runtime verification. Dependency installation was attempted with `npm install --ignore-scripts --no-package-lock` and timed out before `node_modules` was installed.
-- Known unfinished work intentionally excluded: Species Lore panels are intentionally empty placeholders as requested; Encounter Builder remains the existing placeholder.
+- Tests actually run: strict TypeScript compilation of the changed current-rules/rule-catalog/Game Update data graph; compiled runtime audit of all 76 current Spells confirming no `TO HIT: Automatic. No roll required.` or blank TO HIT fields; exact Spell Range copy check; Spell Types & Targeting `TOUCH`/`DIRECT` exclusion check; Summon/current Game Update/Character Details structure checks; RuleReader script TypeScript check with local Vue/module shims; RuleReader template tag-balance and scoped-CSS brace-balance checks; 204 repository-relative import checks; release/version synchronization audit; `git diff --check`.
+- Not run: Full `vue-tsc && vite build` and browser-based desktop/tablet/mobile runtime verification; this environment does not have the repository dependencies installed.
+- Known unfinished work intentionally excluded: The new `SUMMON` section is intentionally a placeholder for later expanded Summon rules; Species Lore panels and Encounter Builder remain their existing placeholders.
