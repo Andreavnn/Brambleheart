@@ -1,14 +1,14 @@
-# Brambleheart TTRPG — Beta 0.22
+# Brambleheart TTRPG — Beta 0.23
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.22 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.23 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.22
+## Current Site Update — Beta 0.23
 
-- Refines Spell Types & Targeting so range, area, targeting, Enhances/Hexes, and the Renew the Heart reference are presented together without redundant Touch/Direct terminology on that page.
-- Removes redundant Automatic TO HIT fields from Spells that do not require an attack or save while preserving actual Magic Strike and Renew the Heart resolution.
-- Rewrites Character Creation → Step-by-Step into a friendlier player-facing guide and simplifies its Species, Spark/Deed, Homeland, Faith, and Oath visual examples.
-- Keeps Character Details concise with a bulleted checklist while preserving the existing interactive Attribute example, Path choices, and starting-equipment economy.
+- Rules pages now share one page shell and one section-layout authority with Fundamentals instead of maintaining separate Fundamentals and Rule Reader presentation systems.
+- Core Action references reuse one canonical Core Action card renderer backed by `coreActions`; Renew the Heart and combat-action examples no longer rebuild that card structure independently.
+- Rule/example boxes reuse one shared feature-card component built on the existing `rule-feature-box` presentation instead of introducing page-specific box implementations.
+- Obsolete parallel Rules/Fundamentals container selectors and superseded box overrides were removed so future Rules presentation changes have one implementation to maintain.
 
 ## Current Game Update — v0.11
 
@@ -98,9 +98,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.22`
-- package version: `0.22.0`
-- PWA cache: `v0.22`
+- Site Update / BUILD/export: `0.23`
+- package version: `0.23.0`
+- PWA cache: `v0.23`
 - Game Update: `v0.11`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

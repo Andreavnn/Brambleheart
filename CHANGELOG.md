@@ -1,3 +1,12 @@
+# Brambleheart Beta 0.23
+
+- Replaces the split Rules presentation architecture with one shared rule-page shell used by both Fundamentals and the general Rules reader, so breadcrumbs, page headers, detail text, section spacing, section headings, contents placement, and previous/next navigation now come from one presentation authority.
+- Consolidates the Fundamentals section treatment into shared `rule-page-*` styles and removes the obsolete parallel Fundamentals/Rule Reader container classes and CSS that previously allowed the two rule systems to drift apart.
+- Adds one shared Core Action card renderer backed directly by the canonical `coreActions` data and uses it in Fundamentals, Combat Abilities & Targeting, Attacking & Defending, and the Renew the Heart reference instead of rebuilding those boxes page by page.
+- Consolidates rule/example boxes behind one shared feature-card renderer using the established `rule-feature-box` visual authority, and converts Character Creation, Sparks/Deeds, Homeland/Faith/Oath, and other examples away from separately hand-built boxes.
+- Keeps deliberately specialized content, including Species lore/art/quote composition, inside the common Rules shell rather than maintaining a second page-layout system.
+- Updates Site Update, package, BUILD/export, and PWA cache metadata to Beta 0.23 while Game Update remains v0.11.
+
 # Brambleheart Beta 0.22
 
 - Refines Winds of Magic → Spell Types & Targeting: Spell Range now explains legal targets, cast range, and area directly; the shared Targeting link is embedded in that section; Touch and Direct terminology is removed from this page; Enhances & Hexes shows the canonical Renew the Heart Core Action; and a Summon placeholder is added for future rules.
