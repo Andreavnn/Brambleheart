@@ -7,7 +7,7 @@ const search=ref(''),tab=ref('All'),choices=ref<Record<string,string>>({})
 const tabs=['All','Weapons','Armor','Shields','Trinkets','Traveler’s Gear','Field Kits','Consumables','Tools']
 const tabStrip=ref<HTMLElement|null>(null),shopList=ref<HTMLElement|null>(null)
 function shieldName(name:string){return ['Sapguard','Sapguard*','Vinegrip','Ironwood Bulwark','IronwoodBulwark'].includes(name)}
-function itemTab(item:any){if(item.name==='Sharpening Stone')return'Consumables';if(item.shopGroup==='Spellcasting Implements'||item.shopGroup==='Accessories')return item.category==='Trinket'?'Trinkets':'Tools';if(item.shopGroup)return item.shopGroup;if(item.category==='Weapon')return'Weapons';if(item.category==='Armor & Shield')return shieldName(item.name)?'Shields':'Armor';if(item.category==='Trinket')return'Trinkets';return item.category||'Traveler’s Gear'}
+function itemTab(item:any){if(item.shopGroup)return item.shopGroup;if(item.category==='Weapon')return'Weapons';if(item.category==='Armor & Shield')return shieldName(item.name)?'Shields':'Armor';if(item.category==='Trinket')return'Trinkets';return item.category||'Traveler’s Gear'}
 function mightRequirement(item:any){if(item.category!=='Armor & Shield')return 0;const first=String(item.detail||'').split('·')[0]||'';return Number(first.replace(/[^0-9]/g,''))||0}
 function quantityCost(item:any){return Math.max(0,Number(item.costWp)||0)}
 function choiceFor(item:any){return choices.value[item.name]||''}

@@ -1,26 +1,24 @@
-# Brambleheart TTRPG — Beta 0.23
+# Brambleheart TTRPG — Beta 0.24
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.23 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.24 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.23
+## Current Site Update — Beta 0.24
 
-- Rules pages now share one page shell and one section-layout authority with Fundamentals instead of maintaining separate Fundamentals and Rule Reader presentation systems.
-- Core Action references reuse one canonical Core Action card renderer backed by `coreActions`; Renew the Heart and combat-action examples no longer rebuild that card structure independently.
-- Rule/example boxes reuse one shared feature-card component built on the existing `rule-feature-box` presentation instead of introducing page-specific box implementations.
-- Obsolete parallel Rules/Fundamentals container selectors and superseded box overrides were removed so future Rules presentation changes have one implementation to maintain.
+- Rules pages continue to use the shared Fundamentals-style page shell and shared rule-card components introduced by Beta 0.23.
+- The current ruleset is now materialized directly in `src/data/rulesCurrent.ts`; the original generated raw-rules source and superseded mutation/style layers are no longer runtime authorities.
+- Fundamentals, Character Creation, Equipment & Gear, Winds of Magic, and Battles receive the current reference-layout, graphic, collapsible-panel, interaction, and rules-copy updates.
+- Threadpiece exchange examples, Core Action references, rule-feature boxes, Deeds, and current equipment references reuse shared components/data instead of maintaining page-specific copies.
 
-## Current Game Update — v0.11
+## Current Game Update — v0.12
 
-Game Updates are versioned independently from Site Updates. Game Update v0.11 clarifies spell range and automatic resolution presentation and improves player-facing Character Creation guidance without changing the v0.10 spell roster or base-Mana balance.
+Game Update v0.12 updates current Core Action timing, Character Creation procedures, Deed randomization, Lore elemental resistance, Enhance casting, current equipment references, Combat Targeting, and Damage Category presentation.
 
-### Spell Targeting & Character Creation Clarity
+### Current Rules Clarifications
 
-Spell Range now distinguishes a Spell’s legal target, cast range, and area, with the shared Targeting reference embedded directly in that section. The Spell Types & Targeting page no longer repeats Touch or Direct terminology; Enhances & Hexes presents the canonical Renew the Heart Core Action, and the Summon heading is reserved for expanded rules.
+Move Core Actions are Dynamic where stated; Core Combat Actions are used on a turn. Lore Attunement grants Resistance [+1] against the damage element associated with the chosen Lore. Casting an Enhance requires the caster to Renew the Heart, with the passive target reduced by the caster’s Spirit modifier to a minimum target of [8]. Damage Categories are Standard, Direct, Lethal, and On-Going.
 
-Automatically resolving Spells no longer display a redundant `TO HIT: Automatic. No roll required.` field. Magic Strike and Renew the Heart fields remain wherever those rolls are actually required.
-
-Character Creation → Step-by-Step keeps its established rules and choices but uses more conversational guidance, cleaner example cards, a centered Homeland example, and a short Character Details checklist.
+Character Creation references the four Body & Spirit Paths, the current equipment catalog, and a 30 sp starting Threadpiece budget. Deeds may be drawn from a Watcher-provided Deeds Deck or selected by d100; the standard session method is draw five and keep two, with at least two Deeds per player recommended.
 
 ### Complete Magic Rebalance
 
@@ -61,7 +59,7 @@ Practiced Hand cannot choose Skills the character already knows from earlier cre
 
 Core Action is the canonical name for the shared actions every character can use. Ability remains the term for Traits, Talents, Spells, equipment effects, and other rules that modify a Core Action or trigger from events in its chain.
 
-A normal round provides one Core Instinct Action, one Core Move Action, one Core Combat Action, and one Core Reaction Action. The shared Core Actions are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, Reaction, and Renew the Heart.
+The shared Core Actions are Channel the Winds, Focused Will, Stride, Swiftstride, Hero’s Charge, Melee Strike, Range Strike, Arcane Command, Reaction, and Renew the Heart. Move Core Actions marked Dynamic can be used at their legal timing; Core Combat Actions are used on a turn; Instinct and Reaction follow their printed timing.
 
 Every Ability Chain begins with a Core Action. A specific character’s copy of an Ability can resolve only once during that chain, even if later events would make its Trigger legal again. Another character’s copy of the same named Ability is a separate Ability instance and may resolve once. The chain ends when no unresolved Ability instance has a legal Trigger.
 
@@ -87,8 +85,6 @@ Ragebound builds from Focused Will, granting condition [+1] to Strike and [+1] t
 - 5 np = 1 sp
 - 5 sp = 1 bp
 - Starting wealth = 30 sp
-- Adventure Kit creation sellback = 3 sp
-- Maximum creation purchasing power after selling the kit = 33 sp
 
 Protective loadout remains limited to one armor and one shield. Trinkets are passive equipped gear and do not consume protective equipment space.
 
@@ -98,10 +94,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.23`
-- package version: `0.23.0`
-- PWA cache: `v0.23`
-- Game Update: `v0.11`
+- Site Update / BUILD/export: `0.24`
+- package version: `0.24.0`
+- PWA cache: `v0.24`
+- Game Update: `v0.12`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

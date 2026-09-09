@@ -93,3 +93,5 @@ export const loreSpells: Record<string,string[]> = {
   ]
 }
 export const attunableLores = ['Flames','Frost','Hallows','Harmony','Life','Oath','Wilds'] as const
+export type AttunableLore=typeof attunableLores[number]
+export const loreElementalResistance:Record<AttunableLore,string>={Flames:'Fire',Frost:'Cold',Hallows:'Psychic',Harmony:'Arcane',Life:'Light',Oath:'Lightning',Wilds:'Nature'}

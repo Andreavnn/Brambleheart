@@ -108,10 +108,6 @@ watch(state,()=>{
   applySettings()
   if(typeof window!=='undefined')writeLocalStorage(SETTINGS_STORE,JSON.stringify(state))
 },{deep:true,immediate:true})
-watch(()=>state.measurement,(next,previous)=>{
-  if(typeof window!=='undefined'&&previous!==undefined&&next!==previous)window.dispatchEvent(new CustomEvent('brambleheart:measurement-change',{detail:next}))
-})
-
 export function useSettings(){
   return{
     darkMode:toRef(state,'darkMode'),

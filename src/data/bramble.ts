@@ -38,7 +38,7 @@ export const homelands = [
 export const faiths = ['Keepers of Old','Last Light','Living Harmony','Deepfather’s Covenant','Dawnborn Order','Ashen Path','Court of Etherium','Origin Prime','The Dreamtide','Feastbound Covenant','The Wayward Path'] as const
 
 export const oaths = [
-  ['Kinship','No heart beats alone.'],['Mercy','All wounds can heal, even those unseen.'],['Truth','The world turns false only when I do.'],
+  ['Adventurer','I will meet the unknown with courage, curiosity, and resolve.'],  ['Kinship','No heart beats alone.'],['Mercy','All wounds can heal, even those unseen.'],['Truth','The world turns false only when I do.'],
   ['Courage','Better to burn bright than fade cold.'],['Balance','For every step forward, one must listen to the earth.'],['Honor','My word is the weight I carry.'],
   ['Patience','To know is to listen first.'],['Renewal','What is broken can bloom again.'],['Wilds','Freedom is the truest law.'],
   ['Steadfast','The unseen watches, and I will not turn my eyes.'],['Justice','All debts must balance before the dusk.'],['Guardian','Between harm and heart, I will stand.'],

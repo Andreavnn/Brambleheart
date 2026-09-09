@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { formatMeasurementText } from '../rules/measurements'
+import { useSettings } from '../state/settings'
+
 interface RuleFeatureField { label:string; value:string }
 
-withDefaults(defineProps<{
+const props=withDefaults(defineProps<{
   title:string
   subtitle?:string
   badge?:string
@@ -9,6 +13,9 @@ withDefaults(defineProps<{
   toneClass?:string|string[]
   compact?:boolean
 }>(),{subtitle:'',badge:'',fields:()=>[],toneClass:'',compact:false})
+
+const {measurement}=useSettings()
+const displayFields=computed(()=>props.fields.map(field=>({...field,value:formatMeasurementText(field.value,measurement.value)})))
 </script>
 
 <template>
@@ -21,8 +28,8 @@ withDefaults(defineProps<{
       <span v-if="badge" class="mana-badge">{{ badge }}</span>
     </header>
     <div v-if="$slots.default" class="rule-feature-card-body"><slot /></div>
-    <div v-if="fields.length" class="rule-feature-card-fields">
-      <div v-for="field in fields" :key="field.label">
+    <div v-if="displayFields.length" class="rule-feature-card-fields">
+      <div v-for="field in displayFields" :key="field.label">
         <small>{{ field.label }}</small>
         <span>{{ field.value }}</span>
       </div>

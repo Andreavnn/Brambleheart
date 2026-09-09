@@ -5,7 +5,7 @@ import RuleFeatureCard from './RuleFeatureCard.vue'
 
 const props=defineProps<{action:CoreActionDefinition}>()
 const coreFamilyPriority=['Instinct','Move','Touch','Shoot','Magic','Reactive','Passive']
-function family(){return coreFamilyPriority.find(item=>props.action.keywords.map(canonicalAbilityType).includes(item))||'Core'}
+function family(){const keywords=props.action.keywords.map(canonicalAbilityType);if(keywords.includes('Combat'))return'Touch';return coreFamilyPriority.find(item=>keywords.includes(item))||'Core'}
 function pillClass(keyword:string){const canonical=canonicalAbilityType(keyword);return ABILITY_TYPE_KEYWORDS.has(canonical)?['ability-cost-pill',abilityTypeClass(canonical)]:['keyword-pill']}
 function pillLabel(keyword:string){return props.action.name.toUpperCase()==='REACTION'&&keyword.trim().toLowerCase()==='reaction'?'REACTION':abilityPillLabel(keyword)}
 </script>

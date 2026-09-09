@@ -3,7 +3,7 @@ import type { EquipmentStatBonuses } from './equipment'
 export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
-export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Spellcasting Implements'|'Accessories'|'Trinkets'|'Tools'
+export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Trinkets'|'Tools'
 export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
 
 export const sparkDetails: Record<string,SparkDetail> = {
@@ -950,7 +950,7 @@ export const gearShopItems: GearShopItem[] = [
       "Radiant",
       "Shadow"
     ],
-    "shopGroup": "Spellcasting Implements"
+    "shopGroup": "Tools"
   },
   {
     "name": "Quickdraw Quiver",
@@ -990,7 +990,7 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A compact whetstone used to prepare slashing or piercing weapons before a fight.",
     "effect": "After preparation, a physical nonmagical weapon deals +1 damage until the end of the next combat encounter.",
-    "shopGroup": "Accessories"
+    "shopGroup": "Consumables"
   },
   {
     "name": "Journey Knot",

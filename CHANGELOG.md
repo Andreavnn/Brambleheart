@@ -1,180 +1,46 @@
+# Brambleheart Beta 0.24
+
+- Rebuilds the current Rules source boundary so the application consumes one materialized current ruleset instead of retaining the original generated raw-rules file and later mutation layer.
+- Refines Fundamentals graphics for Attributes, Ranks & Modifiers, Skills, Core Action timing, and Ability chaining; shared Core Action cards now use the same field treatment as other current rule cards.
+- Expands Character Creation reference presentation for Sparks, Deeds, Homelands, Faiths, Oaths, Talents, Equipment & Gear, Threadpiece exchange, advancement, and optional character details while keeping those pages on the shared Rules layout.
+- Updates Winds of Magic reference presentation for Mana Pool, Magic Regen, Lore Attunement, Signature Spells, Spell Keywords, casting, range/area interpretation, collapsible spell references, and Lore elemental resistance.
+- Reworks Battle reference presentation for encounter flow, Initiative, turns, Instinct timing, Combat Targeting, Attacking & Defending, Damage Categories, Resistances, Health, Healing, defeat, and encounter-end references.
+- Synchronizes Site Update Beta 0.24, package/export/build metadata, PWA cache metadata, and Game Update v0.12.
+
 # Brambleheart Beta 0.23
 
-- Replaces the split Rules presentation architecture with one shared rule-page shell used by both Fundamentals and the general Rules reader, so breadcrumbs, page headers, detail text, section spacing, section headings, contents placement, and previous/next navigation now come from one presentation authority.
-- Consolidates the Fundamentals section treatment into shared `rule-page-*` styles and removes the obsolete parallel Fundamentals/Rule Reader container classes and CSS that previously allowed the two rule systems to drift apart.
-- Adds one shared Core Action card renderer backed directly by the canonical `coreActions` data and uses it in Fundamentals, Combat Abilities & Targeting, Attacking & Defending, and the Renew the Heart reference instead of rebuilding those boxes page by page.
-- Consolidates rule/example boxes behind one shared feature-card renderer using the established `rule-feature-box` visual authority, and converts Character Creation, Sparks/Deeds, Homeland/Faith/Oath, and other examples away from separately hand-built boxes.
-- Keeps deliberately specialized content, including Species lore/art/quote composition, inside the common Rules shell rather than maintaining a second page-layout system.
-- Updates Site Update, package, BUILD/export, and PWA cache metadata to Beta 0.23 while Game Update remains v0.11.
-
-# Brambleheart Beta 0.22
-
-- Refines Winds of Magic → Spell Types & Targeting: Spell Range now explains legal targets, cast range, and area directly; the shared Targeting link is embedded in that section; Touch and Direct terminology is removed from this page; Enhances & Hexes shows the canonical Renew the Heart Core Action; and a Summon placeholder is added for future rules.
-- Removes redundant `TO HIT: Automatic. No roll required.` fields from automatically resolving Spells while preserving Magic Strike and Renew the Heart resolution where those rolls are actually required.
-- Rewrites Character Creation → Step-by-Step guidance into a friendlier player-facing tone while retaining its rules, interactive Attribute example, Path choices, and starting-equipment values.
-- Simplifies the Step-by-Step visual examples: Species Trait cards no longer repeat Heritage/Cultural labels, Spark and Deed share the same card treatment without “example” labels, Homeland is centered and compact, and Faith/Oath follow the same cleaner presentation.
-- Structures Character Details as a short bulleted checklist and updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.22 while Game Update advances to v0.11.
-
-# Brambleheart Beta 0.21
-
-- Refines Fundamentals → Introduction by restoring normal-weight Watcher dialogue, renaming Core Principles of Play to Principles of Play, and presenting the principles as a structured bullet list.
-- Rebuilds Character Creation → Step-by-Step presentation with visual Heritage/Cultural Trait, Spark/Deed, Homeland, Faith/Oath, Path, and starting-equipment examples; the Path cards now share one data authority with Character Creation itself, and starting wealth is corrected to 30 sp / 1,500 wp with the Adventure Kit return worth 3 sp / 150 wp.
-- Reworks Sparks & Deeds and the remaining Character Creation reference pages toward the Fundamentals presentation, combines Deeds and Deed Resolution into one Deeds section, and adds three visual Deed examples.
-- Collapses Heritage and Cultural Trait panels by default on Species pages and adds the requested expandable Species Lore placeholder panel above them.
-- Replaces Winds of Magic → Spell Types & Targeting → Spell Keywords with the approved MAGIC, SIGNATURE, CANTRIP, ENHANCE, HEX, AREA OF EFFECT, and SUMMON definitions.
-- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.21 while Game Update remains v0.10.
+- Unified the Rules presentation around one shared page shell for breadcrumbs, title/detail text, section styling, and previous/next navigation.
+- Reused shared Core Action and rule-feature card renderers across Fundamentals, Character Creation, Winds of Magic, and Battles instead of maintaining page-specific copies.
+- Removed obsolete Rules presentation selectors and duplicate Core Action/example markup exposed by the layout consolidation.
 
 # Brambleheart Beta 0.20
 
-- Consolidates related Rules pages in The Battles and Winds of Magic, renaming the combined references to Encounter & Rounds, Combat Abilities & Targeting, Attacking & Defending, Magical Levels, and Spell Types & Targeting while preserving legacy rule URLs through explicit aliases.
-- Brings general rule-page presentation closer to the Fundamentals layout, restores page-summary text to dedicated Fundamentals headers, normalizes Watcher/Selu callout typography, and reduces unnecessary bolding in rule-content navigation links.
-- Rebuilds To Damage presentation with category/Guts graphics, an integrated Damage − Guts example, and a dedicated Spell Heart-damage callout while defining primary versus On-Going Spell damage from one current-rules authority.
-- Reorganizes playable Species lore into a stable lore column beside artwork with the Species quote beneath the image, removes the quote-area pill UI, and renames the References entry to Lore - Anthro Mundas.
-- Completes the current magic rebalance: the built-in roster is reduced to 76 Spells, Smolder becomes the Flames Signature Spell Immolation, nine superseded Spells are retired, and one canonical base-Mana table supplies current built-in Spell costs.
-- Applies the approved spell-by-spell damage, save, duration, stacking, range, summon, and source-text changes across Invocation, Flames, Wilds, Oaths, Frost, Hallows, Harmony, and Life; primary Spell damage adds Heart once while later On-Going/recurring damage uses its printed value unless explicitly overridden.
-- Migrates legacy saved Lore selections at character normalization so retired Spells and legacy Signature selections do not continue into the current spell model.
-- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.20 and advances Game Update metadata to v0.10.
-
-# Brambleheart Beta 0.19
-
-- Adds current Game Updates to Rules → References → Changes & Updates, ordered newest first with the current update expanded, and places the current Game Update above the Site Update on News.
-- Adds shared Previous/Next navigation to rule pages while preserving breadcrumbs, carrying readers through each rule section and into the next section at section boundaries.
-- Adds an interactive, non-persistent Attribute allocation example to Character Creation → Step-by-Step → Step 5 and gives numbered Character Creation steps a clearer visual treatment.
-- Updates Spell resolution so Magic Strike TO HIT fields use the full Control-versus-Ward roll, Renew the Heart Spells use the approved save wording, and printed Spell damage values add Heart.
-- Clarifies Spell Heart damage under The Battles → To Damage → Damage Category and replaces the empty Damage − Guts = Total Damage heading with a Selu-based visual example.
-- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.19 and advances Game Update metadata to v0.08.
-
-# Brambleheart Beta 0.18
-
-- Makes the canonical current-rules layer the runtime authority for Rules, Character Creation, Character Sheets, Level Up, and spell detail data so the approved Game Update v0.07 Spell `TO HIT` and balance changes no longer depend on module load order.
-- Corrects shared pill presentation: Cultural Traits that grant Skills show only `SKILL`, `CULTURAL`, and `TRAIT`; Passive Traits no longer also show `ABILITY`; Talent and Spell Ability/type pills render in their card footer; and pill-style labels are consistently uppercase.
-- Restores consistent Rules navigation with breadcrumbs on dedicated Fundamentals pages, rebuilds Introduction in the Fundamentals layout, makes Core Rules return directly to Introduction, and removes the obsolete Character Creation eight-step rule-page navigation and redundant previous/next controls.
-- Removes obsolete Adventure Kit category/detail metadata from Character Creation and Character Sheet item cards, and migrates legacy saved Adventure Kit equipment entries back to the canonical `adventureKit` package state during character normalization.
-- Updates Site Update, package, export/BUILD, and PWA cache metadata to Beta 0.18 while Game Update remains v0.07.
-
-# Brambleheart Beta 0.17
-
-- Restores breadcrumb navigation beneath the main Rules navigation and removes the redundant previous/next rule-page navigation controls.
-- Applies the established Core Rules presentation language to the remaining Rule Reader pages while leaving Core Rules, Attributes & Skills, and Core Actions on their existing dedicated layouts.
-- Restores Species-page detail summaries without repeating them in the expandable Playable Species menu and removes the Woodlands Species-count subtitle.
-- Standardizes pill UI text to uppercase across shared Rules and character-facing surfaces.
+- Consolidated Battle and Winds of Magic navigation into the current merged pages, including Encounter & Rounds, Combat Targeting, Attacking & Defending, Magical Levels, and Spell Types & Targeting.
+- Added current damage-category/Heart guidance, damage/soak graphics, Species layout changes, and broader Fundamentals-style rule presentation.
+- Preserved prior route slugs only through explicit compatibility aliases while current navigation uses canonical page slugs.
 
 # Brambleheart Beta 0.16
 
-- Removes the decorative site icon from the bottom-of-page utility area and tightens page/footer spacing so the divider and utility controls follow page content more closely.
-- Standardizes Ability presentation across current Rules, Character Creation, and Rhythm Engine surfaces: Core-family pills display `CORE ACTION`, and Traits, Talents, Spells, and comparable Ability cards receive a consistent `ABILITY` pill where applicable.
-- Gives Heritage and Cultural Trait cards distinct accent identities and moves Cultural Traits away from the purple Magic/Spell color family.
-- Normalizes page-header character anchoring so decorative header artwork stays tied to the logo/header stage regardless of whether a background image is selected.
-- Changes Settings → Display → Backgrounds to the same switch-style exclusive-choice controls used elsewhere and makes Logo Size dynamically reduce or expand the header space with the selected logo size.
-- Adds a Fundamentals-style Character Creation rules guide to Character Creation child pages, with a section header and responsive step graphic linking the full Character Creation rules path.
-- Standardizes visible update terminology to Site Updates and Game Updates and synchronizes the application release to Beta 0.16 while Game Updates advances independently to v0.06.
-
-# Brambleheart Beta 0.15
-
-- Reorganizes Rules → Fundamentals → Core Actions so Actions, Abilities, examples, Reactions, chaining, and the Core Action reference are taught in clearly separated sections.
-- Hides category landing pages from expandable Rules menus, groups current playable Species beneath Woodlands, removes repetitive Species-list subtitles, and restyles Species lore panels to match Character Creation while retaining the quote-and-art layout.
-
-# Brambleheart Beta 0.14
-
-- Updates character/equipment persistence and presentation for the current passive-equipped Trinket model, removing legacy numbered-slot and Arcane Focus fields at the saved-character normalization boundary rather than carrying obsolete fields through current application logic.
-- Adds Settings → Display → Logo Size with five persisted choices while retaining the previous logo size as Largest/default.
-- Replaces the Character Roster and Rules header artwork, aligns/flips the requested page-header characters, and removes page-title detail text from News, Character Roster, Rules, and Rhythm Engine.
-
-# Brambleheart Beta 0.13
-
-- Promotes the approved Fundamentals presentation into production Core Rules, Attributes & Skills, and the shared action/ability reference while retaining explicit aliases for legacy Rules URLs and removing the obsolete layout-test route.
-- Reorganizes the shared Equipment & Gear shop into clearer categories with labeled weapon/protective profiles and shared purchasing behavior.
-- Rebuilds Level Up presentation around grouped rewards, advancement, Magic progression, and equipment management while keeping shared economy and advancement authorities canonical.
-- Fixes Settings background controls at their active implementation and removes superseded layout-test and transitional presentation code.
+- Established the current visual identity for Traits, Talents, Spells, Skills, and rule pills, including shared accent/tone handling and readable rule-card formatting.
+- Standardized current Rules page titles, summaries, Watcher/Selu callouts, content panels, and rule-detail typography.
+- Expanded Species and rules reference presentation while retaining specialized Species art/lore layouts where appropriate.
 
 # Brambleheart Beta 0.12
 
-- Adds News to primary navigation with separate Site Update and Game Update summaries plus community/share promotion cards.
-- Moves Character Sheet and equipment-shopping presentation to shared normalized equipment/profile data so purchased and equipped gear display consistently across character workflows.
-- Makes retained Adventure Kit contents visible on Character Sheets and unifies Character Creation and Level Up equipment purchasing around one shared shop component.
-- Adds the Encounter Builder placeholder, cleans Talent category presentation, and refines the Rules teaching UI around the shared action-family presentation.
-- Reorders Settings Display, Data & Content, and Changelog & Updates controls at their active view authority.
-
-# Brambleheart Beta 0.11
-
-- Persists Rhythm of Body & Spirit path selections and their Skill/Attribute choices across saved, imported, reviewed, and advanced characters.
-- Standardizes Heritage and Cultural Trait card presentation, semantic action-family pills, and independent card sizing.
-- Centralizes Character Sheet weapon-modifier presentation through the shared equipment-effect authority and hides parenthetical weapon identifiers on Character Sheets while retaining full catalog names elsewhere.
-- Replaces lossy Threadpiece display with exact BP/SP/NP/WP remainder formatting.
-- Aligns Character Creation Attribute colors, Talent-card action-family accents, and weapon-property pills with the Character Sheet and Rules presentation.
-
-# Brambleheart Beta 0.10
-
-- Separates application releases from Brambleheart Game Updates so site and game-rule histories advance independently.
-- Centralizes derived-stat, Mana, and Threadpiece calculations so Character Creation, Character Roster, Rhythm Engine, and Level Up consume shared implementations; currency persistence uses one whole-wp authority.
-- Renames Character List to Character Roster and expands approved-character Level Up with persistent post-creation currency, treasure, Magic Level, and equipment management.
-
-# Brambleheart Beta 0.09
-
-- Adds compressed Character Share Codes and consolidates character import/export through the shared imported-character normalizer.
-- Adds persistent Squares, Yards, Meters, and Feet display options for square-based rule text through one shared measurement-conversion authority.
-- Adds the versioned Game Updates page and links it beneath the Brambleheart logo and from Settings without adding it to primary navigation.
-- Adds character filtering, lock/unlock controls, persistent creation-completion state, and accessible transfer/share controls.
-- Adds the canonical Brambleheart site/share origin, footer share control, and Settings community/share access while preserving install support.
+- Expanded Character Creation, equipment shopping, character review, News, and Rules reference workflows.
+- Added current equipment normalization and shared item/economy data used by Character Creation and character sheets.
+- Improved rule navigation, linked rule pills, Settings/Data presentation, and current character-facing status behavior.
 
 # Brambleheart Beta 0.08
 
-- Adds Dropbox App Folder Cloud Sync using OAuth 2 PKCE with explicit user-controlled synchronization.
-- Keeps local character storage authoritative during normal use and performs cloud access only through explicit Update from Cloud or Upload Local actions.
-- Uses stable internal character IDs for replacement/addition, human-readable `_BH.json` filenames for portability, and guarded duplicate/invalid-data handling.
-- Separates Settings → Data & Content into Character Data and Cloud Sync, with Cloud Link Code, Workspace Link, Update from Cloud, Upload Local, Disconnect, and Cloud Instructions controls.
-- Keeps legacy cloud-connection cleanup isolated at the migration boundary rather than retaining parallel cloud implementations.
-
-# Brambleheart Beta 0.07
-
-- Consolidates Rules concepts into canonical pages with explicit aliases for superseded URLs, including combined damage/health references and the canonical Ability Targeting route.
-- Reworks Character Creation Culture/Homeland Skill handling, path progression, language presentation, Attribute controls, and Review identity locking.
-- Rebuilds Settings → Data & Content around backup/reset actions and removes obsolete nested data managers.
-- Hardens equipment profile parsing, quantity-aware purchasing, attached-item presentation, and Armor/Shield data handling without maintaining duplicate profile implementations.
-- Fixes spell-source boundary parsing and isolates Oath spell records so neighboring spell data cannot be merged by the reader/parser.
-
-# Brambleheart Beta 0.06
-
-- Consolidates Rules, Settings, storage, derived-stat, equipment-profile, and structured rule parsing around shared authoritative implementations instead of parallel helpers and patch-layer overrides.
-- Replaces the earlier role palettes with the current Default, Warrior, Healer, Ranger, and Thief theme model while isolating legacy theme migration at Settings.
-- Restores fixed content-category color identity for rules/detail cards so theme changes do not rewrite Species, Spell, Talent, Spark, Homeland, Oath, Faith, or equipment identity.
-- Normalizes backgrounds, dark surfaces, separators, Rules child-row presentation, and Recent Rules cards while retaining one active responsive style authority.
-- Removes obsolete Old.Dex/army-builder CSS, dead Rules metadata, stale storage-key handling, and other superseded implementation code discovered during the cleanup passes.
+- Added cloud/share/import foundations for character data and expanded data/settings tooling.
+- Improved current data normalization, import/export handling, and cross-device character workflows.
 
 # Brambleheart Beta 0.05
 
-- Adds modal focus trapping, Escape dismissal, trigger-focus restoration, and transactional persistence/error handling for Character Creation and Level Up workflows.
-- Establishes the explicit Incomplete / Unapproved / Approved character-status model with migration for legacy characters and Approved-only Level Up access.
-- Prevents creation-step jumps from bypassing required validation and unifies Talent prerequisite enforcement between Character Creation and Level Up.
-- Adds optional installed-app launch audio, responsive Text Size fixes, Heritage Trait terminology, collapsible Character Sheet sections, and rule-banner navigation/discovery.
-- Adds typed Custom Data import reporting and keeps storage failures visible rather than falsely reporting successful writes.
-
-# Brambleheart Beta 0.04
-
-- Rebuilds the Rhythm Engine around the saved Character Sheet instead of the earlier dedicated Combat Encounter implementation.
-- Adds Approved characters and Beyond Character Creation Level Up with source-backed advancement-cost presentation.
-- Adds typed downloadable JSON templates and import support for custom Species, Spells, Talents, and Traits with explicit Custom labeling and per-character custom-data permission.
-- Rebuilds Background selection around automatic asset discovery and adds the supplied background artwork while retaining grayscale/display controls.
-- Refines Character Creation, Character Review, spell/talent presentation, and responsive popup layouts around the shared character-sheet language.
-
-# Brambleheart Beta 0.03
-
-- Rebuilds the Rules landing/reader around full-width search, breadcrumbs, source-backed sections, previous/next navigation, Recent access, and dedicated Anthro Mundas section pages.
-- Expands Character Creation with Campaign Name, refined identity/Skill/Lore/Language/equipment steps, readable purchase profiles, and a fuller final Review sheet.
-- Adds Complete/Incomplete Character Roster presentation and saved-character support in the Rhythm Engine.
-- Refines Attribute/Skill roll dependencies, targets, Fortune/Misfortune guidance, and dedicated encounter/character-sheet experimentation without retaining obsolete empty result states.
-- Strengthens responsive navigation, controls, theme surfaces, and background presentation across desktop, tablet, and mobile layouts.
-
-# Brambleheart Beta 0.02
-
-- Expands guided Character Creation with Species lore and Traits, Culture Traits, Skills, Spark/Deed guidance, Homeland, Faith/Oath, Attributes, Body & Spirit, Lore Attunement, Spells, Talents, equipment, Languages, and final review.
-- Adds source-backed Playable Species and Lore of Magic reader pages, Quick Reference, FAQ, Recent Rules, Changes & Updates, and linked Fundamentals navigation.
-- Expands the Rhythm Engine with roll reason, Attribute/secondary-stat and optional Skill values, targets, Fortune/Misfortune results, and five-roll history.
-- Adds connected Donation/Recurring Support links, fixed-cover backgrounds, install support, Custom Data, and the responsive Brambleheart identity presentation.
-- Rebuilds from the stable early application baseline and fixes the creator crash and Species/Culture overflow discovered in the superseded intermediate implementation.
+- Established the shared storage service, persisted character/settings state, accessibility improvements, and the early Rules/Character Creation application structure.
+- Consolidated browser-storage access through the application storage boundary and improved persisted-state reliability.
 
 # Brambleheart Alpha 0.01
 
-- Initial Vue 3 + TypeScript + Vite companion foundation with Character Roster, Rules, Rhythm Engine/Simulator, Settings, local persistence, and Brambleheart assets.
-- Establishes the routed reader/welcome flow, shared panels and controls, text-size/bold preferences, install controls, grouped Rules references, Recent Rules, and the initial splash experience.
-- Adds the first guided Character Creation flow, standalone Rules reader pages, fixed-cover backgrounds, Simulator history, and repository cleanup tooling.
+- Initial Brambleheart Vue 3 / TypeScript application foundation with Character Creation, character storage, Rules, Settings, and early game-data structures.
