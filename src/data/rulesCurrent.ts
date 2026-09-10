@@ -1,9 +1,12 @@
+import { ADVANCEMENT_FORMULAS, XP_GUIDANCE, advancementCost, cumulativeRankCost } from '../rules/advancementRules'
+import { deeds, deedRuleText } from './deeds'
+
 /**
  * Canonical current Brambleheart rules.
  *
- * This file is the only in-repository authority for rendered rule-source content.
- * Historical Word/PDF transcriptions and mutation layers are intentionally not
- * retained in the runtime source tree.
+ * This file is the canonical authority for narrative rule-source content.
+ * Structured systems with dedicated live data authorities (such as Species and
+ * character equipment) are rendered from those sources instead of duplicated here.
  */
 export type RuleSourceBlock =
   | { type:'paragraph'; text:string }
@@ -12,7 +15,7 @@ export type RuleSourceBlock =
 export interface RuleSourceSection { heading:string; blocks:RuleSourceBlock[] }
 export interface RuleSourceDocument { sections:RuleSourceSection[] }
 
-export const SPELL_HEART_DAMAGE_RULE="When a Spell adds Heart to a damage value, the Heart portion of that damage is Standard unless the Spell specifically states otherwise. The Spell’s printed damage value keeps its listed category and damage type. Heart is added once to the Spell’s primary damage only; On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summon damage uses the printed value unless the rule explicitly says otherwise." as const
+export const SPELL_HEART_DAMAGE_RULE="When a Spell adds Heart to a damage value, the Heart portion of that damage is Standard unless the Spell specifically states otherwise. The Spell’s printed damage value keeps its listed Damage Category and damage type. Heart is added once to the Spell’s primary damage only; On-Going, recurring, delayed, terrain, movement-triggered, reflected, and summon damage uses the printed value unless the rule explicitly says otherwise." as const
 
 export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
   "introduction": {
@@ -335,7 +338,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "When rolling half-step, you will divide the natural (unmodified) dice result by two, round up."
+            "text": "For a half-step roll, roll [1d10] and read the natural die result by its result band. Do not divide the number shown on the die."
           },
           {
             "type": "paragraph",
@@ -343,7 +346,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "The resulting value will determine your final total. If the resulting value is [1] through [5], your final is a [1]. If the resulting value is [6] through [10], your final is a [2]."
+            "text": "A natural d10 result of [1] through [5] gives a half-step result of [1]. A natural d10 result of [6] through [10] gives a half-step result of [2]."
           },
           {
             "type": "paragraph",
@@ -351,7 +354,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "For example, if you’re required to roll [1d10/2+1] you would increase your final outcome by [+1]."
+            "text": "For example, [1d10/2+1] means: roll the d10, convert the natural result to its half-step result of [1] or [2], then add [+1] to that result."
           }
         ]
       },
@@ -891,7 +894,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Damage Category determines how incoming damage interacts with Guts. The current categories are Standard, Direct, Lethal, and On-Going. Damage Category is separate from damage type; fire, frost, nature, and similar damage types identify the source or element."
+            "text": "Damage Category determines how incoming damage interacts with Guts. The current categories are Standard, Direct, and Lethal. Damage Category is separate from damage type. On-Going is a recurring-damage qualifier used for later, recurring, or tick damage and may be paired with a category such as Direct or Lethal."
           },
           {
             "type": "paragraph",
@@ -907,7 +910,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "ON-GOING: Damage that resolves after the initial effect at a later stated timing is On-Going. On-Going damage uses exactly its printed value and does not add the normal Fury, Accuracy, Heart, Power, or weapon-damage additions unless the effect explicitly says otherwise. If no other Guts instruction is printed, apply full Guts when resolving the On-Going damage."
+            "text": "ON-GOING: Damage that resolves after the initial effect at a later stated timing is On-Going damage. On-Going is a recurring-damage qualifier, not a Damage Category or elemental damage type. It prevents normal Fury, Accuracy, Heart, Power, weapon-damage, or similar additions from being added again unless the effect explicitly says otherwise. Direct On-Going uses half Guts, Lethal On-Going bypasses Guts, and On-Going damage with no category stated uses full Guts as Standard damage."
           },
           {
             "type": "paragraph",
@@ -1247,7 +1250,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "DEEDS: When you complete a Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+3] bonus Experience."
+            "text": `DEEDS: When you complete a kept Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus Experience. This Spark alignment bonus can be gained only once per session.`
           }
         ]
       },
@@ -2692,7 +2695,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "When a character completes a Deed, they gain Experience based on its challenge and impact. If the Deed aligns with one or both of their Spark keywords, they gain [+3] bonus Experience in addition to the Deed’s normal reward."
+            "text": `When a character completes a kept Deed, they gain its printed Experience reward. If the Deed aligns with one or both of their Spark keywords, they gain [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus Experience in addition to the Deed’s normal reward. This Spark alignment bonus can be gained only once per session.`
           },
           {
             "type": "paragraph",
@@ -2710,140 +2713,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
       },
       {
         "heading": "DEEDS LIST",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Participation Trophy Act with purpose, even in the smallest challenge Objective (Mechanical): Win one Active Target Roll of any kind. Reward: +1 XP Keywords: Driven, Focused"
-          },
-          {
-            "type": "paragraph",
-            "text": "Skill of the Day Apply your craft or insight to change an outcome. Objective (Mechanical): Succeed at a Medium or higher Passive Skill Roll. Reward: +2 XP Keywords: Studious, Curious"
-          },
-          {
-            "type": "paragraph",
-            "text": "Voice of the Table Influence the group through story, counsel, or expression. Objective (Mechanical): Use a non-combat Skill unique to your character during a social or exploration scene. Reward: +3 XP Keywords: Charming, Creative"
-          },
-          {
-            "type": "paragraph",
-            "text": "Brush with Fate Choose the harder path to prove your resolve. Objective (Mechanical): When asked to make a Medium or Easy Passive Roll, raise the difficulty to Hard and succeed. Reward: +5 XP Keywords: Bold, Defiant"
-          },
-          {
-            "type": "paragraph",
-            "text": "Steady Hand"
-          },
-          {
-            "type": "paragraph",
-            "text": "Stay calm and deliberate in a moment of chaos. Objective (Mechanical): Roll two exceptional results (8+) on the same check. Reward: +3 XP Keywords: Focused, Steadfast"
-          },
-          {
-            "type": "paragraph",
-            "text": "Heart of the Party Inspire unity or compassion through words or kindness. Objective (Mechanical): Use a Heart-based Skill (Charm, Presence, Expression, or Guile) to shift an NPC’s or group’s attitude. Reward: +3 XP Keywords: Charming, Compassionate"
-          },
-          {
-            "type": "paragraph",
-            "text": "Calculated Edge Outsmart danger with timing or cunning. Objective (Mechanical): Succeed on an Edged Roll against an Active or Medium+ Passive Target. Reward: +3 XP Keywords: Clever, Focused"
-          },
-          {
-            "type": "paragraph",
-            "text": "Wild Wanderer Discover or interpret something hidden in the wild. Objective (Mechanical): Succeed at a Lore, Awareness, or Wayfinding roll against a Medium or higher Passive Target. Reward: +1 XP Keywords: Curious, Adaptable"
-          },
-          {
-            "type": "paragraph",
-            "text": "Spark of Insight Perceive a hidden truth that changes the course of events. Objective (Mechanical): Reveal meaningful information through a Lore or Seeking roll. Reward: +1 XP Keywords: Intuitive, Studious"
-          },
-          {
-            "type": "paragraph",
-            "text": "Brushfire Courage Confront fear for the sake of another’s safety. Objective (Mechanical): Take an action that places you in danger to protect another. Reward: +2 XP Keywords: Bold, Compassionate"
-          },
-          {
-            "type": "paragraph",
-            "text": "Steadfast Resolve Refuse to yield against hardship or fear. Objective (Mechanical): Resist or end an ongoing effect using an Attribute Save. Reward: +2 XP Keywords: Steadfast, Driven"
-          },
-          {
-            "type": "paragraph",
-            "text": "Tinker’s Triumph Build or restore something meaningful to the story. Objective (Mechanical): Craft, repair, or modify an item or structure successfully. Reward: +1 XP Keywords: Creative, Inventive"
-          },
-          {
-            "type": "paragraph",
-            "text": "Hope in the Ashes Encourage an ally to try again after failure. Objective (Mechanical): Recover from a failed roll through teamwork or inspiration. Reward: +2 XP Keywords: Hopeful, Compassionate"
-          },
-          {
-            "type": "paragraph",
-            "text": "Measured Breath Act with patience and thoughtfulness amid pressure. Objective (Mechanical): Complete two successful Weighted Rolls in one session. Reward: +3 XP Keywords: Cautious, Focused"
-          },
-          {
-            "type": "paragraph",
-            "text": "Inventor’s Spark Innovate your way past a limit or obstacle. Objective (Mechanical): Combine two items, tools, or abilities to solve a challenge. Reward: +2 XP Keywords: Inventive, Creative"
-          },
-          {
-            "type": "paragraph",
-            "text": "Gentle Guardian Place another’s well-being before your own. Objective (Mechanical): Prevent or reduce harm to an ally through a save, heal, or ability. Reward: +1 XP Keywords: Compassionate, Steadfast"
-          },
-          {
-            "type": "paragraph",
-            "text": "Quiet Observer Observe instead of acting, learning what others miss. Objective (Mechanical): Use Awareness or Lorekeeping to uncover a hidden detail that changes a scene. Reward: +1 XP Keywords: Cautious, Reflective"
-          },
-          {
-            "type": "paragraph",
-            "text": "Pathfinder’s Mark Lead others safely through uncertainty. Objective (Mechanical): Guide the party to a location or resource through skill or intuition. Reward: +2 XP Keywords: Adaptable, Independent"
-          },
-          {
-            "type": "paragraph",
-            "text": "Flicker of Faith Stay true to your ideals when others doubt. Objective (Mechanical): Persevere through a conflict involving your oath or faith. Reward: +3 XP Keywords: Hopeful, Reflective"
-          },
-          {
-            "type": "paragraph",
-            "text": "Rebel’s Smile Defy authority or expectation for freedom or truth. Objective (Mechanical): Take a creative or risky approach that changes an encounter’s flow. Reward: +1 XP Keywords: Defiant, Independent"
-          },
-          {
-            "type": "paragraph",
-            "text": "Scholar’s Patience Dedicate yourself to learning before acting. Objective (Mechanical): Gather three or more pieces of related information through research or observation. Reward: +3 XP Keywords: Studious, Cautious"
-          },
-          {
-            "type": "paragraph",
-            "text": "Trickster’s Turn Transform setback into opportunity with humor or wit. Objective (Mechanical): Turn a disadvantage (negative condition or failure) into a benefit. Reward: +2 XP Keywords: Playful, Defiant"
-          },
-          {
-            "type": "paragraph",
-            "text": "Lone Path Choose independence over comfort or safety. Objective (Mechanical): Succeed at a roll without assistance when help was available. Reward: +2 XP Keywords: Independent, Driven"
-          },
-          {
-            "type": "paragraph",
-            "text": "Silent Strength Show restraint or mercy when power was yours to take. Objective (Mechanical): End a combat encounter without any final blows. Reward: +2 XP Keywords: Compassionate, Cautious"
-          },
-          {
-            "type": "paragraph",
-            "text": "Mind Like Water Find clarity amid confusion or temptation. Objective (Mechanical): Overcome a magical or mental compulsion through a save or insight. Reward: +2 XP Keywords: Reflective, Intuitive"
-          },
-          {
-            "type": "paragraph",
-            "text": "Boundless Heart Share strength selflessly across the group. Objective (Mechanical): Heal, restore, or inspire three or more allies in a single scene. Reward: +3 XP Keywords: Compassionate, Hopeful"
-          },
-          {
-            "type": "paragraph",
-            "text": "Trailblazer Take initiative before others dare. Objective (Mechanical): Be the first to act successfully in a scene or combat round. Reward: +2 XP Keywords: Bold, Driven"
-          },
-          {
-            "type": "paragraph",
-            "text": "Wise Fool Use levity to heal or reframe conflict."
-          },
-          {
-            "type": "paragraph",
-            "text": "Objective (Mechanical): Defuse tension or danger through humor or charm. Reward: +2 XP Keywords: Playful, Charming"
-          },
-          {
-            "type": "paragraph",
-            "text": "Tether of Trust Strengthen a relationship through loyalty or Objective (Mechanical): Aid or protect an ally using a teamwork roll or shared ability. cooperation. Reward: +1 XP Keywords: Steadfast, Compassionate"
-          },
-          {
-            "type": "paragraph",
-            "text": "Vision in Shadow Use intuition to reveal meaning beyond sight. Objective (Mechanical): Spot or interpret a hidden clue before others act. Reward: +2 XP Keywords: Intuitive, Curious"
-          },
-          {
-            "type": "paragraph",
-            "text": "Master of the Moment Balance patience, precision, and action across challenges. Objective (Mechanical): Succeed on three different Passive Skill Rolls in one session. Reward: +4 XP Keywords: Focused, Driven"
-          }
-        ]
+        "blocks": deeds.map(deed=>({type:'paragraph' as const,text:deedRuleText(deed)}))
       }
     ]
   },
@@ -2906,7 +2776,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: You may wield one two-handed weapon in each hand. While doing so, suffer condition [-3] to physical Strike rolls and condition [-2] to Ward rolls.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "EFFECT: You may wield one two-handed weapon in each hand. While doing so, the normal Dual Wielding Strike penalty is increased to a total condition [-4] before any other Talents, weapon qualities, or conditions are applied; do not add the normal [-2] Dual Wielding penalty again. You also suffer condition [-2] to Ward rolls.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
           }
         ]
       },
@@ -3582,7 +3452,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] Mana\nTRIGGER: When you are targeted by a Combat ability while wielding only a one-handed weapon and no shield.\nEFFECT: Increase your Ward against that ability by half the damage value of the weapon you are wielding.\nKEYWORDS: REACTIVE | TALENT"
+            "text": "COST: [2] Mana\nTRIGGER: When you are targeted by a Combat ability while wielding only a one-handed weapon and no shield.\nEFFECT: Increase your Ward against that ability by half the weapon’s normal, non-bracketed damage value, rounded up, to a minimum of [+1].\nKEYWORDS: REACTIVE | TALENT"
           }
         ]
       },
@@ -3622,19 +3492,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "TRIGGER: When you reduce an enemy to [0] Health.\nEFFECT: Allies within [3] squares gain condition [+1] to their next Attribute Save or Ward roll, whichever occurs first.\nKEYWORDS: PASSIVE | TALENT"
-          }
-        ]
-      },
-      {
-        "heading": "WARD GUARD",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Your shield shifts with the rhythm of each strike, turning force aside before it finds you."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: A shield you wield no longer grants its Guts bonus. Instead, add half of that bonus to your Ward rolls.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -3738,11 +3595,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "When wielding a weapon in each hand, your character suffers a [-2] condition to all melee strike rolls."
+            "text": "When wielding a weapon in each hand, your character suffers a [-2] condition to all Strike rolls made with those weapons. Weapon qualities shared by both wielded weapons apply only once. If one or both weapons have Versatile, apply its [+1] to strike once, reducing the Dual Wielding penalty to [-1]."
           },
           {
             "type": "paragraph",
-            "text": "Dual wielding does not grant extra attacks. Instead, when you successfully hit with a melee strike, increase the attack’s total damage by the off-hand weapon’s damage value minus [2]."
+            "text": "Dual wielding does not grant extra attacks. Instead, when you successfully hit with a melee Strike, increase the attack’s total damage by the off-hand weapon’s normal, unbracketed damage value minus [2]. A shared weapon quality does not resolve a second time from the off-hand weapon."
           },
           {
             "type": "table",
@@ -3761,7 +3618,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "Deadly",
-                "Deals half total damage inflicted as lethal damage."
+                "A Deadly weapon lists damage as X [Y]. Resolve X as the weapon’s normal damage value. When the Strike succeeds, also deal the bracketed [Y] as Lethal damage. The bracketed value is part of the weapon’s listed damage and is not recalculated from the final damage total."
               ],
               [
                 "Penetration",
@@ -3793,7 +3650,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "Versatile",
-                "May be dual-wielded. When wielding one in each hand, gain [+1] to strike."
+                "May be dual-wielded. While dual wielding, one or more Versatile weapons grant a single [+1] to strike. This bonus does not stack."
               ]
             ]
           },
@@ -3801,130 +3658,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "table",
             "rows": [
               [
-                "Name",
-                "Cost",
-                "Damage",
-                "Weight",
-                "Qualities"
-              ],
-              [
-                "Melee Weapons"
-              ],
-              [
-                "Club",
-                "1 sp",
-                "3",
-                "2 lb.",
-                "Bludgeoning, Versatile"
-              ],
-              [
-                "Shade Blade (Dagger)",
-                "2 sp",
-                "2",
-                "1 lb.",
-                "Deadly, Versatile, Thrown (5)"
-              ],
-              [
-                "Timber Fang (Hatchet)",
-                "3 sp",
-                "3",
-                "2 lb.",
-                "Slashing, Thrown (5)"
-              ],
-              [
-                "Rootbreaker (Mace)",
-                "4 sp",
-                "4",
-                "2 lb.",
-                "Bludgeoning, Thrown (4)"
-              ],
-              [
-                "Oak Staff (Quarterstaff)",
-                "1 sp",
-                "2 (3)",
-                "4 lb.",
-                "Adaptable"
-              ],
-              [
-                "Brush Blade (Short Sword)",
-                "5 sp",
-                "3",
-                "2 lb.",
-                "Slashing, Versatile"
-              ],
-              [
-                "Field Blade (Long Sword)",
-                "7 sp",
-                "3 (5)",
-                "3 lb.",
-                "Slashing, Adaptable"
-              ],
-              [
-                "Stonebreaker (Warhammer)",
-                "10 sp",
-                "4 (6)",
-                "2 lb.",
-                "Bludgeoning, Adaptable"
-              ],
-              [
-                "Ranged Weapons"
-              ],
-              [
-                "Thornspike (Dart)",
-                "1 np",
-                "3",
-                "¼ lb.",
-                "Penetration, Thrown (6)"
-              ],
-              [
-                "Reedpipe (Blowpipe)",
-                "1 sp",
-                "2",
-                "1lb.",
-                "Projectile (4), Deadly"
-              ],
-              [
-                "Sling",
-                "1 sp",
-                "3",
-                "—",
-                "Projectile (5), Skyfire"
-              ],
-              [
-                "Brush Bow (Short Bow)",
-                "8 sp",
-                "3",
-                "2 lb.",
-                "Projectile (7), Penetration"
-              ],
-              [
-                "Far Bow (Long Bow)",
-                "14 sp",
-                "4",
-                "2 lb.",
-                "Projectile (12), Penetration, Skyfire"
-              ],
-              [
-                "Quicklock (Light Crossbow)",
-                "10 sp",
-                "3",
-                "5 lb.",
-                "Projectile (8), Penetration, Versatile"
-              ],
-              [
-                "Latchlock (Heavy Crossbow)",
-                "16 sp",
-                "5",
-                "5 lb.",
-                "Projectile (10), Penetration, Skyfire"
-              ]
-            ]
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "As a healer who avoids harming others whenever possible, Selu’s player chooses an oak staff. The staff deals [2] damage, or [3] damage when used two-handed, thanks to its adaptable quality. When Selu performs a physical combat ability such as melee strike, they roll a strike roll using (3d10) + brawl + any conditions, compared against the target’s ward roll. In example, Selu rolls a total of [22] on their strike, while the target’s ward roll totals [18]. Because Selu’s strike exceeds the target’s ward, the attack hits and the staff deals its two-handed damage of [3] to the target."
+                "As a healer who avoids harming others whenever possible, Selu’s player chooses an oak staff. The staff deals [3] damage, or [4] damage when used two-handed, thanks to its Adaptable quality. When Selu performs a physical combat Ability such as Melee Strike, they roll (3d10) + Brawl + any conditions against the target’s Ward roll. If Selu’s Strike exceeds the target’s Ward, the attack hits and uses the staff’s selected damage value."
               ]
             ]
           }
@@ -3947,7 +3681,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Each armor type below lists its Cost, Guts Bonus, Mana Syphon, Armor Penalty, and Weight."
+            "text": "Each armor and shield lists its Cost, Might Requirement, Guts Bonus, Mana Syphon, Armor Penalty, and Weight."
           },
           {
             "type": "paragraph",
@@ -3955,136 +3689,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Armor Penalty represents how much the armor interferes with moving unseen — a rating from 1 (minor noise or bulk) to 5 (heavy or clumsy)."
-          },
-          {
-            "type": "paragraph",
-            "text": "Medium Armor"
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "Name",
-                "Cost",
-                "MIGHT Requirement",
-                "GUTS Bonus",
-                "Mana Syphon",
-                "Armor Penalty",
-                "Weight"
-              ],
-              [
-                "Roughscale",
-                "6 sp",
-                "2+",
-                "+2",
-                "+2",
-                "-3",
-                "14lb"
-              ],
-              [
-                "Root Weave",
-                "14 sp",
-                "2+",
-                "+3",
-                "+2",
-                "-4",
-                "28lb"
-              ],
-              [
-                "Heartguard",
-                "15 sp",
-                "3+",
-                "+3",
-                "+3",
-                "-4",
-                "22lb"
-              ],
-              [
-                "Earthforged Plate",
-                "22 sp",
-                "4+",
-                "+4",
-                "+3",
-                "-5",
-                "36lb"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "Heavy Armor"
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "Toughscale",
-                "300sp",
-                "4+",
-                "+4",
-                "+2",
-                "-5",
-                "32lb"
-              ],
-              [
-                "Durtlehide",
-                "800sp",
-                "5+",
-                "+5",
-                "+3",
-                "-5",
-                "40lb"
-              ],
-              [
-                "Runeforged Plate",
-                "1,500sp",
-                "5+",
-                "+6",
-                "+4",
-                "-6",
-                "65lb"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "Shields"
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "Sapguard*",
-                "10sp",
-                "1+",
-                "+1",
-                "+1",
-                "-1",
-                "4lb"
-              ],
-              [
-                "Vinegrip",
-                "50sp",
-                "2+",
-                "+3",
-                "+2",
-                "-2",
-                "10lb"
-              ],
-              [
-                "Ironwood Bulwark",
-                "300sp",
-                "3+",
-                "+4",
-                "+3",
-                "-3",
-                "18lb"
-              ],
-              [
-                "*Characters can use Sapguard while wielding a weapon in each hand, suffering a –1 penalty to all strike rolls made with melee and ranged weapons. The Sapguard continues to provide its normal guts bonus, mana syphon, and stealth effects while used this way."
-              ]
-            ]
+            "text": "Armor Penalty represents the burden of protective gear. Add the Armor Penalty from equipped armor and shields together, reduce Speed by that total, and apply the same total as a negative condition to Whisperster Skill Checks."
           },
           {
             "type": "table",
@@ -4764,27 +4369,23 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Deeds Completed: 3–5 XP each, depending on difficulty or moral weight."
+            "text": "Deeds Completed: Gain the printed XP reward for each completed kept Deed. Normally, no more than the two kept Deeds award XP during a session."
           },
           {
             "type": "paragraph",
-            "text": "Spark Expression: 1–3 XP each time a Spark meaningfully drives a scene."
+            "text": `Spark Alignment: Gain [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus XP when one of your completed kept Deeds aligns with one or both Spark keywords. This bonus can be gained only once per session.`
           },
           {
             "type": "paragraph",
-            "text": "Encounters or Milestones: 5–12 XP per critical victory or defeat."
+            "text": `Encounters or Milestones: ${XP_GUIDANCE.encounterOrMilestone[0]}–${XP_GUIDANCE.encounterOrMilestone[1]} XP for a significant victory, defeat, discovery, or turning point, normally one such award per session.`
           },
           {
             "type": "paragraph",
-            "text": "Watcher Awards: For exemplary roleplay, creativity, or faith/oath resolutions."
+            "text": `Watcher Awards: ${XP_GUIDANCE.watcherAward[0]}–${XP_GUIDANCE.watcherAward[1]} XP for exceptional roleplay, creativity, or Faith/Oath resolution. Use this sparingly rather than as a routine additional award.`
           },
           {
-            "type": "table",
-            "rows": [
-              [
-                "Average XP per session: 10–15 XP Two sessions of active play usually equal one major upgrade."
-              ]
-            ]
+            "type": "paragraph",
+            "text": `Average XP per session: ${XP_GUIDANCE.averagePerSession[0]}–${XP_GUIDANCE.averagePerSession[1]} XP. One session usually supports one smaller upgrade; across two active sessions, a character can usually afford two smaller upgrades or one larger upgrade.`
           }
         ]
       },
@@ -4802,27 +4403,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               [
                 "Attribute Rank",
                 "Increases an Attribute by [+1] rank.",
-                "2 + (2 × current rank)"
+                ADVANCEMENT_FORMULAS.attribute
               ],
               [
                 "Skill Rank",
                 "Improves a known skill’s rank by [+1].",
-                "3 + current rank"
+                ADVANCEMENT_FORMULAS.skill
               ],
               [
                 "New Skill",
                 "Learn a new skill",
-                "6 (rank 1)"
+                `${ADVANCEMENT_FORMULAS.newSkill} (rank 1)`
               ],
               [
                 "New Talent",
                 "Gain a new Talent",
-                "10"
+                ADVANCEMENT_FORMULAS.talent
               ],
               [
                 "Magic Level",
                 "Increases magic level [+1] rank.",
-                "10 + (4 × current rank)"
+                ADVANCEMENT_FORMULAS.magic
               ]
             ]
           },
@@ -4844,23 +4445,23 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "1 → 2",
-                "4 XP",
-                "4 XP"
+                `${advancementCost('attribute',1)} XP`,
+                `${cumulativeRankCost('attribute',2)} XP`
               ],
               [
                 "2 → 3",
-                "6 XP",
-                "10 XP"
+                `${advancementCost('attribute',2)} XP`,
+                `${cumulativeRankCost('attribute',3)} XP`
               ],
               [
                 "3 → 4",
-                "8 XP",
-                "18 XP"
+                `${advancementCost('attribute',3)} XP`,
+                `${cumulativeRankCost('attribute',4)} XP`
               ],
               [
                 "4 → 5",
-                "10 XP",
-                "28 XP"
+                `${advancementCost('attribute',4)} XP`,
+                `${cumulativeRankCost('attribute',5)} XP`
               ]
             ]
           },
@@ -4878,27 +4479,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               [
                 "From → To",
                 "XP Cost",
-                "Cumulative Total"
+                "Cumulative from Rank 1"
               ],
               [
                 "1 → 2",
-                "4 XP",
-                "7"
+                `${advancementCost('skill',1)} XP`,
+                `${cumulativeRankCost('skill',2)} XP`
               ],
               [
                 "2 → 3",
-                "5 XP",
-                "12"
+                `${advancementCost('skill',2)} XP`,
+                `${cumulativeRankCost('skill',3)} XP`
               ],
               [
                 "3 → 4",
-                "6 XP",
-                "18"
+                `${advancementCost('skill',3)} XP`,
+                `${cumulativeRankCost('skill',4)} XP`
               ],
               [
                 "4 → 5",
-                "7 XP",
-                "25"
+                `${advancementCost('skill',4)} XP`,
+                `${cumulativeRankCost('skill',5)} XP`
               ]
             ]
           },
@@ -4920,48 +4521,48 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "1 → 2",
-                "14 XP",
-                "14"
+                `${advancementCost('magic',1)} XP`,
+                `${cumulativeRankCost('magic',2)} XP`
               ],
               [
                 "2 → 3",
-                "18 XP",
-                "32"
+                `${advancementCost('magic',2)} XP`,
+                `${cumulativeRankCost('magic',3)} XP`
               ],
               [
                 "3 → 4",
-                "22 XP",
-                "54"
+                `${advancementCost('magic',3)} XP`,
+                `${cumulativeRankCost('magic',4)} XP`
               ],
               [
                 "4 → 5",
-                "26 XP",
-                "80"
+                `${advancementCost('magic',4)} XP`,
+                `${cumulativeRankCost('magic',5)} XP`
               ],
               [
                 "5 → 6",
-                "30 XP",
-                "110"
+                `${advancementCost('magic',5)} XP`,
+                `${cumulativeRankCost('magic',6)} XP`
               ],
               [
                 "6 → 7",
-                "34 XP",
-                "144"
+                `${advancementCost('magic',6)} XP`,
+                `${cumulativeRankCost('magic',7)} XP`
               ],
               [
                 "7 → 8",
-                "38 XP",
-                "182"
+                `${advancementCost('magic',7)} XP`,
+                `${cumulativeRankCost('magic',8)} XP`
               ],
               [
                 "8 → 9",
-                "42 XP",
-                "224"
+                `${advancementCost('magic',8)} XP`,
+                `${cumulativeRankCost('magic',9)} XP`
               ],
               [
                 "9 → 10",
-                "46 XP",
-                "270"
+                `${advancementCost('magic',9)} XP`,
+                `${cumulativeRankCost('magic',10)} XP`
               ]
             ]
           }
@@ -5224,1686 +4825,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "Each spell will state its legal target, range or area. Some spells will have both a range and an area. Range is the distance at which a spell can be cast at a target or square (point) of the battlefield and the area is the space which the spell covers from that point."
-          }
-        ]
-      }
-    ]
-  },
-  "species-ardenn": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "ARDENN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "ARDENN (AHR-den)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“By pact and paw, by moon and stone—we guard the realms until the last howl fades. Our strength is not tooth or blade, but the hearts that answer when we call.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "ARDENN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Loyalty and pack coordination."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Lunar Pursuit, Loyalty’s Will, Feral Resolve."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Hunter’s Mark, Pack Fighting. → Focus on reactionary teamwork and endurance at low health."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Ardenn embody loyalty and vigor, their lives shaped by unity, instinct, and the bonds of packhood. Their culture centers on the Moon Pacts, sacred rites said to bind their spirits beneath shifting lunar light. When night falls, Ardenn voices rise in woven chorus—part prayer, part remembrance—to honor kin and the wilds that first shaped them."
-          },
-          {
-            "type": "paragraph",
-            "text": "After the Battle of Dominous, when Blight nearly drowned the world in undeath, the Ardenn answered with purpose. They formed the Moonbound Orders, a vast knightly network sworn to defend all peoples of Anthro Mundas. These orders built roads between realms, patrolled borders, and erected fortresses of stone, crafted with the renowned Ardenn masonry and architecture. Many of the realm’s great strongholds still bear their mark."
-          },
-          {
-            "type": "paragraph",
-            "text": "Leadership among the Ardenn is earned, not inherited. Alpha Knights rise through service and merit, while the High Alpha is chosen for wisdom, restraint, and devotion to the entire network of packs. Though fiercely loyal allies and formidable protectors, the Ardenn remain guided by deep intuition and a steadfast belief: every life is worth guarding, and every pack—however scattered—is family."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Fennic, a blend of growls and tonal cadence. Spoken from the chest."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "LUNAR PURSUIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "When the pack is threatened, you move without thought — drawn by the pull of instinct and oath."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: After any enemy character resolves a charge ability against an ally within [3] squares."
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLEAR: Select the enemy character who performed the charge. EFFECT: Move your character up to [2] squares toward target. If your character ends this movement within [1] square of the charging enemy, gain [+1] to your next strike roll against that target. RESTRICTIONS: This movement must end closer to the charging enemy than where it began and cannot pass through impassable terrain. KEYWORDS: | REACTION | MOVE | ARDENN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "LOYALTY’S WILL"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your loyalty runs deeper than fear or pain — when others bleed, your heart answers first. TRIGGER: This ability can be used when an ally within [3] squares suffers damage. EFFECT: You may suffer up to [3] health to reduce that damage by up to [-3]. Reduce the damage by [1] for each point of health you chose to suffer. KEYWORDS: REACTION | ARDENN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "FERAL RESOLVE"
-          },
-          {
-            "type": "paragraph",
-            "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Gain [+3] to strike, ward, guts, and damage until the end of the next round. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. KEYWORDS: REACTION | URNATH | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "HUNTERS INTUITION"
-          },
-          {
-            "type": "paragraph",
-            "text": "From youth, every Ardenn learns to track the world by scent, silence, and shared rhythm."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either the awareness or presence skill. KEYWORDS: PASSIVE | CULTURE |"
-          },
-          {
-            "type": "paragraph",
-            "text": "PACK FIGHTING"
-          },
-          {
-            "type": "paragraph",
-            "text": "Ardenn warriors fight as one — each motion answered by another, every strike a shared instinct."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: If there are [1] or more ally characters within [3] squares of you, gain [+1] to strike. If there are [2] or more all characters within [ 3] squares of you also gain [+1] to damage with all physical and shoot combat abilities. KEYWORDS: PASSIVE | CULTURE |"
-          }
-        ]
-      }
-    ]
-  },
-  "species-auravex": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "AURAVEX"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "AURAVEX (OR-uh-vek-s)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“The Beast walks before us, and our shadows follow in its stride. All life is one trail; we simply walk its truth.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "AURAVEX"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Kinship with motion and nature’s rhythm."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Wild Stride, Voice of the Herd, Cycle of the Beast."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Pathfinder’s Call, Leaf in the Wind. → Synergizes with buffs, ally support, and kinetic flow."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Auravex are nomadic kin of the wild heart, their lineage echoing the grace of forest ungulates. Guided by their faith, The Way of the Beast, they believe all life flows from a single primal spirit whose rhythm shapes wind, soil, and season."
-          },
-          {
-            "type": "paragraph",
-            "text": "Auravex travel in great herds across plains, forests, and mountain paths, following these rhythms rather than claiming land as their own. Their camps are woven from branch, hide, and song—beautiful, impermanent, and leaving no trace when they depart."
-          },
-          {
-            "type": "paragraph",
-            "text": "Each herd functions as a living circle. Pathfinders read the sky and earth to choose safe routes; Guardians defend the herd and the wild places they pass through; Keepers tend to stories, rituals, and the spiritual flame that binds the Auravex to the Beast’s call. These rites attune them deeply to the world; many can sense weather shifts, wounded land, or places where magic has soured long before others notice."
-          },
-          {
-            "type": "paragraph",
-            "text": "Though gentle and patient in manner, the Auravex are fierce when balance is threatened. Outsiders often view them as wandering mystics or relics of an older age, yet their purpose remains unwavering: to walk the untamed paths, safeguard the pulse of the wild, and ensure that nature’s harmony endures no matter how the world changes around them."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Antheric, a melodic tongue shaped by breath, grunts, movement and hoof."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "WILD STRIDE"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your steps echo the pulse of the forest; where you walk, the wild flows with you."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may move up to double their speed. If your character passes within [1] square of an ally during this movement, that ally gains [+1] to their next roll this round. RESTRICTIONS: This ability cannot be used if your character is within [+2] squares of an enemy and cannot end within [+2] squares of an enemy. KEYWORDS: MOVE | AURAVEX | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "VOICE OF THE HERD"
-          },
-          {
-            "type": "paragraph",
-            "text": "You move in chorus with the world around you; the wild whispers its warnings through others."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: When an ally within [3] squares is the target of a magical ability"
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLARE: Select the targeted ally."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: The target character gains resistance[+1] against the damage type of the magical ability. If the ability cannot deal damage, the character gains [+1] to the attribute save against the spell."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTIVE | AURAVEX | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CYCLE OF THE BEAST"
-          },
-          {
-            "type": "paragraph",
-            "text": "As motion stirs life in all things, the beast’s rhythm returns to you through those you guide."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the end of the round. EFFECT: Count the total number of condition bonuses your character granted to ally characters this round. For every [2] instances of condition granted, restore either health [+1] or mana [+1] in any combination. KEYWORDS: INSTINCT | AURAVEX | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "PATHFINDER’S CALL"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your people have walked every road beneath the sky, guided by intuition and song."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either the awareness or herbalry skill. KEYWORDS: PASSIVE | CULTURE |"
-          },
-          {
-            "type": "paragraph",
-            "text": "LEAF IN THE WIND"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your voice carries a whisper among leaves, steadying a heartbeat not yet gone."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares is compelled to use the renew the heart ability. EFFECT: The target ally’s attribute save roll for renew the heart is considered edged. KEYWORDS: REACTION | CULTURE |"
-          }
-        ]
-      }
-    ]
-  },
-  "species-axalori": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "AXALORI"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "AXALORI (AX-uh-lohr-ee)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“We do not lift our hands to harm, but we will not let life be taken. Even the smallest spark of life is worthy of protection.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "AXALORI"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Calm renewal and healing resonance."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Stillwater Renewal, Heartcurrent, Harmonic Field."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Tranquil Discipline, Resonant Pulse. → Healing and mana interchange, ideal support species."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Axalori are gentle, introspective folk whose lives flow with the quiet strength of rivers and rain. Their lineage echoes amphibians of marsh and tide, their movements fluid and their voices soft, shaped by a deep devotion to healing and renewal. Guided by a philosophy known as the Great Renewal, the Axalori believe that all wounds—of body, spirit, or land—can be mended when life is given space to breathe and grow."
-          },
-          {
-            "type": "paragraph",
-            "text": "They are credited as the first to understand the Lore of Life, perceiving the Winds of Magic as pulses of living rhythm rather than forces to be bent or commanded. Their mastery spread far beyond their wetland sanctuaries, forming the foundation of modern restorative magic across Anthro Mundas."
-          },
-          {
-            "type": "paragraph",
-            "text": "Axalori guide travelers and waterways, cultivate medicines, gardens, and practice endurance, meditation, and the discipline of quiet strength. None stand above others—balance is found only when all are in harmony."
-          },
-          {
-            "type": "paragraph",
-            "text": "To many, the Axalori seem serene wanderers, but their purpose is steady and eternal—to nurture what lives, mend what breaks, and keep the world’s heartbeat strong."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Antheric, a melodic tongue shaped by breath, grunts, movement and hoof."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "STILLWATER RENEWAL"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your stillness mirrors the calm depths—where even silence heals. TRIGGER: This ability can be used at the end of the round. EFFECT: If your character did not move during the round, restore health [2] and mana [1]. KEYWORDS: INSTINCT | AXALORI | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "HEARTCURRENT"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your heart flows in rhythm with the world’s pulse—what is spent in one form returns in another. TRIGGER: This ability can be used at the start of the round. EFFECT: Your character may spend [-2] health to restore [1] mana or spend [-1] mana to restore health [2]. KEYWORDS: INSTINCT | AXALORI | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "HARMONIC FIELD"
-          },
-          {
-            "type": "paragraph",
-            "text": "Healing flows outward, rippling through the bonds that connect all life."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability activates when your character restores health to themselves or a target. EFFECT: One ally characters within [3] squares, may choose one of the following effects. Restore health [1], mana [1], or gain [+2] to attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of soul current from different sources. KEYWORDS: REACTION | ENHANCE | AXALORI | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRANQUIL DISCIPLINE"
-          },
-          {
-            "type": "paragraph",
-            "text": "You were raised in the still halls of reflection, where patience and observation guide the mind as much as the hand."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the lorekeeping skill and the herbalry skill. KEYWORDS: PASSIVE | CULTURE |"
-          },
-          {
-            "type": "paragraph",
-            "text": "RESONANT PULSE"
-          },
-          {
-            "type": "paragraph",
-            "text": "To the Axalori, empathy is a current that binds all living things. When one heart trembles, another steadies it."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally to bond. EFFECT: If the bonded ally is within [3] squares and suffers three or more damage reduce that damage by [-1] + Heart). KEYWORDS: INSTINCT | CULTURE"
-          }
-        ]
-      }
-    ]
-  },
-  "species-braelor": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "BRAELOR"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "BRAELOR (BRAY-lor)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“One blade brought shame; ten thousand deeds will restore our name. Patience is our shield; resolve is our spear.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "BRAELOR"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Storm-forged strength and defiance of corruption."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Thunderstep, Stoneheart, Covine Heirs."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Forge-Kin, Stillstorm Totem. → Heavy melee damage, anti-magic resistance, disciplined faith motifs."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Braelor are steadfast folk shaped by the endurance and honor of great horned beasts. Their homes rise across open plains and high valleys where stone meets sky, surrounded by wind-carved monuments and echoing forges. Strength and craftsmanship define their way of life; every hammer strike is a prayer, every tool a testament to discipline and spirit."
-          },
-          {
-            "type": "paragraph",
-            "text": "To the Braelor, labor is sacred—will made visible, shaping both the world and the self."
-          },
-          {
-            "type": "paragraph",
-            "text": "They are guided by shamans who commune with ancestral echoes carried in dream, thunder, and ringing steel. These spiritual leaders teach that courage must be grounded, loyalty must be chosen, and truth must be spoken even when it scars."
-          },
-          {
-            "type": "paragraph",
-            "text": "Yet the Braelor carry a shadow alongside their virtues. Long ago, one of their own—Covine, the war-sorcerer, unleashed the Blight and became the Lich King, a name carved into history with grief and warning. Though the sin was his alone, the memory weighs heavily on his people. In its wake, the Braelor dedicate themselves to redemption."
-          },
-          {
-            "type": "paragraph",
-            "text": "With great horns, steady gaze, and unmatched endurance, the Braelor stand as symbols of the living earth—unyielding, honest, and unbroken."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Snortish, a guttural, rhythmic speech tied to breath and emotion."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "THUNDERSTEP"
-          },
-          {
-            "type": "paragraph",
-            "text": "Braelor hearts beat with stormlight, and the air itself trembles in their wake."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [3] mana TRIGGER: This ability can be used during your turn. EFFECT: Your character may move a number of squares equal to their speed plus [+5] toward a visible enemy within line of sight. If your character uses a combat ability against that target and deals damage during the same turn, increase the total damage by [+2]. POWER THROUGH: At the end of your turn, if your character moved the total movement granted by this ability, deal [3] lethal damage to the target of thunderstep. The target is forced back [1] square directly away from you. If the target cannot be moved, they suffer an [2] lethal damage instead. RESTRICTIONS: This movement must end within [1] square of the target and cannot pass through impassable terrain. KEYWORDS: MOVE | BRAELOR | CHARGE | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "STONEHEART"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Braelor’s will is as steady as forged iron, their bodies and spirits refusing to yield to pain or fear."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain [+2] to all guts rolls made to resist any non-magical damage. When your character suffers lethal damage, reduce that damage by [-1], to a minimum of [1]. KEYWORDS: PASSIVE | BRAELOR | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "COVINE HEIRS"
-          },
-          {
-            "type": "paragraph",
-            "text": "Echoes of the Lich King’s dominion linger in Braelor blood. TRIGGER: This ability can be used at the end of the round. EFFECT: When your character successfully resists a hex or compelled effect, restore health [+1] for each instance of success. KEYWORDS: INSTINCT | BRAELOR | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "FORGE-KIN"
-          },
-          {
-            "type": "paragraph",
-            "text": "The twin arts of body and spirit: the strength to shape stone and the presence to command respect."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank[+1] in the stonegrasp and either presence or crafting[blacksmithing] skills. KEYWORDS: PASSIVE | CULTURE |"
-          },
-          {
-            "type": "paragraph",
-            "text": "STILLSTORM TOTEM"
-          },
-          {
-            "type": "paragraph",
-            "text": "Braelor shamans bind the echoes of wind and forge into sacred totems humming with stormlight."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [2] mana TRIGGER: This ability can be used at the start of the round. DECLARE: Summon a spiritual totem within [2] squares of your character. EFFECT: While the totem is active, your character automatically passes the first compelled effect from a spell each round. ally characters within [3] squares of the totem gain [+1] to attribute saves made when using the renew the heart ability. RESTRICTIONS: A character cannot benefit from multiple stillstorm totem from different sources. DURATION: The totem remains until it until destroyed. KEYWORDS: INSTINCT | ENHANCE | SUMMON | CULTURE"
-          }
-        ]
-      }
-    ]
-  },
-  "species-cethra": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "CETHRA"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "CETHRA (SETH-rah)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“When the Evershade stirs, so too does destiny. What moves in shadow often carries the truest shape of fate.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "CETHRA"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Precision, stealth, and poise."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Primal Grace, Shadowstep, Poised Reflex."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Artisan’s Focus, Viled Paw. → Agile duelist class, high-risk precision strikes."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Cethra are quiet wanderers shaped by the poise and mystery of the great cats. They dwell in hidden forests, mist-veiled glades, and the crumbling bones of ancient ruins. To the Cethra, stillness is strength—every step intentional. Their presence is subtle yet unmistakable, like moonlight shifting across stone."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Cethra hold a quiet but vital place in the wider world. They are known to appear in troubled regions without explanation. Some say they sense disturbances through the Evershade Tree, drawn to fractures others cannot perceive. They rarely stay long, offering guidance through silence or subtle gesture before slipping back into the wilds."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Evershade Tree is said to be the oldest living thing in the world, a silent echo of Anthro Mundas itself. Its roots are whispered to drink from the realm’s lifeblood, carrying omens through soil and shadow. Only the Cethra stand as its guardians—devoted stewards of fate’s quiet weave, and the only folk who have ever looked upon its hidden boughs."
-          },
-          {
-            "type": "paragraph",
-            "text": "Though outsiders often mistake their calm for aloofness, beneath their serene exterior lies fierce compassion. The Cethra walk where shadow meets song, balancing solitude with deep reverence for the hidden threads that bind the world."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Purrish, a melodic blend of hums, trills, and soft vocal tones."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "PRIMAL GRACE"
-          },
-          {
-            "type": "paragraph",
-            "text": "You flow around danger like wind through tall grass — untouchable, deliberate, and ever-moving."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used when your character is targeted by a combat ability that requires a ward roll. EFFECT: After the ability is resolved, you may move your character up to [3] squares in any direction and gain [+2] to ward until the end of the round RESTRICTIONS: This movement cannot end within [2] squares of the attacking enemy. KEYWORDS: REACTION | MOVE | CETHRA | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "SHADOWSTEP"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your stillness is a weapon; the enemy never sees the motion that ends them."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used at the end of the round. EFFECT: Select a point of origin within [5] squares and move your character to that point. This movement does not require line of sight and can pass through any terrain type. Afterwards, you may move up to [2] additional squares in any direction."
-          },
-          {
-            "type": "paragraph",
-            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: This movement cannot end within two [2] squares of an enemy. KEYWORDS: INSTINCT | CETHRA"
-          },
-          {
-            "type": "paragraph",
-            "text": "POISED REFLEX"
-          },
-          {
-            "type": "paragraph",
-            "text": "Even under pressure, your body acts with effortless control — instinct shaped by endless discipline."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when your character fails an attribute save. EFFECT: You may reroll the failed attribute save with [+1]. KEYWORDS: INSTINCT | CETHRA | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "ARTISAN’S FOCUS"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Cethra find balance in creation — their art a mirror of patience and will."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Tumblecraft and either the Shadehand or Whisperster skill. KEYWORDS: PASSIVE | CULTURE | CETHRA"
-          },
-          {
-            "type": "paragraph",
-            "text": "VILED PAW"
-          },
-          {
-            "type": "paragraph",
-            "text": "A flash of motion — graceful, inevitable, and unseen until it’s too late."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: When you make a successful strike roll against an enemy character that has not yet taken their turn this round. EFFECT: Increase the total damage dealt by the strike roll by [+2]. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated."
-          },
-          {
-            "type": "paragraph",
-            "text": "RESTRICTIONS: This ability cannot be used with a magical or ranged ability. KEYWORDS: REACTIVE | CULTURE |"
-          }
-        ]
-      }
-    ]
-  },
-  "species-hedgkin": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "HEDGKIN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "HEDGKIN (HEHJ-kin)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Tend a spark of hope, and you’ll soon have a hearth. For even the darkest soil can bloom again.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "HEDGKIN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Hearth, protection, and small miracles."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Hearthborn Courage, Burrowstep, Spine Guard."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Thicket Craft, Thriving Harmony. → Strong support / reaction traits, charm-based healing and retaliation."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hedgkin embody the warmth of hearth and garden, their lives rooted in gentle earth and peaceful companionship. They dwell in rolling meadows, riverbanks, and burrowed homes lined with moss, lantern glass, and flowering vines. Quiet by nature but rich in spirit, the Hedgkin cultivate gardens said to be touched by the Winds of Magic themselves—places where herbs grow sweeter, fruit ripens brighter, and weary travelers find unexpected rest."
-          },
-          {
-            "type": "paragraph",
-            "text": "Known as keepers of comfort, they maintain vast communal orchards and shared fields, feeding their kin and any wanderer who arrives at their door. Their deep connection to the land has made them beloved across Anthro Mundas, especially in ages when wounds—of war, Blight, or sorrow—cut through the world. In recent generations, Hedgkin growers and herbalists have become skilled at coaxing life back into blight-scarred soil, slowly cleansing corrupted ground through patient tending and ancient botanical rites."
-          },
-          {
-            "type": "paragraph",
-            "text": "Though humble in size, they are remarkably brave when peace is threatened. Hedgkin stand firm not out of fury, but out of love for the life they cultivate. To them, harmony is not a luxury—it is a garden tended daily, a living promise to future generations."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Hedgely, Silken and whisperlike, built from trills, hums, and quiet pauses"
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "HEARTHBORN COURAGE"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hedgkin’s bravery burns slow but never fades — a quiet ember against fear."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when an ally within [3] squares is compelled."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: The affected ally gains [+2] to the roll made to resist the effect. If that roll succeeds, the ally gains [+1] to strike or ward until the end of their next turn."
-          },
-          {
-            "type": "paragraph",
-            "text": "RESTRICTIONS: A character cannot be affected by multiple instances of hearthborn courage from different sources."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTION | ENHANCE | HEDGKIN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "BURROWSTEP"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hedgkin move where others cannot — under roots, through brush, and between the cracks of battle."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when an enemy character moves during an ally’s turn."
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLARE: Choose [1] ally within [3] squares of the moving character."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: The chosen ally may move [1] square at the end of the current turn."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTIVE | HEDGKIN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "SPINE GUARD"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hedgkin’s quills bristle at danger, turning defense into quiet retribution."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when your character is the target of a combat ability, and the attacker is within [3] squares."
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLARE: Target the character using the combat ability."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: The targeted character suffers [1] lethal damage. If the triggering combat ability successfully deals damage or applies an effect, the attacker suffers an additional [1] lethal damage."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTIVE | HEDGKIN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "THICKET CRAFT"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hedgkin’s hands are always busy — mending, stirring, or mixing some small miracle."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Seeking and Herbalry skill. Additionally, gain rank [+1] in one of the following skills: Lorekeeping, Wayfinding, or Tradecraft skill."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: PASSIVE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "THRIVING HARMONY"
-          },
-          {
-            "type": "paragraph",
-            "text": "A warm word, a full belly, a safe fire — such things keep the darkness away."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [2] mana"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the end of the round."
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLARE: Choose [1] ally within [3] squares."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Target ally restores health [+2] and gains [+1] to their next attribute save, until the end of the next round. If your character is within [1] square of another ally when targeted by this ability, you also restore health [+1]."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: INSTINCT | ENHANCE | CULTURE |"
-          }
-        ]
-      }
-    ]
-  },
-  "species-ravari": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "RAVARI"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "RAVARI (RIV-kan)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“A good story is worth any climb. And if trouble finds you, outwit it. If that fails, outclimb it.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "RAVARI"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Acrobatics, trickery, and instinctive teamwork."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Treeleaper, Haphazard Genius, Crooktail Bound."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Jester of Trade, Dexterous Paws. → Movement specialists with synergistic reaction play."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Ravari are curious, cunning folk shaped by the quick wit and nimble grace of forest scavengers. They thrive in the high canopies of the Veilwood and other dense forests of Anthro Mundas. To the Ravari, every hollow hides a secret and every trail hints at a tale worth chasing."
-          },
-          {
-            "type": "paragraph",
-            "text": "Agile climbers and deft-handed gatherers, they collect stories as eagerly as trinkets, believing that anything—no matter how small—may carry wonder, wisdom, or opportunity. Ravari culture celebrates ingenuity and improvisation, where art, invention, and mischief often mix into creations equal parts brilliant and absurd."
-          },
-          {
-            "type": "paragraph",
-            "text": "Their greatest celebration, Treasure Day, marks the turning of the year: a festival of shared discoveries where baubles, riddles, jokes, and heartfelt gifts light their halls. It is a full day of memory and generosity, reminding every Ravari that joy is a treasure best passed on."
-          },
-          {
-            "type": "paragraph",
-            "text": "Beneath their humor lies a fierce loyalty. A Ravari may tease, trick, and tangle in mischief, but they never abandon a friend or kin in danger."
-          },
-          {
-            "type": "paragraph",
-            "text": "They move lightly through the world, but they leave behind laughter, cleverness, and the quiet certainty that curiosity is its own kind of courage."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Ravariese, a melodic tongue of chitters and lyrical cadence."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "TREELEAPER"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Ravari were born for the high places, where every fall teaches a better landing. EFFECT: When your character moves, they may ignore height penalties and difficult terrain caused by natural obstacles such as vines, roots, or elevation. If your character falls or is pushed from a height of [5] squares or less, they take no damage and may move [1] square in any direction upon landing. KEYWORDS: PASSIVE | MOVE | RAVARI | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "HAPHAZARD GENIUS"
-          },
-          {
-            "type": "paragraph",
-            "text": "You might not know what you’re doing — but somehow, it works."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the start of the round."
-          },
-          {
-            "type": "paragraph",
-            "text": "DECLEAR: Select [1] enemy character within [3] squares. EFFECT: The targeted character suffers [-1] when making ward rolls against you. Additionally, each time you make a successful strike roll against the target, you may move [1] square."
-          },
-          {
-            "type": "paragraph",
-            "text": "RESTICTION: This ability cannot be used against the same target in back-to-back rounds."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: INSTINCT | RAVARI | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CROOKTAIL BOUND"
-          },
-          {
-            "type": "paragraph",
-            "text": "When the Ravari work together, they do so by instinct — a flick, a nod, a jump."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used when an ally within [3] squares performs a move or combat ability. EFFECT: Your character may move [1] square. If the move ends within an adjacent square of a different ally that didn’t trigger this ability, you and that ally gain [+1] to the next roll made this round. KEYWORDS: REACTION | RAVARI"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "JESTER OF TRADE"
-          },
-          {
-            "type": "paragraph",
-            "text": "Ravari crafts are built to the sound of laughter, argument, and rhythm."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Guile and Tumblecraft skill. Additionally, gain rank [+1] in one of the following skills: Shadehand, Stonegrasp, Whisperster, Seeking, or Wayfinding skill. KEYWORDS: PASSIVE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "DEXTEROUS PAWS"
-          },
-          {
-            "type": "paragraph",
-            "text": "Ravari hands are quick and clever, made for balance, mischief, and motion. EFFECT: When your character is wielding a weapon in each hand, gain [+1] to strike rolls and damage for physical combat abilities. KEYWORDS: PASSIVE | CULTURE"
-          }
-        ]
-      }
-    ]
-  },
-  "species-rivkan": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "RIVKAN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "RIVKAN (RIV-kan)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Power doesn’t shout. It flows. Control the waters, and the arguments grow quieter.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "RIVKAN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Social fluidity and adaptability."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Communal Adaptation (Jippis familiar), Leapfrog, Double Lilly."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Social Savvy, River’s Favor. → Defensive and RNG-adaptive, strong familiar and social synergy."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Rivkan are a people shaped by wetlands, marshes, and winding deltas—resilient, collaborative, and sharper than they appear. Their communal instinct runs deep; every Rivkan is raised to know that strength flows from the group, not the individual. Many foster bonds with the nimble winged Jippis, companions whose keen senses heighten awareness and intuition."
-          },
-          {
-            "type": "paragraph",
-            "text": "Yet when this ideal expanded beyond their villages and into the wider world, it placed the Rivkan in a uniquely powerful position. Controlling countless waterways, harbors, and river crossings across Anthro Mundas, the Rivkan gradually became the quiet pulse of the continent’s trade."
-          },
-          {
-            "type": "paragraph",
-            "text": "Their greatest stronghold, Vellimar, sits where three great rivers converge into the sea—a sprawling stilt-born metropolis of markets and docks. Barges from every culture crowd its piers, and deals struck there can shift the fortunes of entire regions."
-          },
-          {
-            "type": "paragraph",
-            "text": "Though humble in stature, the Rivkan understand influence better than most. They move goods, news, and people with equal ease, and their say carries weight in any negotiation. While they may seem harmless, those who mistake Rivkan for weak soon learn otherwise."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Corakish, a croaking, percussive tongue that shifts with emotion."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "COMMUNAL ADAPTATION"
-          },
-          {
-            "type": "paragraph",
-            "text": "Every Rivkan shares their path with a Jippis — a clever, mimicking creature of water and intuition."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Your character gains the critter Jippis as a familiar. The Jippis counts as a summoned character. Follow the normal rules for a summoned familiar. JIPPIS AID: When your character succeeds on a roll compelled attribute save and they control a Jippis familiar, restore mana [+1]. KEYWORDS: PASSIVE | SUMMON | RIVKAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "LEAPFROG"
-          },
-          {
-            "type": "paragraph",
-            "text": "Bufo’s powerful legs allow them to evade danger and mitigate damage."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: When your character is the target of an area of effect spell."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana EFFECT: Reduce the total damage dealt by the spell by half. This effect is applied after all other damage conditions or effects. If the spell compels an attribute save, and your Jippis familiar is summoned, gain [+3] to save against the compelled effect."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTION | RIVKAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "DOUBLE LILLY"
-          },
-          {
-            "type": "paragraph",
-            "text": "When the first jump fails, the second one lands."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when your character fails a roll. EFFECT: Gain [+2] to your next roll of the same type (combat, spell, or attribute) made within the next round. If that follow-up roll succeeds, restore mana [+2]. KEYWORDS: REACTION | RIVKAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "SOCIAL SAVVY"
-          },
-          {
-            "type": "paragraph",
-            "text": "To the Rivkan, words are currency and silence is a debt unpaid."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Charm and Guile skills. Additionally, gain rank [+1] in one of the following skills: Expression, Tradeskill, Seeking or Shadehand skill. KEYWORDS: PASSIVE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "RIVER’S FAVOR"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Rivkan believe the river grants small mercies to those who travel with good timing."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when an ally within [3] squares rolls a natural [1] or [10]. EFFECT: On a natural [1], the affected ally gains [+1] to the roll that triggered this ability. On a natural [10], the affected ally restores mana [+1]. KEYWORDS: REACTION | CULTURE | RIVKAN"
-          }
-        ]
-      }
-    ]
-  },
-  "species-sauren": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "SAUREN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "SAUREN (SORE-en)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Survival is devotion made visible. Every dawn is a promise kept.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "SAUREN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Endurance and desert-born ferocity."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Bond of the Vurox, Heatbloom, Furnacehide."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Nomad’s Profession, Scent of Blood. → Tanky beastmasters with reactive burst potential."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Sauren are the resilient children of the sun—scaled wanderers shaped by the endurance of desert reptiles and the vast, wind-scarred plains. Their nomadic tribes follow ancient migration routes alongside the great herds they tend, living by a strict code of reciprocity: take only what the land offers, and repay every gift with stewardship."
-          },
-          {
-            "type": "paragraph",
-            "text": "From birth, each Sauren forms a sacred bond with a Vurox pup, a lupine companion whose spirit is believed to intertwine with theirs across life and death. These pairings are not pets or mounts, but soul-kin—guardians, mirrors, and lifelong partners."
-          },
-          {
-            "type": "paragraph",
-            "text": "Direct, honest, and efficient in both word and deed, the Sauren often seem severe to outsiders. Yet among themselves, every gesture carries layered meaning: a flick of the tail, a brief nod, a shared silence. Respect among Sauren is quiet and constant, woven through small acts of reliability."
-          },
-          {
-            "type": "paragraph",
-            "text": "To the Sauren, survival is not merely instinct—it is devotion. Through fire, wind, and dust, they endure, believing that each day they outlast the world’s hardships is a prayer answered and a promise kept."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Drashti, A breath-heavy, hissing tongue born of the desert winds- sharp, short, and powerful."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "BOND OF THE VUROX"
-          },
-          {
-            "type": "paragraph",
-            "text": "From birth, every Sauren shares their path with a bonded Vurox."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Your character has a bonded Vurox companion. The Vurox acts as a summoned critter and during combat encounters takes a turn immediately after your character regardless of initiative order."
-          },
-          {
-            "type": "paragraph",
-            "text": "BONDED PAIR: When your character’s Vurox is within [3] squares and your character restores health, the Vurox restores [1] health."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: PASSIVE | SUMMON | SAUREN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "HEATBLOOM"
-          },
-          {
-            "type": "paragraph",
-            "text": "Slow, heat-fueled reptilian healing that rewards good positioning and the desert identity. TRIGGER: This ability can be used at the end of the round, if your character suffer [5] or more damage during the round."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Immediately restore health [+2] and mana [+1]. If you are within [3] or at least two or more allies increase the health you restore by [+1]. If your Vurox is within [3] increase the mana you restore by [+1]."
-          },
-          {
-            "type": "paragraph",
-            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: INSTINCT | SAUREN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "FURNACEHIDE"
-          },
-          {
-            "type": "paragraph",
-            "text": "The desert hardens both skin and spirit."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Reduce all incoming direct or standard damage by [-1]. Additionally, gain resistance [2] against fire and poison damage types."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: PASSIVE | SAUREN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "NOMAD’S PROFESSION"
-          },
-          {
-            "type": "paragraph",
-            "text": "Sauren travel light and remember much."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Wayfinding and Beastcraft skills."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: PASSIVE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "SCENT OF BLOOD"
-          },
-          {
-            "type": "paragraph",
-            "text": "Even the faintest scent of weakness stirs the Sauren’s instinct — a silent, inevitable pressure that crushes resolve."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used when an enemy character within [3] squares is compelled to make an attribute save."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: The target character suffers [-1] to the attribute save roll. If the save fails, the target also gains [-1] to ward until the end of their next turn."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTION | HEX | CULTURE"
-          }
-        ]
-      }
-    ]
-  },
-  "species-urnath": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "URNATH"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "URNATH (UR-NATH)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“In the cold we find our truth—fear shatters, lies freeze, but the heart that stands for others never breaks.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Winter, endurance and guardianship."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Frostwalker, Blood of the North, Keeper’s Roar."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Hearthward Oath, Rites of the Deep Winter. → Defensive tank with strong ally protection and elemental resistance."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Urnath are towering guardians of the north, standing where frost and undeath meet. Clad in thick fur and unyielding resolve, they hold the line against the Blight—the cursed corruption unleashed when Covine the war-sorcerer tore open the veil during the Battle of Dominous. Since that day, the Urnath have watched the frozen horizon, sworn to prevent the undead legions from ever spilling across the world again."
-          },
-          {
-            "type": "paragraph",
-            "text": "Their clans are ruled by strength tempered with wisdom; each king chosen not by bloodline, but by deed. To the Urnath, battle is a sacred duty, never a tool of conquest. Though fearsome in war, their culture is gentle at its core—families are sacred, hospitality is a solemn responsibility, and the eternal hearthfire is revered as a living symbol of hope."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Hearthfire, an immense pyre kept burning since the end of the Battle of Dominous, is housed within the citadel city Dawnmaw. It is said as long as its flames endure, so too shall the Urnath stand unbroken against the Blight."
-          },
-          {
-            "type": "paragraph",
-            "text": "Few Urnath travel beyond their frozen domain, but those who do are renowned as steadfast allies whose loyalty burns brighter than any forge."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Ursidian, a deep, resonant language of growls and harmonic tones"
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "FROSTWALKER"
-          },
-          {
-            "type": "paragraph",
-            "text": "You stride through the cold as if it were air, your blood singing with winter’s stillness."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Your character gains resistance [+3] against cold damage and ignores movement penalties from icy or difficult terrain caused by weather or environment. NATURAL TERRAIN: If your character begins the round on icy terrain, they gain condition [+3] to ward until the end of their next turn. KEYWORDS: PASSIVE | URNATH | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "BLOOD OF THE NORTH"
-          },
-          {
-            "type": "paragraph",
-            "text": "Even at the edge of exhaustion, your heart burns steady beneath the frost. TRIGGER: This ability can be used when your character is reduced to [8] health or less. EFFECT: Immediately restore health [+3] and gain [+2] to guts until the end of your next turn."
-          },
-          {
-            "type": "paragraph",
-            "text": "COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. KEYWORDS: REACTION | URNATH | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "KEEPER’S ROAR"
-          },
-          {
-            "type": "paragraph",
-            "text": "Your bellow carries the weight of ancestral duty, shaking both fear and frost from the hearts of your allies."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [2] mana TRIGGER: This ability can be used during your turn. DECLARE: Target all ally characters within orb [4]. EFFECT: Each target gains [+1] to ward and attribute saves until the end of the next round. RESTRICTIONS: A character cannot be affected by multiple instances of keeper’s roar from different sources. KEYWORDS: INSTINCT | ENHANCE | URNATH | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "HEARTHWARD OATH"
-          },
-          {
-            "type": "paragraph",
-            "text": "To the Urnath, protection is sacred—every home, every life a flame worth defending."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: When an ally within [3] squares suffers damage that would reduce their health below [5], your character may redirect that damage to themselves. After resolving the damage, gain [+1] to guts until the end of the next round. KEYWORDS: REACTION | ENHANCE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "RITES OF THE DEEP WINTER"
-          },
-          {
-            "type": "paragraph",
-            "text": "You have learned to honor the cold—in silence, stillness, and endurance."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the wayfinding skill and either lorekeeping or presence skill. KEYWORDS: PASSIVE | CULTURE"
-          }
-        ]
-      }
-    ]
-  },
-  "species-tordan": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "TORDAN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "TORDAN (TOR-dan)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“The world hurries. We do not. As some burdens are chosen. Others simply call your name.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "TORDAN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Patience and foresight."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Dreamshell, Steady Pace, Echo of Tomorrow."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Memorybrew, Deep Trance. → Magical foresight and attrition play; defensive casters."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Tordan are wise keepers of the green depths, patient as the earth they cherish. With shells etched in ancient patterns, they carry history upon their backs and peace within their hearts."
-          },
-          {
-            "type": "paragraph",
-            "text": "Practitioners of alchemy, herbalism, and dreamwalking, the Tordan move easily between the seen and unseen. To the Tordan, dreams are not illusions but memories of the world itself—messages carried on currents of thought, echoing from ages long forgotten."
-          },
-          {
-            "type": "paragraph",
-            "text": "At the heart of their culture lies the Dream Pool, a vast whirlpool hidden in a sacred glade. Said to be as old as the first rain, it spirals endlessly downward, glowing with soft, shifting light. Legends claim its depths touch the dreams of all Anthro Mundas, allowing those who enter it to glimpse the fears, hopes, and futures of the world. The Tordan guard it with solemn devotion, for its waters are both a gift and a burden—revealing truths not all are ready to bear."
-          },
-          {
-            "type": "paragraph",
-            "text": "Slow to anger and slower to forget, the Tordan act with deliberate care in all things. Many mistake them for hermits, but those who earn their trust find the most steadfast allies imaginable."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Tordesh, A breath-heavy, hissing tongue born of the desert winds- sharp, short, and powerful."
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "DREAMSHELL"
-          },
-          {
-            "type": "paragraph",
-            "text": "When the world strikes, the Tordan retreat inward — wrapped in the calm of their second sight."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana TRIGGER: This ability can be used when your character suffers direct or standard damage. EFFECT: Reduce the total damage dealt by [-2]. Additionally, after that ability is resolved, you can select one damage type and gain resistance [1] against the selected type until the end of the round."
-          },
-          {
-            "type": "paragraph",
-            "text": "COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: REACTION | ENHANCE | TORDAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "STEADY PACE"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Tordan move with deliberate patience, unhurried and unshaken by the world’s rush. EFFECT: Whenever your character uses a move ability reduce the total number of squares they are allowed to move by [-1]. Moreover, reduce the affects of all conditions, abilities, or effects that target your character and reduce their speed by [2]. KEYWORDS: PASSIVE | TORDAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "ECHO OF TOMORROW"
-          },
-          {
-            "type": "paragraph",
-            "text": "You act on echoes of what has not yet come — shaping the next moment before it arrives."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the start of the round. DECLARE: Choose [1] ally within [3] squares. EFFECT: The target ally gains [+1] to the strike roll for the next magical ability they use this round. If ability is successful, restore mana [+1] to your character. If ability fails, the target ally restores [1] mana. COOLDOWN: This ability cannot be used again for [1d10/2] rounds after it is activated. KEYWORDS: | INSTINCT | TORDAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "MEMORYBREW"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Tordan distill memory itself into tincture and tea — wisdom steeped in patience."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the herbalry skill and either the lorekeeping or runecraft skill."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: PASSIVE | CULTURE | TORDAN"
-          },
-          {
-            "type": "paragraph",
-            "text": "DEEP TRANCE"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Tordan’s meditation bridges the seen and unseen, mending more than flesh."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the end of the round. EFFECT: Reduce your characters speed by [-1] until the end of the next round and increase the amount of mana they generate at the start of the next round by [+2] KEYWORDS: INSTINCT | CULTURE |"
-          }
-        ]
-      }
-    ]
-  },
-  "species-virelan": {
-    "sections": [
-      {
-        "heading": "Overview",
-        "blocks": [
-          {
-            "type": "table",
-            "rows": [
-              [
-                "VIRELAN"
-              ]
-            ]
-          },
-          {
-            "type": "paragraph",
-            "text": "VIRELAN (VEER-eh-lan)"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Elegance is a blade. Most simply admire it. To rise to it is beauty. To rise to it with purpose is destiny.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "VIRELAN"
-          },
-          {
-            "type": "paragraph",
-            "text": "Theme: Airborne mastery and creative composure."
-          },
-          {
-            "type": "paragraph",
-            "text": "Traits: Airstep, Skyborn Reflexes, Composed Mind."
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: Artisan’s Discipline, Arcane Affinity. → Terrain-ignoring movement, spell economy, and edged saves."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Virelan are luminous, expressive folk shaped by the grace and bearing of countless avian lineages. Their cities glimmer with glass, gold, and polished stone, perched upon storm-cut cliffs or soaring spires where the winds sing through crystal arches."
-          },
-          {
-            "type": "paragraph",
-            "text": "Magic itself is both science and scripture to them. In their grand libraries, scholars study the behavior of winds, storms, and arcane currents, seeking patterns in the chaos of the skies."
-          },
-          {
-            "type": "paragraph",
-            "text": "The Virelan also maintain vast collections of arcane relics—shards of fallen aeroliths, stormglass fragments, and whispering charms unearthed from Ancient ruins. Officially, these archives exist for study and preservation. Unofficially, some aeries covet objects best left buried, believing power and truth lie side by side. Among the Virelan, curiosity is a virtue."
-          },
-          {
-            "type": "paragraph",
-            "text": "Yet beneath their elegance and magical prying lies a current of quiet rivalry. Ambition glides on soft feathers, and prestige is often won not through battle, but through brilliance—artistic, magical, or political subterfuge. Proud, the Virelan believe life itself is a performance worth perfecting, each moment an opportunity to rise on unseen winds."
-          },
-          {
-            "type": "paragraph",
-            "text": "Language: Skylith, A high, crystalline language shaped by clipped syllables and airy resonance,"
-          },
-          {
-            "type": "paragraph",
-            "text": "SPECIES TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "AIRSTEP"
-          },
-          {
-            "type": "paragraph",
-            "text": "Every motion is an act of design; even a strike is a form of art."
-          },
-          {
-            "type": "paragraph",
-            "text": "COST: [1] mana"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: When you use any move ability."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: When your character moves, they do not count has having passed through squares along their path and are unaffected by terrain, obstacles, or effects that trigger from moving through the squares."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTIVE | VIRELAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "SKYBORN REFLEXES"
-          },
-          {
-            "type": "paragraph",
-            "text": "The Virelan react with a dancer’s poise — their movements guided by air and instinct alike."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: When your character is required to make an attribute save with a target of easy or medium, your dice roll for that save is considered edged. KEYWORDS: INSTINCT | VIRELAN | TRAIT"
-          },
-          {
-            "type": "paragraph",
-            "text": "COMPOSED MIND"
-          },
-          {
-            "type": "paragraph",
-            "text": "When the moment falters, you breathe, adjust, and let the flow return."
-          },
-          {
-            "type": "paragraph",
-            "text": "trigger: This ability can be used when your character casts a spell or uses a magical ability that requires mana as a cost. EFFECT: If the spell or ability fails to strike or affect its target(s), restore half of the, actually, mana cost of the ability. COOLDOWN: This ability cannot be used again for [1d10/2+1] rounds after it is activated. RESTRICTIONS: If the triggering spell or magical ability can affect more than one target, you must fail all strike rolls or all targets must successfully resist the effect."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: REACTION | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "CULTURE TRAITS"
-          },
-          {
-            "type": "paragraph",
-            "text": "ARTISAN’S DISCIPLINE"
-          },
-          {
-            "type": "paragraph",
-            "text": "Every Virelan learns the sacred patience of precision — mastery through repetition, not haste."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Gain rank [+1] in the Runecraft and either the Lorekeeping or Charm skill. KEYWORDS: PASSIVE | CULTURE"
-          },
-          {
-            "type": "paragraph",
-            "text": "Arcane Affinity"
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: This ability can be used at the start of the round."
-          },
-          {
-            "type": "paragraph",
-            "text": "EFFECT: Generate [+1] additional mana. Roll [1d10] on a result of [5] or higher generate another additional [2] mana."
-          },
-          {
-            "type": "paragraph",
-            "text": "KEYWORDS: INSTINCT | VIRELAN | TRAIT"
           }
         ]
       }
@@ -7451,7 +5372,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "COST: [6] Mana DECLARE: Target [1] ally character within [5] squares. EFFECT: The target decreases all damage categories by [1]. Lethal DAMAGE changes to direct and direct damage changes to standard. DURATION: Until the target suffers its next incoming damaging attack, or until the start of its next turn, whichever comes first. KEYWORDS: ENHANCE | MAGIC | OATHS"
+            "text": "COST: [6] Mana DECLARE: Target [1] ally character within [5] squares. EFFECT: Reduce the next incoming damage by one Damage Category step: Lethal becomes Direct, Direct becomes Standard, and Standard remains Standard. DURATION: Until the target suffers its next incoming damaging attack, or until the start of its next turn, whichever comes first. KEYWORDS: ENHANCE | MAGIC | OATHS"
           },
           {
             "type": "paragraph",

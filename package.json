@@ -1,14 +1,17 @@
 {
   "name": "brambleheart",
   "private": true,
-  "version": "0.24.0",
+  "version": "0.25.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit",
-    "check": "npm run typecheck && vite build"
+    "check": "npm run typecheck && vite build",
+    "test:integrity": "node scripts/integrity-check.mjs",
+    "test:persistence": "node scripts/persistence-check.mjs",
+    "test": "npm run test:integrity && npm run test:persistence"
   },
   "dependencies": {
     "vue": "^3.5.13",

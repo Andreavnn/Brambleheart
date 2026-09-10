@@ -1,3 +1,14 @@
+# Brambleheart Beta 0.25
+
+- Reworks the News social area into three clear Discord, Share, and Creator Link buttons; Discord now shows its live member/online count beneath the icon using Discord’s public widget/invite data.
+- Updates Standard-damage Melee and Ranged weapon profiles and introduces the current bracketed Deadly damage presentation, while Penetration weapon damage remains unchanged.
+- Clarifies Dual Wielding and Beastgrasp, retires Ward Guard, and makes Turnstrike use a rounded-up minimum Ward bonus.
+- Clarifies damage resolution by keeping Standard, Direct, and Lethal as Damage Categories and treating On-Going as a recurring-damage qualifier that retains its stated category without repeating normal damage additions.
+- Slows Experience progression to 7–10 XP per typical session, modestly raises advancement costs, and limits Spark-aligned kept Deeds to one [+1] bonus XP award per session.
+- Tunes Tordan Steady Pace, Cethra Poised Reflex, Rivkan Double Lilly, Auravex Cycle Of The Beast, Braelor Thunderstep, and Urnath Frostwalker.
+- Retires the obsolete six-Attribute Encounter Rating calculation in favor of the current Threat Level placeholder pending the dedicated Watcher rules pass.
+- Synchronizes Site Update Beta 0.25, package/export/build metadata, PWA cache metadata, and Game Update v0.13.
+
 # Brambleheart Beta 0.24
 
 - Rebuilds the current Rules source boundary so the application consumes one materialized current ruleset instead of retaining the original generated raw-rules file and later mutation layer.
@@ -43,4 +54,4 @@
 
 # Brambleheart Alpha 0.01
 
-- Initial Brambleheart Vue 3 / TypeScript application foundation with Character Creation, character storage, Rules, Settings, and early game-data structures.
+- Initial Brambleheart Vue 3 / TypeScript application foundation.

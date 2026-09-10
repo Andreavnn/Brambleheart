@@ -4,7 +4,7 @@ export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
 export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Trinkets'|'Tools'
-export interface GearShopItem { name:string; category:string; costText:string; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
+export interface GearShopItem { name:string; category:string; costText:string; costWp:number; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
 
 export const sparkDetails: Record<string,SparkDetail> = {
   "Courageous": {
@@ -391,192 +391,227 @@ export const gearShopItems: GearShopItem[] = [
   {
     "name": "Club",
     "category": "Weapon",
-    "costText": "1 np",
-    "costSp": 0.2,
-    "detail": "3 · 2 lb. · Bludgeoning, Versatile"
+    "costText": "1 sp",
+    "costSp": 1.0,
+    "detail": "3 · 2 lb. · Bludgeoning, Versatile",
+    "costWp": 50
   },
   {
     "name": "Shade Blade (Dagger)",
     "category": "Weapon",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
-    "detail": "2 · 1 lb. · Deadly, Versatile, Thrown (5)"
+    "detail": "2 [1] · 1 lb. · Deadly, Versatile, Thrown (5)",
+    "costWp": 100
   },
   {
     "name": "Timber Fang (Hatchet)",
     "category": "Weapon",
-    "costText": "25 np",
-    "costSp": 5.0,
-    "detail": "3 · 2 lb. · Slashing, Thrown (5)"
+    "costText": "3 sp",
+    "costSp": 3.0,
+    "detail": "4 · 2 lb. · Slashing, Thrown (5)",
+    "costWp": 150
   },
   {
     "name": "Rootbreaker (Mace)",
     "category": "Weapon",
-    "costText": "10 np",
-    "costSp": 2.0,
-    "detail": "4 · 2 lb. · Bludgeoning, Thrown (4)"
+    "costText": "4 sp",
+    "costSp": 4.0,
+    "detail": "4 · 3 lb. · Bludgeoning, Thrown (4)",
+    "costWp": 200
   },
   {
     "name": "Oak Staff (Quarterstaff)",
     "category": "Weapon",
-    "costText": "2 np",
-    "costSp": 0.4,
-    "detail": "2 (3) · 4 lb. · Adaptable"
+    "costText": "1 sp",
+    "costSp": 1.0,
+    "detail": "3 (4) · 4 lb. · Adaptable",
+    "costWp": 50
   },
   {
     "name": "Brush Blade (Short Sword)",
     "category": "Weapon",
-    "costText": "50 np",
-    "costSp": 10.0,
-    "detail": "3 · 2 lb. · Slashing, Versatile"
+    "costText": "5 sp",
+    "costSp": 5.0,
+    "detail": "4 · 2 lb. · Slashing, Versatile",
+    "costWp": 250
+  },
+  {
+    "name": "Field Blade (Long Sword)",
+    "category": "Weapon",
+    "costText": "7 sp",
+    "costSp": 7.0,
+    "detail": "4 (6) · 3 lb. · Slashing, Adaptable",
+    "costWp": 350
   },
   {
     "name": "Stonebreaker (Warhammer)",
     "category": "Weapon",
-    "costText": "125 np",
-    "costSp": 25.0,
-    "detail": "4 (6) · 2 lb. · Bludgeoning, Adaptable"
+    "costText": "10 sp",
+    "costSp": 10.0,
+    "detail": "5 (7) · 4 lb. · Bludgeoning, Adaptable",
+    "costWp": 500
   },
   {
     "name": "Thornspike (Dart)",
     "category": "Weapon",
-    "costText": "5 wp",
-    "costSp": 0.1,
-    "detail": "3 · ¼ lb. · Penetration, Thrown (6)"
+    "costText": "1 np",
+    "costSp": 0.2,
+    "detail": "2 · ¼ lb. · Penetration, Thrown (6)",
+    "costWp": 10
   },
   {
     "name": "Reedpipe (Blowpipe)",
     "category": "Weapon",
-    "costText": "8 wp",
-    "costSp": 0.16,
-    "detail": "2 · 1lb. · Projectile (4), Deadly"
+    "costText": "1 sp",
+    "costSp": 1.0,
+    "detail": "2 [1] · 1 lb. · Projectile (4), Deadly",
+    "costWp": 50
   },
   {
     "name": "Sling",
     "category": "Weapon",
-    "costText": "1 np",
-    "costSp": 0.2,
-    "detail": "3 · — · Projectile (5), Skyfire"
+    "costText": "1 sp",
+    "costSp": 1.0,
+    "detail": "3 · — · Projectile (5), Skyfire",
+    "costWp": 50
   },
   {
     "name": "Brush Bow (Short Bow)",
     "category": "Weapon",
-    "costText": "100 np",
-    "costSp": 20.0,
-    "detail": "3 · 2 lb. · Projectile (7), Penetration"
+    "costText": "8 sp",
+    "costSp": 8.0,
+    "detail": "3 · 2 lb. · Projectile (7), Penetration, Two-Handed",
+    "costWp": 400
   },
   {
     "name": "Far Bow (Long Bow)",
     "category": "Weapon",
-    "costText": "250 np",
-    "costSp": 50.0,
-    "detail": "4 · 2 lb. · Projectile (12), Penetration, Skyfire"
+    "costText": "14 sp",
+    "costSp": 14.0,
+    "detail": "4 · 3 lb. · Projectile (12), Penetration, Skyfire, Two-Handed",
+    "costWp": 700
   },
   {
     "name": "Quicklock (Light Crossbow)",
     "category": "Weapon",
-    "costText": "125 np",
-    "costSp": 25.0,
-    "detail": "3 · 5 lb. · Projectile (8), Penetration, Versatile"
+    "costText": "10 sp",
+    "costSp": 10.0,
+    "detail": "4 · 5 lb. · Projectile (8), Penetration, Two-Handed",
+    "costWp": 500
   },
   {
     "name": "Latchlock (Heavy Crossbow)",
     "category": "Weapon",
-    "costText": "250 np",
-    "costSp": 50.0,
-    "detail": "5 · 5 lb. · Projectile (10), Penetration, Skyfire"
+    "costText": "16 sp",
+    "costSp": 16.0,
+    "detail": "5 · 8 lb. · Projectile (10), Penetration, Skyfire, Two-Handed",
+    "costWp": 800
   },
   {
     "name": "Leafsitch",
     "category": "Armor & Shield",
-    "costText": "25 np",
-    "costSp": 5.0,
-    "detail": "0 · +1 · +0 · 0 · 4lb"
+    "costText": "4 sp",
+    "costSp": 4.0,
+    "detail": "0 · +1 · 0 · 0 · 4 lb.",
+    "costWp": 200
   },
   {
     "name": "Barkskin Vest",
     "category": "Armor & Shield",
-    "costText": "100 np",
-    "costSp": 20.0,
-    "detail": "0 · +1 · +1 · -1 · 6lb"
+    "costText": "3 sp",
+    "costSp": 3.0,
+    "detail": "0 · +1 · +1 · -1 · 6 lb.",
+    "costWp": 150
   },
   {
     "name": "Briarhide",
     "category": "Armor & Shield",
-    "costText": "225 np",
-    "costSp": 45.0,
-    "detail": "1+ · +2 · +1 · -2 · 9lb"
+    "costText": "8 sp",
+    "costSp": 8.0,
+    "detail": "1+ · +2 · +1 · -1 · 9 lb.",
+    "costWp": 400
   },
   {
     "name": "Roughscale",
     "category": "Armor & Shield",
-    "costText": "150 np",
-    "costSp": 30.0,
-    "detail": "2+ · +2 · +2 · -3 · 14lb"
+    "costText": "6 sp",
+    "costSp": 6.0,
+    "detail": "2+ · +2 · +1 · -2 · 14 lb.",
+    "costWp": 300
   },
   {
     "name": "Root Weave",
     "category": "Armor & Shield",
-    "costText": "375 np",
-    "costSp": 75.0,
-    "detail": "2+ · +3 · +2 · -4 · 28lb"
+    "costText": "14 sp",
+    "costSp": 14.0,
+    "detail": "2+ · +3 · +2 · -2 · 28 lb.",
+    "costWp": 700
   },
   {
     "name": "Heartguard",
     "category": "Armor & Shield",
-    "costText": "1250 np",
-    "costSp": 250.0,
-    "detail": "3+ · +3 · +3 · -4 · 22lb"
+    "costText": "15 sp",
+    "costSp": 15.0,
+    "detail": "3+ · +3 · +1 · -3 · 22 lb.",
+    "costWp": 750
   },
   {
     "name": "Earthforged Plate",
     "category": "Armor & Shield",
-    "costText": "3000 np",
-    "costSp": 600.0,
-    "detail": "4+ · +4 · +3 · -5 · 36lb"
+    "costText": "22 sp",
+    "costSp": 22.0,
+    "detail": "4+ · +4 · +2 · -3 · 36 lb.",
+    "costWp": 1100
   },
   {
     "name": "Toughscale",
     "category": "Armor & Shield",
-    "costText": "1500 np",
-    "costSp": 300.0,
-    "detail": "4+ · +4 · +2 · -5 · 32lb"
+    "costText": "20 sp",
+    "costSp": 20.0,
+    "detail": "4+ · +4 · +1 · -4 · 32 lb.",
+    "costWp": 1000
   },
   {
     "name": "Durtlehide",
     "category": "Armor & Shield",
-    "costText": "4000 np",
-    "costSp": 800.0,
-    "detail": "5+ · +5 · +3 · -5 · 40lb"
+    "costText": "30 sp",
+    "costSp": 30.0,
+    "detail": "5+ · +5 · +2 · -4 · 40 lb.",
+    "costWp": 1500
   },
   {
     "name": "Runeforged Plate",
     "category": "Armor & Shield",
-    "costText": "7500 np",
-    "costSp": 1500.0,
-    "detail": "5+ · +6 · +4 · -6 · 65lb"
+    "costText": "45 sp",
+    "costSp": 45.0,
+    "detail": "5+ · +6 · +3 · -5 · 65 lb.",
+    "costWp": 2250
   },
   {
     "name": "Sapguard",
     "category": "Armor & Shield",
-    "costText": "50 np",
-    "costSp": 10.0,
-    "detail": "1+ · +1 · +1 · -1 · 4lb",
-    "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Armor Penalty effects still apply."
+    "costText": "4 sp",
+    "costSp": 4.0,
+    "detail": "1+ · +1 · 0 · 0 · 4 lb.",
+    "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Armor Penalty effects still apply.",
+    "costWp": 200
   },
   {
     "name": "Vinegrip",
     "category": "Armor & Shield",
-    "costText": "250 np",
-    "costSp": 50.0,
-    "detail": "2+ · +3 · +2 · -2 · 10lb"
+    "costText": "8 sp",
+    "costSp": 8.0,
+    "detail": "2+ · +2 · +1 · -1 · 10 lb.",
+    "costWp": 400
   },
   {
     "name": "Ironwood Bulwark",
     "category": "Armor & Shield",
-    "costText": "1500 np",
-    "costSp": 300.0,
-    "detail": "3+ · +4 · +3 · -3 · 18lb"
+    "costText": "18 sp",
+    "costSp": 18.0,
+    "detail": "3+ · +3 · +2 · -2 · 18 lb.",
+    "costWp": 900
   },
   {
     "name": "Bedroll & Groundsheet",
@@ -586,17 +621,19 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "4 lb.",
     "description": "A compact treated bedroll and moisture-resistant groundsheet for reliable rest in unpredictable conditions.",
     "effect": "Using it during rest prevents the effects of a restless night.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 80
   },
   {
     "name": "Traveler’s Cloak",
     "category": "Adventuring Gear",
-    "costText": "5 np",
-    "costSp": 1.0,
+    "costText": "4 sp",
+    "costSp": 4.0,
     "detail": "3 lb.",
     "description": "A heavy weather-ready cloak that protects against wind and cold while helping careful movement and concealment.",
     "effect": "While worn, gain +1 to Whisperster Skill checks.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 200
   },
   {
     "name": "Torch (each)",
@@ -606,17 +643,19 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A wrapped-cloth torch that requires a Fire-Starting Kit or another open flame to ignite.",
     "effect": "Illuminates an Orb [4] area.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 2
   },
   {
     "name": "Travel Lantern",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "A sturdy shuttered oil lantern that requires fuel and a Fire-Starting Kit.",
     "effect": "Illuminates a Cone [4] area.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 100
   },
   {
     "name": "Glowfruit Cage",
@@ -626,7 +665,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A wicker cage holding naturally bioluminescent fruit that glows steadily without ignition.",
     "effect": "Illuminates an Orb [3] area.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 30
   },
   {
     "name": "Waterskin",
@@ -636,7 +676,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "2 lb. (full)",
     "description": "A tightly sealed hide container for carrying water on extended travel.",
     "effect": "Carries roughly two days of water.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 80
   },
   {
     "name": "Reed Flask",
@@ -646,7 +687,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb. (full)",
     "description": "A lightweight reed-wrapped water container that is easy to refill and carry.",
     "effect": "Carries roughly one day of water.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 40
   },
   {
     "name": "Travel Meal (2 day)",
@@ -656,7 +698,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "2 lb.",
     "description": "A prepared bundle of preserved food intended for travel.",
     "effect": "Enough prepared food for two days.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 60
   },
   {
     "name": "Trail Rations (1 day)",
@@ -666,17 +709,19 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "Dry, compact preserved food suited for long journeys.",
     "effect": "Enough trail food for one day.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 30
   },
   {
     "name": "Traveler’s Pack",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "2 lb.",
     "description": "A durable pack designed for extended travel and awkward expedition gear.",
     "effect": "Carries up to 40 lb. of equipment.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 50
   },
   {
     "name": "Forager’s Satchel",
@@ -685,7 +730,8 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 1.0,
     "detail": "1 lb.",
     "description": "A divided satchel for herbs, fungi, and other small natural materials.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 50
   },
   {
     "name": "Fire-Starting Kit",
@@ -694,16 +740,18 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 1.2,
     "detail": "1 lb.",
     "description": "Flint, striker, resin tinder, and ember fungus for lighting torches, lanterns, and campfires.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 60
   },
   {
     "name": "Traveler’s Rope (20 ft)",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "3 lb.",
     "description": "Strong flexible rope for climbing, securing loads, and solving terrain problems.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 50
   },
   {
     "name": "Glow-Moss Chalk",
@@ -712,7 +760,8 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 0.02,
     "detail": "—",
     "description": "Marking tools for walls, stones, trail features, navigation, and warnings.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 1
   },
   {
     "name": "Rootwalker Bundle",
@@ -721,142 +770,158 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 1.0,
     "detail": "1 lb.",
     "description": "Bark strips, resin, rope, and stakes for securing footing, bracing unstable surfaces, and marking safe crossings.",
-    "shopGroup": "Traveler’s Gear"
+    "shopGroup": "Traveler’s Gear",
+    "costWp": 50
   },
   {
     "name": "Artisan",
     "category": "Adventuring Gear",
-    "costText": "15 np",
+    "costText": "3 sp",
     "costSp": 3.0,
     "detail": "5 lb.",
     "description": "A compact collection of crafting, repair, and camp-cooking tools.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 150
   },
   {
     "name": "Climber",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "4 lb.",
     "description": "Hooks, pitons, straps, and line supports used to scale stone, wood, and ruins.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 100
   },
   {
     "name": "Disguise",
     "category": "Adventuring Gear",
-    "costText": "15 np",
+    "costText": "3 sp",
     "costSp": 3.0,
     "detail": "3 lb.",
     "description": "Pigments, powders, cloth wraps, and shaping tools used to alter appearance and roles.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 150
   },
   {
     "name": "Forgery",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "Ink, seals, imitation stamps, paper scraps, and precision tools for recreating documents and markings.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 100
   },
   {
     "name": "Navigator",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "3 lb.",
     "description": "Charts, parchment, measuring cords, charcoal, and a sighting tool for navigation and mapmaking.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 100
   },
   {
     "name": "Poisoner",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "2 lb.",
     "description": "Vials, gloves, clamps, and tools for safely creating, refining, or applying simple poisons.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 100
   },
   {
     "name": "Herbalist",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "1 lb.",
     "description": "A divided pouch with bandages, dried leaves, bark, binding fibers, and storage for gathered herbs.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 50
   },
   {
     "name": "Infusion",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "3 lb.",
     "description": "A small alchemical setup for tinctures, distillations, and other non-herbal mixtures.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 100
   },
   {
     "name": "Thieves’",
     "category": "Adventuring Gear",
-    "costText": "15 np",
+    "costText": "3 sp",
     "costSp": 3.0,
     "detail": "2 lb.",
     "description": "Slim picks, soft pads, wedges, and tension tools for quiet entry and delicate manipulation.",
-    "shopGroup": "Field Kits"
+    "shopGroup": "Field Kits",
+    "costWp": 150
   },
   {
     "name": "Antivenin",
     "category": "Adventuring Gear",
-    "costText": "15 np",
+    "costText": "3 sp",
     "costSp": 3.0,
     "detail": "—",
     "description": "A neutralizing mixture designed to counter common natural toxins.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 150
   },
   {
     "name": "Aroma",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "—",
     "description": "A potent scent used to mask odors, soothe beasts, or confuse creatures that hunt by smell.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 50
   },
   {
     "name": "Black Water",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "—",
     "description": "A murky Ancient-site liquid whose properties vary with source and preparation.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 100
   },
   {
     "name": "Blessed Water",
     "category": "Adventuring Gear",
-    "costText": "10 np",
+    "costText": "2 sp",
     "costSp": 2.0,
     "detail": "1 lb.",
     "description": "Ritually prepared water used in cleansing, warding, and symbolic acts.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 100
   },
   {
     "name": "Liquid Fire",
     "category": "Adventuring Gear",
-    "costText": "20 np",
+    "costText": "4 sp",
     "costSp": 4.0,
     "detail": "1 lb.",
     "description": "A volatile mixture that clings to surfaces when ignited and is useful for clearing obstacles or dispersing threats.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 200
   },
   {
     "name": "Potion of Healing",
     "category": "Adventuring Gear",
-    "costText": "25 np",
+    "costText": "5 sp",
     "costSp": 5.0,
     "detail": "—",
     "description": "A restorative mixture that speeds recovery and helps stabilize the wounded.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 250
   },
   {
     "name": "Scriptweave Book",
@@ -866,7 +931,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm.",
     "effect": "While equipped, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 600
   },
   {
     "name": "Caster Totem",
@@ -879,7 +945,8 @@ export const gearShopItems: GearShopItem[] = [
     "statBonuses": {
       "control": 1
     },
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 300
   },
   {
     "name": "Spell Charm",
@@ -889,7 +956,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A small enchanted emblem worn or carried to reinforce a single magical working.",
     "effect": "Once per round, increase the damage of one spell by [+1].",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 350
   },
   {
     "name": "Lens-Stone Arcanum",
@@ -899,7 +967,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A polished crystal lens bound in cord that bends the pressure of a compelled magical effect.",
     "effect": "Once per encounter, when a spell compels Renew the Heart, adjust that passive target by one category higher or lower.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 300
   },
   {
     "name": "Shiny Bobble",
@@ -909,7 +978,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A bright little charm that catches stray magical currents and returns them to its bearer.",
     "effect": "While equipped, increase Magic Regen by [+1].",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 500
   },
   {
     "name": "Votive Icon",
@@ -919,7 +989,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A small devotional icon carried as a reminder of faith, resolve, and the promises that steady the heart.",
     "effect": "While equipped, gain condition [+1] when using Renew the Heart.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 350
   },
   {
     "name": "Heartward Token",
@@ -929,13 +1000,14 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A protective token fastened to armor so its warding joins the armor’s own resilience.",
     "effect": "While equipped and attached to worn armor, increase that armor’s Guts Bonus by [+1].",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 500
   },
   {
     "name": "Cloak of Windweave",
     "category": "Adventuring Gear",
-    "costText": "30 np",
-    "costSp": 6.0,
+    "costText": "10 sp",
+    "costSp": 10.0,
     "detail": "2 lb.",
     "description": "A shimmering mantle infused with subtle harmonic currents.",
     "effect": "Gain +1 Guts against damaging magical abilities and Resistance +1 against one chosen damage type.",
@@ -950,7 +1022,8 @@ export const gearShopItems: GearShopItem[] = [
       "Radiant",
       "Shadow"
     ],
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 500
   },
   {
     "name": "Quickdraw Quiver",
@@ -960,7 +1033,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A rigid quiver designed for rapid arrow retrieval.",
     "effect": "While equipped and attached to a bow, gain condition [+1] to TO HIT rolls made with that bow.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 300
   },
   {
     "name": "Featherwind Bolt-Case",
@@ -970,7 +1044,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "1 lb.",
     "description": "A smooth-lined case that keeps crossbow bolts from snagging.",
     "effect": "While equipped and attached to a crossbow, gain [+1] Accuracy with that crossbow.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 300
   },
   {
     "name": "Wristloop",
@@ -980,17 +1055,19 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A fitted wrist strap that improves the release of thrown weapons.",
     "effect": "While equipped and attached to a thrown weapon, gain condition [+1] to TO HIT rolls made with that weapon.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 200
   },
   {
     "name": "Sharpening Stone",
     "category": "Adventuring Gear",
-    "costText": "3 np",
-    "costSp": 0.6,
+    "costText": "8 sp",
+    "costSp": 8.0,
     "detail": "1 lb.",
     "description": "A compact whetstone used to prepare slashing or piercing weapons before a fight.",
     "effect": "After preparation, a physical nonmagical weapon deals +1 damage until the end of the next combat encounter.",
-    "shopGroup": "Consumables"
+    "shopGroup": "Consumables",
+    "costWp": 400
   },
   {
     "name": "Journey Knot",
@@ -1000,7 +1077,8 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A braided endurance-and-fortune charm tied to a weapon grip or bow limb.",
     "effect": "While equipped and attached to a weapon, gain condition [+1] to one TO HIT roll made with that weapon.",
-    "shopGroup": "Trinkets"
+    "shopGroup": "Trinkets",
+    "costWp": 350
   },
   {
     "name": "Shovel",
@@ -1008,7 +1086,8 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "6 np",
     "costSp": 1.2,
     "detail": "3 lb.",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 60
   },
   {
     "name": "Mallet",
@@ -1016,23 +1095,26 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "4 np",
     "costSp": 0.8,
     "detail": "2 lb.",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 40
   },
   {
     "name": "Hatchet",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "2 lb.",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 50
   },
   {
     "name": "Hand Saw",
     "category": "Adventuring Gear",
-    "costText": "5 np",
+    "costText": "1 sp",
     "costSp": 1.0,
     "detail": "2 lb.",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 50
   },
   {
     "name": "Trowel",
@@ -1040,7 +1122,8 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "2 np",
     "costSp": 0.4,
     "detail": "—",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 20
   },
   {
     "name": "Pry Bar",
@@ -1048,6 +1131,7 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "5 np",
     "costSp": 1.0,
     "detail": "2 lb.",
-    "shopGroup": "Tools"
+    "shopGroup": "Tools",
+    "costWp": 50
   }
 ]

@@ -75,15 +75,7 @@ function tableRows(section:RuleSourceSection,block:RuleSourceBlock){
   if(section.heading!=='ACTIVE & PASSIVE TARGETS')return block.rows
   return block.rows.map((row,index)=>index===0?[...row,'Example']:[...row,targetExamples[row[0]||'']||''])
 }
-function displayParagraph(section:RuleSourceSection,text:string){
-  let value=displayText(text)
-  if(section.heading==='HALF-STEP ROLLS'){
-    if(/divide the natural \(unmodified\) dice result by two/i.test(value))return'For a half-step roll, roll 1d10 and read the die by its result band. Do not divide the die result.'
-    if(/The resulting value will determine your final total/i.test(value))return'A natural d10 result of 1–5 gives a half-step result of 1. A natural d10 result of 6–10 gives a half-step result of 2.'
-    if(/required to roll \[1d10\/2\+1\]/i.test(value))return'The notation [1d10/2+1] means: roll the d10, convert it to its half-step result (1 or 2), then add the listed +1 condition.'
-  }
-  return value
-}
+function displayParagraph(_section:RuleSourceSection,text:string){return displayText(text)}
 function displayHeading(value:string){const upper=value.toUpperCase();if(upper==='FORTUNE & MISFORTUNE RESULTS')return'FORTUNE & MISFORTUNE';if(upper==='CORE PRINCIPLES OF PLAY')return'PRINCIPLES OF PLAY';return value}
 function isIntroductionDialogue(block:RuleSourceBlock){return mode.value==='introduction'&&block.type==='table'&&block.rows.length===1&&block.rows[0].length===1&&/^Watcher:/i.test(block.rows[0][0].trim())}
 function isPrinciplesSection(section:RuleSourceSection){return mode.value==='introduction'&&section.heading.toUpperCase()==='CORE PRINCIPLES OF PLAY'}

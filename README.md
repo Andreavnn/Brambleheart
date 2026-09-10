@@ -1,24 +1,33 @@
-# Brambleheart TTRPG — Beta 0.24
+# Brambleheart TTRPG — Beta 0.25
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.24 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.25 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.24
+## Current Site Update — Beta 0.25
 
-- Rules pages continue to use the shared Fundamentals-style page shell and shared rule-card components introduced by Beta 0.23.
-- The current ruleset is now materialized directly in `src/data/rulesCurrent.ts`; the original generated raw-rules source and superseded mutation/style layers are no longer runtime authorities.
-- Fundamentals, Character Creation, Equipment & Gear, Winds of Magic, and Battles receive the current reference-layout, graphic, collapsible-panel, interaction, and rules-copy updates.
-- Threadpiece exchange examples, Core Action references, rule-feature boxes, Deeds, and current equipment references reuse shared components/data instead of maintaining page-specific copies.
+- News now presents separate Discord, Share, and Creator Link buttons, with Discord live member/online counts shown on the community button.
+- Standard-damage Melee and Ranged weapon profiles receive their current damage adjustment; Penetration weapon damage remains unchanged.
+- Deadly, Dual Wielding, Beastgrasp, Turnstrike, and the retirement of Ward Guard use the current weapon/Talent rules.
+- Species and character-facing stat presentation use the current Steady Pace, Poised Reflex, Double Lilly, Cycle Of The Beast, Thunderstep, and Frostwalker rules.
+- Current Rules distinguish Damage Category from the On-Going recurring-damage qualifier and use the slower 7–10 XP-per-session advancement model.
+- The Watcher encounter reference uses Threat Level terminology and no longer presents the obsolete six-Attribute Encounter Rating calculation.
 
-## Current Game Update — v0.12
+## Current Game Update — v0.13
 
-Game Update v0.12 updates current Core Action timing, Character Creation procedures, Deed randomization, Lore elemental resistance, Enhance casting, current equipment references, Combat Targeting, and Damage Category presentation.
+Game Update v0.13 updates current weapon damage, Deadly and Dual Wielding, Beastgrasp and Turnstrike, Experience progression, several Heritage Traits, On-Going damage terminology, and the current Threat Level placeholder.
 
 ### Current Rules Clarifications
 
-Move Core Actions are Dynamic where stated; Core Combat Actions are used on a turn. Lore Attunement grants Resistance [+1] against the damage element associated with the chosen Lore. Casting an Enhance requires the caster to Renew the Heart, with the passive target reduced by the caster’s Spirit modifier to a minimum target of [8]. Damage Categories are Standard, Direct, Lethal, and On-Going.
+Standard, Direct, and Lethal are Damage Categories. On-Going is a recurring-damage qualifier: later ticks keep the effect’s stated Damage Category and use the printed recurring value without adding Fury, Accuracy, Heart, Power, weapon damage, or another normal damage addition again unless the rule explicitly says otherwise.
 
-Character Creation references the four Body & Spirit Paths, the current equipment catalog, and a 30 sp starting Threadpiece budget. Deeds may be drawn from a Watcher-provided Deeds Deck or selected by d100; the standard session method is draw five and keep two, with at least two Deeds per player recommended.
+Deadly weapons list damage as `X [Y]`; the normal `X` damage resolves normally and a successful Strike also deals the fixed bracketed `[Y]` as Lethal damage. Dual Wielding applies [-2] to Strike rolls made with those weapons, duplicate qualities apply once, and Versatile contributes one [+1] total for a net [-1] penalty.
+
+Beastgrasp changes the base Dual Wielding Strike penalty to [-4] while wielding two two-handed weapons. Ward Guard is retired. Turnstrike uses half the wielded weapon’s normal, non-bracketed damage value, rounded up, with a minimum Ward bonus of [+1].
+
+Auravex Cycle Of The Beast restores [1] Health or [1] Mana to its host rider, Braelor Thunderstep grants [+2] charge movement with [2] Lethal Power Through damage, and Urnath Frostwalker grants Resistance [+2] to Cold with [+2] Natural Terrain Ward.
+
+Tordan Steady Pace reduces a Move ability’s maximum movement by [1] square, reduces Speed penalties by [2], and prevents penalties/effects from reducing Speed below [2]. Cethra Poised Reflex and Rivkan Double Lilly can each be used once per round. Typical sessions award 7–10 XP; advancement costs are intentionally paced so one or two sessions usually support one or two upgrades depending on how XP is spent.
+A completed kept Deed that aligns with a character’s Spark grants [+1] bonus XP, and that Spark alignment bonus can be gained only once per session.
 
 ### Complete Magic Rebalance
 
@@ -94,10 +103,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.24`
-- package version: `0.24.0`
-- PWA cache: `v0.24`
-- Game Update: `v0.12`
+- Site Update / BUILD/export: `0.25`
+- package version: `0.25.0`
+- PWA cache: `v0.25`
+- Game Update: `v0.13`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

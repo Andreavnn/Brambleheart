@@ -1,6 +1,9 @@
 export interface TraitDefinition { name:string; text:string; keywords:string[] }
 export interface SpeciesDefinition { name:string; pronunciation:string; quote:string; theme:string; lore:string; language:string; speciesTraits:TraitDefinition[]; cultureTraits:TraitDefinition[] }
 
+/** Numeric behavior for Steady Pace lives beside the player-facing trait that defines it. */
+export const STEADY_PACE_RULE={moveMaximumReduction:1,speedPenaltyReduction:2,minimumSpeed:2} as const
+
 export const speciesData: SpeciesDefinition[] = [
   {
     "name": "Ardenn",
@@ -13,7 +16,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Lunar Pursuit",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Ardenn",
           "Heritage Trait"
@@ -23,7 +26,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Loyalty’s Will",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Ardenn",
           "Heritage Trait"
@@ -95,7 +98,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Auravex",
           "Heritage Trait"
         ],
-        "text": "As motion stirs life in all things, the beast’s rhythm returns to you through those you guide. TRIGGER: At the end of the round. DECLARE: Choose up to [3] ally characters within [4] squares that have received a condition bonus from your character this round. EFFECT: Each chosen ally may restore either health [1] or mana [1]. If [2] or more characters are affected by this action, your character also restores either health [2] or mana [2]."
+        "text": "As motion stirs life in all things, the beast’s rhythm returns to you through those you guide. TRIGGER: At the end of the round. DECLARE: Choose up to [3] ally characters within [4] squares that have received a condition bonus from your character this round. EFFECT: Each chosen ally may restore either health [1] or mana [1]. If [2] or more characters are affected by this action, your character also restores either health [1] or mana [1]."
       }
     ],
     "cultureTraits": [
@@ -110,7 +113,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Leaf In The Wind",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Culture Trait"
         ],
@@ -149,7 +152,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Harmonic Field",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Axalori",
           "Heritage Trait"
@@ -169,7 +172,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Resonant Pulse",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Culture Trait"
         ],
@@ -193,7 +196,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Braelor",
           "Heritage Trait"
         ],
-        "text": "Braelor hearts beat with stormlight, and the air itself trembles in their wake. COST: [2] mana TRIGGER: When your character uses the Hero’s Charge action. EFFECT: Increase the maximum movement of Hero’s Charge by [+3] squares. If your character deals damage to the target of Hero’s Charge with a combat action during the same turn, increase that damage by [+2]. POWER THROUGH: If your character moves the maximum number of squares allowed by Hero’s Charge, after the charge is resolved the target suffers [3] lethal damage and is forced back [1] square directly away from your character. If the target cannot be moved, it suffers [1] additional lethal damage instead."
+        "text": "Braelor hearts beat with stormlight, and the air itself trembles in their wake. COST: [2] mana TRIGGER: When your character uses the Hero’s Charge action. EFFECT: Increase the maximum movement of Hero’s Charge by [+2] squares. If your character deals damage to the target of Hero’s Charge with a combat action during the same turn, increase that damage by [+2]. POWER THROUGH: If your character moves the maximum number of squares allowed by Hero’s Charge, after the charge is resolved the target suffers [2] lethal damage and is forced back [1] square directly away from your character. If the target cannot be moved, it suffers [1] additional lethal damage instead."
       },
       {
         "name": "Stoneheart",
@@ -223,7 +226,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Skill",
           "Culture Trait"
         ],
-        "text": "The twin arts of body and spirit: the strength to shape stone and the presence to command respect. EFFECT: Gain rank[+1] in the stonegrasp and either presence or crafting[blacksmithing] skills."
+        "text": "The twin arts of body and spirit: the strength to shape stone and the presence to command respect. EFFECT: Gain rank[+1] in the stonegrasp and either Presence or Tradeskill (Blacksmithing)."
       },
       {
         "name": "Covine Heirs",
@@ -248,7 +251,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Primal Grace",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Cethra",
           "Heritage Trait"
         ],
@@ -271,7 +274,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Cethra",
           "Heritage Trait"
         ],
-        "text": "Even under pressure, your body acts with effortless control — instinct shaped by endless discipline. TRIGGER: When your character fails the attribute save for the Renew the Heart action. EFFECT: Reroll the failed attribute save with [+1]."
+        "text": "Even under pressure, your body acts with effortless control — instinct shaped by endless discipline. TRIGGER: When your character fails the attribute save for the Renew the Heart action. EFFECT: Reroll the failed attribute save with [+1]. RESTRICTIONS: Poised Reflex can be used only once per round."
       }
     ],
     "cultureTraits": [
@@ -340,7 +343,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Skill",
           "Culture Trait"
         ],
-        "text": "The Hedgkin’s hands are always busy — mending, stirring, or mixing some small miracle. EFFECT: Gain rank [+1] in the Seeking and Herbalry skill. Additionally, gain rank [+1] in one of the following skills: Lorekeeping, Wayfinding, or Tradecraft skill."
+        "text": "The Hedgkin’s hands are always busy — mending, stirring, or mixing some small miracle. EFFECT: Gain rank [+1] in the Seeking and Herbalry skill. Additionally, gain rank [+1] in one of the following skills: Lorekeeping, Wayfinding, or Tradeskill."
       },
       {
         "name": "Thriving Harmony",
@@ -383,7 +386,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Crooktail Bound",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Ravari",
           "Heritage Trait"
@@ -431,7 +434,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Leapfrog",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Rivkan",
           "Heritage Trait"
@@ -441,12 +444,12 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Double Lilly",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Rivkan",
           "Heritage Trait"
         ],
-        "text": "When the first jump fails, the second one lands. TRIGGER: When your character fails any roll. EFFECT: Gain [+2] to the next roll of the same type - Combat, Spell, Attribute, or otherwise - before the end of the round. If that roll succeeds, restore mana [2]."
+        "text": "When the first jump fails, the second one lands. TRIGGER: When your character fails any roll. EFFECT: Gain [+2] to the next roll of the same type - Combat, Spell, Attribute, or otherwise - before the end of the round. If that roll succeeds, restore mana [2]. RESTRICTIONS: Double Lilly can be used only once per round."
       }
     ],
     "cultureTraits": [
@@ -461,7 +464,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "River’s Favor",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Culture Trait"
         ],
@@ -514,12 +517,12 @@ export const speciesData: SpeciesDefinition[] = [
           "Skill",
           "Culture Trait"
         ],
-        "text": "Sauren travel light and remember much. EFFECT: Gain rank [+1] in the Wayfinding and Beastcraft skills."
+        "text": "Sauren travel light and remember much. EFFECT: Gain rank [+1] in the Wayfinding and Bondcraft skills."
       },
       {
         "name": "Scent Of Blood",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Culture Trait"
         ],
@@ -542,12 +545,12 @@ export const speciesData: SpeciesDefinition[] = [
           "Urnath",
           "Heritage Trait"
         ],
-        "text": "You stride through the cold as if it were air, your blood singing with winter’s stillness. EFFECT: Gain resistance [+3] to Cold damage and ignore movement penalties caused by icy terrain or environmental conditions. Additionally, successful Melee Strike and Ranged Strike rolls deal [+1] Frost damage. NATURAL TERRAIN: If your character begins the round on icy terrain, gain [+3] Ward until the end of your next turn."
+        "text": "You stride through the cold as if it were air, your blood singing with winter’s stillness. EFFECT: Gain resistance [+2] to Cold damage and ignore movement penalties caused by icy terrain or environmental conditions. Additionally, successful Melee Strike and Ranged Strike rolls deal [+1] Cold damage. NATURAL TERRAIN: If your character begins the round on icy terrain, gain [+2] Ward until the end of your next turn."
       },
       {
         "name": "Blood Of The North",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Urnath",
           "Heritage Trait"
@@ -577,7 +580,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Hearthward Oath",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Culture Trait"
         ],
@@ -596,7 +599,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Dreamshell",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Tordan",
           "Heritage Trait"
@@ -673,7 +676,7 @@ export const speciesData: SpeciesDefinition[] = [
       {
         "name": "Composed Mind",
         "keywords": [
-          "Reaction",
+          "Reactive",
           "Ability",
           "Virelan",
           "Heritage Trait"

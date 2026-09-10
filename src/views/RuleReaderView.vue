@@ -6,13 +6,15 @@ import RulePageLayout from '../components/RulePageLayout.vue'
 import CoreActionCard from '../components/CoreActionCard.vue'
 import RuleFeatureCard from '../components/RuleFeatureCard.vue'
 import ThreadpieceExchange from '../components/ThreadpieceExchange.vue'
+import SpeciesRuleSheet from '../components/SpeciesRuleSheet.vue'
 import { canonicalRuleSlug, findRuleCategory, findRulePage, findRuleParentPage, loreNavigation, quickFaq, quickReferencePages, resolveSourceSections, ruleCategories, rulePageNavigation } from '../data/ruleCatalog'
 import { rankModifier, structuredRule, visibleRuleFields } from '../rules/rulesEngine'
 import { speciesData } from '../data/speciesData'
+import { deeds, deedRewardLabel } from '../data/deeds'
 import { attributes, faiths, homelands, oaths, sparks, type AttributeId } from '../data/bramble'
 import { coreActions } from '../data/coreAbilities'
 import { startingPathOptions } from '../data/creationRules'
-import { STARTING_WEALTH_WP, economyGearCatalog } from '../rules/economy'
+import { STARTING_WEALTH_WP } from '../rules/economy'
 import { WP_PER_SP } from '../rules/threadpieces'
 import { loreElementalResistance, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
@@ -21,14 +23,14 @@ import targetingLineImage from '../assets/rules/aoe-line.png'
 import targetingConeImage from '../assets/rules/aoe-cone.png'
 import targetingOrbImage from '../assets/rules/aoe-orb.png'
 import targetingBlockedImage from '../assets/rules/aoe-blocked.png'
-import { externalMonsters, findExternalMonster, monsterCategories, monsterSlug, WOODLANDS_ENCOUNTERS_URL, WOODLANDS_MONSTERS_URL } from '../data/externalMonsters'
+import { externalMonsters, findExternalMonster, monsterCategories, monsterSlug, WOODLANDS_MONSTERS_URL } from '../data/externalMonsters'
 import { recordRecentRule } from '../services/ruleRecent'
 import { ruleSourceDocuments, SPELL_HEART_DAMAGE_RULE, type RuleSourceBlock, type RuleSourceSection } from '../data/rulesCurrent'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
 import { SIGNATURE_SPELLS, spellCostLabel } from '../rules/magicRules'
 import { formatMeasurementText } from '../rules/measurements'
 import { useSettings } from '../state/settings'
-import { ABILITY_TYPE_KEYWORDS, abilityFeaturePillClass, abilityFeaturePillKeywords, abilityFeaturePillLabel, abilityTypeClass, activeAbilityKeywords, canonicalAbilityType, traitPillKeywords } from '../rules/abilityPresentation'
+import { ABILITY_TYPE_KEYWORDS, abilityFeaturePillClass, abilityFeaturePillKeywords, abilityFeaturePillLabel, abilityTypeClass, activeAbilityKeywords, canonicalAbilityType } from '../rules/abilityPresentation'
 
 const route=useRoute()
 const {measurement}=useSettings()
@@ -73,9 +75,6 @@ const currentBanner=computed(()=>{
   return entry?.[1]||''
 })
 function abilityTypes(values:string[]){return Array.from(new Set(traitKeywords(values).map(canonicalAbilityType).filter(value=>ABILITY_TYPE_KEYWORDS.has(value))))}
-function traitFooterKeywords(values:string[],kind:'Heritage'|'Cultural',speciesName:string){return traitPillKeywords(values,kind,speciesName)}
-const traitFooterClass=abilityFeaturePillClass
-const traitFooterLabel=abilityFeaturePillLabel
 function manaCostFromRule(text:string){const match=text.match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
 
 function displayText(value:string){return formatMeasurementText(value.replace(/\bProwess\b/g,'Agility').replace(/\bprowess\b/g,'agility'),measurement.value)}
@@ -121,7 +120,6 @@ const layoutParent=computed(()=>{
 })
 const currentCategoryLanding=computed(()=>ruleCategories.find(category=>category.landing.slug===canonicalSlug.value)||null)
 const landingEntries=computed(()=>currentCategoryLanding.value?.pages||[])
-function speciesImageUrl(name:string){return`/assets/species/${name.toLowerCase()}.png`}
 function labeledParagraph(value:string){const text=displayText(value).trim();const match=text.match(/^([^:]{2,45}):\s+(.+)$/);return match?{label:match[1],body:match[2]}:{label:'',body:text}}
 function bulletParts(value:string){const parts=displayText(value).split(/\s*•\s*/).map(part=>part.trim()).filter(Boolean);return parts.length>1?parts:[]}
 function optionalTextParts(value:string){const match=value.match(/^(.*?)(\s*\(optional\))(.*)$/i);return match?[{text:match[1],optional:false},{text:match[2],optional:true},{text:match[3],optional:false}]:[{text:value,optional:false}]}
@@ -193,13 +191,7 @@ const sparkRuleSections=computed(()=>ruleSourceDocuments.sparks.sections.filter(
 const sparkWhatSections=computed(()=>sparkRuleSections.value.filter(section=>['WHAT IS A SPARK?','KEYWORD LIBRARY'].includes(section.heading)))
 const premadeSparkCards=computed(()=>sparks.map(([name,keywords])=>({name,keywords:keywords.split(',').map(value=>value.trim()).filter(Boolean),description:sparkDetails[name]?.description||''})).sort((a,b)=>a.name.localeCompare(b.name)))
 const deedIntro=computed(()=>ruleSourceDocuments.deeds.sections.filter(section=>section.heading==='DEEDS'&&section.blocks.length).flatMap(section=>section.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text:'')))
-const deedEntries=computed<DeedEntry[]>(()=>{
-  const blocks=ruleSourceDocuments.deeds.sections.find(section=>section.heading==='DEEDS LIST')?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text.trim():'').filter(Boolean)||[]
-  const lines:string[]=[]
-  for(let i=0;i<blocks.length;i++){const current=blocks[i];if(!/Objective \(Mechanical\):/.test(current)&&i+1<blocks.length&&/Objective \(Mechanical\):/.test(blocks[i+1])){lines.push(`${current} ${blocks[++i]}`)}else lines.push(current)}
-  const knownNames=['Participation Trophy','Skill of the Day','Voice of the Table','Brush with Fate','Steady Hand','Heart of the Party','Calculated Edge','Wild Wanderer','Spark of Insight','Brushfire Courage','Steadfast Resolve','Tinker’s Triumph','Hope in the Ashes','Measured Breath','Inventor’s Spark','Gentle Guardian','Quiet Observer','Pathfinder’s Mark','Flicker of Faith','Rebel’s Smile','Scholar’s Patience','Trickster’s Turn','Lone Path','Silent Strength','Mind Like Water','Boundless Heart','Trailblazer','Wise Fool','Tether of Trust','Vision in Shadow','Master of the Moment']
-  return lines.map(text=>{const name=knownNames.find(candidate=>text.startsWith(candidate))||text.split(' Objective (Mechanical):')[0];const rest=text.slice(name.length).trim();const match=rest.match(/^([^]*?)\s*Objective \(Mechanical\):\s*([^]*?)\s*Reward:\s*([^]*?)\s*Keywords:\s*([^]*)$/);if(!match)return null;return{name,flavor:match[1].trim(),objective:match[2].trim(),reward:match[3].trim(),keywords:match[4].split(',').map(x=>x.trim()).filter(Boolean)}}).filter((item):item is DeedEntry=>Boolean(item))
-})
+const deedEntries=computed<DeedEntry[]>(()=>deeds.map(deed=>({name:deed.name,flavor:deed.flavor,objective:deed.objective,reward:deedRewardLabel(deed),keywords:[...deed.keywords]})))
 const deedEntriesSorted=computed(()=>{const sorted=[...deedEntries.value].sort((a,b)=>a.name.localeCompare(b.name));const n=sorted.length;return sorted.map((deed,index)=>{const start=Math.floor(index*100/n)+1,end=Math.floor((index+1)*100/n);const format=(value:number)=>String(value).padStart(2,'0');return{...deed,rollRange:`${format(start)}–${format(end)}`}})})
 const sparkExamples=computed(()=>premadeSparkCards.value.filter(item=>['Courageous','Scholar'].includes(item.name)))
 const creationSparkExample=computed(()=>premadeSparkCards.value.find(item=>item.name==='Healer')||premadeSparkCards.value[0])
@@ -222,7 +214,7 @@ const oathWatcherNote='If a campaign expects a stronger or more specific persona
 function narrativeCreatingSection(documentKey:string){const target=documentKey==='homeland'?'CREATING A HOMELAND':documentKey==='oath'?'CREATING AN OATH':'CREATING A FAITH';return sectionByHeading(documentKey,target)}
 function narrativeIntroSections(documentKey:string){return generalNarrativeSections(documentKey).filter(section=>!/^CREATING A /i.test(section.heading))}
 const weaponQualitySections=computed(()=>ruleSourceDocuments.weapons.sections.map(section=>({...section,blocks:section.blocks.filter(block=>block.type==='table'&&block.rows.some(row=>row.some(cell=>/Quality/i.test(cell))))})).filter(section=>section.blocks.length))
-const currentGearItems=computed(()=>economyGearCatalog(catalogGearShopItems))
+const currentGearItems=computed(()=>catalogGearShopItems)
 const shieldNames=new Set(['Sapguard','Sapguard*','Vinegrip','Ironwood Bulwark','IronwoodBulwark'])
 function equipmentItemsFor(group:string){return currentGearItems.value.filter(item=>group==='Weapons'?item.category==='Weapon':group==='Armor'?item.category==='Armor & Shield'&&!shieldNames.has(item.name):group==='Shields'?item.category==='Armor & Shield'&&shieldNames.has(item.name):item.shopGroup===group).sort((a,b)=>a.name.localeCompare(b.name))}
 const equipmentGroups=['Traveler’s Gear','Field Kits','Consumables','Trinkets','Tools'] as const
@@ -235,7 +227,7 @@ const breakValueSection=computed(()=>sectionByHeading('weapons','BREAK VALUE'))
 const threadpieceSections=computed(()=>['THREADPIECES','TYPES OF THREADPIECES','WASHER PIECES (WP)','NUT PIECES (NP)','SCREW PIECES (SP)','BOLT PIECES (BP)','Standard Exchange Rate','SELLING TREASURE','RESALE & MARKET VALUE'].map(heading=>sectionByHeading('adventuring-gear',heading)).filter((section):section is RuleSourceSection=>Boolean(section)))
 const beyondIntroSection=computed(()=>sectionByHeading('beyond-creation','BEYOND CHARACTER CREATION'))
 const beyondSpendingSection=computed(()=>sectionByHeading('beyond-creation','SPENDING EXPERIENCE'))
-const xpMethodLabels=['Participation','Deeds','Watcher Awards','Milestones','Discovery','Role-Play']
+const xpMethodLabels=['Deeds Completed','Spark Alignment','Encounters or Milestones','Watcher Awards']
 const xpMethods=computed(()=>sectionParagraphs(beyondIntroSection.value).filter(text=>xpMethodLabels.some(label=>text.toLowerCase().startsWith(label.toLowerCase()+':'))).map(text=>labeledParagraph(text)))
 const xpAverageLine=computed(()=>sectionParagraphs(beyondIntroSection.value).find(text=>/Average XP per session/i.test(text))||'')
 function spellKeywordBody(text:string,title:string){return text.replace(new RegExp(`^${title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\s*`, 'i'),'').trim()}
@@ -272,15 +264,8 @@ function isHealthSection(section:RuleSourceSection,heading:string){return canoni
         </template>
 
         <template v-else-if="currentSpecies">
-          <section class="species-rule-sheet">
-            <section class="rule-page-section species-rule-lore"><h2>{{ currentSpecies.name }} Lore</h2><small class="species-rule-pronunciation">{{ currentSpecies.pronunciation }}</small><div class="species-rule-layout"><div class="species-rule-lore-copy"><p>{{ currentSpecies.lore }}</p><p><strong>Language:</strong> {{ currentSpecies.language }}</p></div><div class="species-rule-side"><div class="species-rule-art"><div class="species-rule-art-frame"><img :src="speciesImageUrl(currentSpecies.name)" :alt="`${currentSpecies.name} species artwork`" /></div></div><blockquote class="species-rule-quote">“{{ currentSpecies.quote }}”</blockquote></div></div></section>
-            <details class="organized-rule-category species-rule-lore-placeholder card-surface"><summary><span><h2>{{ currentSpecies.name }} Lore</h2><small>Expanded lore</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body species-lore-placeholder-body" aria-label="Species lore placeholder"></div></details>
-            <details class="organized-rule-category species-rule-trait-section card-surface"><summary><span><h2>Heritage Traits</h2><small>{{ currentSpecies.speciesTraits.length }} traits</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body rule-box-grid"><article v-for="trait in currentSpecies.speciesTraits" :key="trait.name" class="trait-card heritage-trait-card species-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ currentSpecies.name }} · Heritage</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in traitFooterKeywords(trait.keywords,'Heritage',currentSpecies.name)" :key="keyword" :class="traitFooterClass(keyword)">{{ traitFooterLabel(keyword) }}</span></div></article></div></details>
-            <details class="organized-rule-category species-rule-trait-section card-surface"><summary><span><h2>Cultural Traits</h2><small>{{ currentSpecies.cultureTraits.length }} traits</small></span><span aria-hidden="true">⌄</span></summary><div class="organized-rule-category-body rule-box-grid"><article v-for="trait in currentSpecies.cultureTraits" :key="trait.name" class="trait-card culture-trait-card culture-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ currentSpecies.name }} · Cultural</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in traitFooterKeywords(trait.keywords,'Cultural',currentSpecies.name)" :key="keyword" :class="traitFooterClass(keyword)">{{ traitFooterLabel(keyword) }}</span></div></article></div></details>
-          </section>
+          <SpeciesRuleSheet :species="currentSpecies" />
         </template>
-
-
 
         <template v-else-if="page.slug==='talents'">
           <section class="rule-page-section-stack talent-rule-page">
@@ -342,7 +327,7 @@ function isHealthSection(section:RuleSourceSection,heading:string){return canoni
         </template>
 
         <template v-else-if="page.slug==='encounters-threat-level'">
-          <section class="external-rule-page rule-page-section-stack"><section class="rule-page-section"><h2>Encounter Rating (ER)</h2><p>Encounter difficulty is measured with Encounter Rating rather than character level. For an individual character or creature, add its Attribute ranks together and divide the total by 6. The referenced example rounds 16 ÷ 6 down from 2.67 to ER 2.</p></section><section class="rule-page-section"><h2>Group Encounter Rating</h2><p>Add the individual ER values of the characters in the group. That total represents the group’s overall encounter strength.</p></section><section class="rule-page-section"><h2>Encounter Difficulty</h2><p>The source recommends using creatures roughly two ER above or below the character or group ER as the normal encounter range.</p><a class="secondary-button external-source-link" :href="WOODLANDS_ENCOUNTERS_URL" target="_blank" rel="noopener noreferrer">Open Source Encounter Reference</a></section></section>
+          <section class="external-rule-page rule-page-section-stack"><section class="rule-page-section"><h2>Threat Level</h2><p>Threat Level is Brambleheart’s current framework for comparing the danger of creatures, groups, and encounters. Brambleheart uses five Attributes. Older Encounter Rating guidance based on six Attributes is deprecated and should not be used.</p></section><section class="rule-page-section"><h2>Current Guidance</h2><p>Use Threat Level as a comparative encounter-design value for now. The exact calculation, party scaling, encounter bands, and Watcher-facing balancing procedure will be finalized when The Watcher section receives its dedicated rules pass.</p></section><section class="rule-page-section"><h2>Design Status</h2><p>This page intentionally provides only the current framework. It does not invent a replacement formula before the full Watcher encounter system is defined.</p></section></section>
         </template>
 
         <template v-else-if="page.slug==='monsters' || page.slug==='critters'">
@@ -424,7 +409,7 @@ function isHealthSection(section:RuleSourceSection,heading:string){return canoni
               <div v-if="creationGraphicStep(entry.section,7)" class="creation-equipment-graphic"><RouterLink class="secondary-button equipment-reference-link" to="/rules/read/adventuring-gear">Equipment &amp; Gear</RouterLink><ThreadpieceExchange :start-sp="creationStartingWealthSp" /></div>
               <aside v-if="creationGraphicStep(entry.section,8)" class="rule-narrative-note watcher-note-panel"><strong>WATCHER’S NOTE</strong><p>Some campaigns may require character details that are optional in the core rules, or may ask for additional information that ties a hero to the campaign. Always check with your Watcher before play to confirm which character details are required at your table.</p></aside>
               <div v-if="isToDamageSection(entry.section)" class="damage-stat-grid"><RuleFeatureCard title="Melee Damage" subtitle="SECONDARY STAT" tone-class="type-touch" :fields="[{label:'ADDITION',value:'Fury (Might Rank)'}]" /><RuleFeatureCard title="Range Damage" subtitle="SECONDARY STAT" tone-class="type-shoot" :fields="[{label:'ADDITION',value:'Accuracy (Agility Rank)'}]" /><RuleFeatureCard title="Spell Damage" subtitle="SECONDARY STAT" tone-class="type-magic" :fields="[{label:'ADDITION',value:'Heart (Bravery Rank)'}]" /></div>
-              <template v-if="isDamageCategorySection(entry.section)"><div class="damage-category-graphic" role="img" aria-label="Standard, Direct, Lethal, and On-Going damage categories."><article><small>STANDARD</small><strong>Damage − Full Guts</strong><span>Use all applicable Guts.</span></article><article><small>DIRECT</small><strong>Damage − Half Guts</strong><span>Round Guts up; minimum [1].</span></article><article><small>LETHAL</small><strong>Damage − 0 Guts</strong><span>Lethal bypasses Guts.</span></article><article><small>ON-GOING</small><strong>Printed Value</strong><span>No normal Attribute-derived damage addition.</span></article></div><aside class="damage-heart-callout"><strong>SPELL HEART DAMAGE</strong><p>{{ SPELL_HEART_DAMAGE_RULE }}</p></aside></template>
+              <template v-if="isDamageCategorySection(entry.section)"><div class="damage-category-graphic" role="img" aria-label="Standard, Direct, and Lethal damage categories, plus the On-Going recurring-damage qualifier."><article><small>STANDARD</small><strong>Damage − Full Guts</strong><span>Use all applicable Guts.</span></article><article><small>DIRECT</small><strong>Damage − Half Guts</strong><span>Round Guts up; minimum [1].</span></article><article><small>LETHAL</small><strong>Damage − 0 Guts</strong><span>Lethal bypasses Guts.</span></article><article><small>ON-GOING</small><strong>Recurring Qualifier</strong><span>Keeps its stated category and gains no normal damage additions.</span></article></div><aside class="damage-heart-callout"><strong>SPELL HEART DAMAGE</strong><p>{{ SPELL_HEART_DAMAGE_RULE }}</p></aside></template>
               <div v-if="isToSoakSection(entry.section)" class="damage-formula-graphic accented-soak" role="img" aria-label="Damage minus Guts equals Total Damage. Example: 8 Standard damage minus Selu's 1 Guts equals 7 Total Damage."><div class="damage-formula-row"><span><small>Incoming</small><strong>Damage</strong><b>8</b></span><span class="formula-operator">−</span><span><small>Selu’s Defense</small><strong>Guts</strong><b>1</b></span><span class="formula-operator">=</span><span class="damage-formula-result"><small>Health Lost</small><strong>Total Damage</strong><b>7</b></span></div><p class="damage-formula-caption"><strong>Example:</strong> Selu has Guts [1]. Against [8] Standard damage, Selu loses [7] Health after Guts is applied.</p></div>
               <div v-if="isResistanceSection(entry.section)" class="resistance-graphic"><span><small>DIRECT FIRE</small><strong>Guts 6 → 3</strong></span><b>+</b><span><small>FIRE RESISTANCE +3</small><strong>3 → 6 Guts</strong></span><b>→</b><span><small>FINAL SOAK</small><strong>6 Guts</strong></span></div>
               <div v-if="isHealthSection(entry.section,'HEALTH')" class="health-state-graphic"><RuleFeatureCard title="Healthy" subtitle="6–30 HEALTH" tone-class="detail-tone-heritage"><p>No low-Health penalty.</p></RuleFeatureCard><RuleFeatureCard title="Wounded" subtitle="5–4 HEALTH" tone-class="detail-tone-equipment"><p>Condition [-1] to all dice rolls.</p></RuleFeatureCard><RuleFeatureCard title="Critical" subtitle="3–2 HEALTH" tone-class="detail-tone-oath"><p>Condition [-2] to all dice rolls.</p></RuleFeatureCard><RuleFeatureCard title="Last Breath" subtitle="1 HEALTH" tone-class="detail-tone-deed"><p>Condition [-3] to all dice rolls.</p></RuleFeatureCard></div>

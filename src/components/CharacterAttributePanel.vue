@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { derivedStats, magicResources, rankModifier, type CoreAttributeRanks } from '../rules/rulesEngine'
-const props=withDefaults(defineProps<{attributes:CoreAttributeRanks;magicLevel?:number;gutsBonus?:number;controlBonus?:number;magicRegenBonus?:number;armorPenalty?:number}>(),{magicLevel:0,gutsBonus:0,controlBonus:0,magicRegenBonus:0,armorPenalty:0})
-const stats=computed(()=>derivedStats(props.attributes,props.gutsBonus,props.controlBonus,props.armorPenalty))
+const props=withDefaults(defineProps<{attributes:CoreAttributeRanks;magicLevel?:number;gutsBonus?:number;controlBonus?:number;magicRegenBonus?:number;armorPenalty?:number;minimumSpeed?:number}>(),{magicLevel:0,gutsBonus:0,controlBonus:0,magicRegenBonus:0,armorPenalty:0,minimumSpeed:1})
+const stats=computed(()=>derivedStats(props.attributes,props.gutsBonus,props.controlBonus,props.armorPenalty,props.minimumSpeed))
 const resources=computed(()=>magicResources(props.attributes,props.magicLevel,props.magicRegenBonus))
 const groups=computed(()=>[
 {id:'agility',name:'Agility',short:'AGI',rank:props.attributes.agility,modifier:rankModifier(props.attributes.agility),secondary:[{name:'Accuracy',value:stats.value.accuracy,detail:`${stats.value.accuracy} AGI RNK`},{name:'Aim',value:stats.value.aim,detail:`${stats.value.aim} AGI MOD`},{name:'Speed',value:stats.value.speed,detail:props.armorPenalty?`2 + ${rankModifier(props.attributes.agility)} AGI MOD ${props.armorPenalty} ARMOR`:`2 + ${rankModifier(props.attributes.agility)} AGI MOD`}]},

@@ -7,11 +7,13 @@ function capitalizeTalentName(value:string){return String(value||'').trim().toLo
 export function canonicalTalentName(name:string){return renames[key(name)]||capitalizeTalentName(name)}
 export function talentNameMatches(left:string,right:string){return key(canonicalTalentName(left))===key(canonicalTalentName(right))}
 
+export const RETIRED_TALENTS=new Set(['Ward Guard'])
+
 const categoryOverrides=new Map<string,TalentCategory>()
 function assign(category:TalentCategory,names:string[]){for(const name of names)categoryOverrides.set(key(name),category)}
 assign('Utility',['Beastgrasp','Victory Roar','Fieldcraft','Skillcraft','Shadow Fang','Pack Tactics','Rooted Paws',"Hare's Luck",'Hare’s Luck','Second Chances','Blood Oath','Foresight','Field Medic','Ironhide','Magebane','Snapstep','Oath Guard','Anchor Spirit','Battlebane','Jumpstart','Keen Edge','Undying Resolve'])
 assign('Offensive',['Breakgrip','Cleave','Pouncer','Thunderous Charge','Hammerfall','Heartseeker','Heroic Surge','Hollowing Claw','Pair Shot','Ragebound','Heavy Draw',"Titan's Wake",'Titan’s Wake','Twin Linked','Warpath','Wildchain','Warhowl','Guardbreaker','Ramhorn','Bond Of Blades','Rhythm Of Blades','Hunter’s Mark','Sure Hand'])
-assign('Defensive',['Hearthwall','Turnstrike','Stillroot','Shield Hand','Ward Guard','Evading Retreat'])
+assign('Defensive',['Hearthwall','Turnstrike','Stillroot','Shield Hand','Evading Retreat'])
 assign('Magic',['Current Overflow','Hearth Touch','Pulse Of Attunement','Quick Cast','Spell Breaker','Spell Cleave','Spellforge','Spellwinds','Steelweaver','Threadseer','Witch Hunter'])
 export function talentCategoryOverride(name:string){return categoryOverrides.get(key(name))}
 export function classifyTalent(name:string,text='',keywords:string[]=[]):TalentCategory{const forced=talentCategoryOverride(name);if(forced)return forced;const hay=`${name} ${text} ${keywords.join(' ')}`.toLowerCase();if(/spell|mana|magic|lore|invocation/.test(hay))return'Magic';if(/ward|defen|guard|block|resist|armor|shield|protect/.test(hay))return'Defensive';if(/strike|weapon|combat|attack|damage|shoot|touch|melee/.test(hay))return'Offensive';return'Utility'}

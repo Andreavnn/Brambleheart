@@ -1,8 +1,8 @@
 import { BUILD, type AttributeId } from '../data/bramble'
-import { gearShopItems as legacyGearShopItems } from '../data/characterOptions'
-import { canonicalTalentName } from '../data/talentCategories'
+import { gearShopItems } from '../data/characterOptions'
+import { canonicalTalentName, RETIRED_TALENTS } from '../data/talentCategories'
 import type { EquipmentStatBonuses } from '../data/equipment'
-import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, economyGearCatalog, isTrinketGear, protectiveGearKind } from '../rules/economy'
+import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, isTrinketGear, protectiveGearKind } from '../rules/economy'
 import { LEGACY_SIGNATURE_SPELLS, RETIRED_OFFICIAL_SPELLS, SIGNATURE_SPELLS } from '../rules/magicRules'
 import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
@@ -13,7 +13,7 @@ export interface PurchasedEquipment{name:string;costWp?:number;costPaidWp?:numbe
 export interface CharacterRecord{id:string;name:string;pronunciation?:string;campaignName?:string;allowCustomData?:boolean;age?:string;appearance?:string;pronouns?:string;kinship?:string;species:string;cultureTraits?:string[];cultureSkillChoices?:Record<string,string>;spark:string;homeland:string;homelandDetail?:string;skills?:string[];skillRanks?:Record<string,number>;faith:string;oath:string;path:'magic'|'talents'|'skills'|'attribute';pathSkills?:string[];pathAttributeBonus?:AttributeId;talents?:string[];loreAttunement?:string;spells?:string[];invocationSpell?:string;invocationSpells?:string[];languages?:string[];equipment?:PurchasedEquipment[];adventureKit?:boolean;startingWealthWp?:number;wealthWp?:number;currencyAddedWp?:number;startingWealth?:number;wealthRemaining?:number;wealthCurrency?:'NP'|'SP';currencyAddedNp?:number;treasure?:string[];attributes:AttributeRanks;pinned?:boolean;locked?:boolean;status?:CharacterStatus;experience?:number;magicLevel?:number;draft?:boolean;creationStep?:string;creationComplete?:boolean;createdAt:string;updatedAt?:string}
 
 export const CHARACTER_STORE=STORAGE_KEYS.characters
-const economyGearItems=economyGearCatalog(legacyGearShopItems)
+const economyGearItems=gearShopItems
 const validStatuses=new Set<CharacterStatus>(['incomplete','unapproved','approved'])
 const wholeWp=(value:unknown)=>Math.max(0,Math.floor(Number(value)||0))
 const skillAliases:Readonly<Record<string,string>>={Whisperstep:'Whisperster',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
@@ -63,7 +63,7 @@ export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord
   const skills=(record.skills||[]).map(canonicalSavedSkill),pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
   const skillRanks=Object.fromEntries(Object.entries(record.skillRanks||{}).map(([key,value])=>[canonicalSavedSkill(key),value]))
   const cultureSkillChoices=Object.fromEntries(Object.entries(record.cultureSkillChoices||{}).map(([key,value])=>[key,canonicalSavedSkill(value)]))
-  return{...record,equipment,adventureKit:record.adventureKit!==false,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName))),spells:normalizeLoreSpellSelection(record.spells),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  return{...record,equipment,adventureKit:record.adventureKit!==false,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName).filter(name=>!RETIRED_TALENTS.has(name)))),spells:normalizeLoreSpellSelection(record.spells),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.');const source=raw as Partial<CharacterRecord>;if(!source.name||!source.attributes)throw new Error('Invalid Brambleheart character data.');const now=new Date().toISOString();return normalizeCharacterRecord({...source,id:crypto.randomUUID(),name:String(source.name),attributes:source.attributes,createdAt:now,updatedAt:now,pinned:Boolean(source.pinned)} as CharacterRecord)}
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{return(JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)}

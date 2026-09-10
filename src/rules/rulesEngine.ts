@@ -1,4 +1,5 @@
 import type { EquipmentStatBonuses } from '../data/equipment'
+import { STEADY_PACE_RULE } from '../data/speciesData'
 import { formatMeasurementText } from './measurements'
 import { canonicalGearName, isTrinketGear, protectiveGearKind } from './economy'
 
@@ -12,15 +13,7 @@ export function rhythmResult(dice:number[],mode:'normal'|'edged'|'weighted'='nor
   return{rolled,kept,dropped,natural,stat:Number(stat)||0,conditions:Number(conditions)||0,total:natural+(Number(stat)||0)+(Number(conditions)||0)}
 }
 
-export function advancementCost(type:'attribute'|'skill'|'new-skill'|'talent'|'magic',currentRank=1){
-  const rank=Math.max(0,Number(currentRank)||0)
-  if(type==='attribute')return 2+(2*rank)
-  if(type==='skill')return 3+rank
-  if(type==='new-skill')return 6
-  if(type==='talent')return 10
-  if(type==='magic')return 10+(4*rank)
-  return 0
-}
+export { advancementCost } from './advancementRules'
 
 export type CoreAttributeRanks={agility:number;might:number;hide:number;lore:number;bravery:number}
 export type EquipmentProfileSource={name:string;detail?:string}
@@ -58,7 +51,9 @@ export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T
 export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){const protective=equippedProtectiveItems(items);const base=protective.reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0);const armor=protective.find(item=>protectiveGearKind(item)==='armor');const heartward=Boolean(armor&&equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Heartward Token'&&item.attachedTo===armor.name));return base+(heartward?1:0)}
 export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)}
 export function equipmentArmorPenalty(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericPenalty(armorProfileValues(String(item.detail||'')).armorPenalty),0)}
-export function equipmentSpeedPenalty(items:ProtectiveEquipmentSource[]|undefined,hasSteadyPace=false){const raw=Math.min(0,equipmentArmorPenalty(items));const armorComponent=hasSteadyPace?Math.min(0,raw+2):raw;return armorComponent+(hasSteadyPace?-1:0)}
+export function equipmentSpeedPenalty(items:ProtectiveEquipmentSource[]|undefined,hasSteadyPace=false){const raw=Math.min(0,equipmentArmorPenalty(items));return hasSteadyPace?Math.min(0,raw+STEADY_PACE_RULE.speedPenaltyReduction):raw}
+export function speciesMinimumSpeed(speciesName:string|undefined){return speciesName==='Tordan'?STEADY_PACE_RULE.minimumSpeed:1}
+export function speciesMoveMaximum(baseMovement:number,speciesName:string|undefined){return Math.max(0,Math.floor(Number(baseMovement)||0)-(speciesName==='Tordan'?STEADY_PACE_RULE.moveMaximumReduction:0))}
 export function equippedProtectiveGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined){return equippedProtectiveItems(items)}
 export type TrinketAwareEquipmentSource=ProtectiveEquipmentSource&{statBonuses?:EquipmentStatBonuses;quantity?:number}
 export function equipmentControlBonus(items:TrinketAwareEquipmentSource[]|undefined){const list=items||[];return list.filter(item=>item.equipped!==false).reduce((sum,item)=>sum+Math.max(0,Number(item.statBonuses?.control)||0)*Math.max(1,Math.floor(Number(item.quantity)||1)),0)}
@@ -69,9 +64,9 @@ export function equipmentSpellDamageBonus(items:ProtectiveEquipmentSource[]|unde
 export function equipmentWeaponToHitBonus(items:ProtectiveEquipmentSource[]|undefined,weaponName:string){const names=new Set(['Journey Knot','Quickdraw Quiver','Wristloop']);return equippedTrinketGear(items).some(item=>item.attachedTo===weaponName&&names.has(canonicalGearName(item.name)))?1:0}
 export function equipmentAttachmentTargets(item:ProtectiveEquipmentSource,equipment:ProtectiveEquipmentSource[]|undefined){const name=canonicalGearName(item.name),weapons=(equipment||[]).filter(candidate=>candidate.category==='Weapon');if(name==='Quickdraw Quiver')return weapons.filter(candidate=>/\bbow\b/i.test(candidate.name)&&!/crossbow/i.test(candidate.name)).map(candidate=>candidate.name);if(name==='Featherwind Bolt-Case')return weapons.filter(candidate=>/crossbow/i.test(candidate.name)).map(candidate=>candidate.name);if(name==='Wristloop')return weapons.filter(candidate=>/Thrown/i.test(candidate.detail||'')).map(candidate=>candidate.name);if(name==='Journey Knot'||name==='Sharpening Stone')return weapons.map(candidate=>candidate.name);if(name==='Heartward Token')return(equipment||[]).filter(candidate=>candidate.category==='Armor & Shield'&&protectiveGearKind(candidate)==='armor').map(candidate=>candidate.name);return[]}
 
-export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0,armorPenalty=0){
+export function derivedStats(attributes:CoreAttributeRanks,gutsBonus=0,controlBonus=0,armorPenalty=0,minimumSpeed=1){
   const agility=Number(attributes.agility||0),might=Number(attributes.might||0),hide=Number(attributes.hide||0),lore=Number(attributes.lore||0),bravery=Number(attributes.bravery||0)
-  return{aim:rankModifier(agility),accuracy:agility,speed:Math.max(1,rankModifier(agility)+2+Math.min(0,Number(armorPenalty)||0)),brawl:rankModifier(might),fury:might,ward:rankModifier(hide),guts:hide+Math.max(0,Number(gutsBonus)||0),control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),power:lore,heart:bravery,spirit:rankModifier(bravery)}
+  return{aim:rankModifier(agility),accuracy:agility,speed:Math.max(Math.max(1,Number(minimumSpeed)||1),rankModifier(agility)+2+Math.min(0,Number(armorPenalty)||0)),brawl:rankModifier(might),fury:might,ward:rankModifier(hide),guts:hide+Math.max(0,Number(gutsBonus)||0),control:rankModifier(lore)+Math.max(0,Number(controlBonus)||0),power:lore,heart:bravery,spirit:rankModifier(bravery)}
 }
 export function magicResources(attributes:CoreAttributeRanks,magicLevel=0,magicRegenBonus=0){const stats=derivedStats(attributes);const level=Math.max(0,Number(magicLevel)||0);return{manaPool:level+stats.spirit,magicRegen:stats.heart+Math.max(0,Number(magicRegenBonus)||0)}}
 
