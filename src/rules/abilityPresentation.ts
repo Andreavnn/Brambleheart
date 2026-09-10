@@ -50,6 +50,6 @@ export function traitPillKeywords(values:string[]|undefined,kind:'Heritage'|'Cul
 
 export function isAbilityTypeKeyword(value:string){return ABILITY_TYPE_KEYWORDS.has(canonicalAbilityType(value))}
 export function abilityTypeClass(value:string){return`type-${canonicalAbilityType(value).toLowerCase().replace(/[^a-z0-9]+/g,'-')}`}
-export function abilityPillLabel(value:string){const type=canonicalAbilityType(value);return type==='Core'?'CORE ACTION':type.toUpperCase()}
+export function abilityPillLabel(value:string){const type=canonicalAbilityType(value);return type==='Core'?'CORE':type.toUpperCase()}
 export function abilityFeaturePillClass(value:string){const canonical=canonicalAbilityType(value);if(canonical==='Ability')return['ability-cost-pill','type-ability'];return ABILITY_TYPE_KEYWORDS.has(canonical)?['ability-cost-pill',abilityTypeClass(canonical)]:['keyword-pill']}
 export function abilityFeaturePillLabel(value:string){const canonical=canonicalAbilityType(value);return canonical==='Ability'?'ABILITY':ABILITY_TYPE_KEYWORDS.has(canonical)?abilityPillLabel(canonical):canonical.toUpperCase()}

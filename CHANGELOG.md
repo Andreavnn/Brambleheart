@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.26
+
+- Reorganizes the Rules reference across Fundamentals, Character Creation, Winds of Magic, Battles, and Playable Species with clearer section placement, centered/colored reference graphics, simplified collapsible headings, and improved rule cross-links.
+- Changes Core Action pills to the shorter `CORE` label while retaining Core Action as the rules term, and expands Arcane Command with one additional Enhance/Hex cast per turn at [+1] Mana.
+- Rebuilds Character Creation reference presentation for Sparks, Deeds, Homelands, Faiths, Oaths, Talents, Equipment & Gear, Threadpieces, Experience, and advancement charts around the current shared data authorities.
+- Reworks Magic reference presentation for Mana Pool/Magic Regen, Signature Spells, Spell Keywords, casting layouts, and a worked Spell Range/area example; weapon targeting and shaped Spell targeting now live with their respective combat/magic references.
+- Updates Battle references to Combat Encounters, Damage, Health Points, Fate Rolls, current Health-state thresholds, Resistance/Weakness examples, and clearer encounter/round presentation.
+- Adds the first current Threat Level calculation for measuring individual character advancement and combined party Threat, while leaving monster/encounter calibration for the later Watcher rules pass.
+- Updates Projectile, Skyfire, and Slashing weapon-quality rules and standardizes current Fate Roll procedure.
+- News now shows total Brambleheart Discord membership and a combined Creator Content follower count from the three configured Discord communities.
+- Replaces installed-app icons with the current Brambleheart tree emblem.
+- Synchronizes Site Update Beta 0.26, package/export/build metadata, PWA cache metadata, and Game Update v0.14.
+
 # Brambleheart Beta 0.25
 
 - Reworks the News social area into three clear Discord, Share, and Creator Link buttons; Discord now shows its live member/online count beneath the icon using Discord’s public widget/invite data.

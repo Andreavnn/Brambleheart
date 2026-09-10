@@ -1,33 +1,30 @@
-# Brambleheart TTRPG — Beta 0.25
+# Brambleheart TTRPG — Beta 0.26
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.25 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.26 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.25
+## Current Site Update — Beta 0.26
 
-- News now presents separate Discord, Share, and Creator Link buttons, with Discord live member/online counts shown on the community button.
-- Standard-damage Melee and Ranged weapon profiles receive their current damage adjustment; Penetration weapon damage remains unchanged.
-- Deadly, Dual Wielding, Beastgrasp, Turnstrike, and the retirement of Ward Guard use the current weapon/Talent rules.
-- Species and character-facing stat presentation use the current Steady Pace, Poised Reflex, Double Lilly, Cycle Of The Beast, Thunderstep, and Frostwalker rules.
-- Current Rules distinguish Damage Category from the On-Going recurring-damage qualifier and use the slower 7–10 XP-per-session advancement model.
-- The Watcher encounter reference uses Threat Level terminology and no longer presents the obsolete six-Attribute Encounter Rating calculation.
+- Rules presentation is reorganized across Fundamentals, Character Creation, Playable Species, Winds of Magic, Battles, and the Watcher reference.
+- Shared rule cards now preserve their intended content accents, collapsible headings are simplified, and Core Action pills display the shorter `CORE` label.
+- Character Creation reference pages use current shared data for Sparks, Deeds, narrative choices, equipment, Experience, and advancement presentation.
+- Weapon and Spell targeting guidance now lives with the relevant combat or magic reference while existing targeting routes remain available for navigation compatibility.
+- News displays total Brambleheart Discord membership and a combined Creator Content follower count from the configured communities.
+- Installed-app icons use the current Brambleheart tree emblem.
 
-## Current Game Update — v0.13
+## Current Game Update — v0.14
 
-Game Update v0.13 updates current weapon damage, Deadly and Dual Wielding, Beastgrasp and Turnstrike, Experience progression, several Heritage Traits, On-Going damage terminology, and the current Threat Level placeholder.
+Game Update v0.14 expands Arcane Command, establishes the current character/group Threat Level framework, updates several weapon qualities, and clarifies Health and Fate resolution.
 
 ### Current Rules Clarifications
 
-Standard, Direct, and Lethal are Damage Categories. On-Going is a recurring-damage qualifier: later ticks keep the effect’s stated Damage Category and use the printed recurring value without adding Fury, Accuracy, Heart, Power, weapon damage, or another normal damage addition again unless the rule explicitly says otherwise.
+Arcane Command may resolve one additional time once per turn without spending another Core Combat opportunity. The second cast must be an Enhance or Hex Spell and its Mana cost is increased by [+1]. This allows combinations such as a normal Spell followed by an Enhance or Hex, or two Enhance/Hex casts in the same turn.
 
-Deadly weapons list damage as `X [Y]`; the normal `X` damage resolves normally and a successful Strike also deals the fixed bracketed `[Y]` as Lethal damage. Dual Wielding applies [-2] to Strike rolls made with those weapons, duplicate qualities apply once, and Versatile contributes one [+1] total for a net [-1] penalty.
+Projectile weapons apply condition [-2] to Strike when attacking a target within [1] square. Skyfire deals an additional [2] Lethal damage to its target. Slashing deals [1] Lethal damage when its trigger is met.
 
-Beastgrasp changes the base Dual Wielding Strike penalty to [-4] while wielding two two-handed weapons. Ward Guard is retired. Turnstrike uses half the wielded weapon’s normal, non-bracketed damage value, rounded up, with a minimum Ward bonus of [+1].
+Health states use the most severe applicable threshold: Wounded at 5–8 Health, Critical at 3–4, Last Breath at 1–2, and Defeated at 0. A defeated character makes a Fate Roll on their next turn in the following round; [6+] passes and [5] or less adds a Fate Mark. Restoring at least [1] Health removes all Fate Marks.
 
-Auravex Cycle Of The Beast restores [1] Health or [1] Mana to its host rider, Braelor Thunderstep grants [+2] charge movement with [2] Lethal Power Through damage, and Urnath Frostwalker grants Resistance [+2] to Cold with [+2] Natural Terrain Ward.
-
-Tordan Steady Pace reduces a Move ability’s maximum movement by [1] square, reduces Speed penalties by [2], and prevents penalties/effects from reducing Speed below [2]. Cethra Poised Reflex and Rivkan Double Lilly can each be used once per round. Typical sessions award 7–10 XP; advancement costs are intentionally paced so one or two sessions usually support one or two upgrades depending on how XP is spent.
-A completed kept Deed that aligns with a character’s Spark grants [+1] bonus XP, and that Spark alignment bonus can be gained only once per session.
+Threat Level is calculated from advancement beyond the baseline starting hero. Attribute and Skill ranks above Rank 1, Talents, Magic Levels, and exceptional custom power contribute to a character's Threat Score; the resulting score maps to Threat Level 1 or higher. Group Threat is the sum of each party member's Threat Level. Monster and encounter-difficulty calibration remains intentionally deferred until the Watcher/monster design pass.
 
 ### Complete Magic Rebalance
 
@@ -103,10 +100,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.25`
-- package version: `0.25.0`
-- PWA cache: `v0.25`
-- Game Update: `v0.13`
+- Site Update / BUILD/export: `0.26`
+- package version: `0.26.0`
+- PWA cache: `v0.26`
+- Game Update: `v0.14`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

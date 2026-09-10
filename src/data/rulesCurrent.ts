@@ -142,7 +142,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "This rulebook – It contains everything needed to build characters, learn the rules, and explore the world."
+            "text": "This website – It contains everything needed to build characters, learn the rules, and explore the world."
           },
           {
             "type": "paragraph",
@@ -238,20 +238,9 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Conditions are temporary bonuses or penalties that modify the roll. A positive condition increases your total; a negative condition reduces it."
+            "text": "Conditions are temporary bonuses or penalties that modify the roll. A positive condition increases your total; a negative condition reduces it. Conditions apply after your dice and multiple conditions stack on a single roll."
           },
-          {
-            "type": "paragraph",
-            "text": "Conditions apply after you total the dice."
-          },
-          {
-            "type": "paragraph",
-            "text": "Multiple conditions stack."
-          },
-          {
-            "type": "paragraph",
-            "text": "Conditions come from terrain, status effects, talents, spells, or circumstances."
-          }
+
         ]
       },
       {
@@ -728,7 +717,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
   "battle": {
     "sections": [
       {
-        "heading": "COMBAT ENCOUNTER",
+        "heading": "ENCOUNTERS",
         "blocks": [
           {
             "type": "paragraph",
@@ -790,10 +779,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "paragraph",
             "text": "START OF ROUND: First, each character may choose and resolve one eligible Core Instinct Action in Initiative Order. Second, apply effects that increase or decrease Magic Regen for this round. Third, each character restores Mana equal to their current Magic Regen, without exceeding Mana Pool unless a rule explicitly allows it."
           },
-          {
-            "type": "paragraph",
-            "text": "END OF ROUND: Resolve effects that explicitly occur at the end of the round in Initiative Order. When those effects are complete, clear round-limited timing where required and begin the next Start of Round sequence."
-          }
+
         ]
       },
       {
@@ -869,7 +855,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "TO DAMAGE",
+        "heading": "DAMAGE",
         "blocks": [
           {
             "type": "paragraph",
@@ -910,7 +896,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "ON-GOING: Damage that resolves after the initial effect at a later stated timing is On-Going damage. On-Going is a recurring-damage qualifier, not a Damage Category or elemental damage type. It prevents normal Fury, Accuracy, Heart, Power, weapon-damage, or similar additions from being added again unless the effect explicitly says otherwise. Direct On-Going uses half Guts, Lethal On-Going bypasses Guts, and On-Going damage with no category stated uses full Guts as Standard damage."
+            "text": "ON-GOING — RECURRING QUALIFIER: Keeps its stated category and is not modified by normal damage conditions unless otherwise stated. Direct On-Going uses half Guts, Lethal On-Going bypasses Guts, and On-Going damage with no category stated uses full Guts as Standard damage."
           },
           {
             "type": "paragraph",
@@ -919,7 +905,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "TO SOAK",
+        "heading": "TO GUTS",
         "blocks": [
           {
             "type": "paragraph",
@@ -961,7 +947,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "When a character’s health falls to five or less, they suffer a [-1] condition to all dice rolls. This penalty increases to [-2] condition when a character’s health is reduced to three or less. If a character is reduced to one health, this penalty increases further to [-3] condition."
+            "text": "When a character’s Health falls to [8] or less, they are Wounded and suffer condition [-1] to all dice rolls. At [4] or less Health, they are Critical and the condition becomes [-2]. At [2] or less Health, they are at Last Breath and the condition becomes [-3]. Use only the most severe Health state that applies."
           }
         ]
       },
@@ -970,15 +956,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Characters can restore lost health using spells, talents, or skills."
-          },
-          {
-            "type": "paragraph",
-            "text": "A healing effect will always describe the amount of health restored in brackets. For example, “restore health [+2]” means the target regains two health."
-          },
-          {
-            "type": "paragraph",
-            "text": "Restoring health cannot increase a character’s total health beyond their maximum. Healing takes effect immediately unless otherwise stated."
+            "text": "Characters can restore lost health using spells, talents, or skills. A healing effect will always describe the amount of health restored in brackets. For example, “restore health [+2]” means the target regains two health. Restoring health cannot increase a character’s total health beyond their maximum. Healing takes effect immediately unless otherwise stated."
           },
           {
             "type": "paragraph",
@@ -991,19 +969,15 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "When a character is reduced to zero health, they are considered defeated and move to the end of the initiative order. The first defeated character is followed by the second and so forth."
+            "text": "When a character is reduced to zero Health, they are considered defeated and move to the end of the Initiative Order. The first defeated character is followed by the second and so forth. Defeated characters make a Fate Roll on their next turn, in the following round, after being moved to the end of the Initiative Order."
           },
           {
             "type": "paragraph",
-            "text": "Defeated characters will make a hallows save on their turn. This is a single 1d10 roll. If the result is six or higher the character passes. If the result is five or lower the character receives a fate mark."
+            "text": "FATE ROLL: This is a single [1d10] roll. If the result is [6] or higher, the character passes. If the result is [5] or lower, the character receives a Fate Mark. If a character restores to [1] or more Health Points, all Fate Marks are removed."
           },
           {
             "type": "paragraph",
-            "text": "If a character receives three fate marks they die and enter the howling hallows."
-          },
-          {
-            "type": "paragraph",
-            "text": "If a character restores one or more health points all fate marks are removed."
+            "text": "If a character receives [3] Fate Marks they die and enter the Howling Hallows."
           }
         ]
       },
@@ -1159,26 +1133,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "paragraph",
             "text": "Choose one of the four Paths below. Wind-Touched begins with Magic Level [1] and [1] Talent. Gifted Heart begins with [2] Talents. Practiced Hand begins with [2] new Skills and [1] Talent. Tempered Form increases one Attribute by [1] Rank and grants [1] Talent."
           },
-          {
-            "type": "paragraph",
-            "text": "WIND-TOUCHED: Choose this Path if magic is already part of your hero’s life. Gain Magic Level [1], choose a Lore Attunement and its Signature Spell, learn the Spells allowed by Magic Level [1], then choose [1] Talent you qualify for."
-          },
-          {
-            "type": "paragraph",
-            "text": "GIFTED HEART: Choose this Path for a hero defined by training, instinct, or unusual gifts. Choose [2] Talents you qualify for."
-          },
-          {
-            "type": "paragraph",
-            "text": "PRACTICED HAND: Choose this Path for a broadly trained hero. Learn [2] Skills you do not already possess at Rank [1], then choose [1] Talent you qualify for."
-          },
-          {
-            "type": "paragraph",
-            "text": "TEMPERED FORM: Choose this Path for a hero whose defining strength is exceptional physical, mental, or spiritual development. Increase [1] Attribute by [1] Rank, respecting normal Character Creation limits, then choose [1] Talent you qualify for."
-          },
-          {
-            "type": "paragraph",
-            "text": "Talents and Magic use the same rules after Character Creation regardless of the Path you chose. Your Path sets the opening shape of the hero, not the limits of who they can become."
-          }
         ]
       },
       {
@@ -1242,15 +1196,15 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "ROLEPLAY: A Spark is your personality archetype — the way your character tends to think, feel, and act. It is a roleplaying anchor that rewards a consistent personality without limiting what the character may attempt."
+            "text": "A Spark is your personality archetype — the way your character tends to think, feel, and act. It is a roleplaying anchor that rewards a consistent personality without limiting what the character may attempt."
           },
           {
             "type": "paragraph",
-            "text": "KEYWORDS: Every Spark uses two descriptive keywords. Premade Sparks provide their pair automatically; a custom Spark chooses any two from the current Spark Keyword Library."
+            "text": "Every Spark uses two descriptive keywords. Premade Sparks provide their pair automatically; a custom Spark chooses any two from the current Spark Keyword Library."
           },
           {
             "type": "paragraph",
-            "text": `DEEDS: When you complete a kept Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus Experience. This Spark alignment bonus can be gained only once per session.`
+            "text": `When you complete a kept Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus Experience. This Spark alignment bonus can be gained only once per session.`
           }
         ]
       },
@@ -1271,159 +1225,14 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
+            "text": "Deed Interaction: All Sparks — premade or custom — trigger their XP bonus when a completed Deed aligns with one or both of their keywords."
+          },
+          {
+            "type": "paragraph",
             "text": "Keywords: Adaptable, Bold, Cautious, Charming, Compassionate, Creative, Curious, Defiant, Driven, Focused, Hopeful, Independent, Intuitive, Inventive, Playful, Reflective, Steadfast, Studious"
           },
-          {
-            "type": "paragraph",
-            "text": "Creating Your Own Spark"
-          },
-          {
-            "type": "paragraph",
-            "text": "If none of the premade sparks fit, build your own."
-          },
-          {
-            "type": "paragraph",
-            "text": "Follow this quick process:"
-          },
-          {
-            "type": "paragraph",
-            "text": "Name your Spark — a short title that captures your personality (e.g. Mediator, Shadow, Seeker)."
-          },
-          {
-            "type": "paragraph",
-            "text": "Choose two keywords from the list above."
-          },
-          {
-            "type": "paragraph",
-            "text": "Write a short credo (one sentence) about how you play the game, such as:"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Every mystery can be solved.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "“Someone has to take the hit.”"
-          },
-          {
-            "type": "paragraph",
-            "text": "Share your spark with the watcher to ensure your chosen keywords clearly interact with deeds."
-          },
-          {
-            "type": "paragraph",
-            "text": "Deed Interaction: All sparks — premade or custom — trigger their XP bonus when a completed deed aligns with one or both of their keywords."
-          }
         ]
       },
-      {
-        "heading": "PREMADE SPARKS",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Each spark includes two keywords that represent its personality archetype. Choose a spark from the list or use them as examples when crafting your own."
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "Spark",
-                "Keywords",
-                "Description"
-              ],
-              [
-                "Courageous",
-                "Bold, Driven",
-                "Faces danger head-on and acts before doubt can speak."
-              ],
-              [
-                "Protector",
-                "Compassionate, Steadfast",
-                "Defends others with quiet resolve and heart-bound duty."
-              ],
-              [
-                "Wanderer",
-                "Adaptable, Curious",
-                "Finds freedom in change and discovery in every step."
-              ],
-              [
-                "Scholar",
-                "Studious, Reflective",
-                "Seeks truth before judgment, wisdom before victory."
-              ],
-              [
-                "Healer",
-                "Compassionate, Intuitive",
-                "Listens deeply, mends wounds seen and unseen."
-              ],
-              [
-                "Fighter",
-                "Bold, Focused",
-                "Cuts through doubt with clarity and decisive strength."
-              ],
-              [
-                "Trickster",
-                "Playful, Defiant",
-                "Thrives in chaos, using wit and mischief to turn the tide."
-              ],
-              [
-                "Tinker",
-                "Inventive, Creative",
-                "Solves problems through imagination and hands-on wonder."
-              ],
-              [
-                "Idealist",
-                "Hopeful, Driven",
-                "Believes in what could be and fights to make it so."
-              ],
-              [
-                "Spiritual",
-                "Intuitive, Reflective",
-                "Moves in rhythm with unseen truths and quiet signs."
-              ],
-              [
-                "Artisan",
-                "Creative, Focused",
-                "Finds beauty in precision and meaning in craft."
-              ],
-              [
-                "Outsider",
-                "Independent, Cautious",
-                "Trusts their own compass and walks paths few will follow."
-              ],
-              [
-                "Leader",
-                "Charming, Driven",
-                "Inspires others through vision and fearless will."
-              ],
-              [
-                "Defiant Heart",
-                "Defiant, Steadfast",
-                "Refuses surrender, even when the storm breaks."
-              ],
-              [
-                "Dreamer",
-                "Hopeful, Creative",
-                "Sees the world not as it is, but as it might become."
-              ],
-              [
-                "Seeker",
-                "Curious, Studious",
-                "Pursues knowledge through courage, patience, and grace."
-              ],
-              [
-                "Mediator",
-                "Charming, Compassionate",
-                "Builds peace with words and empathy in equal measure."
-              ],
-              [
-                "Pioneer",
-                "Adaptable, Bold",
-                "Walks first into the unknown, trusting the rhythm of change."
-              ]
-            ]
-          }
-        ]
-      }
     ]
   },
   "homeland": {
@@ -1455,31 +1264,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "You may also create your own with the watcher’s help, blending ideas or crafting something entirely new."
-          }
-        ]
-      },
-      {
-        "heading": "CREATING A HOMELAND",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "To forge your own homeland, define three parts with the Watcher:"
-          },
-          {
-            "type": "paragraph",
-            "text": "Environment: What kind of world raised you — ruin, marsh, city, desert, or something stranger?"
-          },
-          {
-            "type": "paragraph",
-            "text": "Culture: What values or instincts were born there — endurance, secrecy, generosity, defiance?"
-          },
-          {
-            "type": "paragraph",
-            "text": "Skills: Choose two that fit those lessons. One from the Lore, Might, or Agility tree, and one from Courage or Lore."
-          },
-          {
-            "type": "paragraph",
-            "text": "A homeland is not a place on a map. It’s a story the world told you before you were brave enough to tell your own."
           }
         ]
       },
@@ -1732,27 +1516,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "CREATING AN OATH",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "When creating an oath, define:"
-          },
-          {
-            "type": "paragraph",
-            "text": "Voice (optional) — A short phrase or vow that captures its heart."
-          },
-          {
-            "type": "paragraph",
-            "text": "Virtue — what it means to live by this Oath."
-          },
-          {
-            "type": "paragraph",
-            "text": "Strain — what tempts or tests it."
-          }
-        ]
-      },
-      {
         "heading": "ADVENTURER",
         "blocks": [
           {
@@ -1761,11 +1524,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Virtue: Step toward the unknown with courage, curiosity, and a willingness to help where the road leads."
+            "text": "The Adventurer Oath is the default for characters who do not choose another Oath. It carries no Virtue, Strain, restriction, or mechanical expectation."
           },
           {
             "type": "paragraph",
-            "text": "Strain: Fear of the unfamiliar, refusing the call to act, or letting comfort silence curiosity."
+            "text": "It represents a personal moral rhythm shaped by the character’s own choices, doubts, convictions, and interpretation of the world."
           }
         ]
       },
@@ -2051,31 +1814,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "You can create your own faith or pick from the list of premade ones. Check with your watcher if your character is using a faith – they might have restrictions."
-          }
-        ]
-      },
-      {
-        "heading": "CREATING A FAITH",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Name your belief. A title or proverb works (e.g., Stone Remembers, The Skybound Chorus)."
-          },
-          {
-            "type": "paragraph",
-            "text": "State its creed in a single sentence."
-          },
-          {
-            "type": "paragraph",
-            "text": "Pick 2–3 practices and 1–2 taboos that matter."
-          },
-          {
-            "type": "paragraph",
-            "text": "Name a sign the world uses to answer (an animal, a sound, a color, a weather quirk)."
-          },
-          {
-            "type": "paragraph",
-            "text": "A conflict hook the Watcher can test."
           }
         ]
       },
@@ -2691,7 +2429,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "RANDOM ROLLING: When using the table instead of a deck, roll [1d100] for each Deed. Match the result to the percentile range shown on the Deed. Reroll a duplicate if the table would give the same player the same Deed twice."
+            "text": "RANDOM GENERATION: When using the table instead of a deck, roll two d10 as percentile dice for each Deed. Before rolling, choose one die as the tens digit and the other as the ones digit. Read the two dice together as a result from 01–100; 00 counts as 100. Match the result to the percentile range shown on the Deed. Reroll a duplicate if the table would give the same player the same Deed twice."
           },
           {
             "type": "paragraph",
@@ -3626,7 +3364,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "Projectile (X)",
-                "Can be fired up to [x] squares. Attacking it within [2] squares applies [-2] condition to strike rolls."
+                "Can be fired up to [x] squares. Attacking with it while within [1] square of the target applies condition [-2] to the Strike roll."
               ],
               [
                 "Reach (X)",
@@ -3634,11 +3372,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               ],
               [
                 "Skyfire",
-                "Deals [+2] damage to flying creatures."
+                "Deals an additional [2] Lethal damage to targets."
               ],
               [
                 "Slashing",
-                "When this weapon deals [3+] total damage to a target’s health, the target suffers [+1] lethal damage at the end of the turn."
+                "When this weapon deals [3+] total damage to a target’s health, the target suffers [1] Lethal damage at the end of the turn."
               ],
               [
                 "Thrown (X)",
@@ -3651,14 +3389,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
               [
                 "Versatile",
                 "May be dual-wielded. While dual wielding, one or more Versatile weapons grant a single [+1] to strike. This bonus does not stack."
-              ]
-            ]
-          },
-          {
-            "type": "table",
-            "rows": [
-              [
-                "As a healer who avoids harming others whenever possible, Selu’s player chooses an oak staff. The staff deals [3] damage, or [4] damage when used two-handed, thanks to its Adaptable quality. When Selu performs a physical combat Ability such as Melee Strike, they roll (3d10) + Brawl + any conditions against the target’s Ward roll. If Selu’s Strike exceeds the target’s Ward, the attack hits and uses the staff’s selected damage value."
               ]
             ]
           }
@@ -3842,6 +3572,15 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
+        "heading": "EQUIPMENT & GEAR",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Equipment defines the tools a character carries into adventure. Weapons determine attack profiles and qualities, Armor and Shields change defensive statistics, and adventuring items provide supplies, kits, consumables, trinkets, and tools. Unless a rule states otherwise, the current Character Creation equipment catalog supplies the profile and Threadpiece cost used by these references."
+          }
+        ]
+      },
+      {
         "heading": "THREADPIECES",
         "blocks": [
           {
@@ -3855,55 +3594,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "Threadpieces are still found in ruins, sunken vaults, collapsed bridges, and anywhere the Ancients once set their hands. They are easy to carry, trusted by traders, and immediately recognized across regions—making them the closest thing Anthro Mundas has to universal coinage."
-          }
-        ]
-      },
-      {
-        "heading": "TYPES OF THREADPIECES",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Types of Threadpeices: Washer, Nut, Screw, & Bolt"
-          }
-        ]
-      },
-      {
-        "heading": "WASHER PIECES (wp)",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Flat alloy rings. • Common and easily carried. • Used for small purchases and everyday needs."
-          }
-        ]
-      },
-      {
-        "heading": "NUT PIECES (np)",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Hexagonal fasteners. • Moderately valuable and uniform in weight. • The preferred piece for local markets."
-          }
-        ]
-      },
-      {
-        "heading": "SCREW PIECES (sp)",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Spiraled fasteners with flawless threading. • The backbone of trade across the realms. • Used for gear, supplies, and expedition materials."
-          }
-        ]
-      },
-      {
-        "heading": "BOLT PIECES (bp)",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Solid, heavy fasteners—rare and prized. • Used for major purchases or formal debts. • Often kept wrapped in cloth or braided cord for safekeeping."
-          },
-          {
-            "type": "paragraph",
-            "text": "A pouch of roughly 25 threadpieces weighs about a pound, though this varies by type."
           }
         ]
       },
@@ -3957,36 +3647,19 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "SELLING TREASURE",
+        "heading": "SELLING TREASURE & RESALE",
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Most settlements will buy goods recovered from the wilds. Standard gear and everyday items are typically purchased at half their listed value, reflecting the cost of cleaning, repairing, and reselling them."
+            "text": "Most settlements buy goods recovered from the wilds. Ordinary gear normally resells for 50% of its current retail value, rounded down to the nearest wp, reflecting cleaning, repair, and resale costs."
           },
           {
             "type": "paragraph",
-            "text": "Items of unusual craftsmanship—such as rare stones, finely made trinkets, or distinctive curios—are purchased at full value, as these pieces are sought after by collectors and traders."
+            "text": "Items of unusual craftsmanship—such as rare stones, finely made trinkets, or distinctive curios—may be purchased at full value when collectors or traders value them."
           },
           {
             "type": "paragraph",
-            "text": "Common magical mixtures, including most potions and stable alchemical brews, can be sold without difficulty so long as they remain intact."
-          },
-          {
-            "type": "paragraph",
-            "text": "More potent or unusual magical items vary in price. Their value depends on rarity, danger, and local demand, and some may require negotiation or may not find a buyer at all."
-          }
-        ]
-      },
-      {
-        "heading": "RESALE & MARKET VALUE",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "Ordinary gear normally resells for 50% of its current retail value, rounded down to the nearest wp."
-          },
-          {
-            "type": "paragraph",
-            "text": "Trade goods normally sell for 75% of their listed base value. The Watcher may adjust availability or resale for scarcity, regional demand, damage, or other circumstances."
+            "text": "Trade goods normally sell for 75% of their listed base value. Common magical mixtures can usually be sold while intact; more potent or unusual magical items vary with rarity, danger, regional demand, condition, and whether a buyer can be found."
           }
         ]
       }
@@ -4349,23 +4022,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
   "beyond-creation": {
     "sections": [
       {
-        "heading": "BEYOND CHARACTER CREATION",
+        "heading": "EXPERIENCE",
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Every character in Brambleheart continues to grow after their first adventure. As stories unfold, they gain Experience Points (XP) for completing Deeds, pursuing Sparks, and overcoming challenges."
-          },
-          {
-            "type": "paragraph",
-            "text": "XP represents lessons learned, scars earned, and the rhythm of change that shapes every hero’s path."
-          },
-          {
-            "type": "paragraph",
-            "text": "Players may spend XP during downtime, between adventures, or at watcher approved narrative pauses."
-          },
-          {
-            "type": "paragraph",
-            "text": "Characters earn XP primarily through:"
+            "text": "Every character in Brambleheart continues to grow after their first adventure. As stories unfold, they gain Experience Points (XP) for completing Deeds, pursuing Sparks, and overcoming challenges. XP represents lessons learned, scars earned, and the rhythm of change that shapes every hero’s path."
           },
           {
             "type": "paragraph",
@@ -4377,11 +4038,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": `Encounters or Milestones: ${XP_GUIDANCE.encounterOrMilestone[0]}–${XP_GUIDANCE.encounterOrMilestone[1]} XP for a significant victory, defeat, discovery, or turning point, normally one such award per session.`
+            "text": `Encounters: ${XP_GUIDANCE.encounterOrMilestone[0]}–${XP_GUIDANCE.encounterOrMilestone[1]} XP for a significant victory, defeat, discovery, or turning point, normally one such award per session.`
           },
           {
             "type": "paragraph",
-            "text": `Watcher Awards: ${XP_GUIDANCE.watcherAward[0]}–${XP_GUIDANCE.watcherAward[1]} XP for exceptional roleplay, creativity, or Faith/Oath resolution. Use this sparingly rather than as a routine additional award.`
+            "text": `Awards & Milestones: ${XP_GUIDANCE.watcherAward[0]}–${XP_GUIDANCE.watcherAward[1]} XP for exceptional roleplay, creativity, Faith/Oath resolution, or an important story milestone. Use this sparingly rather than as a routine additional award.`
           },
           {
             "type": "paragraph",
@@ -4428,14 +4089,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             ]
           },
           {
-            "type": "paragraph",
-            "text": "Attribute Rank Increase"
-          },
-          {
-            "type": "paragraph",
-            "text": "Represents deepened natural capability or spiritual resilience."
-          },
-          {
             "type": "table",
             "rows": [
               [
@@ -4466,14 +4119,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             ]
           },
           {
-            "type": "paragraph",
-            "text": "Skill Rank Increase"
-          },
-          {
-            "type": "paragraph",
-            "text": "Each skill rank reflects practice, mastery, and lived experience."
-          },
-          {
             "type": "table",
             "rows": [
               [
@@ -4502,14 +4147,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
                 `${cumulativeRankCost('skill',5)} XP`
               ]
             ]
-          },
-          {
-            "type": "paragraph",
-            "text": "Magic Level Increase"
-          },
-          {
-            "type": "paragraph",
-            "text": "A reflection of deeper connection to the Winds and the arcane self."
           },
           {
             "type": "table",
@@ -4613,7 +4250,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "table",
             "rows": [
               [
-                "Magic Level",
+                "Magic Level (Mana Pool Contribution)",
                 "Lore Spells Known",
                 "Invocations Known"
               ],
@@ -4673,10 +4310,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "paragraph",
             "text": "A character gains one Lore Spell at every new Magic Level. At Magic Level 5, they gain two Lore Spells instead of one. They gain one Invocation at Magic Levels 3, 5, 7, and 9."
           },
-          {
-            "type": "paragraph",
-            "text": "Known-spell allowances are tracked directly by Magic Level."
-          }
+
         ]
       },
       {
@@ -4777,7 +4411,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "RANGE SPELL: A hostile damage Spell that calls for a Magic Strike uses (3d10) + Control + condition(s) against the target’s (3d10) + Ward + condition(s). On a successful Strike, resolve the Spell’s printed damage and effects."
+            "text": "SPELL - TO HIT: When a Spell calls for TO HIT using a Magic Strike, roll (3d10) + Control + condition(s) against the target’s (3d10) + Ward + condition(s). On a successful Strike, resolve the Spell’s printed damage and effects."
           },
           {
             "type": "paragraph",

@@ -21,11 +21,11 @@ function inviteCode(value:string){
   try{return new URL(value).pathname.split('/').filter(Boolean).at(-1)||''}catch{return''}
 }
 
-export async function loadDiscordCommunityCounts():Promise<DiscordCommunityCounts>{
+async function loadDiscordServerCounts(widgetUrl:string,fallbackInvite=''):Promise<DiscordCommunityCounts>{
   let online:number|null=null
-  let invite:string=externalLinks.discord
+  let invite=fallbackInvite
   try{
-    const response=await fetch(externalLinks.discordWidget,{headers:{Accept:'application/json'}})
+    const response=await fetch(widgetUrl,{headers:{Accept:'application/json'}})
     if(response.ok){
       const payload=await response.json() as DiscordWidgetPayload
       online=cleanCount(payload.presence_count)
@@ -33,7 +33,7 @@ export async function loadDiscordCommunityCounts():Promise<DiscordCommunityCount
     }
   }catch{}
 
-  const code=inviteCode(invite)||inviteCode(externalLinks.discord)
+  const code=inviteCode(invite)
   if(!code)return{members:null,online}
   try{
     const response=await fetch(`https://discord.com/api/v10/invites/${encodeURIComponent(code)}?with_counts=true`,{headers:{Accept:'application/json'}})
@@ -44,4 +44,21 @@ export async function loadDiscordCommunityCounts():Promise<DiscordCommunityCount
       online:cleanCount(payload.approximate_presence_count)??online,
     }
   }catch{return{members:null,online}}
+}
+
+export function loadDiscordCommunityCounts(){return loadDiscordServerCounts(externalLinks.discordWidget,externalLinks.discord)}
+
+/**
+ * Creator followers are the combined public member counts for the Brambleheart
+ * community plus the two creator communities. Discord does not expose a way to
+ * deduplicate users who belong to more than one of these servers.
+ */
+export async function loadCreatorFollowerCount(){
+  const sources=[
+    [externalLinks.discordWidget,externalLinks.discord],
+    ...externalLinks.creatorDiscordWidgets.map(widget=>[widget,''] as const),
+  ] as const
+  const counts=await Promise.all(sources.map(([widget,invite])=>loadDiscordServerCounts(widget,invite)))
+  if(counts.some(item=>item.members===null))return null
+  return counts.reduce((sum,item)=>sum+(item.members||0),0)
 }

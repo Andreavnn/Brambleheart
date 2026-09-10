@@ -7,7 +7,7 @@ import discordCommunityGraphic from '../assets/news/discord-community.png'
 import shareBrambleheartGraphic from '../assets/news/share-brambleheart.png'
 import creatorContentGraphic from '../assets/news/creator-content.png'
 import { externalLinks } from '../data/links'
-import { loadDiscordCommunityCounts } from '../services/discordCommunity'
+import { loadCreatorFollowerCount, loadDiscordCommunityCounts } from '../services/discordCommunity'
 import { shareBrambleheart } from '../services/siteShare'
 
 type SiteRelease={label:string;items:string[]}
@@ -15,23 +15,18 @@ function latestRelease(markdown:string):SiteRelease{let label='Current Build';co
 const siteRelease=latestRelease(changelogRaw)
 const currentRules=gameUpdates.find(update=>update.version===GAME_RULES_VERSION)||gameUpdates[0]
 const discordMemberCount=ref<number|null>(null)
-const discordOnlineCount=ref<number|null>(null)
 const discordCountLoaded=ref(false)
-const discordCountLabel=computed(()=>{
-  if(!discordCountLoaded.value)return'Loading member count…'
-  const members=discordMemberCount.value
-  const online=discordOnlineCount.value
-  if(members!==null&&online!==null)return`${members.toLocaleString()} members · ${online.toLocaleString()} online`
-  if(members!==null)return`${members.toLocaleString()} members`
-  if(online!==null)return`${online.toLocaleString()} online`
-  return'Member count unavailable'
-})
+const creatorFollowerCount=ref<number|null>(null)
+const creatorCountLoaded=ref(false)
+const discordCountLabel=computed(()=>discordCountLoaded.value?(discordMemberCount.value===null?'Member count unavailable':`${discordMemberCount.value.toLocaleString()} members`):'Loading member count…')
+const creatorFollowerLabel=computed(()=>creatorCountLoaded.value?(creatorFollowerCount.value===null?'Follower count unavailable':`${creatorFollowerCount.value.toLocaleString()} followers`):'Loading follower count…')
 
 onMounted(async()=>{
-  const counts=await loadDiscordCommunityCounts()
+  const [counts,followers]=await Promise.all([loadDiscordCommunityCounts(),loadCreatorFollowerCount()])
   discordMemberCount.value=counts.members
-  discordOnlineCount.value=counts.online
   discordCountLoaded.value=true
+  creatorFollowerCount.value=followers
+  creatorCountLoaded.value=true
 })
 
 async function shareNewsSite(){const result=await shareBrambleheart();if(!result.ok&&result.message!=='Share cancelled.')alert(result.message)}
@@ -52,7 +47,7 @@ async function shareNewsSite(){const result=await shareBrambleheart();if(!result
       </button>
       <a class="news-promo-card card-surface" :href="externalLinks.creator" target="_blank" rel="noopener noreferrer">
         <strong>Creator Content</strong>
-        <span class="news-promo-visual"><img class="creator-content-image" :src="creatorContentGraphic" alt="" aria-hidden="true" /></span>
+        <span class="news-promo-visual"><img class="creator-content-image" :src="creatorContentGraphic" alt="" aria-hidden="true" /><small class="news-promo-count">{{ creatorFollowerLabel }}</small></span>
         <small>Find AndreavnnTheOmniKing other creations and links.</small>
       </a>
     </section>

@@ -6,6 +6,19 @@ export type GameUpdateEntry={version:string;date:string;title:string;summary:str
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-10',
+    title:'Arcane Command, Threat & Combat Reference Update',
+    summary:'Expands Arcane Command casting flexibility, establishes the first Brambleheart Threat Level calculation, updates several weapon qualities, and clarifies Health and Fate rules.',
+    changes:[
+      'Arcane Command may be resolved a second time once per turn without another Core Combat opportunity; the additional cast must be an Enhance or Hex Spell and costs [+1] Mana.',
+      'Projectile weapons apply condition [-2] to Strike when attacking a target within [1] square. Skyfire deals an additional [2] Lethal damage to its target, and Slashing deals [1] Lethal damage when its trigger is met.',
+      'Health states now use the current thresholds: Wounded at [8] or less Health, Critical at [4] or less, Last Breath at [2] or less, and Defeated at [0]. Only the most severe applicable state is used.',
+      'Defeated characters use a Fate Roll on their next turn in the following round: [6+] passes, [5] or less adds a Fate Mark, and restoring at least [1] Health removes all Fate Marks.',
+      'Threat Level now measures individual character power from advancement beyond the baseline hero and combines party Threat by adding each character’s Threat Level. Monster and encounter calibration remains reserved for the later Watcher rules pass.',
+    ],
+  },
+  {
+    version:'0.13',
     date:'2026-09-09',
     title:'Weapon, Advancement & Trait Balance Update',
     summary:'Updates current weapon damage and Deadly handling, slows XP progression, clarifies Dual Wielding and defensive Talents, and tunes several Heritage Traits.',
