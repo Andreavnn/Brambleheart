@@ -5,6 +5,7 @@ import { GAME_RULES_VERSION, gameUpdates } from '../data/gameUpdates'
 import changelogRaw from '../../CHANGELOG.md?raw'
 import discordCommunityGraphic from '../assets/news/discord-community.png'
 import shareBrambleheartGraphic from '../assets/news/share-brambleheart.png'
+import creatorContentGraphic from '../assets/news/creator-content.png'
 import { externalLinks } from '../data/links'
 import { loadDiscordCommunityCounts } from '../services/discordCommunity'
 import { shareBrambleheart } from '../services/siteShare'
@@ -50,9 +51,9 @@ async function shareNewsSite(){const result=await shareBrambleheart();if(!result
         <small>Send Brambleheart to another player or copy the site link.</small>
       </button>
       <a class="news-promo-card card-surface" :href="externalLinks.creator" target="_blank" rel="noopener noreferrer">
-        <strong>Creator Link</strong>
-        <span class="news-promo-visual"><img src="/assets/Icon.png" alt="" aria-hidden="true" /></span>
-        <small>Find AndreavnnTheOmniKing and related creator links.</small>
+        <strong>Creator Content</strong>
+        <span class="news-promo-visual"><img :src="creatorContentGraphic" alt="" aria-hidden="true" /></span>
+        <small>Find AndreavnnTheOmniKing other creations and links.</small>
       </a>
     </section>
     <section class="news-grid"><article v-if="currentRules" class="news-card card-surface"><header><div><span class="eyebrow">CURRENT GAME UPDATE</span><h2>Game Update {{ currentRules.version }} · {{ currentRules.title }}</h2></div><RouterLink class="secondary-button news-action" to="/game-updates">Game Updates</RouterLink></header><p>{{ currentRules.summary }}</p><ul><li v-for="item in currentRules.changes.slice(0,4)" :key="item">{{ item }}</li></ul></article><article class="news-card card-surface"><header><div><span class="eyebrow">LATEST SITE UPDATE</span><h2>{{ siteRelease.label }}</h2></div><RouterLink class="secondary-button news-action" to="/changelog">Site Changelog</RouterLink></header><ul><li v-for="item in siteRelease.items.slice(0,6)" :key="item">{{ item }}</li></ul></article></section>
