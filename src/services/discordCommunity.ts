@@ -77,24 +77,28 @@ async function loadDiscordServerCounts(widgetUrl:string,fallbackInvite=''):Promi
   return{members,online}
 }
 
-export function loadDiscordCommunityCounts(){return loadDiscordServerCounts(externalLinks.discordWidget,externalLinks.discord)}
+export function loadDiscordCommunityCounts(){
+  return loadDiscordServerCounts(externalLinks.discordWidget,externalLinks.discord)
+}
 
 /**
  * Creator followers are the combined public member counts for the Brambleheart
  * community plus the two creator communities. Discord does not expose a way to
  * deduplicate users who belong to more than one of these servers.
  *
- * If Discord does not expose a public total for one of the communities, its
- * current presence count is used only as a minimum known floor and `complete`
- * is false so the UI can display a trailing plus rather than claim exactness.
+ * Presence/online counts are deliberately never used as follower counts. If a
+ * total member count cannot be obtained for every configured server, the result
+ * remains incomplete rather than substituting the smaller online population.
  */
 export async function loadCreatorFollowerCount():Promise<CreatorFollowerCount>{
   const sources=[
-    [externalLinks.discordWidget,externalLinks.discord],
-    ...externalLinks.creatorDiscordWidgets.map(widget=>[widget,''] as const),
+    {widget:externalLinks.discordWidget,invite:externalLinks.discord},
+    ...externalLinks.creatorDiscordServers,
   ] as const
-  const counts=await Promise.all(sources.map(([widget,invite])=>loadDiscordServerCounts(widget,invite)))
-  const complete=counts.every(item=>item.members!==null)
-  const known=counts.map(item=>item.members??item.online).filter((value):value is number=>value!==null)
-  return{count:known.length?known.reduce((sum,value)=>sum+value,0):null,complete}
+  const counts=await Promise.all(sources.map(source=>loadDiscordServerCounts(source.widget,source.invite)))
+  if(counts.some(item=>item.members===null))return{count:null,complete:false}
+  return{
+    count:counts.reduce((sum,item)=>sum+(item.members as number),0),
+    complete:true,
+  }
 }
