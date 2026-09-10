@@ -144,7 +144,7 @@ const backLabel=computed(()=>backPage.value?`Back to ${backPage.value.label}`:'B
           <template v-if="whatYouNeedItems(section).length"><p v-if="section.blocks[0]?.type==='paragraph'">{{ displayText(section.blocks[0].text) }}</p><ul class="what-you-need-list"><li v-for="item in whatYouNeedItems(section)" :key="item">{{ item }}</li></ul><p v-if="section.blocks[5]?.type==='paragraph'">{{ displayText(section.blocks[5].text) }}</p></template>
           <template v-else v-for="(block,blockIndex) in section.blocks" :key="blockIndex">
             <div v-if="isFormulaParagraph(section,block)" class="core-roll-formula">3d10 + Stat + Conditions</div>
-            <p v-else-if="isWelcomeLine(section,block)" class="brambleheart-welcome">{{ displayParagraph(section,block.text) }}</p>
+            <p v-else-if="block.type==='paragraph'&&isWelcomeLine(section,block)" class="brambleheart-welcome">{{ displayParagraph(section,block.text) }}</p>
             <template v-else-if="skipWhatYouNeedParagraph(section,blockIndex)"></template>
             <p v-else-if="block.type==='paragraph'&&!isHalfStepFormula(block)">{{ displayParagraph(section,block.text) }}</p>
             <div v-else-if="block.type==='paragraph'" class="half-step-rule-graphic"><div class="half-step-roll-node"><small>Roll one die</small><strong>d10</strong></div><span class="half-step-arrow">↓</span><div class="half-step-band-grid"><div class="half-step-band-node"><small>Natural result</small><strong>1–5</strong><b>→ 1</b></div><div class="half-step-band-node"><small>Natural result</small><strong>6–10</strong><b>→ 2</b></div></div><small class="half-step-read-note">Read the natural die result by band. Do not divide the number shown on the die.</small></div>
