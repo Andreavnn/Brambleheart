@@ -1,30 +1,28 @@
-# Brambleheart TTRPG — Beta 0.26
+# Brambleheart TTRPG — Beta 0.27
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.26 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.27 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.26
+## Current Site Update — Beta 0.27
 
-- Rules presentation is reorganized across Fundamentals, Character Creation, Playable Species, Winds of Magic, Battles, and the Watcher reference.
-- Shared rule cards now preserve their intended content accents, collapsible headings are simplified, and Core Action pills display the shorter `CORE` label.
-- Character Creation reference pages use current shared data for Sparks, Deeds, narrative choices, equipment, Experience, and advancement presentation.
-- Weapon and Spell targeting guidance now lives with the relevant combat or magic reference while existing targeting routes remain available for navigation compatibility.
-- News displays total Brambleheart Discord membership and a combined Creator Content follower count from the configured communities.
-- Installed-app icons use the current Brambleheart tree emblem.
+- Rules presentation is refined across Fundamentals, Character Creation, Playable Species, Winds of Magic, Battles, and the Watcher reference.
+- Shared rule-card tones now resolve from one authority, Species menus use their own canonical component styling, and equipment profile tables are organized by weapon/armor class.
+- Combat Targeting is no longer a standalone current page; current weapon and area-targeting guidance lives with Attacking & Defending and Spell Types & Targeting.
+- Character Sheets display a derived Threat Level from the current Threat Score authority.
 
-## Current Game Update — v0.14
+## Current Game Update — v0.15
 
-Game Update v0.14 expands Arcane Command, establishes the current character/group Threat Level framework, updates several weapon qualities, and clarifies Health and Fate resolution.
+Game Update v0.15 clarifies Arcane Command timing and melee reach, recalibrates Threat growth, updates Fate resolution, and consolidates current combat/magic reference rules.
 
 ### Current Rules Clarifications
 
-Arcane Command may resolve one additional time once per turn without spending another Core Combat opportunity. The second cast must be an Enhance or Hex Spell and its Mana cost is increased by [+1]. This allows combinations such as a normal Spell followed by an Enhance or Hex, or two Enhance/Hex casts in the same turn.
+Once per turn, before or after resolving another Core Combat Action, Arcane Command may cast one Enhance or Hex Spell. Increase that Spell’s Mana cost by [+1].
 
 Projectile weapons apply condition [-2] to Strike when attacking a target within [1] square. Skyfire deals an additional [2] Lethal damage to its target. Slashing deals [1] Lethal damage when its trigger is met.
 
-Health states use the most severe applicable threshold: Wounded at 5–8 Health, Critical at 3–4, Last Breath at 1–2, and Defeated at 0. A defeated character makes a Fate Roll on their next turn in the following round; [6+] passes and [5] or less adds a Fate Mark. Restoring at least [1] Health removes all Fate Marks.
+Health states use the most severe applicable threshold: Wounded at 5–8 Health, Critical at 3–4, Last Breath at 1–2, and Defeated at 0. A defeated character makes a Fate Roll on their next turn in the following round; [5–10] passes and [1–4] adds a Fate Mark. Restoring at least [1] Health removes all Fate Marks.
 
-Threat Level is calculated from advancement beyond the baseline starting hero. Attribute and Skill ranks above Rank 1, Talents, Magic Levels, and exceptional custom power contribute to a character's Threat Score; the resulting score maps to Threat Level 1 or higher. Group Threat is the sum of each party member's Threat Level. Monster and encounter-difficulty calibration remains intentionally deferred until the Watcher/monster design pass.
+Threat Level is calculated from current character growth: Attribute ranks above 2, Skill ranks above 2, Talents, Magic Levels, and an optional +1 to +5 Watcher adjustment for exceptional gear contribute Threat Score. Group Threat is the sum of each party member’s Threat Level.
 
 ### Complete Magic Rebalance
 
@@ -100,10 +98,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.26`
-- package version: `0.26.0`
-- PWA cache: `v0.26`
-- Game Update: `v0.14`
+- Site Update / BUILD/export: `0.27`
+- package version: `0.27.0`
+- PWA cache: `v0.27`
+- Game Update: `v0.15`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

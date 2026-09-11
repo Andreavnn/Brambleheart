@@ -81,7 +81,7 @@ export const loreSpells: Record<string,string[]> = {
     "Symphony Of Valor"
   ],
   "Life": [
-    "Regrowth",
+    "Renewal",
     "Divine Grasp",
     "Light Spear",
     "Radiant Breath",

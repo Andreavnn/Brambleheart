@@ -35,7 +35,7 @@ export const SIGNATURE_SPELLS=new Set([
   'Hypothermia',
   'Scary Face',
   'Chorus Of Harmony',
-  'Regrowth',
+  'Renewal',
 ])
 
 export const INVOCATION_CANTRIPS=new Set([
@@ -64,7 +64,7 @@ export const SPELL_BASE_MANA_COSTS:Readonly<Record<string,number>>={
   // Harmony
   'Chorus Of Harmony':0, 'Ballad Of The Courageous':3, 'Hymn Of Scorn':5, 'Note Of Force':5, 'Drums Of War':6, 'Melody Of Superiority':7, 'Chant Of Resilience':8, 'Song Of Storms':10, 'Symphony Of Valor':11,
   // Life
-  Regrowth:0, 'Divine Grasp':5, 'Light Spear':5, 'Radiant Breath':6, 'Shield Of Protection':7, 'Touch Of Life':8, 'Mass Restoration':9, Sanctuary:11, 'Spare The Perishing':12,
+  Renewal:0, 'Divine Grasp':5, 'Light Spear':5, 'Radiant Breath':6, 'Shield Of Protection':7, 'Touch Of Life':8, 'Mass Restoration':9, Sanctuary:11, 'Spare The Perishing':12,
 }
 
 /** Official spells retired by the Complete Magic Rebalance. */
@@ -74,7 +74,7 @@ export const RETIRED_OFFICIAL_SPELLS=new Set([
 ])
 
 /** Old Signature name kept only at the save-data/source migration boundary. */
-export const LEGACY_SIGNATURE_SPELLS=new Set(['Smolder'])
+export const LEGACY_SIGNATURE_SPELLS=new Set(['Smolder','Regrowth'])
 
 export function canonicalSpellBaseMana(name:string,fallback:number|null|undefined){
   const value=SPELL_BASE_MANA_COSTS[String(name||'')]

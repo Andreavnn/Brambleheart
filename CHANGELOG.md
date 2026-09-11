@@ -1,3 +1,13 @@
+# Brambleheart Beta 0.27
+
+- Refines Fundamentals and Character Creation introductions, restores intended rule-card accents, corrects Species collapsible headings, and improves Expanded/Restricted Skill, Equipment, Magic, Battle, Damage, and Health reference presentation.
+- Tightens Melee Strike to [1] square at TO HIT and changes Arcane Command so one Enhance or Hex may be cast once per turn before or after another Core Combat Action at [+1] Mana.
+- Reorganizes Equipment tables into explicit profile columns and grouped weapon/armor categories, expands Armor Penalty and Break Value examples, and improves Adventuring Item guidance.
+- Moves weapon and area targeting fully to their current Attacking & Defending and Spell Types & Targeting authorities; the standalone Combat Targeting page is removed from current navigation while legacy slugs remain aliased.
+- Renames Regrowth to Renewal, updates Fate Rolls to pass on [5–10], and improves Mana, Resistance/Weakness, Health-state, Healing, and Defeated guidance.
+- Recalibrates Threat Score growth and adds a derived Threat Level to Character Sheet identity details.
+- Synchronizes Site Update Beta 0.27, package/export/build metadata, PWA cache metadata, and Game Update v0.15.
+
 # Brambleheart Beta 0.26
 
 - Reorganizes the Rules reference across Fundamentals, Character Creation, Winds of Magic, Battles, and Playable Species with clearer section placement, centered/colored reference graphics, simplified collapsible headings, and improved rule cross-links.

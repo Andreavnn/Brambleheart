@@ -84,27 +84,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Every game of Brambleheart follows a simple, cyclical rhythm:"
+            "text": "Brambleheart moves in a repeating conversation between the Watcher, the players, and the dice. Most scenes follow the same four beats:"
           },
           {
             "type": "paragraph",
-            "text": "The Watcher describes the world — what you see, hear, and feel."
+            "text": "WATCHER DESCRIBES: The Watcher establishes the scene, what the characters can perceive, and what is changing around them."
           },
           {
             "type": "paragraph",
-            "text": "You decide how your character acts — through dialogue, skill, or ability."
+            "text": "PLAYERS ACT: Each player describes what their character attempts through conversation, movement, Skills, Core Actions, or Abilities."
           },
           {
             "type": "paragraph",
-            "text": "Dice are rolled to test resolve and chance."
+            "text": "ROLL WHEN NEEDED: When an outcome is uncertain and meaningful, use the Rhythm Engine or the specific roll called for by a rule."
           },
           {
             "type": "paragraph",
-            "text": "The story unfolds — success, failure, and everything in between becomes part of the tale."
+            "text": "RESOLVE & CONTINUE: Apply the result, update the fiction and game state, then return to the Watcher as the world responds."
           },
           {
             "type": "paragraph",
-            "text": "No two adventures will ever play the same — the world changes with your choices, and your choices echo in its world."
+            "text": "Not every action needs a roll. If the outcome is clear, continue the story. Roll when success, failure, or cost would meaningfully change what happens next."
           }
         ]
       },
@@ -167,27 +167,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Character creation begins with a spark — a name whispered to the stars, a vow made beneath the old trees."
+            "text": "Your first step is to decide who is playing and then create the heroes who will enter Anthro Mundas. One player serves as the Watcher while the others create characters."
           },
           {
             "type": "paragraph",
-            "text": "In Brambleheart, that spark becomes a hero — a Beastfolk bound by courage, kinship, and the rhythm of the wild world."
+            "text": "Character Creation guides each player through Species, Spark, Homeland, Faith, Oath, Attributes, Body & Spirit Path, Talents or Magic, equipment, languages, and final character details."
           },
           {
             "type": "paragraph",
-            "text": "To begin, follow the path below:"
+            "text": "A new group can begin in three steps:"
           },
           {
             "type": "paragraph",
-            "text": "Gather Your Kin. One player becomes the Watcher, the storyteller and rhythm-keeper of the world. The others play the heroes who will shape it."
+            "text": "GATHER YOUR KIN: Choose the Watcher and the players who will portray the adventuring heroes."
           },
           {
             "type": "paragraph",
-            "text": "Create Your Hero. Choose your species, spark, homeland, faith and oath — each reveals a part of who you are and how you face the unknown. (See Character Creation pg. xX)"
+            "text": "CREATE YOUR HERO: Use Character Creation to make each hero and record the choices that define their identity, strengths, equipment, and abilities."
           },
           {
             "type": "paragraph",
-            "text": "Learn the Rhythm. Rolls of three ten-sided dice decide your fate. The Watcher describes what unfolds; you decide how your hero acts. Together, story and chance weave the world’s melody."
+            "text": "LEARN THE RHYTHM: Read the Core Rules together, then begin play. The Watcher presents the first situation, the players decide what their heroes do, and the Rhythm Engine resolves uncertainty when a roll is required."
           },
           {
             "type": "paragraph",
@@ -371,10 +371,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
       {
         "heading": "RANKS & MODIFIERS",
         "blocks": [
-          {
-            "type": "paragraph",
-            "text": "There are five different attributes in Brambleheart; Agility, Might, Hide, Lore and Bravery."
-          },
+
           {
             "type": "paragraph",
             "text": "Each attribute begins at rank [1] and with experience points or role-play be increased up to rank [5]."
@@ -449,15 +446,23 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "There are two subcategories of skills called expanded and restricted."
+            "text": "Skills can carry one of two special subcategories: Expanded or Restricted."
           },
           {
             "type": "paragraph",
-            "text": "Expanded are skills that can be taken for different types of specialized or knowledge. Such as the skill lorekeeping which can be taken as lorekeeping: nature and lorekeeping: history. Each of these skills are treated as two different skills and are recorded separately on your character record sheet."
+            "text": "EXPANDED: An Expanded Skill narrows a broader Skill into a specific specialty. Each specialty is learned and recorded separately."
           },
           {
             "type": "paragraph",
-            "text": "Restricted skills typically require special tools, items, or even circumstances to perform. Such as the herbalry skill which requires a character to have additional tools such as bandages, cotton, or saps."
+            "text": "EXPANDED EXAMPLE: Lorekeeping (Nature) and Lorekeeping (History) are separate Expanded versions of Lorekeeping; having one does not automatically grant the other."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTED: A Restricted Skill requires access to the tools, training, feature, or circumstances stated by that Skill or the rule granting it."
+          },
+          {
+            "type": "paragraph",
+            "text": "RESTRICTED EXAMPLE: Herbalry may require the appropriate field supplies or ingredients before the character can perform the attempted treatment or preparation."
           },
           {
             "type": "table",
@@ -814,10 +819,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "paragraph",
             "text": "Characters begin an encounter with Mana equal to their Mana Pool. Normal restoration cannot increase Mana above Mana Pool unless a rule explicitly allows it."
           },
-          {
-            "type": "paragraph",
-            "text": "Increase Magic Regen and Decrease Magic Regen modify the round’s normal restoration. Restore Mana immediately recovers spent Mana outside that restoration step."
-          }
+
         ]
       },
       {
@@ -973,11 +975,11 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "FATE ROLL: This is a single [1d10] roll. If the result is [6] or higher, the character passes. If the result is [5] or lower, the character receives a Fate Mark. If a character restores to [1] or more Health Points, all Fate Marks are removed."
+            "text": "FATE ROLL: This is a single [1d10] roll. On a result of [5–10], the character passes. On a result of [1–4], the character receives a Fate Mark. If a character restores to [1] or more Health Points, all Fate Marks are removed."
           },
           {
             "type": "paragraph",
-            "text": "If a character receives [3] Fate Marks they die and enter the Howling Hallows."
+            "text": "If a character receives [3] Fate Marks, they die and enter the Howling Hallows. Death should fit the tone and expectations of the campaign: a Watcher may use the Howling Hallows as a final destination, a story transition, a rescue or return arc, or another consequence agreed upon by the group. The mechanical threshold remains [3] Fate Marks unless the campaign establishes a different death rule before play."
           }
         ]
       },
@@ -1012,15 +1014,15 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Every hero begins as a whisper on the wind—an untested spirit reaching toward the wide, waiting world."
+            "text": "Character Creation builds a complete Brambleheart hero one decision at a time. Each step records part of the character’s identity, capabilities, or starting resources, and later steps build on those earlier choices."
           },
           {
             "type": "paragraph",
-            "text": "Before a hero draws a weapon or speaks with courage, they begin here, with a name, a spark, and the rhythm of their first steps."
+            "text": "Begin with Species and culture, then establish personality and origin through Spark, Homeland, Faith, and Oath. After that, assign Attributes, choose a Body & Spirit Path, select Talents or Magic, purchase equipment, choose languages, and complete the remaining character details."
           },
           {
             "type": "paragraph",
-            "text": "In Brambleheart, creating a character is more than selecting traits, it invites you to explore who your hero was, who they are, and who they might yet become."
+            "text": "Use the Review step to check the finished character before saving. Character Creation establishes the starting hero; future XP, equipment, Talents, and Magic are handled through normal advancement and campaign play."
           }
         ]
       },
@@ -3320,12 +3322,9 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Weapons and shields each have a Break Value of [5]. When a strike roll shows a natural total result of [3] or less, the item suffers [1] Break damage. At Break [0], its effects are halved."
+            "text": "Weapons and shields each have a Break Value of [5]. Break Value tracks damage to the item itself. When a Strike against an item has a natural dice total of [3] or less, reduce that item’s Break Value by [1]. At Break [0], the item is broken and its listed effects are halved until repaired."
           },
-          {
-            "type": "paragraph",
-            "text": "A direct attack on a weapon or shield inflicts [1] Break damage (or [2] if a melee weapon targets a ranged one)."
-          }
+
         ]
       },
       {
@@ -3436,7 +3435,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Armor protects the body at the cost of speed and silence. EFFECT: Add together the Armor Penalty from all equipped armor and shields. Reduce your Speed by the total Armor Penalty. Speed cannot be reduced below [1]. Apply the same total as a negative condition to all Whisperster Skill Checks. RESTRICTIONS: Only equipped armor and shields contribute to Armor Penalty. Armor Penalty does not apply to other Agility Skills unless another rule specifically says so. EXAMPLE: Root Weave (-2) plus Vinegrip (-1) produces Armor Penalty [-3]. A character with Speed [6] is reduced to Speed [3] and suffers condition [-3] to Whisperster Skill Checks. KEYWORDS: EQUIPMENT"
+            "text": "Armor protects the body at the cost of speed and silence. EFFECT: Add together the Armor Penalty from all equipped armor and shields. Reduce your Speed by the total Armor Penalty. Speed cannot be reduced below [1]. Apply the same total as a negative condition to all Whisperster Skill Checks. RESTRICTIONS: Only equipped armor and shields contribute to Armor Penalty. Armor Penalty does not apply to other Agility Skills unless another rule specifically says so. EXAMPLE: Root Weave [-2] plus Vinegrip [-1] produces Armor Penalty [-3]. A character with Speed [6] is reduced to Speed [3] and suffers condition [-3] to Whisperster Skill Checks."
           }
         ]
       },
@@ -4235,7 +4234,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "MAGIC REGEN: Magic Regen is the Mana restored during the Start of Round sequence and equals Heart. Heart is Bravery Rank. Effects may increase or decrease Magic Regen for a round, but Magic Level does not add to Magic Regen."
+            "text": "MAGIC REGEN: Magic Regen is the Mana restored during the Start of Round sequence and equals Heart. Heart is Bravery Rank."
           }
         ]
       },
@@ -4415,15 +4414,15 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "ENHANCE: DECLARE a legal friendly target or yourself. The caster then makes a Renew the Heart save to shape the beneficial magic. Start with the Spell’s printed passive target, or Medium [18] if none is printed, and reduce that target by the caster’s Spirit modifier to a minimum target of [8]. On a successful save, apply the Spell’s EFFECT and DURATION. On a failed save, the Spell does not take effect unless its own rule states otherwise."
+            "text": "ENHANCE: DECLARE: Choose a legal friendly target or yourself. SAVE: The caster makes a Renew the Heart save against the Spell’s printed passive target. Reduce that target by the caster’s Spirit modifier to a minimum target of [8]. ON SUCCESS: Apply the Spell’s EFFECT and DURATION. ON FAILURE: The Spell does not take effect unless its own rule states otherwise."
           },
           {
             "type": "paragraph",
-            "text": "HEX: DECLARE a legal target. The target uses Renew the Heart at the Spell’s printed passive difficulty. Apply the listed ON FAILURE effect if that save fails."
+            "text": "HEX: DECLARE: Choose a legal target. SAVE: The target uses Renew the Heart against the Spell’s printed passive difficulty. ON FAILURE: Apply the Spell’s listed Hex effect. ON SUCCESS: The Hex does not take effect unless its own rule states otherwise."
           },
           {
             "type": "paragraph",
-            "text": "A Spell may intentionally combine a Magic Strike with a Hex. When it does, the Spell states separately what the successful Strike does and what the Renew the Heart roll controls."
+            "text": "Arcane Command normally resolves one Spell as a Core Combat Action. Once per turn, a character may also perform Arcane Command immediately before or after another Core Combat Action to cast an Enhance or Hex Spell; that additional Spell costs [+1] Mana. A Spell that itself combines a Magic Strike with a Hex still states separately what the successful Strike does and what the Renew the Heart roll controls."
           }
         ]
       },
@@ -5534,7 +5533,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Regrowth"
+            "text": "Renewal"
           },
           {
             "type": "paragraph",

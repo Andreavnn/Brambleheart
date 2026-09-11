@@ -7,14 +7,24 @@ export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
     date:'2026-09-10',
-    title:'Arcane Command, Threat & Combat Reference Update',
-    summary:'Expands Arcane Command casting flexibility, establishes the first Brambleheart Threat Level calculation, updates several weapon qualities, and clarifies Health and Fate rules.',
+    title:'Core Combat, Rules Presentation & Threat Update',
+    summary:'Clarifies Arcane Command timing, tightens melee reach, improves rules-reference presentation, updates Fate resolution, and recalibrates character Threat Level growth.',
     changes:[
-      'Arcane Command may be resolved a second time once per turn without another Core Combat opportunity; the additional cast must be an Enhance or Hex Spell and costs [+1] Mana.',
+      'Melee Strike must be within [1] square when TO HIT resolves. Once per turn, Arcane Command may cast one Enhance or Hex before or after another Core Combat Action; that Spell costs [+1] Mana.',
+      'Threat Score now gains [+2] per Attribute rank above Rank 2, [+1] per Skill rank above Rank 2, [+3] for the first Talent and [+1] for each additional Talent, [+3] for the first Magic Level and [+2] for each additional Magic Level, plus a Watcher-assigned [+1] to [+5] for exceptional gear. Character sheets display the resulting Threat Level.',
+      'Fate Rolls now pass on [5–10] and add a Fate Mark on [1–4]. Death after [3] Fate Marks is explicitly a Watcher/table-facing campaign decision within the current default Howling Hallows outcome.',
+      'Regrowth is renamed Renewal. Enhance/Hex casting, Spell Range, Mana, Damage, Health, Equipment, Species, and Fundamentals references receive the current clarified presentation and examples.',
+      'Combat Targeting is removed as a standalone current page; weapon targeting lives with Attacking & Defending and area targeting lives with Spell Types & Targeting, while old route slugs resolve through compatibility aliases.',
+    ],
+  },
+  {
+    version:'0.14',
+    date:'2026-09-10',
+    title:'Weapon Quality & Health Framework Update',
+    summary:'Updates several weapon qualities and establishes the current Health-state thresholds.',
+    changes:[
       'Projectile weapons apply condition [-2] to Strike when attacking a target within [1] square. Skyfire deals an additional [2] Lethal damage to its target, and Slashing deals [1] Lethal damage when its trigger is met.',
-      'Health states now use the current thresholds: Wounded at [8] or less Health, Critical at [4] or less, Last Breath at [2] or less, and Defeated at [0]. Only the most severe applicable state is used.',
-      'Defeated characters use a Fate Roll on their next turn in the following round: [6+] passes, [5] or less adds a Fate Mark, and restoring at least [1] Health removes all Fate Marks.',
-      'Threat Level now measures individual character power from advancement beyond the baseline hero and combines party Threat by adding each character’s Threat Level. Monster and encounter calibration remains reserved for the later Watcher rules pass.',
+      'Health states use the current thresholds: Wounded at [8] or less Health, Critical at [4] or less, Last Breath at [2] or less, and Defeated at [0]. Only the most severe applicable state is used.',
     ],
   },
   {
