@@ -24,6 +24,21 @@ assert.match(read('README.md'),new RegExp(`Beta ${app.replaceAll('.','\\.')}`),'
 assert.match(read('README.md'),new RegExp(`Game Update[^\n]*v${game.replaceAll('.','\\.')}`),'README current Game Update must match game release')
 assert.match(read('PATCH_NOTES.md'),new RegExp(`Beta ${app.replaceAll('.','\\.')}`),'PATCH_NOTES current Site Update must match app release')
 assert.match(read('PATCH_NOTES.md'),new RegExp(`v${game.replaceAll('.','\\.')}`),'PATCH_NOTES current Game Update must match game release')
+assert.match(read('public/downloads/Brambleheart-Cloud-Instructions.txt'),new RegExp(`Beta ${app.replaceAll('.','\\.')}`),'downloadable cloud instructions must match app release')
+const changelog=read('CHANGELOG.md')
+const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
+assert.deepEqual(changelogReleases,['0.05','0.04','0.03','0.02','0.01'],'Site Update history must be condensed to five chronological releases')
+let activeCategory='';let categoryCount=0
+for(const line of changelog.split(/\r?\n/)){
+  if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
+  else if(line.startsWith('- ')&&activeCategory)categoryCount++
+}
+if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`)
+const gameUpdatesSource=read('src/data/gameUpdates.ts')
+assert.match(gameUpdatesSource,/title:'Launch Patch'/,'Game Update history must be consolidated under Launch Patch')
+assert.equal((gameUpdatesSource.match(/\n  \{\n    version:/g)||[]).length,1,'Game Update history must contain one consolidated release entry')
+assert.doesNotMatch(gameUpdatesSource,/version:'0\.(?:04|06|07|10|12|13|14)'/,'archived Game Update versions must not remain as parallel entries')
+assert.doesNotMatch(read('src/views/SettingsView.vue'),/archived Game Updates/,'Settings must not advertise archived Game Updates after consolidation')
 
 for(const obsolete of ['src/data/equipmentNormalization.ts','src/data/rulesSource.ts','src/data/beta032Content.ts','src/styles.beta032.css'])assert.equal(exists(obsolete),false,`${obsolete} must remain removed`)
 for(const obsoleteAsset of ['src/assets/backgrounds/Blightbound Horror.png','src/assets/page-headers/rules.png.png'])assert.equal(exists(obsoleteAsset),false,`${obsoleteAsset} must remain removed`)
@@ -33,7 +48,7 @@ const backgroundIds=fs.readdirSync(backgroundDir).filter(name=>/\.(?:png|jpe?g|w
 assert.equal(new Set(backgroundIds).size,backgroundIds.length,'background asset names must resolve to unique canonical ids')
 
 for(const [file,text] of sourceText)assert.equal(text.includes('!important'),false,`${file} contains !important`)
-for(const [file,text] of sourceText){if(file==='src/services/storage.ts')continue;assert.equal(/\blocalStorage\s*\./.test(text),false,`${file} bypasses the storage service`)}
+for(const [file,text] of sourceText){if(file==='src/services/storage.ts')continue;assert.equal(/\blocalStorage\b/.test(text),false,`${file} bypasses the storage service`)}
 
 const rules=read('src/data/rulesCurrent.ts')
 const catalog=read('src/data/ruleCatalog.ts')
@@ -109,7 +124,7 @@ assert.match(news,/discordCountLabel/,'Discord total must render on the News Dis
 assert.match(news,/creatorFollowerLabel/,'Combined creator follower total must render on Creator Content')
 assert.doesNotMatch(news,/online`| online|discordOnlineCount/,'News must not display the Discord online count')
 
-// Beta 0.27 rules/presentation integrity.
+// Beta 0.05 rules/presentation integrity.
 const coreAbilities=read('src/data/coreAbilities.ts')
 assert.match(coreAbilities,/ARCANE COMMAND[\s\S]{0,900}SECOND CAST[\s\S]{0,700}Enhance or Hex Spell[\s\S]{0,300}Mana cost by \[\+1\]/,'Arcane Command second-cast rule must remain canonical')
 const abilityPresentation=read('src/rules/abilityPresentation.ts')
@@ -147,4 +162,63 @@ const attrPanel=read('src/components/CharacterAttributePanel.vue')
 assert.match(attrPanel,/minimumSpeed\?:number/,'CharacterAttributePanel must declare minimumSpeed')
 assert.match(attrPanel,/minimumSpeed:1/,'CharacterAttributePanel must default minimumSpeed to 1')
 
+const bramble=read('src/data/bramble.ts')
+assert.match(bramble,/name:'Sea of Roots', skills:\['Herbalry','Wayfinding'\]/,'Sea of Roots must be a canonical Homeland')
+assert.match(charOptions,/"Sea of Roots": \{[\s\S]{0,700}"skills": \[[\s\S]{0,100}"Herbalry"[\s\S]{0,100}"Wayfinding"/,'Sea of Roots details must match the Homeland authority')
+assert.match(charOptions,/"name": "Leafstitch"/,'Leafstitch must be the current armor spelling')
+assert.doesNotMatch(charOptions,/"name": "Leafsitch"/,'Leafsitch must not remain a current equipment name')
+assert.match(charOptions,/"name": "Driftwood Charm"[\s\S]{0,550}Once per round[\s\S]{0,220}restores Health[\s\S]{0,220}\[\+1\]/,'Driftwood Charm must retain its once-per-round healing bonus')
+const economy=read('src/rules/economy.ts')
+assert.match(economy,/Leafsitch:'Leafstitch'/,'Leafsitch compatibility must be isolated to the equipment alias boundary')
+for(const [file,text] of sourceText)if(file!=='src/rules/economy.ts')assert.equal(/\bLeafsitch\b/.test(text),false,`${file} retains the obsolete Leafsitch spelling`)
+assert.match(read('src/rules/rulesEngine.ts'),/equipmentHealingSpellBonus[\s\S]{0,300}Driftwood Charm/,'Driftwood Charm healing must have one shared rules-engine helper')
+
+const premade=read('src/data/premadeCharacters.ts')
+for(const value of ['premade-selu','Selu of the Wandering Reeds','Sea of Roots','Mercy','Harmony','Ballad Of The Courageous','Chant Of Resilience','Soothing Bloom','Mendcraft','Corakish','Leafstitch','Driftwood Charm'])assert.match(premade,new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),`Selu premade is missing ${value}`)
+assert.match(premade,/status:'approved'[\s\S]{0,160}creationComplete:true[\s\S]{0,160}exampleCharacter:true/,'Selu must be a complete approved editable example')
+const characterService=read('src/services/characters.ts')
+assert.match(characterService,/premadeCharactersSeeded[\s\S]{0,900}writeLocalStorage\(STORAGE_KEYS\.premadeCharactersSeeded,'1'\)/,'Premade characters must use a persistent one-time seed marker')
+assert.match(characterService,/normalizeImportedCharacter[\s\S]{0,500}exampleCharacter:false/,'Imported characters must not inherit built-in example status')
+assert.match(createView,/exampleCharacter:previous\?\.exampleCharacter===true/,'Editing Selu must preserve built-in example edit/delete permissions')
+const home=read('src/views/HomeView.vue')
+assert.match(home,/approved[^\n]{0,180}exampleCharacter|exampleCharacter[^\n]{0,180}approved/,'Approved example characters must remain user-editable/deletable')
+assert.match(home,/characterStatus\(character\)===\'approved\'[\s\S]{0,300}Level up character/,'Approved example characters must retain the normal Level Up action')
+
+const encounters=read('src/services/encounters.ts')
+for(const fn of ['loadEncounters','saveEncounters','upsertEncounter','deleteEncounter'])assert.match(encounters,new RegExp(`function ${fn}|export function ${fn}`),`Encounter persistence missing ${fn}`)
+assert.match(simulatorView,/ENCOUNTER BUILDER[\s\S]{0,800}Build a reusable encounter/,'Rhythm Engine must expose the Encounter Builder workflow')
+for(const label of ['Details','Party','Opposition','Battlefield','Review'])assert.match(simulatorView,new RegExp(`['\"]${label}['\"]`),`Encounter Builder missing ${label} step`)
+assert.match(simulatorView,/characterThreatLevel|groupThreat/,'Encounter Builder must reuse the current Threat authority')
+
+const fundamentals=read('src/views/FundamentalsRuleView.vue')
+assert.doesNotMatch(fundamentals,/<small>WELCOME<\/small>/,'Introduction graphic must not retain the smaller Welcome label')
+assert.match(fundamentals,/\(Character Creation\|Character Sheet\)/,'Character Roster link helper must recognize Character Creation and Character Sheet')
+assert.ok((fundamentals.match(/<RouterLink v-if="part\.link" to="\/characters">/g)||[]).length>=2,'Fundamentals Character Creation and Character Sheet references must link to Character Roster')
+for(const removed of ['Your first step is to decide who is playing','A new group can begin in three steps','Every legend in Brambleheart begins not of victory or defeat','When you make a roll, you will always include an attribute in the roll.','These are the descriptive traits drawn from all premade sparks.','Players creating custom sparks can mix and match any two','The watcher can use these keywords to determine if a deed aligns with a custom spark.'])assert.equal(rules.includes(removed),false,`Removed reference text remains: ${removed}`)
+assert.match(fundamentals,/skill-tree-card>header>strong::after[\s\S]{0,180}width:calc\(100% - 24px\)/,'Skill Tree heading must use the inset separator authority')
+
+assert.match(ruleReader,/function weaponClass[\s\S]{0,300}Projectile/,'Weapon grouping must use Projectile as the ranged authority')
+assert.doesNotMatch(ruleReader,/function weaponClass[\s\S]{0,300}\bThrown\b[\s\S]{0,120}\?'Ranged'/,'Thrown-only weapons must not be classified as ranged')
+assert.match(ruleReader,/To Hit &amp; To Ward|To Hit & To Ward/,'Battle reference must use To Hit & To Ward')
+assert.match(ruleReader,/Damage Type/,'Battle reference must use Damage Type')
+assert.match(ruleReader,/Magic Level \+ Spirit/,'Encounter Mana must show the Mana Pool equation')
+assert.match(ruleReader,/Heart \+ Condition/,'Encounter Mana must show the Magic Regen equation')
+assert.match(ruleReader,/range-origin-wrap[\s\S]{0,1000}v-for="cell in 9"/,'Spell Range Orb must render as a 3x3 grid centered on Point')
+for(const tone of ['health-wounded','health-critical','health-last-breath'])assert.match(ruleReader,new RegExp(tone),`Health presentation missing ${tone} tone`)
+assert.match(ruleReader,/5–8[\s\S]{0,500}3–4[\s\S]{0,500}1–2/,'Health state detail ranges must run low to high')
+assert.match(ruleReader,/healing-adjustment-group[\s\S]{0,900}Restore \[\+4\][\s\S]{0,500}Healing Condition \[-1\][\s\S]{0,500}Restore \[\+3\]/,'Healing graphic must show restore plus condition inside parentheses before the net restore value')
+assert.doesNotMatch(ruleReader,/Source Reference|WOODLANDS_MONSTERS_URL|thewoodlandsrpg\.wordpress\.com/,'Watcher monster Rules UI must not retain the external source-reference section')
+
+const monsters=read('src/data/externalMonsters.ts')
+const requiredMonsterCategories=['Companions','Arcane Automata','Eldritch Abominations','Insectoid Terrors','Generic Monsters','Necrotic Horrors','Primordial Entities','Verdant Aberrations']
+for(const category of requiredMonsterCategories){const escaped=category.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const count=(monsters.match(new RegExp(`(?:monster|placeholder)\\('(?:[^']+)'\\s*,\\s*'${escaped}'`,'g'))||[]).length;assert.ok(count>=10,`${category} must contain at least 10 monsters`)}
+for(const name of ['Glop','Blaze Glop','Undeath Sorcerer','Lich Archregent','Lich Lord','Undeath Warrior','Crypt Guard','Legionnaire','Graveborn Horror','Terrorghiest','Necrotide','Ghoul Pack','Tempest Warden','Blightroot Treant','Fungal Behemoth','Leafshroud Guardian','Mossclad Stalker','Thorned Bramblefiend','Thornblade Nymphs','Verdant Lurker','Vinecrawler','Voracious Bramblebeast'])assert.match(monsters,new RegExp(`monster\\('${name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}'`),`Sourced monster must remain sourced: ${name}`)
+assert.equal((monsters.match(/(?:monster|placeholder)\('[^']+','Epic Legends and Tall-Tale Terrors'/g)||[]).length,0,'Epic Legends and Tall-Tale Terrors must not receive placeholders')
+assert.match(catalog,/category\.id==='watcher'[\s\S]{0,220}item\.slug==='encounters-threat-level'/,'Watcher sequential navigation must exclude catalog/detail pages at the navigation authority')
+
+assert.match(news,/discord-community-image\{height:144px\}/,'News Discord image must align with the Creator Content desktop height')
+assert.match(news,/news-promo-count[^{]*\{[^}]*color:color-mix\([^)]*detail-trait-heritage/,'News community counts must use the muted green treatment')
+const changelogView=read('src/views/ChangelogView.vue')
+assert.match(changelogView,/ReleaseCategory/,'Site Changelog must model categorized releases')
+assert.match(changelogView,/changelog-category-stack/,'Site Changelog must render release categories')
 console.log(`Brambleheart integrity checks passed for Site ${app} / Game Update ${game}.`)

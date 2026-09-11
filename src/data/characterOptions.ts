@@ -136,6 +136,17 @@ export const sparkDetails: Record<string,SparkDetail> = {
 }
 
 export const homelandDetails: Record<string,HomelandDetail> = {
+  "Sea of Roots": {
+    "description": "A vast wetland of mangrove villages, drifting reed platforms, and moss-kissed shrines where patience, observation, and living gently with the land shape daily life.",
+    "skills": [
+      "Herbalry",
+      "Wayfinding"
+    ],
+    "optionalReplacements": [
+      "Awareness",
+      "Seeking"
+    ]
+  },
   "Wandering Road": {
     "description": "Where every mile is a memory and every stranger a story waiting to be told. You were raised in motion — under caravan canvas, between windships and wandering kin. Every mile carried a new story; every campfire flickered with laughter, barter, and ghost-tales of the next crossing. Your home was not a place but a rhythm — the steady creak of wheels, the song of boots in dust, the smell of spice and rain. You learned that belonging is built through trust, not roots, and that a good story can open more doors than a key.",
     "skills": [
@@ -509,7 +520,7 @@ export const gearShopItems: GearShopItem[] = [
     "costWp": 800
   },
   {
-    "name": "Leafsitch",
+    "name": "Leafstitch",
     "category": "Armor & Shield",
     "costText": "4 sp",
     "costSp": 4.0,
@@ -956,6 +967,17 @@ export const gearShopItems: GearShopItem[] = [
     "detail": "—",
     "description": "A small enchanted emblem worn or carried to reinforce a single magical working.",
     "effect": "Once per round, increase the damage of one spell by [+1].",
+    "shopGroup": "Trinkets",
+    "costWp": 350
+  },
+  {
+    "name": "Driftwood Charm",
+    "category": "Trinket",
+    "costText": "7 sp",
+    "costSp": 7.0,
+    "detail": "—",
+    "description": "A tide-smoothed charm carried by healers and travelers as a reminder that broken things can return with the current.",
+    "effect": "Once per round, when you cast a Spell that restores Health, increase that Spell’s Health restoration by [+1] for one target.",
     "shopGroup": "Trinkets",
     "costWp": 350
   },

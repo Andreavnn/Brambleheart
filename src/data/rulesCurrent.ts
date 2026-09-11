@@ -146,7 +146,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Character sheets – To record your hero’s species, abilities, and story."
+            "text": "Character Sheet – To record your hero’s species, abilities, and story."
           },
           {
             "type": "paragraph",
@@ -167,15 +167,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Your first step is to decide who is playing and then create the heroes who will enter Anthro Mundas. One player serves as the Watcher while the others create characters."
-          },
-          {
-            "type": "paragraph",
             "text": "Character Creation guides each player through Species, Spark, Homeland, Faith, Oath, Attributes, Body & Spirit Path, Talents or Magic, equipment, languages, and final character details."
-          },
-          {
-            "type": "paragraph",
-            "text": "A new group can begin in three steps:"
           },
           {
             "type": "paragraph",
@@ -193,10 +185,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "paragraph",
             "text": "Step Into the Wild. Begin your first tale — a lonely village at dusk, a ruin tangled in vine and mystery, or the edge of a magical storm where something ancient stirs."
           },
-          {
-            "type": "paragraph",
-            "text": "Every legend in Brambleheart begins not of victory or defeat, but of courage."
-          }
         ]
       }
     ]
@@ -352,7 +340,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Attributes are the stat you add to your dice rolls. When you make a roll, you will always include an attribute in the roll."
+            "text": "Attributes are the stats you add to your dice rolls."
           },
           {
             "type": "paragraph",
@@ -1202,10 +1190,6 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Every Spark uses two descriptive keywords. Premade Sparks provide their pair automatically; a custom Spark chooses any two from the current Spark Keyword Library."
-          },
-          {
-            "type": "paragraph",
             "text": `When you complete a kept Deed that aligns with one or both of your Spark keywords, gain the Deed’s normal Experience reward plus [+${XP_GUIDANCE.sparkAlignmentBonus}] bonus Experience. This Spark alignment bonus can be gained only once per session.`
           }
         ]
@@ -1215,19 +1199,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "These are the descriptive traits drawn from all premade sparks."
-          },
-          {
-            "type": "paragraph",
-            "text": "Players creating custom sparks can mix and match any two to define their own archetype."
-          },
-          {
-            "type": "paragraph",
-            "text": "The watcher can use these keywords to determine if a deed aligns with a custom spark."
-          },
-          {
-            "type": "paragraph",
-            "text": "Deed Interaction: All Sparks — premade or custom — trigger their XP bonus when a completed Deed aligns with one or both of their keywords."
+            "text": "Deed Interaction: All Sparks trigger their XP bonus when a completed Deed aligns with one or both of their keywords."
           },
           {
             "type": "paragraph",
@@ -1266,6 +1238,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           {
             "type": "paragraph",
             "text": "You may also create your own with the watcher’s help, blending ideas or crafting something entirely new."
+          }
+        ]
+      },
+      {
+        "heading": "SEA OF ROOTS",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Where roots hold the water still and every current remembers the path home."
+          },
+          {
+            "type": "paragraph",
+            "text": "You were shaped by mangrove villages, drifting reed platforms, and moss-kissed shrines where people learn to move with the wetland rather than against it."
+          },
+          {
+            "type": "paragraph",
+            "text": "Life among the waterways taught you patience with changing paths, a healer’s respect for useful plants, and the quiet knowledge that safe passage often depends on reading what grows beneath your feet."
+          },
+          {
+            "type": "paragraph",
+            "text": "Skills: Herbalry, Wayfinding Optional Replacements: Awareness, Seeking"
           }
         ]
       },
@@ -3424,7 +3417,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
             "type": "table",
             "rows": [
               [
-                "As a gentle healer attuned to spellwork Selu’s player equips leafsitch, a light armor that grants [+1] Guts, applies [+0] mana syphon, and imposes 0 Armor Penalty. If Selu is targeted by an attack while wearing the armor, their guts used to reduce the attack’s damage is increased by [+1]. For example, if Selu suffers [5] damage from an attack and they have a guts value of [3] that damage is reduced to [2] total damage, which is applied to Selu’s health."
+                "As a gentle healer attuned to spellwork Selu’s player equips Leafstitch, a light armor that grants [+1] Guts, applies [+0] mana syphon, and imposes 0 Armor Penalty. If Selu is targeted by an attack while wearing the armor, their guts used to reduce the attack’s damage is increased by [+1]. For example, if Selu suffers [5] damage from an attack and they have a guts value of [3] that damage is reduced to [2] total damage, which is applied to Selu’s health."
               ]
             ]
           }
@@ -3444,7 +3437,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "LEAFSITCH A garment woven from pliant forest leaves that never wilt, always cool to the touch. The leaves shift and settle like sleeping birds, offering just enough resilience to matter while staying quiet. Spellcasters favor it because it feels more like clothing than armor, and it never steals a breath of mana."
+            "text": "LEAFSTITCH A garment woven from pliant forest leaves that never wilt, always cool to the touch. The leaves shift and settle like sleeping birds, offering just enough resilience to matter while staying quiet. Spellcasters favor it because it feels more like clothing than armor, and it never steals a breath of mana."
           },
           {
             "type": "paragraph",

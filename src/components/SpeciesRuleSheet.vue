@@ -38,7 +38,7 @@ function footerKeywords(values:string[],kind:'Heritage'|'Cultural'){return trait
 .species-menu-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:58px;padding:12px 14px;cursor:pointer;list-style:none;border-bottom:0;background:var(--surface-title,var(--paper-2))}
 .species-menu-panel>summary::-webkit-details-marker{display:none}
 .species-menu-panel[open]>summary{border-bottom:1px solid var(--surface-line,var(--line))}
-.species-menu-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(20px,4vw,26px);font-weight:900;line-height:1.15}
+.species-menu-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(16px,2.4vw,20px);font-weight:900;line-height:1.15}
 .species-menu-chevron{flex:0 0 auto;font-size:19px;font-weight:900;transition:transform .16s ease}
 .species-menu-panel[open] .species-menu-chevron{transform:rotate(180deg)}
 </style>

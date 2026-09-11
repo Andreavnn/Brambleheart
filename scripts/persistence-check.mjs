@@ -23,7 +23,7 @@ function command(bin,args,options={}){
 
 // Compile only the dependency-independent persistence/rules graph. The full Vue build
 // remains the responsibility of npm run check when project dependencies are available.
-command('tsc',['--module','commonjs','--target','es2022','--moduleResolution','node','--esModuleInterop','--lib','es2022,dom','--skipLibCheck','--outDir',compiled,'src/services/characters.ts','src/rules/rulesEngine.ts'])
+command('tsc',['--module','commonjs','--target','es2022','--moduleResolution','node','--esModuleInterop','--lib','es2022,dom','--skipLibCheck','--outDir',compiled,'src/services/characters.ts','src/services/encounters.ts','src/rules/rulesEngine.ts'])
 fs.writeFileSync(path.join(compiled,'package.json'),'{"type":"commonjs"}\n')
 
 const worker=path.join(temp,'worker.cjs')
@@ -44,6 +44,7 @@ global.localStorage={
 const chars=require(path.join(process.env.BH_COMPILED,'services/characters.js'))
 const engine=require(path.join(process.env.BH_COMPILED,'rules/rulesEngine.js'))
 const storage=require(path.join(process.env.BH_COMPILED,'services/storage.js'))
+const encounters=require(path.join(process.env.BH_COMPILED,'services/encounters.js'))
 const phase=process.argv[2]
 const record={
  id:'persist-tordan',name:'Persistence Tordan',species:'Tordan',spark:'Courageous',homeland:'Test',faith:'Test',oath:'Test',path:'talents',
@@ -54,6 +55,7 @@ const record={
 }
 if(phase==='write'){
   const result=chars.writeCharacters([record]);if(!result.ok)throw new Error(result.message)
+  global.localStorage.setItem(storage.STORAGE_KEYS.premadeCharactersSeeded,'1')
   console.log('WRITE_OK')
 }else if(phase==='read'){
   const list=chars.loadCharacters();if(list.length!==1)throw new Error('character count changed')
@@ -69,6 +71,23 @@ if(phase==='write'){
   const result=chars.setCharacterApproval('persist-tordan',true);if(!result.ok)throw new Error(result.message);console.log('APPROVE_OK')
 }else if(phase==='verify-approval'){
   const c=chars.loadCharacters()[0];if(!c||c.status!=='approved'||chars.characterStatus(c)!=='approved')throw new Error('approval did not survive reload');console.log('APPROVAL_OK')
+}else if(phase==='premade-seed'){
+  global.localStorage.clear()
+  const list=chars.loadCharacters();if(list.length!==1)throw new Error('premade seed count mismatch')
+  const selu=list[0];if(selu.id!=='premade-selu'||selu.name!=='Selu of the Wandering Reeds'||selu.status!=='approved'||selu.creationComplete!==true||selu.exampleCharacter!==true)throw new Error('Selu premade seed is incomplete')
+  if(global.localStorage.getItem(storage.STORAGE_KEYS.premadeCharactersSeeded)!=='1')throw new Error('premade seed marker missing')
+  const result=chars.writeCharacters([]);if(!result.ok)throw new Error(result.message)
+  console.log('PREMADE_SEEDED_AND_DELETED')
+}else if(phase==='premade-delete-reload'){
+  const list=chars.loadCharacters();if(list.length!==0)throw new Error('deleted premade character returned after reload')
+  console.log('PREMADE_DELETE_PERSISTED')
+}else if(phase==='encounter-write'){
+  const saved=encounters.upsertEncounter(encounters.loadEncounters(),{id:'persist-encounter',name:'Persistence Encounter',objective:'Hold the bridge',partyCharacterIds:['legacy-character'],opponents:[{name:'Ghoul Pack',quantity:2}],environment:'Mire crossing',notes:'Regression check',createdAt:'2026-09-11T00:00:00.000Z',updatedAt:'2026-09-11T00:00:00.000Z'});if(!saved.result.ok)throw new Error(saved.result.message)
+  console.log('ENCOUNTER_WRITE_OK')
+}else if(phase==='encounter-read'){
+  const list=encounters.loadEncounters();if(list.length!==1)throw new Error('encounter count changed')
+  const encounter=list[0];if(encounter.id!=='persist-encounter'||encounter.opponents[0]?.quantity!==2||encounter.environment!=='Mire crossing')throw new Error('encounter state did not persist')
+  console.log('ENCOUNTER_READ_OK')
 }else if(phase==='legacy-seed'){
   const legacy={...record,id:'legacy-character',name:'Legacy Character',skills:['Whisperstep'],skillRanks:{Whisperstep:2},spells:['Smolder','Fire Bolt'],equipment:[{name:'Caster’s Totem',category:'Trinket',costSp:99,detail:'Stealth Condition -2'}],wealthRemaining:30,wealthCurrency:'SP',startingWealth:30,status:undefined,locked:true,creationComplete:undefined,draft:false}
   global.localStorage.setItem(storage.STORAGE_KEYS.characters,JSON.stringify([legacy]));console.log('LEGACY_SEEDED')
@@ -84,7 +103,7 @@ if(phase==='write'){
 `)
 
 const env={...process.env,BH_STORE:store,BH_COMPILED:compiled}
-for(const phase of ['write','read','approve','verify-approval','legacy-seed','legacy-read'])command(process.execPath,[worker,phase],{env})
+for(const phase of ['write','read','approve','verify-approval','premade-seed','premade-delete-reload','legacy-seed','legacy-read','encounter-write','encounter-read'])command(process.execPath,[worker,phase],{env})
 
 // Directly exercise the minimum-Speed boundary with a penalty that would otherwise reduce Speed below 2.
 const speedScript=`const e=require(${JSON.stringify(path.join(compiled,'rules/rulesEngine.js'))}); const a={agility:1,might:1,hide:1,lore:1,bravery:1}; const p=e.equipmentSpeedPenalty([{name:'x',category:'Armor & Shield',detail:'0 · 0 · 0 · -5 · 0 lb.',equipped:true}],true); const s=e.derivedStats(a,0,0,p,e.speciesMinimumSpeed('Tordan')).speed; if(p!==-3||s!==2)process.exit(2); console.log('STEADY_PACE_MIN_OK')`

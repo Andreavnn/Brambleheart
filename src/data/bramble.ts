@@ -23,6 +23,7 @@ export const sparks = [
 ] as const
 
 export const homelands = [
+  { name:'Sea of Roots', skills:['Herbalry','Wayfinding'] },
   { name:'Wandering Road', skills:['Guile','Charm'] },
   { name:'Tidewake Harbor', skills:['Seeking','Tradeskill'] },
   { name:'Ancient Towers', skills:['Lorekeeping (Ancients)','Awareness'] },

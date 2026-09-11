@@ -11,13 +11,14 @@ export type LegacyGearPriceSource={name:string;costWp?:number;costSp?:number;cos
 export type ProtectiveGearKind='armor'|'shield'
 
 /** Legacy names are accepted only at the persistence/import boundary. Current code uses catalog names. */
-export const LEGACY_GEAR_NAME_ALIASES:Readonly<Record<string,string>>={'Totem':'Caster Totem','Caster’s Totem':'Caster Totem',"Caster's Totem":'Caster Totem','Charm':'Spell Charm','Len-stone Arcanum':'Lens-Stone Arcanum'}
+export const LEGACY_GEAR_NAME_ALIASES:Readonly<Record<string,string>>={
+  Leafsitch:'Leafstitch','Totem':'Caster Totem','Caster’s Totem':'Caster Totem',"Caster's Totem":'Caster Totem','Charm':'Spell Charm','Len-stone Arcanum':'Lens-Stone Arcanum'}
 export function canonicalGearName(name:string){return LEGACY_GEAR_NAME_ALIASES[String(name||'')]||String(name||'')}
 
 const gearByName=new Map(gearShopItems.map(item=>[item.name,item] as const))
 function currentGear(name:string){return gearByName.get(canonicalGearName(name))}
 
-export const TRINKET_NAMES=new Set(['Journey Knot','Caster Totem','Lens-Stone Arcanum','Scriptweave Book','Quickdraw Quiver','Featherwind Bolt-Case','Wristloop','Shiny Bobble','Votive Icon','Spell Charm','Heartward Token'])
+export const TRINKET_NAMES=new Set(['Journey Knot','Caster Totem','Lens-Stone Arcanum','Scriptweave Book','Quickdraw Quiver','Featherwind Bolt-Case','Wristloop','Shiny Bobble','Votive Icon','Spell Charm','Driftwood Charm','Heartward Token'])
 export function isTrinketGear(item:{name:string;category?:string}){return item.category==='Trinket'||TRINKET_NAMES.has(canonicalGearName(item.name))}
 
 /** Non-character shop economies remain independent because they are not purchasable character equipment. */

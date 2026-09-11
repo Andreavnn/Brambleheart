@@ -1,32 +1,24 @@
-# Brambleheart Beta 0.27 — Core Combat & Rules Presentation
+**Brambleheart Beta 0.05 — Stability & Encounter Foundations**
 
-**Site Update — Beta 0.27**
-**Game Update — v0.15**
+**Site Update — Beta 0.05**  
+**Game Update — v0.01, Launch Patch**
 
-## Fundamentals & character reference
+- Added Selu of the Wandering Reeds as a complete approved premade character in Character Roster, including Sea of Roots, current character choices, current equipment, and one-time seeding that respects later user edits or deletion.
+- Added Sea of Roots as a playable Homeland and Driftwood Charm as a Trinket that increases one healing Spell’s Health restoration by [+1] for one target once per round; standardized Leafstitch as the current armor name while preserving the old spelling only for legacy imports.
+- Added the first functional Rhythm Engine Encounter Builder workflow with encounter details, party selection, Watcher opposition, battlefield notes, Group Threat, review, and locally persisted save/edit/delete support.
+- Refined Fundamentals, Character Creation, Playable Species, Winds of Magic, Battle, Health, Healing, equipment, and narrative-list presentation, including direct Character Roster links, clearer current terminology, a corrected 3×3 Orb example, and reduced table-width pressure.
+- Expanded the Watcher monster catalog with the requested sourced monsters and clearly marked placeholder names where a requested category lacked enough source entries; removed the external source-reference section and excluded Watcher catalogs/details from sequential previous/next Rules navigation.
+- Updated News so Discord and Creator Content live-count lines align visually and both use the new muted green count treatment.
+- Rebuilt the Site Changelog into five categorized historical releases, with no category exceeding 12 change logs, and updated the in-app changelog to render those categories.
+- Consolidated all historical Game Updates into v0.01, **Launch Patch**, while keeping saved-data schema/version keys independent from the condensed public release number.
+- Updated package/runtime/build/export/PWA/cache documentation metadata to Site Update Beta 0.05 and Game Update v0.01.
 
-- Removes duplicated Principles of Play copy and rebuilds How the Game Flows, Your First Step, Welcome to Brambleheart, Expanded/Restricted Skills, and Character Creation introductions into clearer reference graphics.
-- Restores shared accent-color authority so Heritage, Cultural, Spark, Deed, Homeland, Faith, Oath, Magic, Initiative, End-of-Round, Damage, and related cards use their intended tones instead of the fallback brown accent.
-- Repairs Species expandable-menu headings at the Species component authority.
-- Reuses Character Creation-style narrative entries for Homeland, Faith, and Oath lists.
+**Patch-note verification**
 
-## Equipment, magic & battles
-
-- Presents Weapons, Armor, and Shields as grouped profile tables with explicit columns; retains all three current Shields.
-- Clarifies Armor Penalty, Break Value, Adventuring Items, Threadpiece exchange examples, Mana references, Enhance/Hex casting, Spell Range, Damage, Resistance/Weakness, Healing, and Defeated guidance.
-- Removes Combat Targeting as a current standalone page; weapon targeting remains with Attacking & Defending and area-of-effect targeting remains with Spell Types & Targeting. Legacy slugs resolve through explicit aliases.
-- Renames the Life Spell Regrowth to Renewal while preserving Regrowth only as an import/save compatibility name.
-
-## Current game changes
-
-- Melee Strike requires the target to be within [1] square when TO HIT resolves.
-- Once per turn, before or after another Core Combat Action, Arcane Command may cast one Enhance or Hex Spell at [+1] Mana.
-- Fate Rolls pass on [5–10] and add a Fate Mark on [1–4].
-- Threat Score uses the current five-Attribute growth model, adds a [+1]–[+5] exceptional-gear range, and Character Sheets display the derived Threat Level.
-
-## Release integrity
-
-- Site Update / BUILD / character export: `0.27`
-- Package: `0.27.0`
-- PWA cache: `v0.27`
-- Game Update: `v0.15`
+- Previous version reviewed: 0.27
+- New version: 0.05
+- Source/diff reviewed: Yes
+- Changelog synchronized: Yes
+- Version metadata synchronized: Yes
+- Tests actually run: Repository integrity checks passed; persistence regression checks passed; TypeScript/Vue script syntax transpile check passed. Production `vue-tsc`/Vite build not run because the dependency install could not reach npm (`EAI_AGAIN`).
+- Known unfinished work intentionally excluded: None identified

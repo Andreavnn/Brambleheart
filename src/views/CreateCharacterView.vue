@@ -11,6 +11,7 @@ import { cultureSkillGrants, speciesImagePaths, startingPathOptions } from '../d
 import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesCurrent'
+import { sourceNarrativeDescription, narrativeRuleDetail } from '../rules/narrativeRules'
 import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentNameMatches } from '../data/talentCategories'
 import { characterSheetArmorProfile, characterSheetWeaponProfile, derivedStats, equippedProtectiveGear, equippedTrinketGear, equipmentAttachmentTargets, equipmentControlBonus, equipmentGutsBonus, equipmentMagicRegenBonus, equipmentManaSyphon, equipmentSpellManaReduction, magicResources, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, equipmentArmorPenalty, equipmentSpeedPenalty, speciesMinimumSpeed } from '../rules/rulesEngine'
 import { ADVENTURE_KIT_SELL_WP, STARTING_WEALTH_WP, canonicalGearCostWp, isTrinketGear, protectiveGearKind, SHIELD_NAMES } from '../rules/economy'
@@ -290,34 +291,10 @@ const attributeModifier=rankModifier
 const skillModifier=rankModifier
 function adjust(id:AttributeId,delta:number){const current=form.attributes[id];if(delta>0&&(current>=3||remaining.value<=0))return;if(delta<0&&current<=1)return;form.attributes[id]+=delta}
 
-function sourceParagraphs(documentKey:string,heading:string){
-  const doc=ruleSourceDocuments[documentKey]
-  const section=doc?.sections.find(item=>item.heading.toLowerCase()===heading.toLowerCase())
-  return section?.blocks.filter(block=>block.type==='paragraph').map(block=>block.type==='paragraph'?block.text.trim():'').filter(Boolean)||[]
-}
-function sourceDescription(documentKey:string,heading:string){return sourceParagraphs(documentKey,heading).filter(text=>!/^(Creed|Practices|Taboos|Signs|Conflict Hook|Voice|Virtue|Strain):?/i.test(text)).slice(0,3).join(' ')}
-type NarrativeDetail={intro:string;creed:string;practices:string[];taboos:string[];signs:string;conflictHook:string;voice:string;virtue:string;strain:string}
-function narrativeDetail(documentKey:string,heading:string):NarrativeDetail{
-  const detail:NarrativeDetail={intro:'',creed:'',practices:[],taboos:[],signs:'',conflictHook:'',voice:'',virtue:'',strain:''}
-  const intro:string[]=[];let mode:'intro'|'practices'|'taboos'='intro'
-  for(const raw of sourceParagraphs(documentKey,heading)){
-    const text=raw.trim()
-    let match=text.match(/^Creed:\s*(.*)$/i);if(match){detail.creed=match[1].trim();mode='intro';continue}
-    if(/^Practices:\s*$/i.test(text)){mode='practices';continue}
-    if(/^Taboos:\s*$/i.test(text)){mode='taboos';continue}
-    match=text.match(/^Signs:\s*(.*)$/i);if(match){detail.signs=match[1].trim();mode='intro';continue}
-    match=text.match(/^Conflict Hook:\s*(.*)$/i);if(match){detail.conflictHook=match[1].trim();mode='intro';continue}
-    match=text.match(/^Voice:\s*(.*)$/i);if(match){detail.voice=match[1].trim();mode='intro';continue}
-    match=text.match(/^Virtue:\s*(.*)$/i);if(match){detail.virtue=match[1].trim();mode='intro';continue}
-    match=text.match(/^Strain:\s*(.*)$/i);if(match){detail.strain=match[1].trim();mode='intro';continue}
-    if(mode==='practices')detail.practices.push(text);else if(mode==='taboos')detail.taboos.push(text);else intro.push(text)
-  }
-  detail.intro=intro.join(' ');return detail
-}
-const faithDescription=computed(()=>sourceDescription('faith',form.faith))
-const oathDescription=computed(()=>sourceDescription('oath',form.oath))
-const faithDetail=computed(()=>narrativeDetail('faith',form.faith))
-const oathDetail=computed(()=>narrativeDetail('oath',form.oath))
+const faithDescription=computed(()=>sourceNarrativeDescription('faith',form.faith))
+const oathDescription=computed(()=>sourceNarrativeDescription('oath',form.oath))
+const faithDetail=computed(()=>narrativeRuleDetail('faith',form.faith))
+const oathDetail=computed(()=>narrativeRuleDetail('oath',form.oath))
 
 function cultureGrantKey(id:string){const trait=findCulture(id);return trait?`${trait.species}::${trait.name}`:''}
 function cultureGrant(id:string){const trait=findCulture(id);if(trait&&'skillGrants' in trait&&trait.skillGrants)return trait.skillGrants;return cultureSkillGrants[cultureGrantKey(id)]}
@@ -608,6 +585,7 @@ function buildRecord(saveAsDraft:boolean):CharacterRecord{
     startingWealthWp, wealthWp, currencyAddedWp,
     treasure:preserveCampaignEconomy?[...(previous?.treasure||[])]:undefined,
     experience:preserveCampaignEconomy?previous?.experience:undefined, magicLevel:preserveCampaignEconomy?previous?.magicLevel:undefined, pinned:previous?.pinned,
+    exampleCharacter:previous?.exampleCharacter===true,
     attributes:{...effectiveAttributes.value}, status, draft:!creationComplete, creationComplete, locked:originalLocked.value, creationStep:stepId.value,
     createdAt:originalCreatedAt.value||now, updatedAt:now,
   }
@@ -793,7 +771,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
         <template v-else-if="stepId==='faith-oath'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Oath &amp; Faith</h1></div></div>
-          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s player creates the Oath Mend the Broken Thread: no one deserves to fade alone and every wound must be tended. For Faith they choose the Dreamtide, whose followers believe sleeping minds drift together and dreams carry truths the waking world forgets.</em></div>
+          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s player chooses the Oath of Mercy: all wounds can heal, even those unseen. For Faith they choose the Dreamtide, whose followers believe sleeping minds drift together and dreams carry truths the waking world forgets.</em></div>
           <div class="faith-oath-column"><section><details class="creation-info-panel help-panel" :open="creationTips"><summary>What is an Oath?</summary><div class="creation-info-body"><p>An Oath is the principle your hero has chosen to live by. It does not provide a flat mechanical bonus, but keeping or breaking it can shape reputation, narrative consequences, and how your character is remembered.</p></div></details><label class="field-label faith-oath-select">Oath<select v-model="form.oath" class="field-control"><option value="">Select Oath</option><option v-for="item in oaths" :key="item[0]" :value="item[0]">{{ item[0] }} — {{ item[1] }}</option></select></label><article v-if="form.oath" class="choice-summary faith-oath-detail-card detail-tone-oath"><header><h2>{{ form.oath }}</h2><small>OATH</small></header><p v-if="oathDetail.intro||oathDescription">{{ oathDetail.intro||oathDescription }}</p><div class="narrative-detail-grid"><div v-if="oathDetail.voice"><small>VOICE</small><span>{{ oathDetail.voice }}</span></div><div v-if="oathDetail.virtue"><small>VIRTUE</small><span>{{ oathDetail.virtue }}</span></div><div v-if="oathDetail.strain"><small>STRAIN</small><span>{{ oathDetail.strain }}</span></div></div></article></section><section><details class="creation-info-panel help-panel" :open="creationTips"><summary>What is Faith?</summary><div class="creation-info-body"><p>Faith describes what your hero reveres, trusts, or believes gives meaning to the world. It helps frame decisions and relationships without forcing one way to play the character.</p></div></details><label class="field-label faith-oath-select">Faith<select v-model="form.faith" class="field-control"><option value="">Select Faith</option><option v-for="item in faiths" :key="item">{{ item }}</option></select></label><article v-if="form.faith" class="choice-summary faith-oath-detail-card detail-tone-faith"><header><h2>{{ form.faith }}</h2><small>FAITH</small></header><p v-if="faithDetail.intro||faithDescription">{{ faithDetail.intro||faithDescription }}</p><div class="narrative-detail-grid"><div v-if="faithDetail.creed"><small>CREED</small><span>{{ faithDetail.creed }}</span></div><div v-if="faithDetail.practices.length"><small>PRACTICES</small><ul><li v-for="item in faithDetail.practices" :key="item">{{ item }}</li></ul></div><div v-if="faithDetail.taboos.length"><small>TABOOS</small><ul><li v-for="item in faithDetail.taboos" :key="item">{{ item }}</li></ul></div><div v-if="faithDetail.signs"><small>SIGNS</small><span>{{ faithDetail.signs }}</span></div><div v-if="faithDetail.conflictHook"><small>CONFLICT HOOK</small><span>{{ faithDetail.conflictHook }}</span></div></div></article></section></div>
         </template>
 
@@ -827,6 +805,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
         <template v-else-if="stepId==='spells'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Starting Spells</h1></div></div>
+          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu chooses Ballad Of The Courageous and Chant Of Resilience as their Harmony Spells, then Soothing Bloom and Mendcraft as their Invocation Spells. Their Harmony Signature Spell is gained automatically through Lore Attunement.</em></div>
           <details class="creation-info-panel help-panel" :open="creationTips"><summary>Magical Spells</summary><div class="creation-info-body"><p>Magical Spells are divided between the seven Lores of Magic and Invocation magic. Lore Attunement gives a free Signature Spell and reduces the Mana cost of spells from that Lore. Invocation Spells are dependable magical effects outside a Lore. At Magic Level 1, your hero begins with the free Signature Spell, two different Lore Spells, and two different Invocation Spells; these are your starting known spells, and a Spell cannot be selected twice.</p><p>When a Lore Spell belongs to your attuned Lore, its displayed Mana cost includes the Lore Attunement reduction of 2.</p></div></details>
           <section class="spell-selection-block"><h2>Lore Spells</h2><div class="field-grid two"><label v-for="index in 2" :key="`spell-${index}`" class="field-label">Spell {{ index }}<select v-model="form.spells[index-1]" class="field-control"><option value="">Select Spell</option><optgroup v-for="group in regularSpellGroups" :key="group.lore" :label="spellGroupLabel(group.lore)"><option v-for="spell in group.spells" :key="spell" :value="spell" :disabled="spellDisabled(spell,form.spells[index-1],'regular')">{{ spell }}</option></optgroup></select></label></div></section>
           <section class="spell-selection-block"><h2>Invocation Spells</h2><div class="field-grid two"><label v-for="index in 2" :key="`inv-${index}`" class="field-label">Invocation {{ index }}<select v-model="form.invocationSpells[index-1]" class="field-control"><option value="">Select Invocation Spell</option><option v-for="spell in invocationOptions" :key="spell" :value="spell" :disabled="spellDisabled(spell,form.invocationSpells[index-1],'invocation')">{{ spell }}</option></select></label></div></section>
@@ -843,7 +822,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
         <template v-else-if="stepId==='equipment'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Equipment &amp; Gear</h1></div></div>
-          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s travels and clothes are humble and practical. Their starting gear includes Leafstitch armor, an oakstaff, a driftwood charm, healing herbs, a water flask, and a journal of dreams.</em></div>
+          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu’s travels and clothes are humble and practical. Their starting gear includes Leafstitch armor, an Oak Staff (Quarterstaff), a Driftwood Charm, Herbalist, a Reed Flask from their Adventure Kit, and a Scriptweave Book.</em></div>
           <details class="creation-info-panel help-panel" :open="creationTips"><summary>Currency of Anthro Mundas</summary><div class="creation-info-body"><p>Trade across Anthro Mundas commonly uses Ancient fasteners called <strong>Threadpieces</strong>. Washer pieces (wp) cover everyday purchases, Nut pieces (np) local trade, Screw pieces (sp) most adventuring commerce, and Bolt pieces (bp) major debts and purchases.</p><div class="currency-grid currency-grid-four"><span><strong>Washer Pieces</strong><small>10 wp = 1 np</small></span><span><strong>Nut Pieces</strong><small>5 np = 1 sp</small></span><span><strong>Screw Pieces</strong><small>5 sp = 1 bp</small></span><span><strong>Bolt Pieces</strong><small>Highest denomination</small></span></div></div></details>
           <details class="creation-info-panel help-panel starting-equipment-parent" :open="creationTips"><summary>Starting Equipment</summary><div class="creation-info-body"><p>Each character begins with <strong>{{ formatThreadpieceWpAs(STARTING_WEALTH_WP,'sp') }}</strong> in Threadpieces and an Adventure Kit. Keep the Adventure Kit as the standard starting package, or sell it during creation for an additional <strong>{{ formatThreadpieceWpAs(ADVENTURE_KIT_SELL_WP,'sp') }}</strong> to spend on equipment and gear.</p><section class="starting-equipment-panel"><div class="adventure-kit-bar"><div><strong>Adventure Kit - Starting Equipment Package</strong></div><div class="kit-return-control"><span>Sell</span><label class="switch"><input v-model="form.adventureKit" type="checkbox" :true-value="false" :false-value="true"/><span></span></label></div></div><div v-if="form.adventureKit" class="adventure-kit-contents"><span v-for="item in ADVENTURE_KIT_ITEMS" :key="item.name">{{ item.quantity&&item.quantity>1?`${item.quantity}× `:'' }}{{ item.name }}</span></div><div class="wealth-balance-field"><span>Threadpieces</span><div class="threadpiece-breakdown"><span><b>{{ threadpieceBreakdown.wp }}</b> wp</span><span><b>{{ threadpieceBreakdown.np }}</b> np</span><span><b>{{ threadpieceBreakdown.sp }}</b> sp</span><span><b>{{ threadpieceBreakdown.bp }}</b> bp</span></div></div></section></div></details>
           <button type="button" class="secondary-button wide" @click="shopOpen=true">Equipment &amp; Gear</button>
@@ -852,6 +831,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
 
         <template v-else-if="stepId==='languages'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Starting Languages</h1></div></div>
+          <div class="creation-example"><strong>Building Selu:</strong> <em>Selu speaks Antheric and Commonspeak, and chooses Corakish as their bonus language to reflect the trade routes and travelers encountered throughout the Sea of Roots.</em></div>
           <details class="creation-info-panel help-panel" :open="creationTips"><summary>Languages</summary><div class="creation-info-body"><p>Your Species gives you its native tongue, and Commonspeak serves as the shared trade language used between peoples. Choose one bonus language to represent travel, study, kinship, work, or another part of your character’s history.</p></div></details>
           <div class="language-choice-grid compact-language-grid"><article class="choice-summary language-card species-language-card" :data-species="form.species"><h2>{{ nativeLanguage }}</h2><div class="keyword-pill-row"><span class="keyword-pill">{{ form.species }}</span></div><p>{{ languageDescription(nativeLanguage) }}</p></article><article class="choice-summary language-card common-language-card"><h2>Commonspeak</h2><p>{{ languageDescription('Commonspeak') }}</p></article><article class="choice-summary language-card bonus-language-card"><h2>Bonus Language</h2><div v-if="form.additionalLanguage&&speciesForLanguage(form.additionalLanguage)" class="keyword-pill-row bonus-language-pill-row"><span class="keyword-pill">{{ speciesForLanguage(form.additionalLanguage) }}</span></div><select v-model="form.additionalLanguage" class="field-control"><option value="">Select Language</option><option v-for="language in languageOptions" :key="language" :value="language">{{ language }}</option></select><p v-if="form.additionalLanguage">{{ languageDescription(form.additionalLanguage) }}</p></article></div>
         </template>
