@@ -7,6 +7,16 @@ export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
     date:'2026-09-11',
+    title:'Bound Equipment',
+    summary:'Updates two equipment rules: Scriptweave Book binds its Mana reduction and added cooldown to one selected Lore Spell, and Durtlehide binds its Resistance bonus to one selected elemental damage type.',
+    changes:[
+      'Scriptweave Book still grants [+1] Magic Regen while equipped, but its [-1] Mana reduction now applies only to one selected known Lore Spell. The bound Spell gains COOLDOWN: [1d10/2+1] rounds; if that Spell already uses a [1d10/2+X] cooldown, increase X by [+1].',
+      'When Durtlehide is purchased, choose one elemental damage type. While that Durtlehide is equipped, it grants Resistance [+2] against the selected damage type.',
+    ],
+  },
+  {
+    version:'0.01',
+    date:'2026-09-11',
     title:'Launch Patch',
     summary:'Consolidates the complete current Brambleheart ruleset into one launch-era Game Update covering core resolution, characters, combat, magic, advancement, equipment, species, Health, Threat, and the current Selu example content.',
     changes:[

@@ -254,7 +254,7 @@ const gearManaSyphon=computed(()=>equipmentManaSyphon(form.equipment))
 const gearMagicRegenBonus=computed(()=>equipmentMagicRegenBonus(form.equipment))
 const gearArmorPenalty=computed(()=>equipmentArmorPenalty(form.equipment))
 const gearSpeedPenalty=computed(()=>equipmentSpeedPenalty(form.equipment,form.species==='Tordan'))
-const gearSpellManaReduction=computed(()=>equipmentSpellManaReduction(form.equipment))
+function gearSpellManaReduction(name:string){return equipmentSpellManaReduction(form.equipment,name)}
 const minimumSpeed=computed(()=>speciesMinimumSpeed(form.species))
 const derived=computed(()=>derivedStats(effectiveAttributes.value,0,0,gearSpeedPenalty.value,minimumSpeed.value))
 const reviewGuts=computed(()=>derivedStats(effectiveAttributes.value,gearGutsBonus.value,gearControlBonus.value,gearSpeedPenalty.value,minimumSpeed.value).guts)
@@ -440,7 +440,7 @@ function reviewWeaponProfile(item:PurchasedEquipment|undefined){
 const weaponSlots=computed(()=>Array.from({length:Math.max(3,reviewWeapons.value.length)},(_,index)=>reviewWeaponProfile(reviewWeapons.value[index])))
 const armorSlots=computed(()=>Array.from({length:Math.max(2,reviewArmor.value.length)},(_,index)=>characterSheetArmorProfile(reviewArmor.value[index],form.equipment)))
 
-function equipmentAttachTargets(item:PurchasedEquipment){return equipmentAttachmentTargets(item,form.equipment)}
+function equipmentAttachTargets(item:PurchasedEquipment){return equipmentAttachmentTargets(item,form.equipment,form.spells)}
 function setAttachment(index:number,event:Event){const item=form.equipment[index];if(item)item.attachedTo=(event.target as HTMLSelectElement|null)?.value||undefined}
 function scrollEquipment(target:HTMLElement|null,direction:-1|1){if(target)target.scrollBy({left:direction*Math.max(240,target.clientWidth*.72),behavior:'smooth'})}
 function parseWeight(detail:string|undefined){
@@ -470,12 +470,12 @@ function spellLoreClass(name:string){const lore=spellLore(name).toLowerCase().re
 function effectiveMana(name:string){
   const detail=spellDetail(name);if(!detail)return null
   const custom=customSpell(name)
-  return resolveSpellManaCost({name,lore:detail.lore,baseCost:detail.manaCost,attunedLore:form.loreAttunement,manaSyphon:gearManaSyphon.value,focusReduction:gearSpellManaReduction.value,signature:Boolean(custom?.signature),cantrip:Boolean(custom&&!custom.signature&&detail.lore==='Invocation'&&detail.manaCost===0)})
+  return resolveSpellManaCost({name,lore:detail.lore,baseCost:detail.manaCost,attunedLore:form.loreAttunement,manaSyphon:gearManaSyphon.value,focusReduction:gearSpellManaReduction(name),signature:Boolean(custom?.signature),cantrip:Boolean(custom&&!custom.signature&&detail.lore==='Invocation'&&detail.manaCost===0)})
 }
 function spellCostText(name:string){
   const detail=spellDetail(name);if(!detail)return'Variable'
   const custom=customSpell(name)
-  return spellCostLabel({name,lore:detail.lore,baseCost:detail.manaCost,attunedLore:form.loreAttunement,manaSyphon:gearManaSyphon.value,focusReduction:gearSpellManaReduction.value,signature:Boolean(custom?.signature),cantrip:Boolean(custom&&!custom.signature&&detail.lore==='Invocation'&&detail.manaCost===0)})
+  return spellCostLabel({name,lore:detail.lore,baseCost:detail.manaCost,attunedLore:form.loreAttunement,manaSyphon:gearManaSyphon.value,focusReduction:gearSpellManaReduction(name),signature:Boolean(custom?.signature),cantrip:Boolean(custom&&!custom.signature&&detail.lore==='Invocation'&&detail.manaCost===0)})
 }
 const reviewLoreSpells=computed(()=>Array.from(new Set([signatureSpell.value,...form.spells].filter(Boolean) as string[])).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
 const reviewInvocationSpells=computed(()=>Array.from(new Set(form.invocationSpells.filter(Boolean))).sort((a,b)=>(effectiveMana(a)??999)-(effectiveMana(b)??999)||a.localeCompare(b)))
@@ -937,5 +937,4 @@ watch(()=>form.path,()=>ensureTalentSlots())
 .bonus-language-pill-row{margin-bottom:7px}
 .review-lock-label{display:flex;align-items:center;gap:6px}.review-lock-toggle{text-decoration:none;margin:0;padding:0}
 .review-spell-column{display:grid;grid-template-columns:1fr;gap:10px}.review-spell-detail-card{width:100%;box-sizing:border-box}
-.trinket-slot-card,.trinket-slot-card.secondary{border-top-color:var(--detail-equipment,var(--accent))}
 </style>

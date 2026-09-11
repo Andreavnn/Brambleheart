@@ -24,16 +24,16 @@ export interface ThreatScoreInput {
   exceptionalGear?:number
 }
 
-export function characterThreatScore(input:ThreatScoreInput){
-  const attributeGrowth=input.attributeRanks.reduce((sum,rank)=>sum+Math.max(0,Math.floor(Number(rank)||0)-2)*2,0)
-  const skillGrowth=(input.skillRanks||[]).reduce((sum,rank)=>sum+Math.max(0,Math.floor(Number(rank)||0)-2),0)
-  const talentCount=Math.max(0,Math.floor(Number(input.talentCount)||0))
-  const talents=talentCount>0?3+Math.max(0,talentCount-1):0
-  const magicLevel=Math.max(0,Math.floor(Number(input.magicLevel)||0))
-  const magic=magicLevel>0?3+Math.max(0,magicLevel-1)*2:0
-  const gear=Math.max(0,Math.min(5,Math.floor(Number(input.exceptionalGear)||0)))
-  return attributeGrowth+skillGrowth+talents+magic+gear
+export interface ThreatScoreBreakdown { attributes:number; skills:number; talents:number; magic:number; gear:number; total:number; level:number }
+export function characterThreatBreakdown(input:ThreatScoreInput):ThreatScoreBreakdown{
+  const attributes=input.attributeRanks.reduce((sum,rank)=>sum+Math.max(0,Math.floor(Number(rank)||0)-2)*2,0)
+  const skills=(input.skillRanks||[]).reduce((sum,rank)=>sum+Math.max(0,Math.floor(Number(rank)||0)-2),0)
+  const talentCount=Math.max(0,Math.floor(Number(input.talentCount)||0)),talents=talentCount>0?3+Math.max(0,talentCount-1):0
+  const magicLevel=Math.max(0,Math.floor(Number(input.magicLevel)||0)),magic=magicLevel>0?3+Math.max(0,magicLevel-1)*2:0
+  const gear=Math.max(0,Math.min(5,Math.floor(Number(input.exceptionalGear)||0))),total=attributes+skills+talents+magic+gear
+  return{attributes,skills,talents,magic,gear,total,level:threatLevelForScore(total)}
 }
+export function characterThreatScore(input:ThreatScoreInput){return characterThreatBreakdown(input).total}
 
 export function threatLevelForScore(score:number){
   const value=Math.max(0,Math.floor(Number(score)||0))

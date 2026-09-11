@@ -1,4 +1,7 @@
-export interface ExternalMonsterEntry { name:string; category:string; group?:string; summary:string; placeholder?:boolean }
+export interface MonsterAction { name:string; type:'Move'|'Combat'|'Reaction'|'Instinct'; text:string; keywords:string[] }
+export interface MonsterSpecialRule { name:string; text:string; keywords:string[] }
+export interface MonsterProfile { threatLevel:number; threatPoints:number; health:number; attributes:{agility:number;might:number;hide:number;lore:number;bravery:number}; actions:MonsterAction[]; specialRules:MonsterSpecialRule[]; keywords:string[] }
+export interface ExternalMonsterEntry { name:string; category:string; group?:string; summary:string; placeholder?:boolean; profile?:MonsterProfile }
 
 const categorySummary:Record<string,string>={
   'Companions':'Helpful creatures presented as adventuring companions and playful allies.',
@@ -11,8 +14,22 @@ const categorySummary:Record<string,string>={
   'Primordial Entities':'Ancient and elemental beings tied to the forces that shape the world.',
   'Verdant Aberrations':'Twisted, mutated creatures warped by unnatural forces within the wilds.',
 }
-function monster(name:string,category:string,group?:string):ExternalMonsterEntry{return{name,category,group,summary:categorySummary[category]||'A creature in the Watcher monster catalog.'}}
+function monster(name:string,category:string,group?:string,profile?:MonsterProfile):ExternalMonsterEntry{return{name,category,group,summary:categorySummary[category]||'A creature in the Watcher monster catalog.',profile}}
 function placeholder(name:string,category:string):ExternalMonsterEntry{return{name,category,summary:categorySummary[category]||'A creature in the Watcher monster catalog.',placeholder:true}}
+
+const glopProfile:MonsterProfile={
+  threatLevel:1,threatPoints:8,health:18,
+  attributes:{agility:1,might:2,hide:2,lore:1,bravery:1},
+  actions:[
+    {name:'Slosh',type:'Move',text:'MOVE: Move up to the Glop’s Speed. The Glop may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['MOVE','MONSTER']},
+    {name:'Gelatinous Bash',type:'Combat',text:'TARGET: One character within Touch. TO HIT: Make a Melee Strike using Brawl. DAMAGE: [3] + Fury Standard damage.',keywords:['COMBAT','TOUCH','STRIKE']},
+    {name:'Sticky Splash',type:'Combat',text:'TARGET: One character within [3] squares. TO HIT: Make a Ranged Strike using Aim. DAMAGE: [2] Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['COMBAT','PROJECTILE','STRIKE']},
+  ],
+  specialRules:[
+    {name:'Amorphous',text:'The Glop can squeeze through narrow openings that could reasonably admit part of its body. It cannot use this rule to pass through solid barriers or occupy another creature’s space at the end of movement.',keywords:['PASSIVE','MOVEMENT']},
+  ],
+  keywords:['MONSTER','GLOP','OOZE','GENERIC'],
+}
 
 export const externalMonsters:ExternalMonsterEntry[]=[
   monster('Aeronaut','Companions'),monster('Familiars','Companions'),monster('Fenrir','Companions'),monster('Rollodillo','Companions'),monster('Seastrider','Companions'),placeholder('Mossling','Companions'),placeholder('Reedrunner','Companions'),placeholder('Lantern Toad','Companions'),placeholder('Bramble Hare','Companions'),placeholder('Pondskipper','Companions'),
@@ -23,7 +40,7 @@ export const externalMonsters:ExternalMonsterEntry[]=[
 
   placeholder('Briar Mantis','Insectoid Terrors'),placeholder('Glasswing Swarm','Insectoid Terrors'),placeholder('Ironbark Beetle','Insectoid Terrors'),placeholder('Mire Centipede','Insectoid Terrors'),placeholder('Needle Wasp','Insectoid Terrors'),placeholder('Rootborer Grub','Insectoid Terrors'),placeholder('Lantern Moth','Insectoid Terrors'),placeholder('Webthorn Spider','Insectoid Terrors'),placeholder('Carrion Cicada','Insectoid Terrors'),placeholder('Spore Ant Colony','Insectoid Terrors'),
 
-  monster('Glop','Generic Monsters'),monster('Blaze Glop','Generic Monsters','Glop'),placeholder('Bramble Boar','Generic Monsters'),placeholder('Mossback Stag','Generic Monsters'),placeholder('Mire Hound','Generic Monsters'),placeholder('Ashfang Wolf','Generic Monsters'),placeholder('Stonehide Ram','Generic Monsters'),placeholder('Reed Serpent','Generic Monsters'),placeholder('Thornback Toad','Generic Monsters'),placeholder('Hollowclaw Bear','Generic Monsters'),
+  monster('Glop','Generic Monsters',undefined,glopProfile),monster('Blaze Glop','Generic Monsters','Glop'),placeholder('Bramble Boar','Generic Monsters'),placeholder('Mossback Stag','Generic Monsters'),placeholder('Mire Hound','Generic Monsters'),placeholder('Ashfang Wolf','Generic Monsters'),placeholder('Stonehide Ram','Generic Monsters'),placeholder('Reed Serpent','Generic Monsters'),placeholder('Thornback Toad','Generic Monsters'),placeholder('Hollowclaw Bear','Generic Monsters'),
 
   monster('Undeath Sorcerer','Necrotic Horrors'),monster('Lich Archregent','Necrotic Horrors','Undeath Sorcerer'),monster('Lich Lord','Necrotic Horrors','Undeath Sorcerer'),monster('Undeath Warrior','Necrotic Horrors'),monster('Crypt Guard','Necrotic Horrors','Undeath Warrior'),monster('Legionnaire','Necrotic Horrors','Undeath Warrior'),monster('Graveborn Horror','Necrotic Horrors'),monster('Terrorghiest','Necrotic Horrors'),monster('Necrotide','Necrotic Horrors'),monster('Ghoul Pack','Necrotic Horrors','Necrotide'),
 

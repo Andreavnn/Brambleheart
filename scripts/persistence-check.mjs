@@ -48,7 +48,7 @@ const encounters=require(path.join(process.env.BH_COMPILED,'services/encounters.
 const phase=process.argv[2]
 const record={
  id:'persist-tordan',name:'Persistence Tordan',species:'Tordan',spark:'Courageous',homeland:'Test',faith:'Test',oath:'Test',path:'talents',
- attributes:{agility:1,might:2,hide:2,lore:2,bravery:3},skills:[],talents:['Ward Guard'],spells:[],equipment:[
+ attributes:{agility:1,might:2,hide:2,lore:2,bravery:3},skills:[],talents:['Ward Guard'],spells:[],currentHealth:4,equipment:[
    {name:'Root Weave',category:'Armor & Shield',costSp:999,detail:'2+ · +99 · +99 · -99 · 999 lb.',equipped:true},
    {name:'Totem',category:'Trinket',costSp:999,detail:'Stealth Penalty -99',equipped:true}
  ],creationComplete:true,status:'unapproved',draft:false,locked:false,createdAt:'2026-09-09T00:00:00.000Z'
@@ -59,7 +59,8 @@ if(phase==='write'){
   console.log('WRITE_OK')
 }else if(phase==='read'){
   const list=chars.loadCharacters();if(list.length!==1)throw new Error('character count changed')
-  const c=list[0];if(c.species!=='Tordan'||c.status!=='unapproved')throw new Error('core character state did not persist')
+  const c=list[0];if(c.species!=='Tordan'||c.status!=='unapproved'||c.currentHealth!==4)throw new Error('core character/Health state did not persist')
+  const health=engine.healthCondition(c.currentHealth);if(health.label!=='Critical'||health.condition!==-2)throw new Error('Health Condition did not survive reload')
   if(c.talents.includes('Ward Guard'))throw new Error('retired Ward Guard survived normalization')
   const armor=c.equipment.find(x=>x.name==='Root Weave');if(!armor||armor.costWp!==700||!armor.detail.includes('+3')||!armor.detail.includes('-2'))throw new Error('current armor authority was not restored on reload')
   const trinket=c.equipment.find(x=>x.name==='Caster Totem');if(!trinket||trinket.costWp!==300)throw new Error('legacy equipment alias did not normalize on reload')
@@ -82,11 +83,11 @@ if(phase==='write'){
   const list=chars.loadCharacters();if(list.length!==0)throw new Error('deleted premade character returned after reload')
   console.log('PREMADE_DELETE_PERSISTED')
 }else if(phase==='encounter-write'){
-  const saved=encounters.upsertEncounter(encounters.loadEncounters(),{id:'persist-encounter',name:'Persistence Encounter',objective:'Hold the bridge',partyCharacterIds:['legacy-character'],opponents:[{name:'Ghoul Pack',quantity:2}],environment:'Mire crossing',notes:'Regression check',createdAt:'2026-09-11T00:00:00.000Z',updatedAt:'2026-09-11T00:00:00.000Z'});if(!saved.result.ok)throw new Error(saved.result.message)
+  const saved=encounters.upsertEncounter(encounters.loadEncounters(),{id:'persist-encounter',name:'Persistence Encounter',objective:'Hold the bridge',partyCharacterIds:['legacy-character'],opponents:[{name:'Ghoul Pack',quantity:2}],traps:['Pitfall'],environments:['Wetlands'],environment:'Mire crossing',notes:'Regression check',status:'unapproved',creationComplete:true,locked:true,createdAt:'2026-09-11T00:00:00.000Z',updatedAt:'2026-09-11T00:00:00.000Z'});if(!saved.result.ok)throw new Error(saved.result.message)
   console.log('ENCOUNTER_WRITE_OK')
 }else if(phase==='encounter-read'){
   const list=encounters.loadEncounters();if(list.length!==1)throw new Error('encounter count changed')
-  const encounter=list[0];if(encounter.id!=='persist-encounter'||encounter.opponents[0]?.quantity!==2||encounter.environment!=='Mire crossing')throw new Error('encounter state did not persist')
+  const encounter=list[0];if(encounter.id!=='persist-encounter'||encounter.opponents[0]?.quantity!==2||encounter.environment!=='Mire crossing'||encounter.traps[0]!=='Pitfall'||encounter.environments[0]!=='Wetlands'||encounter.status!=='unapproved'||encounter.creationComplete!==true||encounter.locked!==true)throw new Error('encounter state did not persist')
   console.log('ENCOUNTER_READ_OK')
 }else if(phase==='legacy-seed'){
   const legacy={...record,id:'legacy-character',name:'Legacy Character',skills:['Whisperstep'],skillRanks:{Whisperstep:2},spells:['Smolder','Fire Bolt'],equipment:[{name:'Caster’s Totem',category:'Trinket',costSp:99,detail:'Stealth Condition -2'}],wealthRemaining:30,wealthCurrency:'SP',startingWealth:30,status:undefined,locked:true,creationComplete:undefined,draft:false}
@@ -108,6 +109,8 @@ for(const phase of ['write','read','approve','verify-approval','premade-seed','p
 // Directly exercise the minimum-Speed boundary with a penalty that would otherwise reduce Speed below 2.
 const speedScript=`const e=require(${JSON.stringify(path.join(compiled,'rules/rulesEngine.js'))}); const a={agility:1,might:1,hide:1,lore:1,bravery:1}; const p=e.equipmentSpeedPenalty([{name:'x',category:'Armor & Shield',detail:'0 · 0 · 0 · -5 · 0 lb.',equipped:true}],true); const s=e.derivedStats(a,0,0,p,e.speciesMinimumSpeed('Tordan')).speed; if(p!==-3||s!==2)process.exit(2); console.log('STEADY_PACE_MIN_OK')`
 command(process.execPath,['-e',speedScript])
+const gearScript=`const e=require(${JSON.stringify(path.join(compiled,'rules/rulesEngine.js'))}); const gear=[{name:'Durtlehide',category:'Armor & Shield',detail:'5+ · +5 · +2 · -4 · 40 lb.',choice:'Fire',equipped:true},{name:'Scriptweave Book',category:'Trinket',attachedTo:'Fire Bolt',equipped:true}]; if(e.equipmentResistanceBonus(gear,'Fire')!==2||e.equipmentResistanceBonus(gear,'Frost')!==0)process.exit(3); if(e.equipmentSpellManaReduction(gear,'Fire Bolt')!==1||e.equipmentSpellManaReduction(gear,'Inferno Strike')!==0)process.exit(4); console.log('BOUND_EQUIPMENT_OK')`
+command(process.execPath,['-e',gearScript])
 
 fs.rmSync(temp,{recursive:true,force:true})
 console.log('Brambleheart persistence regression checks passed.')

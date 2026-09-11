@@ -1,11 +1,38 @@
+# Brambleheart Beta 0.06 — Character State & Watcher Foundations
+
+## Rhythm Engine & Characters
+
+- Adds persistent, interactive Health to Character Sheets and automatically applies the current Wounded, Critical, and Last Breath Conditions to Dice Roller rolls for the selected character.
+- Reworks Character Detail so Languages has more room and Threat appears beneath Path as `Threat Level · Point`, with the current Threat Point total shown beside the derived Threat Level.
+- Tightens Character Sheet weapon and armor name columns, restores canonical Skill and Trinket accent colors, and simplifies Equipment & Gear to owned-item weight while its heading shows remaining Threadpieces, total item count, and total carried weight.
+- Expands Encounter Builder into incomplete, unapproved, and approved encounter records with lock/unlock, approval, copy, edit, and delete behavior, plus selectable trap and environment foundations for Battlefield setup.
+- Changes Selu of the Wandering Reeds’ example campaign to **Verdant Secrets**.
+
+## Rules Reference
+
+- Restores Homeland Related Skills in the Homeland list, normalizes Adventurer to the same Oath-card presentation as other Oaths, and aligns Adventuring Item expandable-title typography with Character Roster group headings.
+- Refines Weapons, Armor, and Shields tables with larger readable text and tighter columns; sorts Shields by Guts; and moves Durtlehide into a marked Special armor group with its elemental-resistance purchase rule below the table.
+- Adds a dynamic **Lores of Magic** section after Lore Attunement that links to every current attunable Lore and automatically includes future Lore pages added to the canonical catalog.
+- Corrects the Spell Range Orb example to a transparent, centered 3×3 area over its Point of origin and lengthens the Healing graphic parentheses.
+- Links Building Encounters, Critters & Companions, Traps & Environments, Monsters, and Rewards together through Watcher previous/next navigation and updates the Individual Threat worked example to use Selu’s current character data.
+- Converts Monster categories into expandable menus and establishes reusable monster profile pages with Attributes, derived stats, Actions, Special Rules, and Keywords; Glop receives the first complete starter-scale profile.
+
+## Game Changes
+
+- Changes Scriptweave Book so its Mana reduction applies only to one selected known Lore Spell. The bound Spell also gains `COOLDOWN: [1d10/2+1] rounds`; an existing `[1d10/2+X]` cooldown increases X by [+1].
+- Establishes Durtlehide’s purchase choice as one elemental damage type and grants Resistance [+2] against that selected type while Durtlehide is equipped.
+
 # Brambleheart Beta 0.05 — Stability & Encounter Foundations
 
 ## Character & Campaign Tools
 
 - Adds Selu of the Wandering Reeds as a complete, approved premade character in Character Roster. Selu can be edited, copied, exported, or deleted like a user character, and the built-in example is seeded only once so a deleted copy does not return on reload.
+- Starts the Rhythm Engine Encounter Builder with a Character Creation-style workflow for encounter details, party selection, opposition, battlefield notes, review, local save/edit/delete, current roster selection, Watcher creature selection, and Group Threat display.
+
+## Game Changes
+
 - Adds Sea of Roots as a playable Homeland with Herbalry and Wayfinding, completes Selu with the Mercy Oath, Harmony/Invocation spell choices, Corakish, and current canonical equipment, and standardizes the armor name to Leafstitch while retaining the former spelling only as a legacy-import alias.
 - Adds Driftwood Charm to Trinkets. Once per round, one healing Spell cast by its wearer restores [+1] additional Health to one target.
-- Starts the Rhythm Engine Encounter Builder with a Character Creation-style workflow for encounter details, party selection, opposition, battlefield notes, review, local save/edit/delete, current roster selection, Watcher creature selection, and Group Threat display.
 
 ## Rules Reference
 
@@ -15,11 +42,9 @@
 - Expands the Watcher monster catalog with the sourced Generic, Necrotic, Primordial, and Verdant entries, creates the requested Arcane Automata, Eldritch Abominations, and Insectoid Terrors categories with clearly marked placeholder names where source entries are unavailable, and removes the external source-reference section from the Rules page.
 - Restricts Watcher previous/next Rules navigation to the core Building Encounters page so monsters, critters/companions, traps, environments, rewards, and similar catalog/detail pages do not enter the sequential rules-reading path.
 
-## Community & Release
+## Community
 
 - Enlarges the News Discord image to align its member-count line with Creator Content and changes both live count labels to a muted green treatment.
-- Rebuilds Site Update history into five categorized releases and consolidates all Game Update history into v0.01, Launch Patch, without changing saved-data schema keys solely to match the condensed release number.
-- Synchronizes Site Update Beta 0.05, package/export/build metadata, PWA cache metadata, downloadable cloud instructions, and Game Update v0.01.
 
 # Brambleheart Beta 0.04 — Rules Reference & Combat Framework
 
@@ -45,10 +70,6 @@
 - Adds live Brambleheart Discord membership and combined Creator Content follower totals from the configured public Discord communities.
 - Replaces installed-app icons with the current Brambleheart tree emblem, including the padded maskable icon.
 
-## Release Integrity
-
-- Consolidates the historical Site Update/package/export/PWA metadata represented by the former Beta 0.26–0.27 releases into Beta 0.04.
-
 # Brambleheart Beta 0.03 — Balance & Progression
 
 ## Combat & Equipment
@@ -57,16 +78,11 @@
 - Clarifies Dual Wielding and Beastgrasp, retires Ward Guard, and makes Turnstrike use a rounded-up minimum Ward bonus.
 - Clarifies damage resolution by keeping Standard, Direct, and Lethal as Damage Categories and treating On-Going as a recurring-damage qualifier that retains its stated category without repeating normal damage additions.
 
-## Advancement & Species
+## Game Changes
 
 - Slows Experience progression to 7–10 XP per typical session, modestly raises advancement costs, and limits Spark-aligned kept Deeds to one [+1] bonus XP award per session.
 - Tunes Tordan Steady Pace, Cethra Poised Reflex, Rivkan Double Lilly, Auravex Cycle Of The Beast, Braelor Thunderstep, and Urnath Frostwalker.
 - Retires the obsolete six-Attribute Encounter Rating calculation in favor of the current Threat Level framework pending its dedicated Watcher rules pass.
-
-## Community & Release
-
-- Reworks the News social area into Discord, Share, and Creator Content actions and adds live Discord public-count presentation.
-- Consolidates the historical Site Update/package/export/PWA metadata represented by the former Beta 0.25 release into Beta 0.03.
 
 # Brambleheart Beta 0.02 — Unified Rules Architecture
 
@@ -87,10 +103,6 @@
 - Updates Winds of Magic reference presentation for Mana Pool, Magic Regen, Lore Attunement, Signature Spells, Spell Keywords, casting, range/area interpretation, collapsible spell references, and Lore elemental resistance.
 - Reworks Battle reference presentation for encounter flow, Initiative, turns, Instinct timing, targeting, Attacking & Defending, Damage Categories, Resistances, Health, Healing, defeat, and encounter-end references.
 
-## Release Integrity
-
-- Consolidates the historical Site Update/package/export/PWA metadata represented by the former Beta 0.20–0.24 releases into Beta 0.02.
-
 # Brambleheart Beta 0.01 — Application Foundation
 
 ## Application & Data
@@ -108,7 +120,3 @@
 - Establishes the current visual identity for Traits, Talents, Spells, Skills, and rule pills, including shared accent/tone handling and readable rule-card formatting.
 - Standardizes current Rules page titles, summaries, Watcher/Selu callouts, content panels, and rule-detail typography.
 - Expands Species and rules reference presentation while retaining specialized Species art/lore layouts where appropriate.
-
-## Release Integrity
-
-- Consolidates the historical Site Update/package/export/PWA metadata represented by the original Alpha 0.01 through Beta 0.16 development history into Beta 0.01.

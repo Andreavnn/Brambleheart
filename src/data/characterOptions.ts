@@ -398,6 +398,8 @@ export const skillDefinitions: SkillDefinition[] = [
   }
 ]
 
+export const ELEMENTAL_DAMAGE_TYPES=['Fire','Frost','Lightning','Poison','Radiant','Shadow'] as const
+
 export const gearShopItems: GearShopItem[] = [
   {
     "name": "Club",
@@ -589,6 +591,9 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "30 sp",
     "costSp": 30.0,
     "detail": "5+ · +5 · +2 · -4 · 40 lb.",
+    "description": "Special armor cured with elemental-binding salts and layered shell resins.",
+    "effect": "When purchased, choose one elemental damage type. While Durtlehide is equipped, gain Resistance [+2] against the chosen damage type.",
+    "choices": [...ELEMENTAL_DAMAGE_TYPES],
     "costWp": 1500
   },
   {
@@ -940,8 +945,8 @@ export const gearShopItems: GearShopItem[] = [
     "costText": "12 sp",
     "costSp": 12.0,
     "detail": "1 lb.",
-    "description": "A prepared spellbook threaded with repeating sigils that steadies a caster’s rhythm.",
-    "effect": "While equipped, increase Magic Regen by [+1] and reduce the Mana cost of ordinary spells by [-1], to the normal minimum of [1] Mana.",
+    "description": "A prepared spellbook threaded with repeating sigils and bound to one learned Lore Spell.",
+    "effect": "While equipped, increase Magic Regen by [+1]. Choose one known Lore Spell and bind the book to it. That Spell costs [-1] Mana, to the normal minimum of [1] Mana, and gains COOLDOWN: [1d10/2+1] rounds. If the Spell already has a [1d10/2+X] cooldown, increase X by [+1].",
     "shopGroup": "Trinkets",
     "costWp": 600
   },

@@ -1,20 +1,19 @@
-# Brambleheart TTRPG — Beta 0.05
+# Brambleheart TTRPG — Beta 0.06
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.05 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.06 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.05
+## Current Site Update — Beta 0.06
 
-- Character Roster includes Selu of the Wandering Reeds as a complete approved example character, backed by the current Character Creation authorities and the new Sea of Roots Homeland.
-- Rhythm Engine includes the first functional Encounter Builder workflow for party selection, opposition, battlefield notes, Group Threat, and locally persisted encounter records.
-- Rules presentation is refined across Fundamentals, Character Creation, Playable Species, Winds of Magic, Battles, and the Watcher reference, including current equipment grouping, combat terminology, Health/Healing graphics, and Watcher sequential navigation.
-- The Watcher monster catalog now includes the requested sourced entries plus clearly marked placeholder names where the external source provides a category but fewer than ten named monsters.
-- News aligns the Discord and Creator Content count presentation and uses a muted green count treatment.
-- Site Update history is condensed into five categorized releases; saved-data schema keys remain independent of the public release number.
+- Character Sheets now persist interactive Health, apply current low-Health Conditions to selected-character Dice Roller rolls, show Threat Point totals, and use tighter equipment layouts with restored Skill/Trinket accents.
+- Encounter Builder now supports incomplete, unapproved, and approved records, lock/unlock and approval workflows, copying, selectable Battlefield trap/environment foundations, and local persistence.
+- Rules presentation now restores Homeland Skills, normalizes Oath cards, tightens Equipment tables, adds dynamic Lore links, corrects the Spell Range/Healing graphics, and links the five core Watcher pages through previous/next navigation.
+- The Watcher monster catalog now uses expandable categories and reusable profile pages; Glop is the first complete profile with Attributes, Actions, Special Rules, and Keywords.
+- Selu of the Wandering Reeds now uses the example campaign **Verdant Secrets**.
 
-## Current Game Update — v0.01
+## Current Game Update — v0.02
 
-Game Update v0.01, **Launch Patch**, consolidates the complete current Brambleheart rules history into one launch-era update covering core resolution, characters, combat, magic, advancement, equipment, species, Health, and Threat.
+Game Update v0.02, **Bound Equipment**, updates Scriptweave Book and Durtlehide so each selected equipment effect has one explicit bound target. The consolidated v0.01 **Launch Patch** remains the prior rules baseline.
 
 ### Current Rules Clarifications
 
@@ -38,12 +37,12 @@ The completed pass also applies the approved individual cost, damage, range, sav
 
 ### Trinkets
 
-Trinkets behave as passive equipment. They do not use numbered Trinket positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to a legal weapon or armor before their attached effect applies.
+Trinkets behave as passive equipment. They do not use numbered Trinket positions, and there is no separate Arcane Focus selection. If a Trinket is equipped, its listed effect applies automatically. Attachment-based Trinkets must also be attached to their legal target before the attached effect applies.
 
 Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Driftwood Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot.
 
 - Journey Knot — while equipped and attached, condition `+1` to TO HIT rolls made with that weapon.
-- Scriptweave Book — while equipped, Magic Regen `+1` and ordinary spell Mana cost `-1`, to the normal minimum of 1 Mana.
+- Scriptweave Book — while equipped, Magic Regen `[+1]`. Bind it to one known Lore Spell; only that Spell receives `[-1]` Mana, to the normal minimum of 1 Mana, and gains `COOLDOWN: [1d10/2+1] rounds` (or increases an existing `[1d10/2+X]` cooldown by `[+1]`).
 - Caster Totem — while equipped, Control `+1`.
 - Spell Charm — once per round, increase one spell’s damage by `+1`.
 - Driftwood Charm — once per round, increase one healing Spell’s Health restoration by `[+1]` for one target.
@@ -101,10 +100,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.05`
-- package version: `0.05.0`
-- PWA cache: `v0.05`
-- Game Update: `v0.01`
+- Site Update / BUILD/export: `0.06`
+- package version: `0.06.0`
+- PWA cache: `v0.06`
+- Game Update: `v0.02`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

@@ -127,25 +127,48 @@ export interface ResolveSpellManaInput {
  * explicit zero-cost exceptions. Every other numeric spell has a minimum
  * final cost of 1 Mana after all modifiers.
  */
-export function resolveSpellManaCost(input:ResolveSpellManaInput):number|null{
+export interface SpellManaModifier { label:string; amount:number }
+export interface ResolvedSpellManaCost { kind:SpellCostKind; base:number|null; value:number|null; modifiers:SpellManaModifier[] }
+
+export function spellManaCostDetails(input:ResolveSpellManaInput):ResolvedSpellManaCost{
   const kind=spellCostKind(input.name,input.baseCost,Boolean(input.signature),Boolean(input.cantrip))
-  if(kind==='signature'||kind==='cantrip')return 0
-  if(kind==='variable')return null
-  const base=Math.max(0,Number(input.baseCost)||0)
+  if(kind==='signature'||kind==='cantrip')return{kind,base:0,value:0,modifiers:[]}
+  if(kind==='variable')return{kind,base:null,value:null,modifiers:[]}
+  const base=Math.max(0,Number(input.baseCost)||0),modifiers:SpellManaModifier[]=[]
   const attunement=input.attunedLore&&input.lore===input.attunedLore?LORE_ATTUNEMENT_DISCOUNT:0
-  const manaSyphon=Math.max(0,Number(input.manaSyphon)||0)
-  const focusReduction=Math.max(0,Number(input.focusReduction)||0)
-  const reductions=Math.max(0,Number(input.reductions)||0)
-  const surcharges=Math.max(0,Number(input.surcharges)||0)
-  return Math.max(ORDINARY_SPELL_MINIMUM_MANA,base+manaSyphon+surcharges-attunement-focusReduction-reductions)
+  const manaSyphon=Math.max(0,Number(input.manaSyphon)||0),focusReduction=Math.max(0,Number(input.focusReduction)||0),reductions=Math.max(0,Number(input.reductions)||0),surcharges=Math.max(0,Number(input.surcharges)||0)
+  if(attunement)modifiers.push({label:'Attuned',amount:-attunement})
+  if(focusReduction)modifiers.push({label:'Scriptweave',amount:-focusReduction})
+  if(reductions)modifiers.push({label:'Reduction',amount:-reductions})
+  if(manaSyphon)modifiers.push({label:'Mana Syphon',amount:manaSyphon})
+  if(surcharges)modifiers.push({label:'Surcharge',amount:surcharges})
+  return{kind,base,value:Math.max(ORDINARY_SPELL_MINIMUM_MANA,base+modifiers.reduce((sum,item)=>sum+item.amount,0)),modifiers}
 }
 
+export function resolveSpellManaCost(input:ResolveSpellManaInput):number|null{return spellManaCostDetails(input).value}
+
 export function spellCostLabel(input:ResolveSpellManaInput):string{
-  const kind=spellCostKind(input.name,input.baseCost,Boolean(input.signature),Boolean(input.cantrip))
-  if(kind==='signature')return'Signature'
-  if(kind==='cantrip')return'Cantrip'
-  const value=resolveSpellManaCost(input)
-  return value===null?'Variable':`${value} Mana`
+  const resolved=spellManaCostDetails(input)
+  if(resolved.kind==='signature')return'Signature'
+  if(resolved.kind==='cantrip')return'Cantrip'
+  return resolved.value===null?'Variable':`${resolved.value} Mana`
+}
+
+export function spellCostBreakdownLabel(input:ResolveSpellManaInput):string{
+  const resolved=spellManaCostDetails(input),label=spellCostLabel(input)
+  if(resolved.value===null||!resolved.modifiers.length||resolved.base===null)return label
+  const details=[`${resolved.base} Cost`,...resolved.modifiers.map(item=>`${item.amount>0?'+':'−'}${Math.abs(item.amount)} ${item.label}`)]
+  return`${label} · (${details.join(' ')})`
+}
+
+export const SCRIPTWEAVE_COOLDOWN='[1d10/2+1] rounds'
+function increaseCooldownFormula(value:string){return value.replace(/\[1d10\/2(?:\+(\d+))?\]/i,(_match,bonus)=>`[1d10/2+${Number(bonus||0)+1}]`)}
+export function applyScriptweaveCooldown(ruleText:string,active:boolean){
+  const source=String(ruleText||'');if(!active)return source
+  if(/\bCOOLDOWN:\s*/i.test(source)){const updated=increaseCooldownFormula(source);return updated===source?source.replace(/(\bCOOLDOWN:\s*[^.]+)(\.|$)/i,'$1 [+1] round$2'):updated}
+  const insertion=`COOLDOWN: This Spell cannot activate again for ${SCRIPTWEAVE_COOLDOWN}.`
+  const restriction=source.search(/\bRESTRICTIONS?:\s*/i)
+  return restriction>=0?`${source.slice(0,restriction).trim()} ${insertion} ${source.slice(restriction).trim()}`:`${source.trim()} ${insertion}`.trim()
 }
 
 export const START_OF_ROUND_SEQUENCE=[

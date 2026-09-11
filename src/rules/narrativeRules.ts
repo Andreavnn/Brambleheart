@@ -43,6 +43,10 @@ export function narrativeRuleDetail(documentKey:string,heading:string):Narrative
     else if(mode==='taboos')detail.taboos.push(text)
     else intro.push(text)
   }
+  if(documentKey==='oath'&&!detail.creed&&intro.length){
+    const first=intro[0]
+    if(/^["“].+["”]$/.test(first)){detail.creed=first.replace(/^["“]|["”]$/g,'').trim();intro.shift()}
+  }
   detail.intro=intro.join(' ')
   return detail
 }

@@ -1,24 +1,23 @@
-**Brambleheart Beta 0.05 — Stability & Encounter Foundations**
+**Brambleheart Beta 0.06 — Character State & Watcher Foundations**
 
-**Site Update — Beta 0.05**  
-**Game Update — v0.01, Launch Patch**
+**Site Update — Beta 0.06**  
+**Game Update — v0.02, Bound Equipment**
 
-- Added Selu of the Wandering Reeds as a complete approved premade character in Character Roster, including Sea of Roots, current character choices, current equipment, and one-time seeding that respects later user edits or deletion.
-- Added Sea of Roots as a playable Homeland and Driftwood Charm as a Trinket that increases one healing Spell’s Health restoration by [+1] for one target once per round; standardized Leafstitch as the current armor name while preserving the old spelling only for legacy imports.
-- Added the first functional Rhythm Engine Encounter Builder workflow with encounter details, party selection, Watcher opposition, battlefield notes, Group Threat, review, and locally persisted save/edit/delete support.
-- Refined Fundamentals, Character Creation, Playable Species, Winds of Magic, Battle, Health, Healing, equipment, and narrative-list presentation, including direct Character Roster links, clearer current terminology, a corrected 3×3 Orb example, and reduced table-width pressure.
-- Expanded the Watcher monster catalog with the requested sourced monsters and clearly marked placeholder names where a requested category lacked enough source entries; removed the external source-reference section and excluded Watcher catalogs/details from sequential previous/next Rules navigation.
-- Updated News so Discord and Creator Content live-count lines align visually and both use the new muted green count treatment.
-- Rebuilt the Site Changelog into five categorized historical releases, with no category exceeding 12 change logs, and updated the in-app changelog to render those categories.
-- Consolidated all historical Game Updates into v0.01, **Launch Patch**, while keeping saved-data schema/version keys independent from the condensed public release number.
-- Updated package/runtime/build/export/PWA/cache documentation metadata to Site Update Beta 0.05 and Game Update v0.01.
+- Adds persistent interactive Health to Rhythm Engine Character Sheets and applies the current Wounded, Critical, and Last Breath Conditions automatically to Dice Roller rolls for the selected character.
+- Expands Encounter Builder into an approval-oriented workflow with incomplete/unapproved/approved states, lock/unlock, approval, copy/edit/delete controls, and selectable trap/environment Battlefield foundations.
+- Refines Character Sheet identity, Threat Point, Skills, Trinkets, weapon/armor sizing, carried-item weight, Threadpiece, and spell Mana-breakdown presentation.
+- Restores Homeland Related Skills and Oath list consistency, improves Equipment tables and Durtlehide presentation, adds dynamic Lore links, corrects the Spell Range/Healing graphics, and restores the requested Watcher previous/next sequence.
+- Adds reusable Watcher monster-profile groundwork and the first complete Glop profile with Attributes, derived statistics, Actions, Special Rules, and Keywords.
+- Changes Scriptweave Book to bind its Mana reduction and added cooldown to one selected known Lore Spell, and establishes Durtlehide’s selected elemental Resistance rule.
+- Updates Selu of the Wandering Reeds’ campaign to **Verdant Secrets**.
+- Updates package/runtime/build/export/PWA/cache documentation metadata to Site Update Beta 0.06 and Game Update v0.02.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.27
-- New version: 0.05
+- Previous version reviewed: 0.05
+- New version: 0.06
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Repository integrity checks passed; persistence regression checks passed; TypeScript/Vue script syntax transpile check passed. Production `vue-tsc`/Vite build not run because the dependency install could not reach npm (`EAI_AGAIN`).
-- Known unfinished work intentionally excluded: None identified
+- Tests actually run: `npm run test:integrity` (passed); `npm run test:persistence` (passed); TypeScript/Vue script syntax transpilation across 67 source units (passed). Full `vue-tsc`/Vite production build not run because npm registry resolution failed with `EAI_AGAIN`.
+- Known unfinished work intentionally excluded: Full production build and live desktop/tablet/mobile browser verification could not be performed in this environment because project dependencies are not installed and npm registry resolution is unavailable.

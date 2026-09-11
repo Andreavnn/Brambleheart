@@ -1,7 +1,7 @@
 {
   "name": "brambleheart",
   "private": true,
-  "version": "0.05.0",
+  "version": "0.06.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
