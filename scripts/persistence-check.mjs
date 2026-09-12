@@ -48,7 +48,7 @@ const encounters=require(path.join(process.env.BH_COMPILED,'services/encounters.
 const phase=process.argv[2]
 const record={
  id:'persist-tordan',name:'Persistence Tordan',species:'Tordan',spark:'Courageous',homeland:'Test',faith:'Test',oath:'Test',path:'talents',
- attributes:{agility:1,might:2,hide:2,lore:2,bravery:3},skills:[],talents:['Ward Guard'],spells:[],currentHealth:4,equipment:[
+ attributes:{agility:1,might:2,hide:2,lore:2,bravery:3},skills:[],talents:['Ward Guard'],spells:[],currentHealth:4,currentMana:2,sheetAccent:'#336699',equipment:[
    {name:'Root Weave',category:'Armor & Shield',costSp:999,detail:'2+ · +99 · +99 · -99 · 999 lb.',equipped:true},
    {name:'Totem',category:'Trinket',costSp:999,detail:'Stealth Penalty -99',equipped:true}
  ],creationComplete:true,status:'unapproved',draft:false,locked:false,createdAt:'2026-09-09T00:00:00.000Z'
@@ -59,7 +59,7 @@ if(phase==='write'){
   console.log('WRITE_OK')
 }else if(phase==='read'){
   const list=chars.loadCharacters();if(list.length!==1)throw new Error('character count changed')
-  const c=list[0];if(c.species!=='Tordan'||c.status!=='unapproved'||c.currentHealth!==4)throw new Error('core character/Health state did not persist')
+  const c=list[0];if(c.species!=='Tordan'||c.status!=='unapproved'||c.currentHealth!==4||c.currentMana!==2||c.sheetAccent!=='#336699')throw new Error('core character/Health/Mana/accent state did not persist')
   const health=engine.healthCondition(c.currentHealth);if(health.label!=='Critical'||health.condition!==-2)throw new Error('Health Condition did not survive reload')
   if(c.talents.includes('Ward Guard'))throw new Error('retired Ward Guard survived normalization')
   const armor=c.equipment.find(x=>x.name==='Root Weave');if(!armor||armor.costWp!==700||!armor.detail.includes('+3')||!armor.detail.includes('-2'))throw new Error('current armor authority was not restored on reload')
@@ -83,7 +83,7 @@ if(phase==='write'){
   const list=chars.loadCharacters();if(list.length!==0)throw new Error('deleted premade character returned after reload')
   console.log('PREMADE_DELETE_PERSISTED')
 }else if(phase==='encounter-write'){
-  const saved=encounters.upsertEncounter(encounters.loadEncounters(),{id:'persist-encounter',name:'Persistence Encounter',objective:'Hold the bridge',partyCharacterIds:['legacy-character'],opponents:[{name:'Ghoul Pack',quantity:2}],traps:['Pitfall'],environments:['Wetlands'],environment:'Mire crossing',notes:'Regression check',status:'unapproved',creationComplete:true,locked:true,createdAt:'2026-09-11T00:00:00.000Z',updatedAt:'2026-09-11T00:00:00.000Z'});if(!saved.result.ok)throw new Error(saved.result.message)
+  const saved=encounters.upsertEncounter(encounters.loadEncounters(),{id:'persist-encounter',name:'Persistence Encounter',objective:'Hold the bridge',opponents:[{name:'Ghoul Pack',quantity:2}],traps:['Pitfall'],environments:['Wetlands'],environment:'Mire crossing',notes:'Regression check',status:'unapproved',creationComplete:true,locked:true,createdAt:'2026-09-11T00:00:00.000Z',updatedAt:'2026-09-11T00:00:00.000Z'});if(!saved.result.ok)throw new Error(saved.result.message)
   console.log('ENCOUNTER_WRITE_OK')
 }else if(phase==='encounter-read'){
   const list=encounters.loadEncounters();if(list.length!==1)throw new Error('encounter count changed')

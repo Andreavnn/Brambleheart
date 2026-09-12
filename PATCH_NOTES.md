@@ -1,23 +1,22 @@
-**Brambleheart Beta 0.06 — Character State & Watcher Foundations**
+**Brambleheart Beta 0.07 — Encounter Workflow & Sheet Controls**
 
-**Site Update — Beta 0.06**  
-**Game Update — v0.02, Bound Equipment**
+**Site Update — Beta 0.07**  
+**Game Update — v0.01, Launch Patch**
 
-- Adds persistent interactive Health to Rhythm Engine Character Sheets and applies the current Wounded, Critical, and Last Breath Conditions automatically to Dice Roller rolls for the selected character.
-- Expands Encounter Builder into an approval-oriented workflow with incomplete/unapproved/approved states, lock/unlock, approval, copy/edit/delete controls, and selectable trap/environment Battlefield foundations.
-- Refines Character Sheet identity, Threat Point, Skills, Trinkets, weapon/armor sizing, carried-item weight, Threadpiece, and spell Mana-breakdown presentation.
-- Restores Homeland Related Skills and Oath list consistency, improves Equipment tables and Durtlehide presentation, adds dynamic Lore links, corrects the Spell Range/Healing graphics, and restores the requested Watcher previous/next sequence.
-- Adds reusable Watcher monster-profile groundwork and the first complete Glop profile with Attributes, derived statistics, Actions, Special Rules, and Keywords.
-- Changes Scriptweave Book to bind its Mana reduction and added cooldown to one selected known Lore Spell, and establishes Durtlehide’s selected elemental Resistance rule.
-- Updates Selu of the Wandering Reeds’ campaign to **Verdant Secrets**.
-- Updates package/runtime/build/export/PWA/cache documentation metadata to Site Update Beta 0.06 and Game Update v0.02.
+- Rebuilds Encounter Builder into a roster-first management screen with a separate Create Encounter workflow and removes Party/match setup from encounter creation.
+- Adds complete source breakdowns to Dice Roller Recent Rolls, persistent Character Detail accent colors, and an interactive Character Sheet Mana Pool tracker.
+- Updates shield Mana Syphon, Wounded Health to 5–7, Scriptweave Book field presentation, and the Healing example grouping graphic.
+- Refines Glop’s profile presentation and adds Slick Trail and Gelatinous Body special rules.
+- Adds Creator to the global bottom action buttons and cleans Character Sheet summary labels.
+- Consolidates Bound Equipment into Game Update v0.01 Launch Patch; no v0.02 Game Update remains.
+- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.07.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.05
-- New version: 0.06
+- Previous version reviewed: 0.06
+- New version: 0.07
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: `npm run test:integrity` (passed); `npm run test:persistence` (passed); TypeScript/Vue script syntax transpilation across 67 source units (passed). Full `vue-tsc`/Vite production build not run because npm registry resolution failed with `EAI_AGAIN`.
-- Known unfinished work intentionally excluded: Full production build and live desktop/tablet/mobile browser verification could not be performed in this environment because project dependencies are not installed and npm registry resolution is unavailable.
+- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (67 source units). Full vue-tsc/Vite build not run because project dependencies are not bundled and npm registry access failed with EAI_AGAIN.
+- Known unfinished work intentionally excluded: None identified

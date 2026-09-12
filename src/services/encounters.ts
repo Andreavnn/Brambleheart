@@ -6,7 +6,6 @@ export interface EncounterRecord {
   id:string
   name:string
   objective:string
-  partyCharacterIds:string[]
   opponents:EncounterOpponent[]
   traps:string[]
   environments:string[]
@@ -29,7 +28,7 @@ function normalizeEncounter(value:Partial<EncounterRecord>):EncounterRecord{
   const now=new Date().toISOString(),creationComplete=encounterCreationComplete(value),status=encounterStatus({...value,creationComplete})
   return{
     id:String(value.id||''),name:String(value.name||'Untitled Encounter').trim()||'Untitled Encounter',objective:String(value.objective||'').trim(),
-    partyCharacterIds:cleanList(value.partyCharacterIds),opponents:(value.opponents||[]).map(cleanOpponent).filter((item):item is EncounterOpponent=>Boolean(item)),
+    opponents:(value.opponents||[]).map(cleanOpponent).filter((item):item is EncounterOpponent=>Boolean(item)),
     traps:cleanList(value.traps),environments:cleanList(value.environments),environment:String(value.environment||'').trim(),notes:String(value.notes||'').trim(),
     status,creationComplete,locked:Boolean(value.locked),createdAt:String(value.createdAt||now),updatedAt:String(value.updatedAt||now),
   }

@@ -26,6 +26,8 @@ const glopProfile:MonsterProfile={
     {name:'Sticky Splash',type:'Combat',text:'TARGET: One character within [3] squares. TO HIT: Make a Ranged Strike using Aim. DAMAGE: [2] Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['COMBAT','PROJECTILE','STRIKE']},
   ],
   specialRules:[
+    {name:'Slick Trail',text:'Every square the Glop moves through becomes Slick until the end of the round. Other characters must spend [+1] additional Speed to enter each Slick square.',keywords:['PASSIVE','MOVEMENT','TERRAIN']},
+    {name:'Gelatinous Body',text:'Reduce Direct damage suffered by the Glop by [-1], to a minimum of [0] damage after all other applicable reductions.',keywords:['PASSIVE','DEFENSE','DIRECT']},
     {name:'Amorphous',text:'The Glop can squeeze through narrow openings that could reasonably admit part of its body. It cannot use this rule to pass through solid barriers or occupy another creature’s space at the end of movement.',keywords:['PASSIVE','MOVEMENT']},
   ],
   keywords:['MONSTER','GLOP','OOZE','GENERIC'],

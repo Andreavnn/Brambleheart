@@ -1,19 +1,19 @@
-# Brambleheart TTRPG — Beta 0.06
+# Brambleheart TTRPG — Beta 0.07
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.06 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.07 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.06
+## Current Site Update — Beta 0.07
 
-- Character Sheets now persist interactive Health, apply current low-Health Conditions to selected-character Dice Roller rolls, show Threat Point totals, and use tighter equipment layouts with restored Skill/Trinket accents.
-- Encounter Builder now supports incomplete, unapproved, and approved records, lock/unlock and approval workflows, copying, selectable Battlefield trap/environment foundations, and local persistence.
-- Rules presentation now restores Homeland Skills, normalizes Oath cards, tightens Equipment tables, adds dynamic Lore links, corrects the Spell Range/Healing graphics, and links the five core Watcher pages through previous/next navigation.
-- The Watcher monster catalog now uses expandable categories and reusable profile pages; Glop is the first complete profile with Attributes, Actions, Special Rules, and Keywords.
-- Selu of the Wandering Reeds now uses the example campaign **Verdant Secrets**.
+- Encounter Builder now uses an Encounter Roster and a dedicated Create Encounter flow with Details, Monsters, Battlefield, and Review, while preserving approval, locking, copying, and local persistence.
+- Character Sheets add persistent Character Detail accent colors and an interactive Mana Pool tracker; Dice Roller history now records where each Stat, Skill, Condition, Health modifier, and equipment modifier came from.
+- Equipment and Health presentation now use the current shield Mana Syphon values, Wounded 5–7 range, separate Scriptweave Effect/Cooldown fields, and clearer Healing grouping.
+- Glop’s reusable monster profile now uses Character Sheet-style Attributes, centered Secondary Stats, action-card presentation, Slick Trail, and Gelatinous Body.
+- The global bottom action row now includes Creator between Share and Install.
 
-## Current Game Update — v0.02
+## Current Game Update — v0.01
 
-Game Update v0.02, **Bound Equipment**, updates Scriptweave Book and Durtlehide so each selected equipment effect has one explicit bound target. The consolidated v0.01 **Launch Patch** remains the prior rules baseline.
+Game Update v0.01, **Launch Patch**, is the consolidated current rules history, including the Scriptweave Book and Durtlehide binding rules.
 
 ### Current Rules Clarifications
 
@@ -21,7 +21,7 @@ Once per turn, before or after resolving another Core Combat Action, Arcane Comm
 
 Projectile weapons apply condition [-2] to Strike when attacking a target within [1] square. Skyfire deals an additional [2] Lethal damage to its target. Slashing deals [1] Lethal damage when its trigger is met.
 
-Health states use the most severe applicable threshold: Wounded at 5–8 Health, Critical at 3–4, Last Breath at 1–2, and Defeated at 0. A defeated character makes a Fate Roll on their next turn in the following round; [5–10] passes and [1–4] adds a Fate Mark. Restoring at least [1] Health removes all Fate Marks.
+Health states use the most severe applicable threshold: Wounded at 5–7 Health, Critical at 3–4, Last Breath at 1–2, and Defeated at 0. A defeated character makes a Fate Roll on their next turn in the following round; [5–10] passes and [1–4] adds a Fate Mark. Restoring at least [1] Health removes all Fate Marks.
 
 Threat Level is calculated from current character growth: Attribute ranks above 2, Skill ranks above 2, Talents, Magic Levels, and an optional +1 to +5 Watcher adjustment for exceptional gear contribute Threat Score. Group Threat is the sum of each party member’s Threat Level.
 
@@ -42,7 +42,7 @@ Trinkets behave as passive equipment. They do not use numbered Trinket positions
 Current Trinkets include Scriptweave Book, Caster Totem, Spell Charm, Driftwood Charm, Lens-Stone Arcanum, Shiny Bobble, Votive Icon, Heartward Token, Quickdraw Quiver, Featherwind Bolt-Case, Wristloop, and Journey Knot.
 
 - Journey Knot — while equipped and attached, condition `+1` to TO HIT rolls made with that weapon.
-- Scriptweave Book — while equipped, Magic Regen `[+1]`. Bind it to one known Lore Spell; only that Spell receives `[-1]` Mana, to the normal minimum of 1 Mana, and gains `COOLDOWN: [1d10/2+1] rounds` (or increases an existing `[1d10/2+X]` cooldown by `[+1]`).
+- Scriptweave Book — while equipped, Magic Regen `[+1]`. Bind it to one known Lore Spell; only that Spell receives `[-1]` Mana, to a minimum of 1 Mana, and gains `COOLDOWN: [1d10/2+1] rounds` (or increases an existing `[1d10/2+X]` cooldown by `[+1]`).
 - Caster Totem — while equipped, Control `+1`.
 - Spell Charm — once per round, increase one spell’s damage by `+1`.
 - Driftwood Charm — once per round, increase one healing Spell’s Health restoration by `[+1]` for one target.
@@ -100,10 +100,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.06`
-- package version: `0.06.0`
-- PWA cache: `v0.06`
-- Game Update: `v0.02`
+- Site Update / BUILD/export: `0.07`
+- package version: `0.07.0`
+- PWA cache: `v0.07`
+- Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 

@@ -1,3 +1,29 @@
+# Brambleheart Beta 0.07 — Encounter Workflow & Sheet Controls
+
+## Rhythm Engine
+
+- Rebuilds Encounter Builder around an Encounter Roster and a dedicated Create Encounter flow, matching the Character Roster/Create Character pattern; encounter creation now uses Details, Monsters, Battlefield, and Review without party/match setup.
+- Expands Dice Roller Recent Rolls with source-level breakdowns for Stats, Skills, manual Conditions, Health-state Conditions, Armor Penalty, and other applied modifiers.
+- Adds a persistent Character Sheet accent-color picker for Character Detail cards and an interactive Mana Pool tracker that grows in rows of ten with the character’s maximum Mana.
+- Refines Character Sheet labels for Skills, Talents, Equipment currency, item count, and weight.
+
+## Rules & Equipment
+
+- Consolidates Game Update history back into v0.01 Launch Patch and moves the Bound Equipment rules into that canonical entry.
+- Changes the Wounded Health range to 5–7 Health; 8 Health is Healthy.
+- Raises shield Mana Syphon to Sapguard [+1], Vinegrip [+2], and Ironwood Bulwark [+3].
+- Refines Scriptweave Book presentation so Effect and Cooldown are separate fields, removes “normal” from its minimum-Mana wording, and states that the selected Spell gains Cooldown.
+- Extends the Healing example’s grouping brackets to encompass Restore and Healing Condition more clearly.
+
+## Watcher & Navigation
+
+- Refines the Glop profile with Character Sheet-style Attribute boxes, centered Secondary Stats, Core Action-style Actions, Slick Trail terrain movement, and Gelatinous Body Direct-damage reduction.
+- Adds a Creator button to the global bottom action row between Share and Install.
+
+## Release Integrity
+
+- Updates Site Update/build/export/package/PWA metadata to Beta 0.07 while keeping the consolidated Game Update authority at v0.01.
+
 # Brambleheart Beta 0.06 — Character State & Watcher Foundations
 
 ## Rhythm Engine & Characters

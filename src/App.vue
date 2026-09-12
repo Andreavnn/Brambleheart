@@ -14,6 +14,7 @@ function reportIssue() {
   if (typeof window !== 'undefined') window.open(externalLinks.issues, '_blank', 'noopener,noreferrer')
 }
 function openDiscord(){if(typeof window!=='undefined')window.open(externalLinks.discord,'_blank','noopener,noreferrer')}
+function openCreator(){if(typeof window!=='undefined')window.open(externalLinks.creator,'_blank','noopener,noreferrer')}
 async function shareSite(){const result=await shareBrambleheart();if(!result.ok&&result.message!=='Share cancelled.')alert(result.message)}
 </script>
 
@@ -27,6 +28,7 @@ async function shareSite(){const result=await shareBrambleheart();if(!result.ok&
         <button type="button" class="secondary-button footer-tool-button" @click="reportIssue">Report</button>
         <button type="button" class="secondary-button footer-tool-button" @click="openDiscord">Discord</button>
         <button type="button" class="secondary-button footer-tool-button" @click="shareSite">Share</button>
+        <button type="button" class="secondary-button footer-tool-button" @click="openCreator">Creator</button>
         <button type="button" class="secondary-button footer-tool-button" :disabled="isInstalled" @click="requestInstall">{{ isInstalled ? 'Installed' : 'Install Brambleheart' }}</button>
       </div>
       <span class="page-utility-build">Brambleheart Beta Build {{ BUILD }}</span>

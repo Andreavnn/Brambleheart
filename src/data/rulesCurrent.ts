@@ -937,7 +937,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "When a character’s Health falls to [8] or less, they are Wounded and suffer condition [-1] to all dice rolls. At [4] or less Health, they are Critical and the condition becomes [-2]. At [2] or less Health, they are at Last Breath and the condition becomes [-3]. Use only the most severe Health state that applies."
+            "text": "When a character’s Health falls to [7] or less, they are Wounded and suffer condition [-1] to all dice rolls. At [4] or less Health, they are Critical and the condition becomes [-2]. At [2] or less Health, they are at Last Breath and the condition becomes [-3]. Use only the most severe Health state that applies."
           }
         ]
       },

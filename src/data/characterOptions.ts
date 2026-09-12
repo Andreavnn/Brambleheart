@@ -4,7 +4,7 @@ export interface SparkDetail { keywords:string[]; description:string }
 export interface HomelandDetail { description:string; skills:string[]; optionalReplacements:string[] }
 export interface SkillDefinition { name:string; attribute:string; restricted:boolean; expanded:boolean; description:string; example:string }
 export type GearShopGroup='Traveler’s Gear'|'Field Kits'|'Consumables'|'Trinkets'|'Tools'
-export interface GearShopItem { name:string; category:string; costText:string; costWp:number; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
+export interface GearShopItem { name:string; category:string; costText:string; costWp:number; costSp:number; detail:string; shopGroup?:GearShopGroup; description?:string; effect?:string; cooldown?:string; choices?:string[]; statBonuses?:EquipmentStatBonuses }
 
 export const sparkDetails: Record<string,SparkDetail> = {
   "Courageous": {
@@ -609,7 +609,7 @@ export const gearShopItems: GearShopItem[] = [
     "category": "Armor & Shield",
     "costText": "4 sp",
     "costSp": 4.0,
-    "detail": "1+ · +1 · 0 · 0 · 4 lb.",
+    "detail": "1+ · +1 · +1 · 0 · 4 lb.",
     "effect": "May be used while wielding a weapon in each hand; while doing so, suffer −1 to melee and ranged weapon Strike rolls. Its Guts Bonus, Mana Syphon, and Armor Penalty effects still apply.",
     "costWp": 200
   },
@@ -618,7 +618,7 @@ export const gearShopItems: GearShopItem[] = [
     "category": "Armor & Shield",
     "costText": "8 sp",
     "costSp": 8.0,
-    "detail": "2+ · +2 · +1 · -1 · 10 lb.",
+    "detail": "2+ · +2 · +2 · -1 · 10 lb.",
     "costWp": 400
   },
   {
@@ -626,7 +626,7 @@ export const gearShopItems: GearShopItem[] = [
     "category": "Armor & Shield",
     "costText": "18 sp",
     "costSp": 18.0,
-    "detail": "3+ · +3 · +2 · -2 · 18 lb.",
+    "detail": "3+ · +3 · +3 · -2 · 18 lb.",
     "costWp": 900
   },
   {
@@ -946,7 +946,8 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 12.0,
     "detail": "1 lb.",
     "description": "A prepared spellbook threaded with repeating sigils and bound to one learned Lore Spell.",
-    "effect": "While equipped, increase Magic Regen by [+1]. Choose one known Lore Spell and bind the book to it. That Spell costs [-1] Mana, to the normal minimum of [1] Mana, and gains COOLDOWN: [1d10/2+1] rounds. If the Spell already has a [1d10/2+X] cooldown, increase X by [+1].",
+    "effect": "While equipped, increase Magic Regen by [+1]. Choose one known Lore Spell and bind the book to it. That Spell costs [-1] Mana, to a minimum of [1] Mana, and gains Cooldown.",
+    "cooldown": "[1d10/2+1] rounds. If the Spell already has a [1d10/2+X] cooldown, increase X by [+1].",
     "shopGroup": "Trinkets",
     "costWp": 600
   },
