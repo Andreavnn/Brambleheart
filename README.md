@@ -1,19 +1,19 @@
-# Brambleheart TTRPG — Beta 0.07
+# Brambleheart TTRPG — Beta 0.08
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.07 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.08 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.07
+## Current Site Update — Beta 0.08
 
-- Encounter Builder now uses an Encounter Roster and a dedicated Create Encounter flow with Details, Monsters, Battlefield, and Review, while preserving approval, locking, copying, and local persistence.
-- Character Sheets add persistent Character Detail accent colors and an interactive Mana Pool tracker; Dice Roller history now records where each Stat, Skill, Condition, Health modifier, and equipment modifier came from.
-- Equipment and Health presentation now use the current shield Mana Syphon values, Wounded 5–7 range, separate Scriptweave Effect/Cooldown fields, and clearer Healing grouping.
-- Glop’s reusable monster profile now uses Character Sheet-style Attributes, centered Secondary Stats, action-card presentation, Slick Trail, and Gelatinous Body.
-- The global bottom action row now includes Creator between Share and Install.
+- Character Sheets use a compact rainbow accent control beside Character Name, a centered Mana Pool tracker that wraps at ten cells per row, and Rules-style carried-equipment cards.
+- Display Settings replace the old Character Creation Tips option with **Menus Expanded**, which expands collapsible menus site-wide when enabled and otherwise leaves each menu at its normal default state.
+- Rules presentation refines equipment-table proportions/alignment, Species and Known Spells typography, Lore accent colors, Core/Heritage/Cultural pills, Spell Range visibility, Healing braces, and Adventurer Oath presentation.
+- Glop now uses the shared Character Sheet Attribute presentation, collapsible Actions/Special Rules, cleaned action/passive pills, and the new Reconstitute Instinct action.
+- Talent presentation and canonical Talent data are synchronized with the current role moves, Sure Paw rename, Rooted Paws retirement, prerequisite/cost/cooldown changes, and revised keyword presentation.
 
 ## Current Game Update — v0.01
 
-Game Update v0.01, **Launch Patch**, is the consolidated current rules history, including the Scriptweave Book and Durtlehide binding rules.
+Game Update v0.01, **Launch Patch**, is the consolidated current rules history, including current equipment bindings, Health thresholds, Species tuning, advancement, Talents, and starter monster rules.
 
 ### Current Rules Clarifications
 
@@ -100,9 +100,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.07`
-- package version: `0.07.0`
-- PWA cache: `v0.07`
+- Site Update / BUILD/export: `0.08`
+- package version: `0.08.0`
+- PWA cache: `v0.08`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

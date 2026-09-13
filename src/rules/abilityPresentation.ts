@@ -4,6 +4,7 @@ export function canonicalAbilityType(value:string){
   const normalized=value.trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ')
   if(!normalized)return''
   if(/^reaction$/i.test(normalized))return'Reactive'
+  if(/^core action$/i.test(normalized))return'Core'
   if(/^movement$/i.test(normalized))return'Move'
   if(/^melee$/i.test(normalized))return'Touch'
   return normalized.split(' ').map(word=>word?word[0].toUpperCase()+word.slice(1).toLowerCase():'').join(' ')
@@ -37,7 +38,7 @@ export function traitPillKeywords(values:string[]|undefined,kind:'Heritage'|'Cul
   const active=activeAbilityKeywords(values)
   const types=abilityTypeKeywords(active)
   const canonicalActive=active.map(canonicalAbilityType)
-  if(kind==='Cultural'&&(grantsSkill||canonicalActive.includes('Skill')))return['Skill','Cultural','Trait']
+  if(kind==='Cultural'&&(grantsSkill||canonicalActive.includes('Skill')))return['Skill','Cultural']
 
   const structural=new Set(['Ability','Trait','Heritage','Cultural','Culture','Heritage Trait','Culture Trait','Cultural Trait'])
   const remaining=active.filter(value=>{
@@ -45,11 +46,11 @@ export function traitPillKeywords(values:string[]|undefined,kind:'Heritage'|'Cul
     return !ABILITY_TYPE_KEYWORDS.has(canonical)&&!structural.has(canonical)&&canonical.toLowerCase()!==speciesName.trim().toLowerCase()
   })
   const includeAbility=!types.includes('Passive')
-  return Array.from(new Set([...(includeAbility?['Ability']:[]),...types,...remaining,kind,'Trait',...(speciesName?[speciesName]:[])]))
+  return Array.from(new Set([...(includeAbility?['Ability']:[]),...types,...remaining,kind,...(kind==='Heritage'&&speciesName?[speciesName]:[])]))
 }
 
 export function isAbilityTypeKeyword(value:string){return ABILITY_TYPE_KEYWORDS.has(canonicalAbilityType(value))}
 export function abilityTypeClass(value:string){return`type-${canonicalAbilityType(value).toLowerCase().replace(/[^a-z0-9]+/g,'-')}`}
 export function abilityPillLabel(value:string){const type=canonicalAbilityType(value);return type==='Core'?'CORE':type.toUpperCase()}
 export function abilityFeaturePillClass(value:string){const canonical=canonicalAbilityType(value);if(canonical==='Ability')return['ability-cost-pill','type-ability'];return ABILITY_TYPE_KEYWORDS.has(canonical)?['ability-cost-pill',abilityTypeClass(canonical)]:['keyword-pill']}
-export function abilityFeaturePillLabel(value:string){const canonical=canonicalAbilityType(value);return canonical==='Ability'?'ABILITY':ABILITY_TYPE_KEYWORDS.has(canonical)?abilityPillLabel(canonical):canonical.toUpperCase()}
+export function abilityFeaturePillLabel(value:string){const canonical=canonicalAbilityType(value);if(canonical==='Ability')return'ABILITY';if(canonical==='Cultural')return'Cultural';if(canonical==='Heritage')return'HERITAGE';return ABILITY_TYPE_KEYWORDS.has(canonical)?abilityPillLabel(canonical):canonical.toUpperCase()}

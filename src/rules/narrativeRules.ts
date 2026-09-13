@@ -3,6 +3,7 @@ import { ruleSourceDocuments } from '../data/rulesCurrent'
 export interface NarrativeDetail {
   intro:string
   creed:string
+  oath:string
   practices:string[]
   taboos:string[]
   signs:string
@@ -20,18 +21,19 @@ export function sourceNarrativeParagraphs(documentKey:string,heading:string){
 
 export function sourceNarrativeDescription(documentKey:string,heading:string){
   return sourceNarrativeParagraphs(documentKey,heading)
-    .filter(text=>!/^(Creed|Practices|Taboos|Signs|Conflict Hook|Voice|Virtue|Strain):?/i.test(text))
+    .filter(text=>!/^(Creed|Oath|Practices|Taboos|Signs|Conflict Hook|Voice|Virtue|Strain):?/i.test(text))
     .slice(0,3)
     .join(' ')
 }
 
 export function narrativeRuleDetail(documentKey:string,heading:string):NarrativeDetail{
-  const detail:NarrativeDetail={intro:'',creed:'',practices:[],taboos:[],signs:'',conflictHook:'',voice:'',virtue:'',strain:''}
+  const detail:NarrativeDetail={intro:'',creed:'',oath:'',practices:[],taboos:[],signs:'',conflictHook:'',voice:'',virtue:'',strain:''}
   const intro:string[]=[]
   let mode:'intro'|'practices'|'taboos'='intro'
   for(const raw of sourceNarrativeParagraphs(documentKey,heading)){
     const text=raw.trim()
     let match=text.match(/^Creed:\s*(.*)$/i);if(match){detail.creed=match[1].trim();mode='intro';continue}
+    match=text.match(/^Oath:\s*(.*)$/i);if(match){detail.oath=match[1].trim();mode='intro';continue}
     if(/^Practices:\s*$/i.test(text)){mode='practices';continue}
     if(/^Taboos:\s*$/i.test(text)){mode='taboos';continue}
     match=text.match(/^Signs:\s*(.*)$/i);if(match){detail.signs=match[1].trim();mode='intro';continue}
@@ -43,7 +45,7 @@ export function narrativeRuleDetail(documentKey:string,heading:string):Narrative
     else if(mode==='taboos')detail.taboos.push(text)
     else intro.push(text)
   }
-  if(documentKey==='oath'&&!detail.creed&&intro.length){
+  if(documentKey==='oath'&&!detail.creed&&!detail.oath&&intro.length){
     const first=intro[0]
     if(/^["“].+["”]$/.test(first)){detail.creed=first.replace(/^["“]|["”]$/g,'').trim();intro.shift()}
   }

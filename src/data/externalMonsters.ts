@@ -1,6 +1,6 @@
-export interface MonsterAction { name:string; type:'Move'|'Combat'|'Reaction'|'Instinct'; text:string; keywords:string[] }
+export interface MonsterAction { name:string; type:'Move'|'Touch'|'Shoot'|'Instinct'; text:string; keywords:string[] }
 export interface MonsterSpecialRule { name:string; text:string; keywords:string[] }
-export interface MonsterProfile { threatLevel:number; threatPoints:number; health:number; attributes:{agility:number;might:number;hide:number;lore:number;bravery:number}; actions:MonsterAction[]; specialRules:MonsterSpecialRule[]; keywords:string[] }
+export interface MonsterProfile { threatLevel:number; threatPoints:number; health:number; attributes:{agility:number;might:number;hide:number;lore:number;bravery:number}; actions:MonsterAction[]; specialRules:MonsterSpecialRule[] }
 export interface ExternalMonsterEntry { name:string; category:string; group?:string; summary:string; placeholder?:boolean; profile?:MonsterProfile }
 
 const categorySummary:Record<string,string>={
@@ -21,16 +21,16 @@ const glopProfile:MonsterProfile={
   threatLevel:1,threatPoints:8,health:18,
   attributes:{agility:1,might:2,hide:2,lore:1,bravery:1},
   actions:[
-    {name:'Slosh',type:'Move',text:'MOVE: Move up to the Glop’s Speed. The Glop may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['MOVE','MONSTER']},
-    {name:'Gelatinous Bash',type:'Combat',text:'TARGET: One character within Touch. TO HIT: Make a Melee Strike using Brawl. DAMAGE: [3] + Fury Standard damage.',keywords:['COMBAT','TOUCH','STRIKE']},
-    {name:'Sticky Splash',type:'Combat',text:'TARGET: One character within [3] squares. TO HIT: Make a Ranged Strike using Aim. DAMAGE: [2] Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['COMBAT','PROJECTILE','STRIKE']},
+    {name:'Slosh',type:'Move',text:'MOVE: Move up to the Glop’s Speed. The Glop may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
+    {name:'Gelatinous Bash',type:'Touch',text:'TARGET: One character within Touch. TO HIT: Make a Melee Strike using Brawl. DAMAGE: [3] + Fury Standard damage.',keywords:['CORE']},
+    {name:'Sticky Splash',type:'Shoot',text:'TARGET: One character within [3] squares. TO HIT: Make a Ranged Strike using Aim. DAMAGE: [2] Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['CORE','SHOOT']},
+    {name:'Reconstitute',type:'Instinct',text:'START OF ROUND: If the Glop is below half Health, roll [1d10]. On [6+], restore [1] Health.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
   ],
   specialRules:[
-    {name:'Slick Trail',text:'Every square the Glop moves through becomes Slick until the end of the round. Other characters must spend [+1] additional Speed to enter each Slick square.',keywords:['PASSIVE','MOVEMENT','TERRAIN']},
-    {name:'Gelatinous Body',text:'Reduce Direct damage suffered by the Glop by [-1], to a minimum of [0] damage after all other applicable reductions.',keywords:['PASSIVE','DEFENSE','DIRECT']},
+    {name:'Slick Trail',text:'Every square the Glop moves through becomes Slick until the end of the round. Other characters must spend [+1] additional Speed to enter each Slick square.',keywords:['PASSIVE','MOVEMENT']},
+    {name:'Gelatinous Body',text:'Reduce Direct damage suffered by the Glop by [-1], to a minimum of [0] damage after all other applicable reductions.',keywords:['PASSIVE']},
     {name:'Amorphous',text:'The Glop can squeeze through narrow openings that could reasonably admit part of its body. It cannot use this rule to pass through solid barriers or occupy another creature’s space at the end of movement.',keywords:['PASSIVE','MOVEMENT']},
   ],
-  keywords:['MONSTER','GLOP','OOZE','GENERIC'],
 }
 
 export const externalMonsters:ExternalMonsterEntry[]=[

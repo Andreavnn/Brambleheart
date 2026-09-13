@@ -1519,11 +1519,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "The Adventurer Oath is the default for characters who do not choose another Oath. It carries no Virtue, Strain, restriction, or mechanical expectation."
-          },
-          {
-            "type": "paragraph",
-            "text": "It represents a personal moral rhythm shaped by the character’s own choices, doubts, convictions, and interpretation of the world."
+            "text": "Oath: The Adventurer Oath is the default for characters who do not choose another Oath. It carries no Virtue, Strain, restriction, or mechanical expectation. It represents a personal moral rhythm shaped by the character’s own choices, doubts, convictions, and interpretation of the world."
           }
         ]
       },
@@ -2509,7 +2505,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: You may wield one two-handed weapon in each hand. While doing so, the normal Dual Wielding Strike penalty is increased to a total condition [-4] before any other Talents, weapon qualities, or conditions are applied; do not add the normal [-2] Dual Wielding penalty again. You also suffer condition [-2] to Ward rolls.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "EFFECT: You may wield one two-handed weapon in each hand. While doing so, the normal Dual Wielding Strike penalty is increased to a total condition [-4] before any other Talents, weapon qualities, or conditions are applied; do not add the normal [-2] Dual Wielding penalty again. You also suffer condition [-2] to Ward rolls.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -2548,7 +2544,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: While wielding a one-handed weapon in each hand, gain condition [+1] to melee Strike rolls.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "EFFECT: While wielding a one-handed weapon in each hand, gain condition [+1] to melee Strike rolls.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -2561,7 +2557,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When using Melee Strike against an enemy wielding a weapon.\nEFFECT: If your TO HIT result exceeds the target’s Ward result by [5+] and the Strike successfully deals damage, knock one weapon they are wielding into a square of your choice within [2] squares.\nPICK UP: A character may retrieve the weapon by moving within, into, or through [1] square of its location.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "TRIGGER: When using Melee Strike against an enemy wielding a weapon.\nEFFECT: If your TO HIT result exceeds the target’s Ward result by [5+] and the Strike successfully deals damage, knock one weapon they are wielding into a square of your choice within [2] squares.\nPICK UP: A character may retrieve the weapon by moving within, into, or through [1] square of its location.\nKEYWORDS: TOUCH | TALENT"
           }
         ]
       },
@@ -2652,7 +2648,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: Successfully dealing damage with Melee Strike while wielding a shield.\nEFFECT: Force the target [1] square directly away from you and deal [1] Lethal damage to them.\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "TRIGGER: Successfully dealing damage with Melee Strike while wielding a shield.\nEFFECT: Force the target [1] square directly away from you and deal [1] Lethal damage to them.\nKEYWORDS: TOUCH | TALENT"
           }
         ]
       },
@@ -2665,7 +2661,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When using Melee Strike while wielding a single two-handed weapon.\nEFFECT: On an Exceptional Result [8+], increase the total damage dealt by [+3].\nOPEN DEFENCE: Reduce your Ward and Guts by [-3] until the start of your next turn.\nREQUIRES: Warhowl Talent\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "TRIGGER: When using Melee Strike while wielding a single two-handed weapon.\nEFFECT: On an Exceptional Result [8+], increase the total damage dealt by [+3].\nOPEN DEFENCE: Reduce your Ward and Guts by [-3] until the start of your next turn.\nREQUIRES: Warhowl Talent\nKEYWORDS: TOUCH | TALENT"
           }
         ]
       },
@@ -2691,7 +2687,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When you cast a spell that restores Health or grants an Enhance.\nEFFECT: One character affected by that spell gains condition [+1] to their next Attribute Save.\nKEYWORDS: PASSIVE | MAGIC | TALENT"
+            "text": "TRIGGER: When you cast a spell that restores Health or grants an Enhance.\nEFFECT: One character affected by that spell gains condition [+1] to their next Attribute Save until the end of the round.\nKEYWORDS: PASSIVE | MAGIC | TALENT"
           }
         ]
       },
@@ -2769,7 +2765,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When a ranged Strike achieves an Exceptional Result [8+].\nEFFECT: Increase the total damage by [+1]. If the weapon deals Lethal damage, increase the total damage by [+2] instead.\nKEYWORDS: PASSIVE | SHOOT | TALENT"
+            "text": "TRIGGER: When a ranged Strike achieves an Exceptional Result [8+].\nEFFECT: Increase the total damage by [+1]. If the weapon deals Lethal damage, increase the total damage by [+2] instead.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -2821,7 +2817,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: Before making a roll.\nEFFECT: You may make that roll Edged. If you do, your next roll of any type is Weighted.\nCOOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.\nKEYWORDS: REACTIVE | TALENT"
+            "text": "TRIGGER: Before making a roll.\nEFFECT: You may make that roll Edged. If you do, your next roll of any type is Weighted.\nCOOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.\nREQUIRES: Jumpstart Talent\nKEYWORDS: REACTIVE | TALENT"
           }
         ]
       },
@@ -2860,7 +2856,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When an ally within [3] squares moves as part of a Combat ability.\nEFFECT: Move up to [1] square. If you end within [1] square of that ally, you both gain condition [+1] to your next Strike roll against the enemy targeted by the triggering Combat ability until the end of the round.\nKEYWORDS: REACTIVE | TALENT"
+            "text": "COST: [1] Mana\nTRIGGER: When an ally within [3] squares moves as part of a Combat ability.\nEFFECT: Move up to [1] square. If you end within [1] square of that ally, you both gain condition [+1] to your next Strike roll against the enemy targeted by the triggering Combat ability until the end of the round.\nKEYWORDS: REACTIVE | TALENT"
           }
         ]
       },
@@ -2899,7 +2895,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When the first spell you cast each round from your attuned Lore is successful.\nEFFECT: Restore [1] Mana.\nKEYWORDS: PASSIVE | MAGIC | TALENT"
+            "text": "TRIGGER: When the first spell you cast each round from your attuned Lore is successful.\nEFFECT: Restore [1] Mana.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -2951,20 +2947,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "EFFECT: While wielding a one-handed weapon in each hand, increase damage successfully dealt by Melee Strike by [+1].\nREQUIRES: Bond Of Blades Talent\nKEYWORDS: PASSIVE | TOUCH | TALENT"
-          }
-        ]
-      },
-      {
-        "heading": "ROOTED PAWS",
-        "blocks": [
-          {
-            "type": "paragraph",
-            "text": "You seize control of every struggle, bending your foe’s strength against them."
-          },
-          {
-            "type": "paragraph",
-            "text": "TRIGGER: When you use the Grapple ability or are the target of the Grapple ability.\nEFFECT: Gain condition [+2] to Grapple rolls and apply condition [-2] to the opposing Grapple roll.\nKEYWORDS: COMBAT | PHYSICAL | TALENT"
+            "text": "EFFECT: While wielding a one-handed weapon in each hand, increase damage successfully dealt by Melee Strike by [+1].\nREQUIRES: Bond Of Blades Talent\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -2977,7 +2960,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] Mana\nTRIGGER: When you fail an Attribute Save.\nEFFECT: Reroll the Attribute Save with condition [-1]. You must use the new result.\nKEYWORDS: REACTIVE | TALENT"
+            "text": "TRIGGER: When you fail an Attribute Save.\nEFFECT: Reroll the Attribute Save with condition [-1]. You must use the new result.\nCOOLDOWN: This Talent cannot be used again for [1d10/2] rounds.\nKEYWORDS: REACTIVE | TALENT"
           }
         ]
       },
@@ -3081,7 +3064,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When a spell cast through Arcane Command is successful.\nEFFECT: Move up to [2] squares.\nRESTRICTIONS: This movement cannot end within [2] squares of an enemy unless another rule allows it.\nKEYWORDS: MAGIC | TALENT"
+            "text": "TRIGGER: When a spell cast through Arcane Command is successful.\nEFFECT: Move up to [2] squares.\nRESTRICTIONS: This movement cannot end within [2] squares of an enemy unless another rule allows it.\nKEYWORDS: MOVE | TALENT"
           }
         ]
       },
@@ -3125,7 +3108,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "SURE HAND",
+        "heading": "SURE PAW",
         "blocks": [
           {
             "type": "paragraph",
@@ -3146,7 +3129,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: After a spell cast through Arcane Command is successful.\nEFFECT: You may cast one additional known non-Signature spell as part of the same Arcane Command. Increase that spell’s Mana cost by [+4].\nCOOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.\nKEYWORDS: MAGIC | TALENT"
+            "text": "TRIGGER: After a spell cast through Arcane Command is successful.\nEFFECT: You may cast one additional known non-Signature spell as part of the same Arcane Command. Increase that spell’s Mana cost by [+3].\nCOOLDOWN: This Talent cannot be used again for [1d10/2+1] rounds.\nKEYWORDS: MAGIC | TALENT"
           }
         ]
       },
@@ -3190,7 +3173,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         ]
       },
       {
-        "heading": "TWIN LINKED",
+        "heading": "TWIN-LINKED",
         "blocks": [
           {
             "type": "paragraph",
@@ -3224,7 +3207,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "TRIGGER: When you reduce an enemy to [0] Health.\nEFFECT: Allies within [3] squares gain condition [+1] to their next Attribute Save or Ward roll, whichever occurs first.\nKEYWORDS: PASSIVE | TALENT"
+            "text": "TRIGGER: When you reduce an enemy to [0] Health.\nEFFECT: Allies within [3] squares gain condition [+1] to their next Attribute Save or Ward roll, whichever occurs first.\nRESTRICTIONS: A character cannot be affected by multiple instances of Victory Roar from different sources.\nKEYWORDS: PASSIVE | TALENT"
           }
         ]
       },
@@ -3250,7 +3233,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "COST: [2] Mana\nTRIGGER: Successfully dealing damage with the additional Strike granted by Wildchain.\nEFFECT: Move up to [1] square and make one additional melee Strike against a different enemy with condition [-4] to the TO HIT roll.\nRESTRICTIONS: The target cannot have been targeted by the triggering Melee Strike, Cleave, or Wildchain.\nREQUIRES: Wildchain Talent\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "COST: [2] Mana\nTRIGGER: Successfully dealing damage with the additional Strike granted by Wildchain.\nEFFECT: Move up to [1] square and make one additional melee Strike against a different enemy with condition [-4] to the TO HIT roll.\nRESTRICTIONS: The target cannot have been targeted by the triggering Melee Strike, Cleave, or Wildchain.\nREQUIRES: Wildchain Talent\nKEYWORDS: TOUCH | TALENT"
           }
         ]
       },
@@ -3263,7 +3246,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "COST: [1] Mana\nTRIGGER: Successfully dealing damage with the additional Strike granted by Cleave.\nEFFECT: Move up to [1] square and make an additional melee Strike against a different enemy with condition [-2] to the TO HIT roll. If successful, deal an additional [2] Lethal damage.\nRESTRICTIONS: The target cannot have been targeted by the triggering Melee Strike or Cleave.\nREQUIRES: Cleave Talent\nKEYWORDS: PASSIVE | TOUCH | TALENT"
+            "text": "COST: [1] Mana\nTRIGGER: Successfully dealing damage with the additional Strike granted by Cleave.\nEFFECT: Move up to [1] square and make an additional melee Strike against a different enemy with condition [-2] to the TO HIT roll. If successful, deal an additional [2] Lethal damage.\nRESTRICTIONS: The target cannot have been targeted by the triggering Melee Strike or Cleave.\nREQUIRES: Cleave Talent\nKEYWORDS: TOUCH | TALENT"
           }
         ]
       },

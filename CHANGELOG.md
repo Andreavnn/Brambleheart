@@ -1,3 +1,22 @@
+# Brambleheart Beta 0.08 — Talent Pass & Reference Polish
+
+## Character Sheet & Settings
+
+- Replaces the Character Detail color input with a compact rainbow-wheel icon beside Character Name, refines the interactive Mana Pool tracker to match Health presentation and wrap in centered rows of ten, and renders carried equipment with the same descriptive card structure used by the Rules reference.
+- Replaces the Character Creation-only Tips switch with **Menus Expanded**, a site-wide Display option that expands collapsible menus when enabled while preserving each menu’s normal default when disabled; the switch defaults off.
+
+## Rules Reference & Presentation
+
+- Refines Weapon, Armor, and Shield table proportions, centers compact stat columns, removes Touch from non-Thrown melee Range cells, aligns Known Spells table data, and normalizes Playable Species expandable-title sizing.
+- Standardizes shared pill presentation so Core Actions render as `CORE`, Heritage traits as `HERITAGE`, and Cultural traits as `Cultural`, without the redundant `TRAIT` or Species pill on Cultural traits.
+- Updates Lore accent presentation, makes the Spell Range Orb overlay fully transparent around its visible Point of origin, and replaces the Healing example parentheses with taller braces around Restore and Healing Condition.
+- Reworks the Glop profile to reuse the Character Sheet Attribute presentation and puts Actions and Special Rules into normal expandable sections while removing the redundant profile-keyword footer.
+- Corrects the Adventurer Oath card so its quoted vow is presented as descriptive copy and its explanatory rule text occupies the Oath detail field.
+
+## Release Integrity
+
+- Updates Site Update/build/export/package/PWA metadata to Beta 0.08 while retaining the consolidated Game Update authority at v0.01.
+
 # Brambleheart Beta 0.07 — Encounter Workflow & Sheet Controls
 
 ## Rhythm Engine
@@ -10,9 +29,7 @@
 ## Rules & Equipment
 
 - Consolidates Game Update history back into v0.01 Launch Patch and moves the Bound Equipment rules into that canonical entry.
-- Changes the Wounded Health range to 5–7 Health; 8 Health is Healthy.
-- Raises shield Mana Syphon to Sapguard [+1], Vinegrip [+2], and Ironwood Bulwark [+3].
-- Refines Scriptweave Book presentation so Effect and Cooldown are separate fields, removes “normal” from its minimum-Mana wording, and states that the selected Spell gains Cooldown.
+- Separates Scriptweave Book Effect and Cooldown into distinct equipment-reference fields for clearer scanning.
 - Extends the Healing example’s grouping brackets to encompass Restore and Healing Condition more clearly.
 
 ## Watcher & Navigation
@@ -43,10 +60,6 @@
 - Links Building Encounters, Critters & Companions, Traps & Environments, Monsters, and Rewards together through Watcher previous/next navigation and updates the Individual Threat worked example to use Selu’s current character data.
 - Converts Monster categories into expandable menus and establishes reusable monster profile pages with Attributes, derived stats, Actions, Special Rules, and Keywords; Glop receives the first complete starter-scale profile.
 
-## Game Changes
-
-- Changes Scriptweave Book so its Mana reduction applies only to one selected known Lore Spell. The bound Spell also gains `COOLDOWN: [1d10/2+1] rounds`; an existing `[1d10/2+X]` cooldown increases X by [+1].
-- Establishes Durtlehide’s purchase choice as one elemental damage type and grants Resistance [+2] against that selected type while Durtlehide is equipped.
 
 # Brambleheart Beta 0.05 — Stability & Encounter Foundations
 
@@ -55,10 +68,6 @@
 - Adds Selu of the Wandering Reeds as a complete, approved premade character in Character Roster. Selu can be edited, copied, exported, or deleted like a user character, and the built-in example is seeded only once so a deleted copy does not return on reload.
 - Starts the Rhythm Engine Encounter Builder with a Character Creation-style workflow for encounter details, party selection, opposition, battlefield notes, review, local save/edit/delete, current roster selection, Watcher creature selection, and Group Threat display.
 
-## Game Changes
-
-- Adds Sea of Roots as a playable Homeland with Herbalry and Wayfinding, completes Selu with the Mercy Oath, Harmony/Invocation spell choices, Corakish, and current canonical equipment, and standardizes the armor name to Leafstitch while retaining the former spelling only as a legacy-import alias.
-- Adds Driftwood Charm to Trinkets. Once per round, one healing Spell cast by its wearer restores [+1] additional Health to one target.
 
 ## Rules Reference
 
@@ -104,11 +113,6 @@
 - Clarifies Dual Wielding and Beastgrasp, retires Ward Guard, and makes Turnstrike use a rounded-up minimum Ward bonus.
 - Clarifies damage resolution by keeping Standard, Direct, and Lethal as Damage Categories and treating On-Going as a recurring-damage qualifier that retains its stated category without repeating normal damage additions.
 
-## Game Changes
-
-- Slows Experience progression to 7–10 XP per typical session, modestly raises advancement costs, and limits Spark-aligned kept Deeds to one [+1] bonus XP award per session.
-- Tunes Tordan Steady Pace, Cethra Poised Reflex, Rivkan Double Lilly, Auravex Cycle Of The Beast, Braelor Thunderstep, and Urnath Frostwalker.
-- Retires the obsolete six-Attribute Encounter Rating calculation in favor of the current Threat Level framework pending its dedicated Watcher rules pass.
 
 # Brambleheart Beta 0.02 — Unified Rules Architecture
 
