@@ -8,7 +8,10 @@ export type LogoSize='smallest'|'small'|'normal'|'large'|'largest'
 export type RoleTheme='default'|'warrior'|'healer'|'ranger'|'thief'
 export type BackgroundChoice=string
 
+const SETTINGS_SCHEMA_VERSION=2
+
 type SettingsState={
+  settingsVersion:number
   darkMode:boolean
   compactRows:boolean
   fontSize:FontSize
@@ -23,6 +26,7 @@ type SettingsState={
 }
 
 const defaults:SettingsState={
+  settingsVersion:SETTINGS_SCHEMA_VERSION,
   darkMode:false,
   compactRows:false,
   fontSize:'normal',
@@ -67,7 +71,9 @@ function loadSettings():SettingsState{
     const saved=JSON.parse(readLocalStorage(SETTINGS_STORE)||'{}')
     const legacyTheme=saved.theme
     const inferredDark=typeof saved.darkMode==='boolean'?saved.darkMode:legacyTheme==='dark'
+    const settingsVersion=Number(saved.settingsVersion||0)
     return{
+      settingsVersion:SETTINGS_SCHEMA_VERSION,
       darkMode:Boolean(inferredDark),
       compactRows:Boolean(saved.compactRows??saved.compact),
       fontSize:normalizeFontSize(saved.fontSize??saved.text),
@@ -78,7 +84,7 @@ function loadSettings():SettingsState{
       backgroundGrayscale:Boolean(saved.backgroundGrayscale),
       bootAudio:saved.bootAudio!==false,
       measurement:normalizeMeasurement(saved.measurement),
-      menusExpanded:Boolean(saved.menusExpanded??saved.creationTips??false),
+      menusExpanded:settingsVersion>=SETTINGS_SCHEMA_VERSION?Boolean(saved.menusExpanded):false,
     }
   }catch{return{...defaults}}
 }

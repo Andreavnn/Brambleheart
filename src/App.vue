@@ -10,9 +10,34 @@ import { useSettings } from './state/settings'
 const route = useRoute()
 const {menusExpanded}=useSettings()
 let menuObserver:MutationObserver|null=null
-function expandCollapsibleMenus(){if(typeof document==='undefined'||!menusExpanded.value)return;document.querySelectorAll<HTMLDetailsElement>('details').forEach(menu=>{menu.open=true})}
-watch([menusExpanded,()=>route.fullPath],async()=>{await nextTick();expandCollapsibleMenus()},{immediate:true})
-onMounted(()=>{if(typeof MutationObserver==='undefined'||typeof document==='undefined')return;menuObserver=new MutationObserver(()=>expandCollapsibleMenus());menuObserver.observe(document.body,{childList:true,subtree:true});expandCollapsibleMenus()})
+let menusWereExpanded=false
+const menuDefaultOpen=new WeakMap<HTMLDetailsElement,boolean>()
+function syncCollapsibleMenus(){
+  if(typeof document==='undefined')return
+  const menus=Array.from(document.querySelectorAll<HTMLDetailsElement>('details'))
+  if(menusExpanded.value){
+    for(const menu of menus){
+      if(!menuDefaultOpen.has(menu))menuDefaultOpen.set(menu,menu.open)
+      menu.open=true
+    }
+    menusWereExpanded=true
+    return
+  }
+  if(!menusWereExpanded)return
+  for(const menu of menus){
+    const defaultOpen=menuDefaultOpen.get(menu)
+    if(defaultOpen!==undefined)menu.open=defaultOpen
+    menuDefaultOpen.delete(menu)
+  }
+  menusWereExpanded=false
+}
+watch([menusExpanded,()=>route.fullPath],async()=>{await nextTick();syncCollapsibleMenus()},{immediate:true})
+onMounted(()=>{
+  if(typeof MutationObserver==='undefined'||typeof document==='undefined')return
+  menuObserver=new MutationObserver(()=>syncCollapsibleMenus())
+  menuObserver.observe(document.body,{childList:true,subtree:true})
+  syncCollapsibleMenus()
+})
 onBeforeUnmount(()=>menuObserver?.disconnect())
 const showGlobalPageTools = computed(() => route.name !== 'welcome')
 
