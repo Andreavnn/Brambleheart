@@ -315,7 +315,7 @@ const workedSeluThreat=workedSelu?characterThreatBreakdown({attributeRanks:attri
                   <div class="talent-detail-head"><div><h2>{{ talent }}</h2></div><div class="talent-head-actions"><span v-if="manaCostFromRule(talentRuleText(talent))!==null" class="mana-badge">{{ manaCostFromRule(talentRuleText(talent)) }} Mana</span></div></div>
                   <p v-if="structuredRule(talentRuleText(talent)).intro" class="rule-flavor"><em>{{ structuredRule(talentRuleText(talent)).intro }}</em></p>
                   <div v-if="visibleRuleFields(talentRuleText(talent)).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(talentRuleText(talent))" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div>
-                  <div class="keyword-pill-row"><span v-for="keyword in talentFeaturePillKeywords(talent.name,talentRuleKeywords(talent))" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div>
+                  <div class="keyword-pill-row"><span v-for="keyword in talentFeaturePillKeywords(talent,talentRuleKeywords(talent))" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div>
                 </article>
               </div>
             </details>
