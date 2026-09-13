@@ -836,7 +836,7 @@ body{font-size:calc(14px + var(--font-offset));}
 .rule-flavor{margin:5px 0 8px;color:var(--ink-soft);font-style:italic;line-height:1.48;font-weight:400;}.rule-breakdown-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0;}.rule-breakdown-grid>div{padding:7px 8px;border:1px solid var(--line);border-radius:7px;background:var(--paper);}.rule-breakdown-grid small{display:block;margin-bottom:2px;color:var(--accent-dark);font-size:calc(8.5px + var(--font-offset));font-weight:900;letter-spacing:.07em;}.rule-breakdown-grid span{font-size:calc(11px + var(--font-offset));line-height:1.4;font-weight:400;}
 .identity-fields{margin-bottom:12px;}.textarea-control{min-height:92px;resize:vertical;}.faith-oath-column{display:grid;gap:13px;}.skill-rank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}.skill-rank-grid article{display:flex;justify-content:space-between;gap:8px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--paper);}
 .path-choice-title{font-size:calc(22px + var(--font-offset));line-height:1.05;}.lore-fluff-card{margin-top:10px;}
-.spell-detail-card{--spell-lore:#6d6b66;--rule-tone:var(--spell-lore);}
+.spell-detail-card{--spell-lore:#6d6b66;}.spell-detail-card,.review-feature-box.spell,.spell-collapsible{--rule-tone:var(--spell-lore,var(--detail-magic));}
 .spell-lore-flames{--spell-lore:#a63b32;}.spell-lore-frost{--spell-lore:#347ba4;}.spell-lore-hallows{--spell-lore:#76518e;}.spell-lore-harmony{--spell-lore:#c56f2a;}.spell-lore-life{--spell-lore:#a87919;}.spell-lore-oath{--spell-lore:var(--detail-magic);}.spell-lore-wilds{--spell-lore:#56753a;}.spell-lore-invocation{--spell-lore:#6d6b66;}
 .spell-detail-card,.talent-detail-card{margin-top:9px;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--paper);}.spell-detail-head h2,.talent-detail-head h2{margin:2px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:calc(19px + var(--font-offset));}.mana-badge,.requirement-badge{display:inline-flex;align-items:center;min-height:27px;padding:3px 8px;border:1px solid var(--pill-border);border-radius:999px;white-space:nowrap;font-size:calc(9px + var(--font-offset));font-weight:850;}
 .invalid-panel{margin-top:11px;padding:11px 12px;border:1px solid #b95e54;border-left-width:4px;border-radius:9px;background:color-mix(in srgb,#f4d8d4 62%,var(--paper));color:#6f2b25;}.valid-panel{padding:11px 12px;border-left:4px solid var(--ui-active);border-radius:9px;background:color-mix(in srgb,var(--pill-bg) 62%,var(--paper));}.valid-panel p{margin:4px 0 0;color:var(--ink-soft);}
@@ -992,7 +992,7 @@ body{font-size:calc(14px + var(--font-offset));}
 .detail-tone-homeland,.homeland-description-card{--rule-tone:var(--detail-homeland);}
 .detail-tone-oath{--rule-tone:var(--detail-oath);}
 .detail-tone-faith{--rule-tone:var(--detail-faith);}
-.detail-tone-equipment,.equipment-rule-card,.gear-shop-row{--rule-tone:var(--detail-equipment);}.detail-tone-talent,.review-feature-box.talent{--rule-tone:var(--detail-talent);}.detail-tone-magic,.review-feature-box.lore{--rule-tone:var(--detail-magic);}.review-feature-box.spell{--rule-tone:var(--spell-lore,var(--detail-magic));}
+.detail-tone-equipment,.equipment-rule-card,.gear-shop-row{--rule-tone:var(--detail-equipment);}.detail-tone-talent,.review-feature-box.talent{--rule-tone:var(--detail-talent);}.detail-tone-magic,.review-feature-box.lore{--rule-tone:var(--detail-magic);}
 .trait-card>h3,.trait-card-head,.talent-detail-head{border-left:0;}
 .trait-card>h3,.trait-card-head{color:var(--ink);}
 
@@ -1215,12 +1215,12 @@ html[data-background-view="true"] body::before{display:none;}html[data-backgroun
 
 .settings-card,.review-character-sheet,.review-section,.rules-index-panel,.organized-rule-category,.character-selection-panel,.tool-panel,.species-rule-lore,.character-list-group{background:var(--surface-back);border-color:var(--surface-line);}
 .settings-card .setting-row,.settings-card details,.rules-index-row,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-feature-box,.review-equipment-grid article,.result-panel,.monster-family-box,.monster-family-link,.equipment-slot-row{background:var(--surface-front);border-color:var(--surface-line);}
-.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.equipment-rule-card,.narrative-choice-card,.choice-summary,.gear-shop-row{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 11%,var(--surface-front));border-color:color-mix(in srgb,var(--rule-tone,var(--accent)) 52%,var(--surface-line));border-top-color:var(--rule-tone,var(--accent));}
+.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.equipment-rule-card,.narrative-choice-card,.choice-summary,.gear-shop-row,.semantic-collapsible{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 11%,var(--surface-front));border-color:color-mix(in srgb,var(--rule-tone,var(--accent)) 52%,var(--surface-line));border-top-color:var(--rule-tone,var(--accent));}
 .settings-card .setting-row,.settings-card details,.settings-card summary,.rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary,.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-color:var(--surface-line);}
 .rules-index-heading,.organized-rule-category>summary,.review-collapsible>summary{background:var(--surface-title);}
-.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 16%,var(--surface-title));}
+.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header,.semantic-collapsible>summary{background:color-mix(in srgb,var(--rule-tone,var(--accent)) 16%,var(--surface-title));}
 
-.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.result-panel,.equipment-rule-card,.narrative-choice-card{
+.trait-card,.talent-detail-card,.spell-detail-card,.rule-feature-box,.review-feature-box,.review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.result-panel,.equipment-rule-card,.narrative-choice-card,.semantic-collapsible{
   border-style:solid;
   border-width:1px;
   border-top-width:5px;
@@ -1231,7 +1231,7 @@ html[data-background-view="true"] body::before{display:none;}html[data-backgroun
 }
 .review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article,.review-equipment-grid article,.result-panel{border-color:var(--surface-line);}
 .spell-detail-card{border-top-color:var(--spell-lore,var(--accent));}
-.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header{border-bottom:1px solid var(--surface-line);}
+.trait-card-head,.talent-detail-head,.spell-detail-head,.rule-feature-box>header,.equipment-rule-card>header,.semantic-collapsible>summary{border-bottom:1px solid color-mix(in srgb,var(--rule-tone,var(--accent)) 34%,var(--surface-line));}
 .review-summary-grid article,.review-attribute-cards article,.review-secondary-strip article{padding-top:9px;}
 
 .settings-page .settings-card>.setting-row{border-color:var(--surface-line);}
