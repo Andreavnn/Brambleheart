@@ -8,6 +8,8 @@ function capitalizeTalentName(value:string){return String(value||'').trim().toLo
 export function canonicalTalentName(name:string){return renames[key(name)]||capitalizeTalentName(name)}
 export function talentNameMatches(left:string,right:string){return key(canonicalTalentName(left))===key(canonicalTalentName(right))}
 
+export function talentManaCost(text:string){const match=String(text||'').match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
+
 export const RETIRED_TALENTS=new Set(['Ward Guard','Rooted Paw','Rooted Paws'])
 
 const categoryOverrides=new Map<string,TalentCategory>()

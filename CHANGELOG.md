@@ -1,180 +1,39 @@
-# Brambleheart Beta 0.10 — Spell Card Restoration
+# Brambleheart Beta 0.03 — Character Sheet & Reference Alignment
 
-## Rules & Presentation
+## Character Sheet & Rules Presentation
 
-- Restores the established full **Known Spells** card presentation instead of rendering ordinary Spells as replacement expandable menus.
-- Unifies Lore pages, Character Creation, character review, and the Rhythm Engine Character Sheet on one shared Spell card implementation.
-- Restores the established two-column desktop Spell layout, Lore-colored card edge and surface, header Mana badge, inline rule details, and keyword pills; narrow layouts collapse to one column.
-- Preserves current Signature/Custom markers, calculated Mana costs and cost breakdowns, Scriptweave cooldown text, and current Spell rules while restoring the prior visual structure.
-
-## Reliability
-
-- Removes the superseded Spell-specific render paths and adds regression checks so Spell presentation no longer diverges between Rules, Character Creation, and Character Sheets.
-- Updates Site Update/build/export/package/PWA/cache metadata to Beta 0.10 while retaining Game Update v0.01, Launch Patch.
-
-# Brambleheart Beta 0.09 — Presentation Architecture Repair
-
-## Rules & Presentation
-
-- Consolidates semantic expandable rule boxes onto the shared RuleFeature card presentation so Lore, Trait, Talent, narrative, equipment, monster-category, and advancement surfaces retain their intended accent treatment instead of falling back to neutral menu styling.
-- Decouples Talent card tone from visible keyword pills, preserving established Touch, Shoot, Magic, Move, Instinct, Reactive, and Passive presentation even when a Talent intentionally removes a display keyword.
-- Restores Trinket-specific accents through the shared equipment-presentation authority across Rules references, Character Sheets, and the equipment shop.
-- Reuses the same expandable-card authority for Playable Species Lore, Heritage, and Cultural menus and removes the superseded duplicate menu styling.
+- Aligns Rhythm Engine Character Sheet Talents and Known Spells with the same shared card presentations used by their related Rules pages, including consistent headers, accents, rule-detail rows, badges, and keyword pills.
+- Aligns Character Sheet Equipment & Gear cards with the Rules equipment presentation by preserving the shared item-card surface, header badge, descriptive fields, and equipment accent instead of applying Character Sheet-only card overrides.
+- Displays Known Spells on individual Lores of Magic pages in one column while retaining the shared Spell card authority used elsewhere.
+- Gives the Adventurer Oath detail content the full width of its inner detail area, restores interior padding for Talent text, and uses the common Adventuring Item accent for Trinkets.
+- Removes the visible Character Accent Color label from the Character Sheet while retaining an accessible label on the color picker.
 
 ## Reliability
 
-- Adds regression checks for semantic expandable-card usage, stable Talent tone mapping, Spell Lore tone propagation, and shared Trinket presentation.
-- Updates Site Update/build/export/package/PWA/cache metadata to Beta 0.09 while retaining Game Update v0.01, Launch Patch.
+- Establishes one shared Talent card authority across Rules, Character Creation, and Character Sheets and removes superseded Character Sheet Talent presentation paths.
+- Extends repository regression checks for shared Talent, Spell, and equipment presentation, Lore-page column behavior, Adventurer Oath layout, Trinket accent consistency, and the Character Sheet accent control.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.03 while retaining Game Update v0.01, Launch Patch.
 
-# Brambleheart Beta 0.08 — Talent Pass & Reference Polish
+# Brambleheart Beta 0.02 — Rules & Rhythm Expansion
 
-## Character Sheet & Settings
+## Application & Presentation
 
-- Replaces the Character Detail color input with a compact rainbow-wheel icon beside Character Name, refines the interactive Mana Pool tracker to match Health presentation and wrap in centered rows of ten, and renders carried equipment with the same descriptive card structure used by the Rules reference.
-- Replaces the Character Creation-only Tips switch with **Menus Expanded**, a site-wide Display option that expands collapsible menus when enabled while preserving each menu’s normal default when disabled; the switch defaults off.
+- Expands the Rules reference across Fundamentals, Character Creation, Winds of Magic, Battles, Playable Species, and Watcher material with shared page shells, reusable rule cards, clearer cross-links, and current reference graphics.
+- Expands Rhythm Engine character and encounter workflows with persistent Health and Mana interaction, Threat display, Character Sheet refinements, Encounter Roster and creation tools, and improved Dice Roller context.
+- Consolidates semantic rule, Spell, Talent, equipment, Species, and expandable-card presentation so related surfaces share reusable authorities instead of maintaining page-specific copies.
+- Restores the established full Spell-card presentation across Lore references, Character Creation, character review, and Character Sheets while preserving current calculated costs, markers, and rule text.
+- Adds community, installed-app, background, accessibility, display-setting, and navigation refinements accumulated during the expanded beta reference pass.
 
-## Rules Reference & Presentation
+## Reliability
 
-- Refines Weapon, Armor, and Shield table proportions, centers compact stat columns, removes Touch from non-Thrown melee Range cells, aligns Known Spells table data, and normalizes Playable Species expandable-title sizing.
-- Standardizes shared pill presentation so Core Actions render as `CORE`, Heritage traits as `HERITAGE`, and Cultural traits as `Cultural`, without the redundant `TRAIT` or Species pill on Cultural traits.
-- Updates Lore accent presentation, makes the Spell Range Orb overlay fully transparent around its visible Point of origin, and replaces the Healing example parentheses with taller braces around Restore and Healing Condition.
-- Reworks the Glop profile to reuse the Character Sheet Attribute presentation and puts Actions and Special Rules into normal expandable sections while removing the redundant profile-keyword footer.
-- Corrects the Adventurer Oath card so its quoted vow is presented as descriptive copy and its explanatory rule text occupies the Oath detail field.
-
-## Release Integrity
-
-- Updates Site Update/build/export/package/PWA metadata to Beta 0.08 while retaining the consolidated Game Update authority at v0.01.
-
-# Brambleheart Beta 0.07 — Encounter Workflow & Sheet Controls
-
-## Rhythm Engine
-
-- Rebuilds Encounter Builder around an Encounter Roster and a dedicated Create Encounter flow, matching the Character Roster/Create Character pattern; encounter creation now uses Details, Monsters, Battlefield, and Review without party/match setup.
-- Expands Dice Roller Recent Rolls with source-level breakdowns for Stats, Skills, manual Conditions, Health-state Conditions, Armor Penalty, and other applied modifiers.
-- Adds a persistent Character Sheet accent-color picker for Character Detail cards and an interactive Mana Pool tracker that grows in rows of ten with the character’s maximum Mana.
-- Refines Character Sheet labels for Skills, Talents, Equipment currency, item count, and weight.
-
-## Rules & Equipment
-
-- Consolidates Game Update history back into v0.01 Launch Patch and moves the Bound Equipment rules into that canonical entry.
-- Separates Scriptweave Book Effect and Cooldown into distinct equipment-reference fields for clearer scanning.
-- Extends the Healing example’s grouping brackets to encompass Restore and Healing Condition more clearly.
-
-## Watcher & Navigation
-
-- Refines the Glop profile with Character Sheet-style Attribute boxes, centered Secondary Stats, Core Action-style Actions, Slick Trail terrain movement, and Gelatinous Body Direct-damage reduction.
-- Adds a Creator button to the global bottom action row between Share and Install.
-
-## Release Integrity
-
-- Updates Site Update/build/export/package/PWA metadata to Beta 0.07 while keeping the consolidated Game Update authority at v0.01.
-
-# Brambleheart Beta 0.06 — Character State & Watcher Foundations
-
-## Rhythm Engine & Characters
-
-- Adds persistent, interactive Health to Character Sheets and automatically applies the current Wounded, Critical, and Last Breath Conditions to Dice Roller rolls for the selected character.
-- Reworks Character Detail so Languages has more room and Threat appears beneath Path as `Threat Level · Point`, with the current Threat Point total shown beside the derived Threat Level.
-- Tightens Character Sheet weapon and armor name columns, restores canonical Skill and Trinket accent colors, and simplifies Equipment & Gear to owned-item weight while its heading shows remaining Threadpieces, total item count, and total carried weight.
-- Expands Encounter Builder into incomplete, unapproved, and approved encounter records with lock/unlock, approval, copy, edit, and delete behavior, plus selectable trap and environment foundations for Battlefield setup.
-- Changes Selu of the Wandering Reeds’ example campaign to **Verdant Secrets**.
-
-## Rules Reference
-
-- Restores Homeland Related Skills in the Homeland list, normalizes Adventurer to the same Oath-card presentation as other Oaths, and aligns Adventuring Item expandable-title typography with Character Roster group headings.
-- Refines Weapons, Armor, and Shields tables with larger readable text and tighter columns; sorts Shields by Guts; and moves Durtlehide into a marked Special armor group with its elemental-resistance purchase rule below the table.
-- Adds a dynamic **Lores of Magic** section after Lore Attunement that links to every current attunable Lore and automatically includes future Lore pages added to the canonical catalog.
-- Corrects the Spell Range Orb example to a transparent, centered 3×3 area over its Point of origin and lengthens the Healing graphic parentheses.
-- Links Building Encounters, Critters & Companions, Traps & Environments, Monsters, and Rewards together through Watcher previous/next navigation and updates the Individual Threat worked example to use Selu’s current character data.
-- Converts Monster categories into expandable menus and establishes reusable monster profile pages with Attributes, derived stats, Actions, Special Rules, and Keywords; Glop receives the first complete starter-scale profile.
-
-
-# Brambleheart Beta 0.05 — Stability & Encounter Foundations
-
-## Character & Campaign Tools
-
-- Adds Selu of the Wandering Reeds as a complete, approved premade character in Character Roster. Selu can be edited, copied, exported, or deleted like a user character, and the built-in example is seeded only once so a deleted copy does not return on reload.
-- Starts the Rhythm Engine Encounter Builder with a Character Creation-style workflow for encounter details, party selection, opposition, battlefield notes, review, local save/edit/delete, current roster selection, Watcher creature selection, and Group Threat display.
-
-
-## Rules Reference
-
-- Refines Fundamentals Introduction, Attributes & Skills, and Sparks & Deeds copy; links Character Sheet and Character Creation references directly to Character Roster and adds an inset Skill Tree separator.
-- Reuses Character Creation presentation for Homeland, Faith, and Oath reference entries; reduces equipment-table width pressure; classifies only Projectile weapons as ranged while Thrown weapons remain with melee profiles; and reduces oversized Playable Species expandable titles.
-- Rebuilds the Spell Range example so the 3×3 Orb is centered on its Point of origin, and updates Combat Encounter Mana, End of Round, To Hit & To Ward, Combat Range, Damage Type, Resistance/Weakness, Health-state, and Healing examples for clearer current-rule presentation.
-- Expands the Watcher monster catalog with the sourced Generic, Necrotic, Primordial, and Verdant entries, creates the requested Arcane Automata, Eldritch Abominations, and Insectoid Terrors categories with clearly marked placeholder names where source entries are unavailable, and removes the external source-reference section from the Rules page.
-- Restricts Watcher previous/next Rules navigation to the core Building Encounters page so monsters, critters/companions, traps, environments, rewards, and similar catalog/detail pages do not enter the sequential rules-reading path.
-
-## Community
-
-- Enlarges the News Discord image to align its member-count line with Creator Content and changes both live count labels to a muted green treatment.
-
-# Brambleheart Beta 0.04 — Rules Reference & Combat Framework
-
-## Rules Reference
-
-- Reorganizes the Rules reference across Fundamentals, Character Creation, Winds of Magic, Battles, and Playable Species with clearer section placement, centered/colored reference graphics, simplified collapsible headings, and improved rule cross-links.
-- Rebuilds Character Creation references for Sparks, Deeds, Homelands, Faiths, Oaths, Talents, Equipment & Gear, Threadpieces, Experience, and advancement charts around shared current data authorities.
-- Refines Fundamentals and Character Creation introductions, restores intended Heritage, Cultural, Spark, Deed, Homeland, Faith, Oath, Magic, Initiative, End-of-Round, and Damage card accents, and corrects Species collapsible-heading presentation.
-- Reworks Magic reference presentation for Mana Pool/Magic Regen, Signature Spells, Spell Keywords, casting, and Spell Range/area examples.
-- Reworks Battle references for Combat Encounters, Damage, Health Points, Healing, Fate Rolls, Resistance/Weakness, current Health-state thresholds, and clearer round presentation.
-- Reorganizes Equipment tables into explicit profile columns and grouped weapon/armor categories, expands Armor Penalty and Break Value examples, and improves Adventuring Item guidance.
-- Moves weapon targeting to Attacking & Defending and shaped area targeting to Spell Types & Targeting; Combat Targeting is removed as a current standalone page while legacy route slugs remain explicit aliases.
-
-## Game-System Integration
-
-- Changes Core Action pills to the shorter `CORE` display while retaining Core Action as the rules term, and expands Arcane Command with the current additional Enhance/Hex timing and [+1] Mana rule.
-- Updates Projectile, Skyfire, and Slashing weapon-quality rules, renames Regrowth to Renewal, and standardizes the current Fate Roll procedure.
-- Establishes the current Threat Level calculation for character advancement and combined party Threat, then recalibrates Threat Score growth and adds derived Threat Level to Character Sheet identity details.
-- Improves current Mana, Resistance/Weakness, Health-state, Healing, Defeated, and combat-reference wording without creating duplicate rule authorities.
-
-## Community & Installed App
-
-- Adds live Brambleheart Discord membership and combined Creator Content follower totals from the configured public Discord communities.
-- Replaces installed-app icons with the current Brambleheart tree emblem, including the padded maskable icon.
-
-# Brambleheart Beta 0.03 — Balance & Progression
-
-## Combat & Equipment
-
-- Updates Standard-damage Melee and Ranged weapon profiles and introduces the current bracketed Deadly damage presentation while Penetration weapon damage remains unchanged.
-- Clarifies Dual Wielding and Beastgrasp, retires Ward Guard, and makes Turnstrike use a rounded-up minimum Ward bonus.
-- Clarifies damage resolution by keeping Standard, Direct, and Lethal as Damage Categories and treating On-Going as a recurring-damage qualifier that retains its stated category without repeating normal damage additions.
-
-
-# Brambleheart Beta 0.02 — Unified Rules Architecture
-
-## Rules Architecture
-
-- Consolidates Battle and Winds of Magic navigation into the current merged pages, including Encounter & Rounds, Combat Targeting, Attacking & Defending, Magical Levels, and Spell Types & Targeting.
-- Preserves superseded route slugs only through explicit compatibility aliases while current navigation uses canonical page slugs.
-- Unifies Rules presentation around one shared page shell for breadcrumbs, title/detail text, section styling, and previous/next navigation.
-- Reuses shared Core Action and rule-feature card renderers across Fundamentals, Character Creation, Winds of Magic, and Battles instead of maintaining page-specific copies.
-- Removes obsolete Rules presentation selectors and duplicate Core Action/example markup exposed by the layout consolidation.
-- Rebuilds the current Rules source boundary so the application consumes one materialized current ruleset instead of retaining the original generated raw-rules file and a later mutation layer.
-
-## Reference Presentation
-
-- Adds current damage-category/Heart guidance, damage/soak graphics, Species layout changes, and broader Fundamentals-style rule presentation.
-- Refines Fundamentals graphics for Attributes, Ranks & Modifiers, Skills, Core Action timing, and Ability chaining.
-- Expands Character Creation reference presentation for Sparks, Deeds, Homelands, Faiths, Oaths, Talents, Equipment & Gear, Threadpiece exchange, advancement, and optional character details.
-- Updates Winds of Magic reference presentation for Mana Pool, Magic Regen, Lore Attunement, Signature Spells, Spell Keywords, casting, range/area interpretation, collapsible spell references, and Lore elemental resistance.
-- Reworks Battle reference presentation for encounter flow, Initiative, turns, Instinct timing, targeting, Attacking & Defending, Damage Categories, Resistances, Health, Healing, defeat, and encounter-end references.
+- Consolidates current rules, presentation, storage, release, and compatibility boundaries; removes superseded presentation paths and obsolete duplicate styling discovered during the expansion.
+- Extends regression coverage for persisted character/settings data, Rules presentation authorities, release synchronization, responsive card layouts, and shared equipment/Spell behavior.
 
 # Brambleheart Beta 0.01 — Application Foundation
 
 ## Application & Data
 
-- Establishes the initial Brambleheart Vue 3 / TypeScript application foundation.
-- Establishes the shared storage service, persisted character/settings state, accessibility improvements, and the early Rules/Character Creation application structure.
-- Consolidates browser-storage access through the application storage boundary and improves persisted-state reliability.
-- Adds cloud/share/import foundations for character data and expands data/settings tooling.
-- Improves current data normalization, import/export handling, and cross-device character workflows.
-- Expands Character Creation, equipment shopping, character review, News, and Rules reference workflows.
-- Adds shared item/economy data used by Character Creation and character sheets and improves linked rule pills, Settings/Data presentation, and current character-facing status behavior.
-
-## Visual & Rules Foundation
-
-- Establishes the current visual identity for Traits, Talents, Spells, Skills, and rule pills, including shared accent/tone handling and readable rule-card formatting.
-- Standardizes current Rules page titles, summaries, Watcher/Selu callouts, content panels, and rule-detail typography.
-- Expands Species and rules reference presentation while retaining specialized Species art/lore layouts where appropriate.
+- Establishes the Brambleheart Vue 3 / TypeScript application, routing, shared storage service, persisted character/settings state, Character Creation, Rhythm Engine foundations, News, Settings, and Rules reference structure.
+- Adds character import/export, share/cloud foundations, custom data support, equipment/economy data, current character status handling, and the initial reusable rules-engine helpers.
+- Establishes the first shared visual identity for Traits, Talents, Spells, Skills, equipment, rule pills, page headers, navigation, and responsive layouts.
+- Introduces the initial Game Update authority, application release metadata, PWA shell, downloadable support files, and repository integrity/persistence checks.

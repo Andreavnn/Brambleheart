@@ -10,6 +10,7 @@ export interface EquipmentPresentationItem {
   attachedTo?:string
   weightLb?:number
   quantity?:number
+  costText?:string
 }
 
 export function equipmentCardFields(item:EquipmentPresentationItem){
@@ -20,9 +21,10 @@ export function equipmentCardFields(item:EquipmentPresentationItem){
   return fields
 }
 
-export function equipmentToneClass(item:EquipmentPresentationItem){
-  return item.shopGroup==='Trinkets'||item.category==='Trinket'?'detail-tone-trinket':'detail-tone-equipment'
+export function equipmentToneClass(_item:EquipmentPresentationItem){
+  return 'detail-tone-equipment'
 }
+
 
 export function mergeEquipmentPresentation<T extends EquipmentPresentationItem>(item:T,catalog:ReadonlyArray<EquipmentPresentationItem>):T&EquipmentPresentationItem{
   const source=catalog.find(candidate=>candidate.name===item.name)
