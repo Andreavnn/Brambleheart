@@ -37,7 +37,7 @@ function pillClass(keyword:string){
   const canonical=canonicalAbilityType(keyword)
   return ABILITY_TYPE_KEYWORDS.has(canonical)?['ability-cost-pill',abilityTypeClass(canonical)]:['keyword-pill']
 }
-function pillLabel(keyword:string){return abilityPillLabel(keyword)}
+function pillLabel(keyword:string){return props.title.toUpperCase()==='REACTION'&&keyword.trim().toLowerCase()==='reaction'?'REACTION':abilityPillLabel(keyword)}
 const mergedToneClass=computed<string[]>(()=>{
   const toneClasses=Array.isArray(props.toneClass)?props.toneClass:props.toneClass?[props.toneClass]:[]
   return ['full-rule-entry',abilityTypeClass(family.value),...toneClasses]

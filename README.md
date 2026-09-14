@@ -1,13 +1,13 @@
-# Brambleheart TTRPG — Beta 0.04
+# Brambleheart TTRPG — Beta 0.05
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.04 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.05 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.04
+## Current Site Update — Beta 0.05
 
-- Aligns Rhythm Engine Character Sheet Talents, Known Spells, and carried Equipment & Gear with the same shared card presentations used by their related Rules references.
-- Displays Lore-page Known Spells in a single column, gives the Adventurer Oath detail area the full inner width, restores Talent-card body padding, and uses the common equipment accent for Trinkets.
-- Removes the visible Character Accent Color label while preserving the accessible color control, and removes presentation paths that could make Character Sheet cards diverge from their Rules counterparts.
+- Consolidates Core Actions, monster Actions, and Monstrous Traits onto the shared Ability card authority so related action types use the same fields, accents, and keyword presentation.
+- Refines Magic reference layout by separating Invocation Cantrips from Invocations, spacing Lore spell menus, and keeping Character Sheet Spells in one column.
+- Sorts Armor entries by Guts within each armor category, adds spacing between Adventuring Item categories, and moves Generic Monsters to the top of the monster reference with guidance for deadlier creature categories.
 
 ## Current Game Update — v0.01
 
@@ -98,9 +98,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.04`
-- package version: `0.04.0`
-- PWA cache: `v0.04`
+- Site Update / BUILD/export: `0.05`
+- package version: `0.05.0`
+- PWA cache: `v0.05`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
