@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.10 — Spell Card Restoration
+
+## Rules & Presentation
+
+- Restores the established full **Known Spells** card presentation instead of rendering ordinary Spells as replacement expandable menus.
+- Unifies Lore pages, Character Creation, character review, and the Rhythm Engine Character Sheet on one shared Spell card implementation.
+- Restores the established two-column desktop Spell layout, Lore-colored card edge and surface, header Mana badge, inline rule details, and keyword pills; narrow layouts collapse to one column.
+- Preserves current Signature/Custom markers, calculated Mana costs and cost breakdowns, Scriptweave cooldown text, and current Spell rules while restoring the prior visual structure.
+
+## Reliability
+
+- Removes the superseded Spell-specific render paths and adds regression checks so Spell presentation no longer diverges between Rules, Character Creation, and Character Sheets.
+- Updates Site Update/build/export/package/PWA/cache metadata to Beta 0.10 while retaining Game Update v0.01, Launch Patch.
+
 # Brambleheart Beta 0.09 — Presentation Architecture Repair
 
 ## Rules & Presentation

@@ -5,6 +5,7 @@ import GameUpdateList from '../components/GameUpdateList.vue'
 import RulePageLayout from '../components/RulePageLayout.vue'
 import CoreActionCard from '../components/CoreActionCard.vue'
 import RuleFeatureCard from '../components/RuleFeatureCard.vue'
+import SpellCard from '../components/SpellCard.vue'
 import RuleCollapsibleCard from '../components/RuleCollapsibleCard.vue'
 import ThreadpieceExchange from '../components/ThreadpieceExchange.vue'
 import SpeciesRuleSheet from '../components/SpeciesRuleSheet.vue'
@@ -150,7 +151,6 @@ const currentLoreSpells=computed(()=>currentSpellLore.value?(loreSpells[currentS
 function spellRuleDetail(name:string){return spellDetails[name]}
 const canPreviewLoreAttunement=computed(()=>Boolean(currentSpellLore.value&&currentSpellLore.value!=='Invocation'))
 function displayedLoreCost(name:string){const detail=spellRuleDetail(name);if(!detail)return'Variable';return spellCostLabel({name,lore:detail.lore,baseCost:detail.manaCost,attunedLore:loreAttunedPreview.value&&canPreviewLoreAttunement.value?currentSpellLore.value:''})}
-function spellLoreClass(name:string){return `spell-lore-${String(spellDetails[name]?.lore||'invocation').toLowerCase()}`}
 function isSignatureSpell(name:string){return SIGNATURE_SPELLS.has(name)}
 const currentLoreResistance=computed(()=>currentSpellLore.value&&currentSpellLore.value!=='Invocation'?loreElementalResistance[currentSpellLore.value as keyof typeof loreElementalResistance]||'':'')
 const spellKeywordSource=computed(()=>sectionByHeading('winds-of-magic','SPELL KEYWORDS'))
@@ -323,16 +323,25 @@ const workedSeluThreat=workedSelu?characterThreatBreakdown({attributeRanks:attri
 
         <template v-else-if="currentSpellLore">
           <section class="rule-page-section lore-reader-section">
-            <h2>{{ currentSpellLore==='Invocation'?'Invocation Spells':`Lore of ${currentSpellLore}` }}</h2>
+            <h2>Known Spells</h2>
             <div class="lore-reader-meta">
               <strong v-if="currentLoreResistance" class="lore-elemental-resistance">Elemental Resistance: {{ currentLoreResistance }}</strong>
               <label v-if="canPreviewLoreAttunement" class="lore-attunement-preview-toggle"><span>Attuned</span><span class="switch"><input v-model="loreAttunedPreview" type="checkbox" /><span></span></span></label>
               <small>{{ currentLoreSpells.length }} spells</small>
             </div>
             <p v-if="loreDescriptions[currentSpellLore]" class="lore-reader-description">{{ loreDescriptions[currentSpellLore] }}</p>
-            <div class="review-spell-column">
-              <article v-for="spell in currentLoreSpells.filter(isSignatureSpell)" :key="spell" class="spell-detail-card full-rule-entry" :class="spellLoreClass(spell)"><div class="spell-detail-head"><div><h2>{{ spell }}</h2></div><span class="mana-badge">{{ displayedLoreCost(spell) }}</span></div><p v-if="spellRuleDetail(spell)?.flavor" class="rule-flavor"><em>{{ spellRuleDetail(spell)?.flavor }}</em></p><div v-if="visibleRuleFields(spellRuleDetail(spell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellRuleDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div v-if="spellRuleDetail(spell)?.keywords?.length" class="keyword-pill-row"><span v-for="keyword in abilityFeaturePillKeywords(spellRuleDetail(spell)?.keywords)" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div></article>
-              <RuleCollapsibleCard v-for="spell in currentLoreSpells.filter(spell=>!isSignatureSpell(spell))" :key="spell" :title="spell" :badge="displayedLoreCost(spell)" :tone-class="[spellLoreClass(spell),'spell-rule-tone']" class="spell-collapsible"><p v-if="spellRuleDetail(spell)?.flavor" class="rule-flavor"><em>{{ spellRuleDetail(spell)?.flavor }}</em></p><div v-if="visibleRuleFields(spellRuleDetail(spell)?.rules||'').length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(spellRuleDetail(spell)?.rules||'')" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div v-if="spellRuleDetail(spell)?.keywords?.length" class="keyword-pill-row"><span v-for="keyword in abilityFeaturePillKeywords(spellRuleDetail(spell)?.keywords)" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div></RuleCollapsibleCard>
+            <div class="spell-card-grid">
+              <SpellCard
+                v-for="spell in currentLoreSpells"
+                :key="spell"
+                :title="spell"
+                :cost="displayedLoreCost(spell)"
+                :lore="spellRuleDetail(spell)?.lore||currentSpellLore"
+                :flavor="spellRuleDetail(spell)?.flavor||''"
+                :fields="visibleRuleFields(spellRuleDetail(spell)?.rules||'')"
+                :keywords="spellRuleDetail(spell)?.keywords||[]"
+                :signature="isSignatureSpell(spell)"
+              />
             </div>
           </section>
         </template>
@@ -341,7 +350,7 @@ const workedSeluThreat=workedSelu?characterThreatBreakdown({attributeRanks:attri
           <section class="rule-page-section-stack magical-levels-page">
             <section v-if="magicPowerSection" class="rule-page-section"><h2>Magic Power</h2><p v-for="line in sectionParagraphs(magicPowerSection).filter(line=>!/^MANA POOL:|^MAGIC REGEN:/i.test(line))" :key="line">{{ displayText(line) }}</p><div class="magic-resource-grid"><RuleFeatureCard title="Mana Pool" subtitle="MAXIMUM MANA" tone-class="type-magic"><p>{{ displayText(manaPoolRule) }}</p></RuleFeatureCard><RuleFeatureCard title="Magic Regen" subtitle="START OF ROUND" tone-class="type-instinct"><p>{{ displayText(magicRegenRule) }}</p></RuleFeatureCard></div></section>
             <section v-if="sectionByHeading('winds-of-magic','KNOWN SPELLS')" class="rule-page-section"><h2>Known Spells</h2><template v-for="(block,index) in sectionByHeading('winds-of-magic','KNOWN SPELLS')!.blocks" :key="index"><p v-if="block.type==='paragraph'">{{ displayText(block.text) }}</p><div v-else class="rule-table-wrap known-spells-table"><table class="rule-source-table"><tbody><tr v-for="(row,rowIndex) in block.rows" :key="rowIndex"><td v-for="(cell,cellIndex) in row" :key="cellIndex">{{ displayText(cell) }}</td></tr></tbody></table></div></template></section>
-            <section v-if="sectionByHeading('winds-of-magic','LORE ATTUNEMENT')" class="rule-page-section"><h2>Lore Attunement</h2><p v-for="line in sectionParagraphs(sectionByHeading('winds-of-magic','LORE ATTUNEMENT'))" :key="line">{{ displayText(line) }}</p><aside class="rule-narrative-note signature-rule-panel"><strong>SIGNATURE</strong><p v-for="line in sectionParagraphs(sectionByHeading('winds-of-magic','SIGNATURE'))" :key="line">{{ displayText(line) }}</p></aside><article v-if="signatureExample" class="spell-detail-card full-rule-entry spell-lore-flames signature-example-card"><div class="spell-detail-head"><div><h3>{{ signatureExampleName }}</h3></div><span class="mana-badge">SIGNATURE</span></div><p v-if="signatureExample.flavor" class="rule-flavor"><em>{{ signatureExample.flavor }}</em></p><div class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(signatureExample.rules)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div></article></section>
+            <section v-if="sectionByHeading('winds-of-magic','LORE ATTUNEMENT')" class="rule-page-section"><h2>Lore Attunement</h2><p v-for="line in sectionParagraphs(sectionByHeading('winds-of-magic','LORE ATTUNEMENT'))" :key="line">{{ displayText(line) }}</p><aside class="rule-narrative-note signature-rule-panel"><strong>SIGNATURE</strong><p v-for="line in sectionParagraphs(sectionByHeading('winds-of-magic','SIGNATURE'))" :key="line">{{ displayText(line) }}</p></aside><SpellCard v-if="signatureExample" class="signature-example-card" :title="signatureExampleName" cost="SIGNATURE" :lore="signatureExample.lore" :flavor="signatureExample.flavor" :fields="visibleRuleFields(signatureExample.rules)" :keywords="signatureExample.keywords||[]" signature /></section>
             <section class="rule-page-section lores-of-magic-section"><h2>Lores of Magic</h2><p>The Lores of Magic are distinct traditions for shaping the Winds. A Wind-Touched character chooses one Lore for Lore Attunement, gains its Signature Spell, and learns additional Lore Spells as their Magic Level grows. Open a Lore below to review its current spells, elemental relationship, and rules.</p><div class="magic-lore-link-grid"><RouterLink v-for="lore in magicLorePages" :key="lore.slug" class="magic-lore-link-card" :class="`spell-lore-${lore.title.replace(/^Lore of /i,'').toLowerCase()}`" :to="`/rules/read/${lore.slug}`"><strong>{{ lore.title }}</strong><small>{{ lore.summary }}</small><span aria-hidden="true">›</span></RouterLink></div></section>
           </section>
         </template>
@@ -489,7 +498,7 @@ const workedSeluThreat=workedSelu?characterThreatBreakdown({attributeRanks:attri
 .rule-section-count{margin:-2px 0 10px;color:var(--ink-soft);font-size:calc(10px + var(--font-offset))}
 .playable-species-link-list{padding:0}.playable-species-link-list .list-row:last-child{border-bottom:0}
 .species-rule-art-frame{display:grid;place-items:center;width:100%;height:100%;min-height:0;overflow:hidden;border:2px solid #000;border-radius:0 12px 0 0}.species-rule-art-frame img{display:block;width:100%;height:100%;max-height:270px;object-fit:contain}
-.review-box-list,.review-spell-column{display:grid;gap:8px}
+.review-box-list{display:grid;gap:8px}
 .lore-reader-meta{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-3px 0 10px;color:var(--ink-soft)}.lore-reader-description{margin:0 0 12px}.lore-attunement-preview-toggle{display:inline-flex;align-items:center;gap:7px;color:var(--ink);font-size:calc(9px + var(--font-offset));font-weight:850;white-space:nowrap;cursor:pointer}.lore-attunement-preview-toggle>.switch{flex:0 0 auto}
 .targeting-touch-pill-row{margin:8px 0 0}.targeting-rule-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,38%);align-items:center;gap:14px;margin:12px 0 0}.targeting-rule-layout.compact{grid-template-columns:minmax(0,1fr) 150px}.targeting-rule-layout p{margin:0 0 9px;line-height:1.55}.targeting-rule-layout img{display:block;width:100%;max-height:360px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}.targeting-rule-layout.compact img{max-height:220px}.rule-example-copy{color:var(--ink-soft)}
 .attack-defense-graphic{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) minmax(180px,.75fr);align-items:stretch;gap:9px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--paper-2)}.attack-node,.defense-node,.resolution-node{display:grid;align-content:center;gap:4px;padding:10px;border:1px solid var(--line);border-top:5px solid var(--accent);border-radius:9px;background:var(--paper);text-align:center}.defense-node{border-top-color:var(--detail-trait-heritage)}.resolution-node{border-top-color:var(--detail-spark)}.attack-defense-graphic>b{align-self:center;font-size:20px}.attack-defense-graphic small{font-weight:900;letter-spacing:.08em;color:var(--ink-soft)}
