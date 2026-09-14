@@ -1,4 +1,4 @@
-import { abilityFeaturePillKeywords, canonicalAbilityType } from '../rules/abilityPresentation'
+import { abilityFeaturePillKeywords, abilityTypeClass, abilityTypeKeywords, canonicalAbilityType } from '../rules/abilityPresentation'
 export const TALENT_CATEGORIES=['Offensive','Defensive','Magic','Utility'] as const
 export type TalentCategory=(typeof TALENT_CATEGORIES)[number]
 
@@ -31,3 +31,18 @@ export function talentFeaturePillKeywords(name:string,keywords:string[]|undefine
   if(!TALENTS_WITHOUT_ABILITY_PILL.has(key(name)))return pills
   return pills.filter(value=>canonicalAbilityType(value)!=='Ability')
 }
+
+const TALENT_TONE_OVERRIDES=new Map<string,string>([
+  ['Bond Of Blades','Touch'],
+  ["Hunter's Mark",'Shoot'],
+  ['Rhythm Of Blades','Touch'],
+  ['Pulse Of Attunement','Magic'],
+  ['Beastgrasp','Touch'],
+].map(([name,tone])=>[key(name),tone]))
+
+export function talentToneClasses(name:string,keywords:string[]|undefined){
+  const override=TALENT_TONE_OVERRIDES.get(key(canonicalTalentName(name)))
+  const types=override?[override]:abilityTypeKeywords(keywords)
+  return types.map(abilityTypeClass)
+}
+

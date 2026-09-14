@@ -1,23 +1,20 @@
-**Brambleheart Beta 0.08 — Talent Pass & Reference Polish**
+**Brambleheart Beta 0.09 — Presentation Architecture Repair**
 
-**Site Update — Beta 0.08**  
+**Site Update — Beta 0.09**  
 **Game Update — v0.01, Launch Patch**
 
-- Refines Character Sheet customization with a compact rainbow accent control, a Health-sized Mana Pool tracker that centers and wraps in rows of ten, and Rules-style Equipment & Gear cards.
-- Replaces the Character Creation-only Tips setting with **Menus Expanded**, a site-wide collapsible-menu option that defaults off.
-- Rebalances Rules presentation for Weapon/Armor/Shield tables, Known Spells, Playable Species expandable headings, Lore accents, Spell Range, Healing braces, and the Adventurer Oath card.
-- Standardizes shared pills so Core Actions display `CORE`, Heritage traits display `HERITAGE`, Cultural traits display `Cultural`, and redundant `TRAIT`/Species pills are removed from Cultural traits.
-- Updates the canonical Talent roster and presentation for the requested category moves, Sure Paw rename, Rooted Paws retirement, keyword removals, Hearth Touch/Threadseer/Second Chances/Victory Roar changes, Keen Edge prerequisite, and Pack Tactics Mana cost.
-- Refines Glop with shared Character Sheet Attribute presentation, collapsible Actions/Special Rules, cleaned action/passive pills, and the Reconstitute Instinct action.
-- Keeps gameplay/rules changes in the single consolidated Game Update v0.01 Launch Patch rather than duplicating them in Site Changelog history.
-- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.08.
+- Replaces neutral semantic Rules expandables with one shared expandable RuleFeature card component, restoring the established accent treatment to Spell and related rules-reference surfaces without adding cascade overrides.
+- Separates Talent visual tone from visible keyword pills so requested keyword removals do not erase or change established Talent accent colors.
+- Restores the Trinket accent through the shared equipment-presentation authority in Rules, Character Sheet Equipment & Gear, and the equipment shop.
+- Moves Playable Species Lore, Heritage, and Cultural menus onto the shared expandable-card authority and removes their superseded duplicate menu CSS.
+- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.09; Game Update remains v0.01.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.07
-- New version: 0.08
+- Previous version reviewed: 0.08
+- New version: 0.09
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (68 source units). Full `vue-tsc`/Vite production build not run because project dependencies are not bundled and npm registry access failed with `EAI_AGAIN`. Responsive browser testing was not available in this environment.
+- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (70 source units); CSS parser validation; semantic-card visual/containment audit at 1280 px, 768 px, and 390 px plus light/dark/theme checks. Full `vue-tsc`/Vite production build not run because project dependencies are not installed in this environment and the dependency-install attempt timed out.
 - Known unfinished work intentionally excluded: None identified

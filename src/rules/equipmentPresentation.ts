@@ -1,5 +1,7 @@
 export interface EquipmentPresentationItem {
   name:string
+  category?:string
+  shopGroup?:string
   detail?:string
   description?:string
   effect?:string
@@ -18,12 +20,18 @@ export function equipmentCardFields(item:EquipmentPresentationItem){
   return fields
 }
 
+export function equipmentToneClass(item:EquipmentPresentationItem){
+  return item.shopGroup==='Trinkets'||item.category==='Trinket'?'detail-tone-trinket':'detail-tone-equipment'
+}
+
 export function mergeEquipmentPresentation<T extends EquipmentPresentationItem>(item:T,catalog:ReadonlyArray<EquipmentPresentationItem>):T&EquipmentPresentationItem{
   const source=catalog.find(candidate=>candidate.name===item.name)
   if(!source)return item
   return{
     ...source,
     ...item,
+    category:item.category??source.category,
+    shopGroup:item.shopGroup??source.shopGroup,
     detail:item.detail??source.detail,
     description:item.description??source.description,
     effect:item.effect??source.effect,

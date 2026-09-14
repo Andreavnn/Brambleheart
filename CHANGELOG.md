@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.09 — Presentation Architecture Repair
+
+## Rules & Presentation
+
+- Consolidates semantic expandable rule boxes onto the shared RuleFeature card presentation so Lore, Trait, Talent, narrative, equipment, monster-category, and advancement surfaces retain their intended accent treatment instead of falling back to neutral menu styling.
+- Decouples Talent card tone from visible keyword pills, preserving established Touch, Shoot, Magic, Move, Instinct, Reactive, and Passive presentation even when a Talent intentionally removes a display keyword.
+- Restores Trinket-specific accents through the shared equipment-presentation authority across Rules references, Character Sheets, and the equipment shop.
+- Reuses the same expandable-card authority for Playable Species Lore, Heritage, and Cultural menus and removes the superseded duplicate menu styling.
+
+## Reliability
+
+- Adds regression checks for semantic expandable-card usage, stable Talent tone mapping, Spell Lore tone propagation, and shared Trinket presentation.
+- Updates Site Update/build/export/package/PWA/cache metadata to Beta 0.09 while retaining Game Update v0.01, Launch Patch.
+
 # Brambleheart Beta 0.08 — Talent Pass & Reference Polish
 
 ## Character Sheet & Settings

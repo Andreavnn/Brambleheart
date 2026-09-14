@@ -27,7 +27,7 @@ assert.match(read('PATCH_NOTES.md'),new RegExp(`v${game.replaceAll('.','\\.')}`)
 assert.match(read('public/downloads/Brambleheart-Cloud-Instructions.txt'),new RegExp(`Beta ${app.replaceAll('.','\\.')}`),'downloadable cloud instructions must match app release')
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.08','0.07','0.06','0.05','0.04','0.03','0.02','0.01'],'Site Update history must retain the condensed history and advance normally')
+assert.deepEqual(changelogReleases,['0.09','0.08','0.07','0.06','0.05','0.04','0.03','0.02','0.01'],'Site Update history must retain the condensed history and advance normally')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -44,6 +44,9 @@ assert.match(gameUpdatesSource,/Scriptweave Book[\s\S]{0,1000}Durtlehide/,'Launc
 for(const gameRuleText of ['Sea of Roots','Driftwood Charm','7–10 XP','Tordan Steady Pace','Sapguard','Vinegrip','Ironwood Bulwark','Wounded covers [5–7] Health'])assert.ok(gameUpdatesSource.includes(gameRuleText),`Launch Patch missing consolidated game rule: ${gameRuleText}`)
 assert.doesNotMatch(gameUpdatesSource,/version:'0\.(?:04|06|07|10|12|13|14)'/,'archived Game Update versions must not remain as parallel entries')
 assert.doesNotMatch(read('src/views/SettingsView.vue'),/archived Game Updates/,'Settings must not advertise archived Game Updates after consolidation')
+
+assert.equal(exists('style-audit.html'),false,'Temporary style audit artifacts must not be committed')
+assert.doesNotMatch(read('src/styles.css'),/semantic-collapsible/,'Superseded style-repair override must not remain')
 
 for(const obsolete of ['src/data/equipmentNormalization.ts','src/data/rulesSource.ts','src/data/beta032Content.ts','src/styles.beta032.css'])assert.equal(exists(obsolete),false,`${obsolete} must remain removed`)
 for(const obsoleteAsset of ['src/assets/backgrounds/Blightbound Horror.png','src/assets/page-headers/rules.png.png'])assert.equal(exists(obsoleteAsset),false,`${obsoleteAsset} must remain removed`)
@@ -101,6 +104,8 @@ assert.match(talentCategories,/RETIRED_TALENTS=new Set\(\['Ward Guard','Rooted P
 assert.doesNotMatch(talentCategories,/assign\('Defensive',[^\n]*'Ward Guard'/)
 for(const [category,name] of [['Utility','Bond Of Blades'],['Utility','Rhythm Of Blades'],['Utility','Sure Paw'],['Utility','Twin-Linked'],['Utility','Witch Hunter'],['Defensive','Spell Breaker'],['Offensive','Spell Cleave'],['Offensive','Shadow Fang']]){const categoryLine=talentCategories.split(/\r?\n/).find(line=>line.startsWith(`assign('${category}'`))||'';assert.ok(categoryLine.includes(`'${name}'`),`${name} must remain in ${category}`)}
 assert.match(talentCategories,/['"]sure hand['"]:'Sure Paw'/,'Sure Hand compatibility must normalize to Sure Paw')
+assert.match(talentCategories,/TALENT_TONE_OVERRIDES/,'Talent presentation must keep a stable tone authority separate from display pills')
+for(const [name,tone] of [['Bond Of Blades','Touch'],["Hunter's Mark",'Shoot'],['Rhythm Of Blades','Touch'],['Pulse Of Attunement','Magic'],['Beastgrasp','Touch']])assert.ok(talentCategories.includes(`['${name}','${tone}']`)||talentCategories.includes(`["${name}",'${tone}']`),`${name} must preserve its established ${tone} presentation after keyword cleanup`)
 assert.doesNotMatch(rules,/"heading": "ROOTED PAWS?"/,'Rooted Paw(s) must remain retired from current Talent rules')
 assert.match(rules,/HEARTH TOUCH[\s\S]{0,800}One character affected by that spell gains condition \[\+1\] to their next Attribute Save until the end of the round/,'Hearth Touch must use the current effect')
 assert.match(rules,/THREADSEER[\s\S]{0,900}Mana cost by \[\+3\]/,'Threadseer second Spell surcharge must be +3 Mana')
@@ -176,6 +181,12 @@ const speciesSheet=read('src/components/SpeciesRuleSheet.vue')
 assert.doesNotMatch(speciesSheet,/<small>Expanded lore<\/small>|traits<\/small>/,'Species collapse summaries must not retain redundant right-side detail text')
 const styles=read('src/styles.css')
 assert.match(styles,/border-top-color:var\(--rule-tone,var\(--accent\)\)/,'shared RuleFeatureCard surfaces must preserve their tone accent')
+const ruleCollapsible=read('src/components/RuleCollapsibleCard.vue')
+assert.match(ruleCollapsible,/rule-feature-box rule-feature-card rule-collapsible-card/,'Semantic expandable Rules boxes must reuse the RuleFeature card authority')
+assert.doesNotMatch(ruleReader,/organized-rule-category/,'RuleReader must not retain the superseded neutral semantic collapsible implementation')
+assert.match(ruleReader,/RuleCollapsibleCard[\s\S]{0,300}spell-rule-tone/,'Ordinary Lore Spells must propagate their Lore color through the shared expandable card')
+assert.match(styles,/\.spell-rule-tone\{--rule-tone:var\(--spell-lore,var\(--detail-magic\)\);\}/,'Spell collapsibles must map Lore tone into the canonical card tone')
+assert.match(speciesSheet,/RuleCollapsibleCard[\s\S]{0,1200}Heritage Traits[\s\S]{0,1800}Cultural Traits/,'Playable Species semantic menus must reuse the shared expandable card authority')
 const attrPanel=read('src/components/CharacterAttributePanel.vue')
 assert.match(attrPanel,/minimumSpeed\?:number/,'CharacterAttributePanel must declare minimumSpeed')
 assert.match(attrPanel,/minimumSpeed:1/,'CharacterAttributePanel must default minimumSpeed to 1')
@@ -248,6 +259,11 @@ assert.match(simulatorView,/spellCostBreakdownLabel/,'Character Sheet spell boxe
 assert.match(simulatorView,/applyScriptweaveCooldown/,'Character Sheet spell rules must apply the selected Scriptweave cooldown')
 const equipmentPresentation=read('src/rules/equipmentPresentation.ts')
 assert.match(equipmentPresentation,/equipmentCardFields/,'Equipment cards must share one field-presentation authority')
+assert.match(equipmentPresentation,/equipmentToneClass/,'Equipment presentation must share one canonical tone resolver')
+assert.match(equipmentPresentation,/shopGroup==='Trinkets'\|\|item\.category==='Trinket'\?'detail-tone-trinket'/,'Trinkets must resolve through the canonical Trinket tone')
+assert.match(simulatorView,/equipmentToneClass\(item\)/,'Character Sheet carried gear must preserve category-specific equipment tones')
+const equipmentShop=read('src/components/EquipmentShopModal.vue')
+assert.match(equipmentShop,/:class="equipmentToneClass\(item\)"/,'Equipment shop cards must preserve category-specific tones')
 assert.match(simulatorView,/mergeEquipmentPresentation/,'Character Sheet carried gear must resolve through the shared equipment presentation authority')
 assert.match(simulatorView,/<RuleFeatureCard[\s\S]{0,700}otherGear/,'Character Sheet carried equipment must reuse RuleFeatureCard presentation')
 assert.match(simulatorView,/conic-gradient/,'Character accent control must render as a compact rainbow wheel')
@@ -289,7 +305,7 @@ assert.match(monsters,/Gelatinous Bash[\s\S]{0,450}keywords:\['CORE'\]/,'Gelatin
 assert.doesNotMatch(monsters,/keywords:\[[^\]]*(?:TERRAIN|DEFENSE|DIRECT|MONSTER|COMBAT|STRIKE|PROJECTILE)/i,'Glop current action/special-rule keywords must not retain retired generic pills')
 assert.match(ruleReader,/monster-profile-section[\s\S]{0,5000}Actions[\s\S]{0,3000}Special Rules/,'Monster profile pages must expose collapsible Actions and Special Rules')
 assert.doesNotMatch(ruleReader,/monster-profile-section[\s\S]{0,9000}<h3>Keywords<\/h3>/,'Monster profiles must not retain a redundant Keywords section')
-assert.match(ruleReader,/monster-category-section card-surface/,'Monster categories must be expandable rule menus')
+assert.match(ruleReader,/RuleCollapsibleCard[\s\S]{0,300}monster-category-section/,'Monster categories must use the shared expandable rule-card authority')
 const requiredMonsterCategories=['Companions','Arcane Automata','Eldritch Abominations','Insectoid Terrors','Generic Monsters','Necrotic Horrors','Primordial Entities','Verdant Aberrations']
 for(const category of requiredMonsterCategories){const escaped=category.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const count=(monsters.match(new RegExp(`(?:monster|placeholder)\\('(?:[^']+)'\\s*,\\s*'${escaped}'`,'g'))||[]).length;assert.ok(count>=10,`${category} must contain at least 10 monsters`)}
 for(const name of ['Glop','Blaze Glop','Undeath Sorcerer','Lich Archregent','Lich Lord','Undeath Warrior','Crypt Guard','Legionnaire','Graveborn Horror','Terrorghiest','Necrotide','Ghoul Pack','Tempest Warden','Blightroot Treant','Fungal Behemoth','Leafshroud Guardian','Mossclad Stalker','Thorned Bramblefiend','Thornblade Nymphs','Verdant Lurker','Vinecrawler','Voracious Bramblebeast'])assert.match(monsters,new RegExp(`monster\\('${name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}'`),`Sourced monster must remain sourced: ${name}`)

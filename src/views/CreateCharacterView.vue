@@ -12,13 +12,13 @@ import { attunableLores, loreSpells } from '../data/magicOptions'
 import { loreDescriptions, spellDetails } from '../data/magicDetails'
 import { ruleSourceDocuments } from '../data/rulesCurrent'
 import { sourceNarrativeDescription, narrativeRuleDetail } from '../rules/narrativeRules'
-import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentFeaturePillKeywords, talentNameMatches } from '../data/talentCategories'
+import { TALENT_CATEGORIES, canonicalTalentName, classifyTalent, talentFeaturePillKeywords, talentNameMatches, talentToneClasses } from '../data/talentCategories'
 import { characterSheetArmorProfile, characterSheetWeaponProfile, derivedStats, equippedProtectiveGear, equippedTrinketGear, equipmentAttachmentTargets, equipmentControlBonus, equipmentGutsBonus, equipmentMagicRegenBonus, equipmentManaSyphon, equipmentSpellManaReduction, magicResources, normalizeSkillName, rankModifier, structuredRule, visibleRuleFields, equipmentArmorPenalty, equipmentSpeedPenalty, speciesMinimumSpeed } from '../rules/rulesEngine'
 import { ADVENTURE_KIT_SELL_WP, STARTING_WEALTH_WP, canonicalGearCostWp, isTrinketGear, protectiveGearKind, SHIELD_NAMES } from '../rules/economy'
 import { formatThreadpieceBalance, formatThreadpieceWp, formatThreadpieceWpAs, threadpieceBreakdownFromWp, WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { talentRequirementFromText, talentRequirementSatisfied } from '../rules/talentRequirements'
 import { resolveSpellManaCost, spellCostLabel } from '../rules/magicRules'
-import { abilityFeaturePillClass, abilityFeaturePillKeywords, abilityFeaturePillLabel, abilityTypeClass, abilityTypeKeywords, activeAbilityKeywords, traitPillKeywords } from '../rules/abilityPresentation'
+import { abilityFeaturePillClass, abilityFeaturePillKeywords, abilityFeaturePillLabel, activeAbilityKeywords, traitPillKeywords } from '../rules/abilityPresentation'
 import { canEquipProtectiveEquipment, characterStatus, loadCharacters, setProtectiveEquipmentEquipped, setTrinketEquipmentEquipped, upsertCharacter, type AttributeRanks, type CharacterRecord, type PurchasedEquipment } from '../services/characters'
 import { loadCustomData, type CustomSpeciesItem, type CustomSpellItem, type CustomTalentItem, type CustomTraitItem } from '../services/customData'
 import { useSettings } from '../state/settings'
@@ -65,7 +65,7 @@ const customTalentItems=computed(()=>customData.value.filter((item):item is Cust
 const customTraitItems=computed(()=>customData.value.filter((item):item is CustomTraitItem=>item.type==='trait'))
 
 function manaCostFromText(text:string){const match=text.match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
-function talentCardClasses(name:string){return abilityTypeKeywords(talentKeywords(name)).map(abilityTypeClass)}
+function talentCardClasses(name:string){return talentToneClasses(name,talentKeywords(name))}
 function traitFooterKeywords(values:string[]|undefined,traitType:'Heritage'|'Cultural',speciesName='',grantsSkill=false){return traitPillKeywords(values,traitType,speciesName,grantsSkill)}
 const traitFooterClass=abilityFeaturePillClass
 const traitFooterLabel=abilityFeaturePillLabel

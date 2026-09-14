@@ -1,15 +1,14 @@
-# Brambleheart TTRPG — Beta 0.08
+# Brambleheart TTRPG — Beta 0.09
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.08 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.09 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.08
+## Current Site Update — Beta 0.09
 
-- Character Sheets use a compact rainbow accent control beside Character Name, a centered Mana Pool tracker that wraps at ten cells per row, and Rules-style carried-equipment cards.
-- Display Settings replace the old Character Creation Tips option with **Menus Expanded**, which expands collapsible menus site-wide when enabled and otherwise leaves each menu at its normal default state.
-- Rules presentation refines equipment-table proportions/alignment, Species and Known Spells typography, Lore accent colors, Core/Heritage/Cultural pills, Spell Range visibility, Healing braces, and Adventurer Oath presentation.
-- Glop now uses the shared Character Sheet Attribute presentation, collapsible Actions/Special Rules, cleaned action/passive pills, and the new Reconstitute Instinct action.
-- Talent presentation and canonical Talent data are synchronized with the current role moves, Sure Paw rename, Rooted Paws retirement, prerequisite/cost/cooldown changes, and revised keyword presentation.
+- Semantic expandable Rules boxes now use the shared RuleFeature card authority so their established accent colors and styled surfaces remain intact.
+- Talent visual tones are independent from visible keyword pills, preventing keyword cleanup from stripping Touch, Shoot, Magic, and other established Talent accents.
+- Trinkets use the canonical Trinket accent in Rules references, Character Sheets, and the equipment shop through one shared equipment-presentation helper.
+- Playable Species Lore, Heritage, and Cultural menus reuse the same expandable-card authority instead of maintaining a separate menu-style implementation.
 
 ## Current Game Update — v0.01
 
@@ -100,9 +99,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.08`
-- package version: `0.08.0`
-- PWA cache: `v0.08`
+- Site Update / BUILD/export: `0.09`
+- package version: `0.09.0`
+- PWA cache: `v0.09`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
