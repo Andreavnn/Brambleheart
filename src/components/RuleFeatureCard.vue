@@ -22,6 +22,7 @@ const displayFields=computed(()=>props.fields.map(field=>({...field,value:format
   <article class="rule-feature-box rule-feature-card" :class="[toneClass,{compact}]">
     <header class="rule-feature-card-head">
       <div>
+        <slot name="header-extra" />
         <h3>{{ title }}</h3>
         <small v-if="subtitle">{{ subtitle }}</small>
       </div>

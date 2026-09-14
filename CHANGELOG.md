@@ -1,3 +1,18 @@
+# Brambleheart Beta 0.04 — Presentation Templates & Magic/Monster Layout Alignment
+
+## Application & Presentation
+
+- Establishes additional shared presentation templates for reusable Ability, Equipment, and Trait cards so Rules, Character Creation, Character Sheets, and Monster references use the same default boxes for related content.
+- Moves Lore of Magic pages to a signature-spell-first layout, places the remaining Lore Spells inside a collapsible menu, and keeps those Spell cards in a single-column presentation.
+- Changes Rhythm Engine Character Sheet Magic to a single-column Spell layout and prevents Character Sheet Equipment & Gear cards from stretching to the height of adjacent cards.
+- Reworks Watcher monster profiles so Actions and Monstrous Traits render in the matching ability-style cards and renames the old Special Rules section to Monstrous Traits.
+- Enlarges the Spell Range demo squares so Caster and Point labels fit cleanly and corrects the ORB area graphic to match the documented example.
+
+## Reliability
+
+- Extends shared-card authority coverage to reduce future box-format drift when new content is added or when custom data is loaded.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.04 while retaining Game Update v0.01, Launch Patch.
+
 # Brambleheart Beta 0.03 — Character Sheet & Reference Alignment
 
 ## Character Sheet & Rules Presentation
@@ -28,12 +43,3 @@
 
 - Consolidates current rules, presentation, storage, release, and compatibility boundaries; removes superseded presentation paths and obsolete duplicate styling discovered during the expansion.
 - Extends regression coverage for persisted character/settings data, Rules presentation authorities, release synchronization, responsive card layouts, and shared equipment/Spell behavior.
-
-# Brambleheart Beta 0.01 — Application Foundation
-
-## Application & Data
-
-- Establishes the Brambleheart Vue 3 / TypeScript application, routing, shared storage service, persisted character/settings state, Character Creation, Rhythm Engine foundations, News, Settings, and Rules reference structure.
-- Adds character import/export, share/cloud foundations, custom data support, equipment/economy data, current character status handling, and the initial reusable rules-engine helpers.
-- Establishes the first shared visual identity for Traits, Talents, Spells, Skills, equipment, rule pills, page headers, navigation, and responsive layouts.
-- Introduces the initial Game Update authority, application release metadata, PWA shell, downloadable support files, and repository integrity/persistence checks.

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { speciesData } from '../data/speciesData'
 import { structuredRule, visibleRuleFields } from '../rules/rulesEngine'
-import { abilityFeaturePillClass, abilityFeaturePillLabel, traitPillKeywords } from '../rules/abilityPresentation'
+import { traitPillKeywords } from '../rules/abilityPresentation'
 import RuleCollapsibleCard from './RuleCollapsibleCard.vue'
+import TraitCard from './TraitCard.vue'
 
 type SpeciesDefinition=(typeof speciesData)[number]
 const props=defineProps<{species:SpeciesDefinition}>()
@@ -24,10 +25,10 @@ function footerKeywords(values:string[],kind:'Heritage'|'Cultural'){return trait
     </section>
     <RuleCollapsibleCard :title="`${species.name} Lore`" class="species-menu-panel species-rule-lore-placeholder"><div class="species-lore-placeholder-body" aria-label="Species lore placeholder"></div></RuleCollapsibleCard>
     <RuleCollapsibleCard title="Heritage Traits" tone-class="detail-tone-heritage" class="species-menu-panel species-rule-trait-section">
-      <div class="rule-box-grid"><article v-for="trait in species.speciesTraits" :key="trait.name" class="trait-card heritage-trait-card species-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ species.name }} · Heritage</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in footerKeywords(trait.keywords,'Heritage')" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div></article></div>
+      <div class="rule-box-grid"><TraitCard v-for="trait in species.speciesTraits" :key="trait.name" :title="trait.name" :subtitle="`${species.name} · Heritage`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Heritage')" :tone-class="['heritage-trait-card','species-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></div>
     </RuleCollapsibleCard>
     <RuleCollapsibleCard title="Cultural Traits" tone-class="detail-tone-culture" class="species-menu-panel species-rule-trait-section">
-      <div class="rule-box-grid"><article v-for="trait in species.cultureTraits" :key="trait.name" class="trait-card culture-trait-card culture-trait-rule"><div class="trait-card-head"><div><h3>{{ trait.name }}</h3><small>{{ species.name }} · Cultural</small></div><div class="trait-card-head-actions"><span v-if="manaCostFromRule(trait.text)!==null" class="mana-badge">{{ manaCostFromRule(trait.text) }} Mana</span></div></div><p v-if="structuredRule(trait.text).intro" class="rule-flavor">{{ structuredRule(trait.text).intro }}</p><div v-if="visibleRuleFields(trait.text).length" class="rule-breakdown-grid"><div v-for="field in visibleRuleFields(trait.text)" :key="field.label"><small>{{ field.label }}</small><span>{{ field.value }}</span></div></div><div class="keyword-pill-row"><span v-for="keyword in footerKeywords(trait.keywords,'Cultural')" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span></div></article></div>
+      <div class="rule-box-grid"><TraitCard v-for="trait in species.cultureTraits" :key="trait.name" :title="trait.name" :subtitle="`${species.name} · Cultural`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Cultural')" :tone-class="['culture-trait-card','culture-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></div>
     </RuleCollapsibleCard>
   </section>
 </template>

@@ -1,6 +1,6 @@
 export interface MonsterAction { name:string; type:'Move'|'Touch'|'Shoot'|'Instinct'; text:string; keywords:string[] }
 export interface MonsterSpecialRule { name:string; text:string; keywords:string[] }
-export interface MonsterProfile { threatLevel:number; threatPoints:number; health:number; attributes:{agility:number;might:number;hide:number;lore:number;bravery:number}; actions:MonsterAction[]; specialRules:MonsterSpecialRule[] }
+export interface MonsterProfile { threatLevel:number; threatPoints:number; health:number; attributes:{agility:number;might:number;hide:number;lore:number;bravery:number}; actions:MonsterAction[]; monstrousTraits:MonsterSpecialRule[] }
 export interface ExternalMonsterEntry { name:string; category:string; group?:string; summary:string; placeholder?:boolean; profile?:MonsterProfile }
 
 const categorySummary:Record<string,string>={
@@ -26,7 +26,7 @@ const glopProfile:MonsterProfile={
     {name:'Sticky Splash',type:'Shoot',text:'TARGET: One character within [3] squares. TO HIT: Make a Ranged Strike using Aim. DAMAGE: [2] Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['CORE','SHOOT']},
     {name:'Reconstitute',type:'Instinct',text:'START OF ROUND: If the Glop is below half Health, roll [1d10]. On [6+], restore [1] Health.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
   ],
-  specialRules:[
+  monstrousTraits:[
     {name:'Slick Trail',text:'Every square the Glop moves through becomes Slick until the end of the round. Other characters must spend [+1] additional Speed to enter each Slick square.',keywords:['PASSIVE','MOVEMENT']},
     {name:'Gelatinous Body',text:'Reduce Direct damage suffered by the Glop by [-1], to a minimum of [0] damage after all other applicable reductions.',keywords:['PASSIVE']},
     {name:'Amorphous',text:'The Glop can squeeze through narrow openings that could reasonably admit part of its body. It cannot use this rule to pass through solid barriers or occupy another creature’s space at the end of movement.',keywords:['PASSIVE','MOVEMENT']},

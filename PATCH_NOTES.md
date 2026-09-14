@@ -1,21 +1,21 @@
-**Brambleheart Beta 0.03 — Character Sheet & Reference Alignment**
+**Brambleheart Beta 0.04 — Presentation Templates & Magic/Monster Layout Alignment**
 
-**Site Update — Beta 0.03**  
+**Site Update — Beta 0.04**  
 **Game Update — v0.01, Launch Patch**
 
-- Aligns Rhythm Engine Character Sheet Talents, Known Spells, and Equipment & Gear with the same shared card presentations used by their related Rules pages.
-- Changes individual Lores of Magic pages to a single-column Spell layout while preserving the shared Spell card implementation elsewhere.
-- Expands the Adventurer Oath detail area across both inner columns, restores Talent-card text padding, and changes Trinkets to the common Adventuring Item accent.
-- Removes the visible Character Accent Color text from the Character Sheet while retaining the accessible color-picker label.
-- Establishes a shared Talent card authority across Rules, Character Creation, and Character Sheets and adds regression checks for the aligned Spell, Talent, equipment, Oath, Trinket, and accent-control presentation.
-- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.03; Game Update remains v0.01.
+- Establishes additional shared presentation templates for reusable Ability, Equipment, and Trait cards so Rules, Character Creation, Character Sheets, and Monster references draw from the same default box authorities.
+- Moves Lore of Magic pages to a signature-spell-first layout and places the remaining Lore Spells inside a collapsible menu while keeping the single-column Spell presentation.
+- Changes Character Sheet Magic to a single-column Spell layout and prevents Equipment & Gear cards from stretching to match the height of neighboring cards.
+- Reworks Watcher monster profile entries so Actions and Monstrous Traits render in the matching ability-style cards, and renames the monster rules section from Special Rules to Monstrous Traits.
+- Enlarges the Spell Range demonstration squares to improve the Caster and Point labels and corrects the ORB area graphic to match the documented 7 × 7 example.
+- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.04; Game Update remains v0.01.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.10
-- New version: 0.03
+- Previous version reviewed: 0.03
+- New version: 0.04
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (71 source units); CSS parser validation; responsive CSS audit at 1280 px, 768 px, and 390 px. Full `vue-tsc`/Vite production build was not completed because dependency installation timed out in this environment. Live browser visual testing could not be completed because Chromium did not start successfully in this environment.
+- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (74 source units); CSS parser validation (19 style blocks). Full `vue-tsc`/Vite production build was not completed because dependency installation timed out in this environment. Live browser responsive testing was not available in this environment.
 - Known unfinished work intentionally excluded: None identified

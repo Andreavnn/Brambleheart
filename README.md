@@ -1,9 +1,9 @@
-# Brambleheart TTRPG — Beta 0.03
+# Brambleheart TTRPG — Beta 0.04
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.03 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.04 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.03
+## Current Site Update — Beta 0.04
 
 - Aligns Rhythm Engine Character Sheet Talents, Known Spells, and carried Equipment & Gear with the same shared card presentations used by their related Rules references.
 - Displays Lore-page Known Spells in a single column, gives the Adventurer Oath detail area the full inner width, restores Talent-card body padding, and uses the common equipment accent for Trinkets.
@@ -98,9 +98,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.03`
-- package version: `0.03.0`
-- PWA cache: `v0.03`
+- Site Update / BUILD/export: `0.04`
+- package version: `0.04.0`
+- PWA cache: `v0.04`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
