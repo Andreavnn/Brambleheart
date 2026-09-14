@@ -712,7 +712,7 @@ watch(()=>form.path,()=>ensureTalentSlots())
       </section>
 
       <section class="form-card creation-step-card">
-        default><p v-if="item.description">{{ item.description }}</p></template>v-if="stepId==='species'">
+        <template v-if="stepId==='species'">
           <div class="form-card-heading"><div><p class="eyebrow">STEP {{ stepNumber }} OF {{ totalSteps }}</p><h1>Choose Your Species</h1></div></div>
           <div class="creation-example"><strong>Building Selu:</strong> <em>Selu of the Wandering Reeds — “The still water remembers what the wind forgets.” Selu is a gentle Axalori healer who travels the Sea of Roots tending wounded travelers and recording dreams. Selu’s player chooses Axalori, drawn to their connection with balance, healing, and the calm of flowing water.</em></div>
           <details class="creation-info-panel help-panel" :open="menusExpanded"><summary>What is a Species?</summary><div class="creation-info-body"><p>Your Species describes the Beastfolk lineage your hero belongs to. Across Anthro Mundas, Beastfolk are peoples of fur, feather, scale, and many other forms, each carrying their own histories, languages, Heritage Traits, and cultural traditions.</p><p>Heritage Traits are inherent features of that lineage. Culture Traits reflect learned traditions and can be exchanged in the next step.</p></div></details>
