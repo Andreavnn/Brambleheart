@@ -1,22 +1,21 @@
-**Brambleheart Beta 0.07 — Installed App, Equipment & Glop Refinement**
+**Brambleheart Beta 0.08 — Inventory Containers & Level Up Alignment**
 
-**Site Update — Beta 0.07**  
+**Site Update — Beta 0.08**  
 **Game Update — v0.02, Dual Wielding & Sapguard**
 
-- Opens installed sessions on News, versions the PWA manifest/icon URLs, and refreshes install metadata only when Brambleheart is open.
-- Moves Cloak of Windweave into Traveler’s Gear and routes Rules Adventuring Item price badges through the canonical equipment-price authority.
-- Replaces Character Sheet item-cost badges with quantity badges while retaining Trinkets in Equipment & Gear and their persisted attachment controls.
-- Moves Spell Mana calculation detail below the Mana badge at the right side of the shared Spell header.
-- Changes the current Skill name from Whisperster to Whisperstep across rules/data while migrating legacy saved Whisperster values into the new canonical name.
-- Updates Glop so Gelatinous Bash exposes Trigger, Declare, Effect, TO HIT, Damage, and Restrictions; Reconstitute requires below 5 Health; Slick Trail affects the last traversed square; and Gelatinous Body prevents forced movement, disarm, grapple, and pin effects.
-- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.07. Game Update remains v0.02.
+- Gives Watcher monster Actions and Monstrous Traits independent heights and thinner category headers; Gelatinous Bash now uses Trigger, Target, To Hit, and Damage, while Gelatinous Body exposes its forced-movement immunity as Formless.
+- Changes Character Sheet Equipment quantities to plain `x N` detail text and adds persistent Traveler’s Pack / Forager’s Satchel containers with full-width placement, contained-item count/weight summaries, and drag-and-drop inventory movement.
+- Adds spacing between the Attacking & Defending comparison graphic and Tie Goes to the Defender.
+- Reuses one shared interactive Attribute graphic for Character Creation and Level Up; Level Up known Skills and Talents now use expandable menus and unused spell capacity highlights its maximum value.
+- Removes the Level Up Signature Known status and Equip/Equipped controls, and aligns owned Level Up gear with the shared EquipmentCard presentation while keeping Sell in the header.
+- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.08. Game Update remains v0.02.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.06
-- New version: 0.07
+- Previous version reviewed: 0.07
+- New version: 0.08
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: `npm test` (repository integrity + persistence regression); TypeScript/Vue script syntax transpilation (74 source units); Vue template tag-balance audit (31 files); CSS parser validation (19 stylesheet blocks); manifest JSON validation; service-worker JavaScript syntax validation; relative-import audit; Adventuring Item catalog cost/grouping verification; static responsive layout audit at 1280 px, 768 px, and 390 px. Full `vue-tsc`/Vite production build was not completed because the offline npm cache does not contain `@vitejs/plugin-vue`. Live browser visual testing was not completed.
+- Tests actually run: `npm test` (repository integrity + persistence regression); TypeScript/Vue script syntax transpilation (75 source units); Vue template tag-balance audit (32 files); CSS parser validation (20 stylesheet blocks); manifest/package JSON validation; service-worker JavaScript syntax validation; relative-import audit; static responsive layout audit at 1280 px, 768 px, and 390 px. Full `vue-tsc`/Vite production build was not completed because dependency installation timed out after 90 seconds and no `node_modules` installation completed. Live browser visual/drag testing was not completed.
 - Known unfinished work intentionally excluded: None identified

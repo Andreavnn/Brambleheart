@@ -50,8 +50,10 @@ const record={
  id:'persist-tordan',name:'Persistence Tordan',species:'Tordan',spark:'Courageous',homeland:'Test',faith:'Test',oath:'Test',path:'talents',
  attributes:{agility:1,might:2,hide:2,lore:2,bravery:3},skills:[],talents:['Ward Guard'],spells:[],currentHealth:4,currentMana:2,sheetAccent:'#336699',equipment:[
    {name:'Root Weave',category:'Armor & Shield',costSp:999,detail:'2+ · +99 · +99 · -99 · 999 lb.',equipped:true},
-   {name:'Totem',category:'Trinket',costSp:999,detail:'Stealth Penalty -99',equipped:true}
- ],creationComplete:true,status:'unapproved',draft:false,locked:false,createdAt:'2026-09-09T00:00:00.000Z'
+   {name:'Totem',category:'Trinket',costSp:999,detail:'Stealth Penalty -99',equipped:true},
+   {name:'Forager’s Satchel',category:'Adventuring Gear',costSp:1,detail:'1 lb.'},
+   {name:'Torch',category:'Adventuring Gear',costSp:1,detail:'1 lb.'}
+ ],equipmentStorage:{'owned:gear-4-torch':'owned:gear-3-forager-s-satchel','kit:trail-rations':'kit:traveler-s-pack','owned:gear-3-forager-s-satchel':'owned:gear-3-forager-s-satchel','owned:missing':'kit:traveler-s-pack'},creationComplete:true,status:'unapproved',draft:false,locked:false,createdAt:'2026-09-09T00:00:00.000Z'
 }
 if(phase==='write'){
   const result=chars.writeCharacters([record]);if(!result.ok)throw new Error(result.message)
@@ -64,6 +66,8 @@ if(phase==='write'){
   if(c.talents.includes('Ward Guard'))throw new Error('retired Ward Guard survived normalization')
   const armor=c.equipment.find(x=>x.name==='Root Weave');if(!armor||armor.costWp!==700||!armor.detail.includes('+3')||!armor.detail.includes('-2'))throw new Error('current armor authority was not restored on reload')
   const trinket=c.equipment.find(x=>x.name==='Caster Totem');if(!trinket||trinket.costWp!==300)throw new Error('legacy equipment alias did not normalize on reload')
+  const satchel=c.equipment.find(x=>x.name==='Forager’s Satchel'),torch=c.equipment.find(x=>x.name==='Torch');if(!satchel?.inventoryId||!torch?.inventoryId)throw new Error('stable inventory ids were not assigned during normalization')
+  const torchKey=chars.purchasedEquipmentStorageKey(torch),satchelKey=chars.purchasedEquipmentStorageKey(satchel);if(c.equipmentStorage?.[torchKey]!==satchelKey)throw new Error('purchased bag assignment did not survive reload');if(c.equipmentStorage?.[chars.adventureKitStorageKey('Trail Rations')]!==chars.adventureKitStorageKey('Traveler’s Pack'))throw new Error('Adventure Kit bag assignment did not survive reload');if(Object.keys(c.equipmentStorage||{}).length!==2)throw new Error('invalid or nested bag mappings survived normalization')
   const penalty=engine.equipmentSpeedPenalty(c.equipment,true)
   const speed=engine.derivedStats(c.attributes,0,0,penalty,engine.speciesMinimumSpeed(c.species)).speed
   if(penalty!==0||speed!==4)throw new Error('Tordan Speed persistence mismatch: penalty='+penalty+', speed='+speed)
@@ -98,6 +102,7 @@ if(phase==='write'){
   if(c.spells.includes('Smolder'))throw new Error('retired Spell survived migration')
   if(!c.spells.includes('Fire Bolt'))throw new Error('current Spell lost during migration')
   if(c.equipment[0]?.name!=='Caster Totem')throw new Error('legacy equipment name did not migrate')
+  if(!c.equipment[0]?.inventoryId)throw new Error('legacy equipment did not receive a stable inventory id')
   if(c.status!=='approved'||c.creationComplete!==true||c.draft!==false)throw new Error('legacy status did not normalize')
   console.log('LEGACY_OK')
 }else throw new Error('unknown phase')

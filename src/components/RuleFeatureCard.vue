@@ -9,11 +9,12 @@ const props=withDefaults(defineProps<{
   title:string
   subtitle?:string
   badge?:string
+  metaText?:string
   fields?:RuleFeatureField[]
   toneClass?:string|string[]
   compact?:boolean
   collapsible?:boolean
-}>(),{subtitle:'',badge:'',fields:()=>[],toneClass:'',compact:false,collapsible:false})
+}>(),{subtitle:'',badge:'',metaText:'',fields:()=>[],toneClass:'',compact:false,collapsible:false})
 
 const {measurement}=useSettings()
 const displayFields=computed(()=>props.fields.map(field=>({...field,value:formatMeasurementText(field.value,measurement.value)})))
@@ -28,6 +29,8 @@ const displayFields=computed(()=>props.fields.map(field=>({...field,value:format
         <small v-if="subtitle">{{ subtitle }}</small>
       </div>
       <div class="rule-feature-card-meta">
+        <span v-if="metaText" class="rule-feature-card-detail">{{ metaText }}</span>
+        <slot name="header-meta" />
         <span v-if="badge" class="mana-badge">{{ badge }}</span>
         <span v-if="collapsible" class="rule-feature-card-chevron" aria-hidden="true">⌄</span>
       </div>

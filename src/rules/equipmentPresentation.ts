@@ -25,9 +25,9 @@ export function equipmentToneClass(_item:EquipmentPresentationItem){
   return 'detail-tone-equipment'
 }
 
-export function equipmentQuantityLabel(item:EquipmentPresentationItem){
+export function equipmentQuantityDetail(item:EquipmentPresentationItem){
   const quantity=Math.max(1,Math.floor(Number(item.quantity)||1))
-  return`${quantity} ${quantity===1?'ITEM':'ITEMS'}`
+  return`x ${quantity}`
 }
 
 

@@ -2,16 +2,16 @@ import { BUILD, type AttributeId } from '../data/bramble'
 import { gearShopItems } from '../data/characterOptions'
 import { premadeCharacters } from '../data/premadeCharacters'
 import { canonicalTalentName, RETIRED_TALENTS } from '../data/talentCategories'
-import type { EquipmentStatBonuses } from '../data/equipment'
-import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, isTrinketGear, protectiveGearKind } from '../rules/economy'
+import { ADVENTURE_KIT_ITEMS, type EquipmentStatBonuses } from '../data/equipment'
+import { STARTING_WEALTH_WP, canonicalGearCostWp, canonicalGearName, isEquipmentContainer, isTrinketGear, protectiveGearKind } from '../rules/economy'
 import { LEGACY_SIGNATURE_SPELLS, RETIRED_OFFICIAL_SPELLS, SIGNATURE_SPELLS } from '../rules/magicRules'
 import { WP_PER_NP, WP_PER_SP } from '../rules/threadpieces'
 import { readLocalStorage, STORAGE_KEYS, writeLocalStorage, type StorageWriteResult } from './storage'
 
 export type AttributeRanks=Record<AttributeId,number>
 export type CharacterStatus='incomplete'|'unapproved'|'approved'
-export interface PurchasedEquipment{name:string;costWp?:number;costPaidWp?:number;costSp:number;costNp?:number;category?:string;detail?:string;effect?:string;choice?:string;attachedTo?:string;quantity?:number;statBonuses?:EquipmentStatBonuses;equipped?:boolean}
-export interface CharacterRecord{id:string;name:string;pronunciation?:string;campaignName?:string;allowCustomData?:boolean;age?:string;appearance?:string;pronouns?:string;kinship?:string;species:string;cultureTraits?:string[];cultureSkillChoices?:Record<string,string>;spark:string;homeland:string;homelandDetail?:string;skills?:string[];skillRanks?:Record<string,number>;faith:string;oath:string;path:'magic'|'talents'|'skills'|'attribute';pathSkills?:string[];pathAttributeBonus?:AttributeId;talents?:string[];loreAttunement?:string;spells?:string[];invocationSpell?:string;invocationSpells?:string[];languages?:string[];equipment?:PurchasedEquipment[];adventureKit?:boolean;startingWealthWp?:number;wealthWp?:number;currencyAddedWp?:number;startingWealth?:number;wealthRemaining?:number;wealthCurrency?:'NP'|'SP';currencyAddedNp?:number;treasure?:string[];attributes:AttributeRanks;pinned?:boolean;locked?:boolean;status?:CharacterStatus;experience?:number;magicLevel?:number;currentHealth?:number;currentMana?:number;sheetAccent?:string;draft?:boolean;creationStep?:string;creationComplete?:boolean;createdAt:string;updatedAt?:string;exampleCharacter?:boolean}
+export interface PurchasedEquipment{name:string;inventoryId?:string;costWp?:number;costPaidWp?:number;costSp:number;costNp?:number;category?:string;detail?:string;effect?:string;choice?:string;attachedTo?:string;quantity?:number;statBonuses?:EquipmentStatBonuses;equipped?:boolean}
+export interface CharacterRecord{id:string;name:string;pronunciation?:string;campaignName?:string;allowCustomData?:boolean;age?:string;appearance?:string;pronouns?:string;kinship?:string;species:string;cultureTraits?:string[];cultureSkillChoices?:Record<string,string>;spark:string;homeland:string;homelandDetail?:string;skills?:string[];skillRanks?:Record<string,number>;faith:string;oath:string;path:'magic'|'talents'|'skills'|'attribute';pathSkills?:string[];pathAttributeBonus?:AttributeId;talents?:string[];loreAttunement?:string;spells?:string[];invocationSpell?:string;invocationSpells?:string[];languages?:string[];equipment?:PurchasedEquipment[];equipmentStorage?:Record<string,string>;adventureKit?:boolean;startingWealthWp?:number;wealthWp?:number;currencyAddedWp?:number;startingWealth?:number;wealthRemaining?:number;wealthCurrency?:'NP'|'SP';currencyAddedNp?:number;treasure?:string[];attributes:AttributeRanks;pinned?:boolean;locked?:boolean;status?:CharacterStatus;experience?:number;magicLevel?:number;currentHealth?:number;currentMana?:number;sheetAccent?:string;draft?:boolean;creationStep?:string;creationComplete?:boolean;createdAt:string;updatedAt?:string;exampleCharacter?:boolean}
 
 export const CHARACTER_STORE=STORAGE_KEYS.characters
 const economyGearItems=gearShopItems
@@ -20,6 +20,9 @@ const wholeWp=(value:unknown)=>Math.max(0,Math.floor(Number(value)||0))
 const skillAliases:Readonly<Record<string,string>>={Whisperster:'Whisperstep',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
 function canonicalSavedSkill(value:string){const source=String(value||'').replace(/^Crafting\s*\(Blacksmithing\)$/i,'Tradeskill (Blacksmithing)').trim();return skillAliases[source]||source}
 function canonicalEquipmentDetail(value:string|undefined){return String(value||'').replace(/\bStealth Condition\b/gi,'Armor Penalty').replace(/\bStealth Penalty\b/gi,'Armor Penalty')}
+function storageSlug(value:string){return canonicalGearName(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'item'}
+export function purchasedEquipmentStorageKey(item:Pick<PurchasedEquipment,'inventoryId'|'name'>){return`owned:${String(item.inventoryId||'').trim()||storageSlug(item.name)}`}
+export function adventureKitStorageKey(name:string){return`kit:${storageSlug(name)}`}
 function normalizeLoreSpellSelection(values:string[]|undefined){return Array.from(new Set((values||[]).filter(Boolean).filter(name=>!RETIRED_OFFICIAL_SPELLS.has(name)&&!SIGNATURE_SPELLS.has(name)&&!LEGACY_SIGNATURE_SPELLS.has(name))))}
 
 export function characterCreationComplete(record:Pick<CharacterRecord,'creationComplete'|'status'|'draft'|'locked'>){if(typeof record.creationComplete==='boolean')return record.creationComplete;if(record.status&&validStatuses.has(record.status))return record.status!=='incomplete';if(record.draft)return false;return true}
@@ -32,14 +35,19 @@ export function normalizeTrinketEquipment(items:PurchasedEquipment[]|undefined):
 }
 
 function normalizeEquipment(items:PurchasedEquipment[]|undefined){
-  let normalized=(items||[]).map(raw=>{
+  const usedInventoryIds=new Set<string>()
+  let normalized=(items||[]).map((raw,index)=>{
     const item=raw as PurchasedEquipment&{trinketSlot?:'primary'|'secondary'|'trinket'|'shield'|'armor';activeArcaneFocus?:boolean}
     const name=canonicalGearName(item.name)
     const source=economyGearItems.find(candidate=>candidate.name===name&&candidate.category===item.category)||economyGearItems.find(candidate=>candidate.name===name)
     const category=source?.category??(isTrinketGear({name,category:item.category})?'Trinket':item.category)
     const currentCostWp=source?.costWp??canonicalGearCostWp({...item,name})
     const canonical={...item};delete canonical.trinketSlot;delete canonical.activeArcaneFocus
-    const base={...canonical,name,category,detail:canonicalEquipmentDetail(source?.detail??item.detail),costWp:currentCostWp,costPaidWp:legacyPaidWp(item,currentCostWp),costSp:currentCostWp/WP_PER_SP,costNp:currentCostWp/WP_PER_NP,effect:source?.effect??item.effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses:source?.statBonuses??item.statBonuses} as PurchasedEquipment
+    const requestedId=String(item.inventoryId||'').trim(),fallbackId=`gear-${index+1}-${storageSlug(name)}`
+    let inventoryId=requestedId||fallbackId
+    if(usedInventoryIds.has(inventoryId))inventoryId=`${fallbackId}-${index+1}`
+    usedInventoryIds.add(inventoryId)
+    const base={...canonical,name,inventoryId,category,detail:canonicalEquipmentDetail(source?.detail??item.detail),costWp:currentCostWp,costPaidWp:legacyPaidWp(item,currentCostWp),costSp:currentCostWp/WP_PER_SP,costNp:currentCostWp/WP_PER_NP,effect:source?.effect??item.effect,quantity:Math.max(1,Math.floor(Number(item.quantity)||1)),statBonuses:source?.statBonuses??item.statBonuses} as PurchasedEquipment
     if(category==='Trinket')base.equipped=item.equipped!==false
     return base
   }) as PurchasedEquipment[]
@@ -55,6 +63,14 @@ export function setProtectiveEquipmentEquipped(items:PurchasedEquipment[]|undefi
 /** Equip or unequip a passive Trinket. */
 export function setTrinketEquipmentEquipped(items:PurchasedEquipment[]|undefined,index:number,equipped=true){const next=normalizeTrinketEquipment(items);const target=next[index];if(!target||!isTrinketGear(target))return next;target.equipped=equipped;return next}
 
+function normalizeEquipmentStorage(storage:Record<string,string>|undefined,equipment:PurchasedEquipment[],adventureKit:boolean|undefined){
+  const sourceKeys=new Set(equipment.filter(item=>!isEquipmentContainer(item)&&!['Weapon','Armor & Shield'].includes(item.category||'')).map(purchasedEquipmentStorageKey)),containerKeys=new Set(equipment.filter(isEquipmentContainer).map(purchasedEquipmentStorageKey))
+  if(adventureKit!==false)for(const item of ADVENTURE_KIT_ITEMS){const key=adventureKitStorageKey(item.name);if(isEquipmentContainer(item))containerKeys.add(key);else sourceKeys.add(key)}
+  const normalized:Record<string,string>={}
+  for(const [source,target] of Object.entries(storage||{}))if(sourceKeys.has(source)&&containerKeys.has(target)&&source!==target)normalized[source]=target
+  return normalized
+}
+
 export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord{
   const creationComplete=characterCreationComplete(record),status=characterStatus({...record,creationComplete})
   const equipment=normalizeEquipment((record.equipment||[]).filter(item=>item.category!=='Adventure Kit'))
@@ -64,7 +80,8 @@ export function normalizeCharacterRecord(record:CharacterRecord):CharacterRecord
   const skills=(record.skills||[]).map(canonicalSavedSkill),pathSkills=(record.pathSkills||[]).map(canonicalSavedSkill)
   const skillRanks=Object.fromEntries(Object.entries(record.skillRanks||{}).map(([key,value])=>[canonicalSavedSkill(key),value]))
   const cultureSkillChoices=Object.fromEntries(Object.entries(record.cultureSkillChoices||{}).map(([key,value])=>[key,canonicalSavedSkill(value)]))
-  return{...record,equipment,adventureKit:record.adventureKit!==false,currentHealth:Math.max(0,Math.min(30,Math.floor(Number(record.currentHealth??30)||0))),currentMana:record.currentMana===undefined?undefined:Math.max(0,Math.floor(Number(record.currentMana)||0)),sheetAccent:/^#[0-9a-f]{6}$/i.test(String(record.sheetAccent||''))?String(record.sheetAccent):undefined,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName).filter(name=>!RETIRED_TALENTS.has(name)))),spells:normalizeLoreSpellSelection(record.spells),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
+  const adventureKit=record.adventureKit!==false,equipmentStorage=normalizeEquipmentStorage(record.equipmentStorage,equipment,adventureKit)
+  return{...record,equipment,equipmentStorage,adventureKit,currentHealth:Math.max(0,Math.min(30,Math.floor(Number(record.currentHealth??30)||0))),currentMana:record.currentMana===undefined?undefined:Math.max(0,Math.floor(Number(record.currentMana)||0)),sheetAccent:/^#[0-9a-f]{6}$/i.test(String(record.sheetAccent||''))?String(record.sheetAccent):undefined,skills,pathSkills,skillRanks,cultureSkillChoices,talents:Array.from(new Set((record.talents||[]).map(canonicalTalentName).filter(name=>!RETIRED_TALENTS.has(name)))),spells:normalizeLoreSpellSelection(record.spells),startingWealthWp,wealthWp,currencyAddedWp,startingWealth:startingWealthWp/WP_PER_NP,wealthRemaining:wealthWp/WP_PER_NP,wealthCurrency:'NP',currencyAddedNp:currencyAddedWp/WP_PER_NP,creationComplete,status,draft:!creationComplete,locked:Boolean(record.locked)}
 }
 export function normalizeImportedCharacter(raw:unknown):CharacterRecord{if(!raw||typeof raw!=='object')throw new Error('Invalid Brambleheart character data.');const source=raw as Partial<CharacterRecord>;if(!source.name||!source.attributes)throw new Error('Invalid Brambleheart character data.');const now=new Date().toISOString();return normalizeCharacterRecord({...source,id:crypto.randomUUID(),name:String(source.name),attributes:source.attributes,createdAt:now,updatedAt:now,pinned:Boolean(source.pinned),exampleCharacter:false} as CharacterRecord)}
 function plainCharacters(characters:CharacterRecord[]):CharacterRecord[]{return(JSON.parse(JSON.stringify(characters)) as CharacterRecord[]).map(normalizeCharacterRecord)}

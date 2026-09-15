@@ -21,6 +21,9 @@ function currentGear(name:string){return gearByName.get(canonicalGearName(name))
 export const TRINKET_NAMES=new Set(['Journey Knot','Caster Totem','Lens-Stone Arcanum','Scriptweave Book','Quickdraw Quiver','Featherwind Bolt-Case','Wristloop','Shiny Bobble','Votive Icon','Spell Charm','Driftwood Charm','Heartward Token'])
 export function isTrinketGear(item:{name:string;category?:string}){return item.category==='Trinket'||TRINKET_NAMES.has(canonicalGearName(item.name))}
 
+export const EQUIPMENT_CONTAINER_NAMES=new Set(['Traveler’s Pack','Forager’s Satchel'])
+export function isEquipmentContainer(item:{name:string}){return EQUIPMENT_CONTAINER_NAMES.has(canonicalGearName(item.name))}
+
 /** Non-character shop economies remain independent because they are not purchasable character equipment. */
 export const TRADE_GOOD_PRICE_WP:Readonly<Record<string,number>>={'Aloe Vera Leaves':3,'Ancient’s Metal':500,"Ancient's Metal":500,'Aurora Stones':250,'Belladraconis':50,'Bloodthorn':50,'Celestial Chamomile':4,'Cotton Bloom':2,'Deadlyveil':50,'Dragonroot':100,'Dreamblossom':50,'Elderstar Berries':2,'Ethereal Lemon Balm':4,'Herb of Mending':5,'Mandrakorrupt':150,'Moss Pads':4,'Shadowcap':150,'Shadowshade':50,'Silkspindle Thread':500,'Silkthread':50,'Stormtide Powder':20,'Swiftmend':50,'Tranquil Vale':50,'Wildharvest':3,'Wolffall':50,'Willow Bark Extract':10,'Wool Fleece':2,'Yewheart':150}
 export const TRANSPORT_PRICE_WP:Readonly<Record<string,number>>={Cart:2000,Sled:2500,Wagon:3750,Carriage:6250,Seastrider:5000,Rollodillo:7500,Aeronaut:18750}

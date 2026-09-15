@@ -1,16 +1,15 @@
-# Brambleheart TTRPG — Beta 0.07
+# Brambleheart TTRPG — Beta 0.08
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.07 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.08 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.07
+## Current Site Update — Beta 0.08
 
-- Launches the installed app into News and refreshes PWA manifest/icon resources only while Brambleheart is open, using release-versioned install assets so supported platforms can detect icon changes without background polling.
-- Moves Cloak of Windweave into Traveler’s Gear and keeps Rules Adventuring Item prices tied to the canonical equipment-price authority in both collapsed and expanded cards.
-- Replaces Character Sheet equipment price badges with item quantities while retaining Trinkets in Equipment & Gear and their existing editable attachment controls.
-- Moves Spell Mana calculation detail beneath the Mana badge on the right side of the shared Spell header and retains attached-Trinket pills.
-- Renames the current Whisperster Skill to Whisperstep throughout current rules/data while migrating older saved Whisperster records at the storage boundary.
-- Refines the Glop profile: Gelatinous Bash now mirrors the parent melee-action structure, Reconstitute requires below 5 Health, Slick Trail affects only the final traversed square, and Gelatinous Body now prevents forced movement, disarm, grapple, and pin effects.
+- Gives Watcher monster Actions and Monstrous Traits independent heights with thinner category title bars, and separates Glop’s Formless immunity from its Direct-damage Effect while simplifying Gelatinous Bash to its intended Target and attack fields.
+- Changes Character Sheet Equipment quantities to plain `x N` detail text and adds persistent Traveler’s Pack / Forager’s Satchel containers that span both columns, summarize contained item count and weight, and accept drag-and-drop item movement.
+- Reuses the Character Creation interactive Attribute graphic in Level Up, moves known Skills and Talents into expandable menus, removes the Signature Known status, and highlights unused Magic spell capacity.
+- Aligns Level Up Equipment & Gear with the same shared EquipmentCard authority used on the Character Sheet, removes Equip/Equipped controls, and retains the existing Sell action in each card header.
+- Adds spacing between the Attacking & Defending comparison graphic and Tie Goes to the Defender.
 
 ## Current Game Update — v0.02
 
@@ -105,9 +104,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.07`
-- package version: `0.07.0`
-- PWA cache: `v0.07`
+- Site Update / BUILD/export: `0.08`
+- package version: `0.08.0`
+- PWA cache: `v0.08`
 - Game Update: `v0.02`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
