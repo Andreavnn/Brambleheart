@@ -6,6 +6,16 @@ export type GameUpdateEntry={version:string;date:string;title:string;summary:str
 export const gameUpdates:GameUpdateEntry[]=[
   {
     version:GAME_RULES_VERSION,
+    date:'2026-09-15',
+    title:'Dual Wielding & Sapguard',
+    summary:'Clarifies dual-wielding equipment interactions and the Sapguard exception for characters fighting with a weapon in each hand.',
+    changes:[
+      'Dual wielding now applies Mana Syphon [+1] while a character is wielding a weapon in each hand, in addition to the existing Strike condition and off-hand damage rules.',
+      'Sapguard may be used while wielding a weapon in each hand. While doing so, the character suffers condition [-1] to melee and ranged weapon TO HIT rolls; Shield Hand continues to remove that Sapguard penalty.',
+    ],
+  },
+  {
+    version:'0.01',
     date:'2026-09-13',
     title:'Launch Patch',
     summary:'Consolidates the complete current Brambleheart ruleset into one launch-era Game Update covering core resolution, characters, combat, magic, advancement, equipment, species, Health, Threat, and current equipment bindings.',

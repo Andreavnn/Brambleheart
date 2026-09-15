@@ -12,22 +12,26 @@ const props=withDefaults(defineProps<{
   fields?:RuleFeatureField[]
   toneClass?:string|string[]
   compact?:boolean
-}>(),{subtitle:'',badge:'',fields:()=>[],toneClass:'',compact:false})
+  collapsible?:boolean
+}>(),{subtitle:'',badge:'',fields:()=>[],toneClass:'',compact:false,collapsible:false})
 
 const {measurement}=useSettings()
 const displayFields=computed(()=>props.fields.map(field=>({...field,value:formatMeasurementText(field.value,measurement.value)})))
 </script>
 
 <template>
-  <article class="rule-feature-box rule-feature-card" :class="[toneClass,{compact}]">
-    <header class="rule-feature-card-head">
+  <component :is="collapsible?'details':'article'" class="rule-feature-box rule-feature-card" :class="[toneClass,{compact,collapsible}]">
+    <component :is="collapsible?'summary':'header'" class="rule-feature-card-head">
       <div>
         <slot name="header-extra" />
         <h3>{{ title }}</h3>
         <small v-if="subtitle">{{ subtitle }}</small>
       </div>
-      <span v-if="badge" class="mana-badge">{{ badge }}</span>
-    </header>
+      <div class="rule-feature-card-meta">
+        <span v-if="badge" class="mana-badge">{{ badge }}</span>
+        <span v-if="collapsible" class="rule-feature-card-chevron" aria-hidden="true">⌄</span>
+      </div>
+    </component>
     <div v-if="$slots.default" class="rule-feature-card-body"><slot /></div>
     <div v-if="displayFields.length" class="rule-feature-card-fields">
       <div v-for="field in displayFields" :key="field.label">
@@ -36,5 +40,5 @@ const displayFields=computed(()=>props.fields.map(field=>({...field,value:format
       </div>
     </div>
     <div v-if="$slots.footer" class="rule-feature-card-footer"><slot name="footer" /></div>
-  </article>
+  </component>
 </template>

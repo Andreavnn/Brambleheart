@@ -49,7 +49,8 @@ function equippedProtectiveItems<T extends ProtectiveEquipmentSource>(items:T[]|
 }
 export function equippedTrinketGear<T extends ProtectiveEquipmentSource>(items:T[]|undefined):T[]{return(items||[]).filter(item=>isTrinketGear(item)&&item.equipped!==false)}
 export function equipmentGutsBonus(items:ProtectiveEquipmentSource[]|undefined){const protective=equippedProtectiveItems(items);const base=protective.reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).guts),0);const armor=protective.find(item=>protectiveGearKind(item)==='armor');const heartward=Boolean(armor&&equippedTrinketGear(items).some(item=>canonicalGearName(item.name)==='Heartward Token'&&item.attachedTo===armor.name));return base+(heartward?1:0)}
-export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)}
+export function dualWieldManaSyphon(items:ProtectiveEquipmentSource[]|undefined){return(items||[]).filter(item=>item.category==='Weapon'&&item.equipped!==false).length>=2?1:0}
+export function equipmentManaSyphon(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericProfileBonus(armorProfileValues(String(item.detail||'')).mana),0)+dualWieldManaSyphon(items)}
 export function equipmentArmorPenalty(items:ProtectiveEquipmentSource[]|undefined){return equippedProtectiveItems(items).reduce((sum,item)=>sum+numericPenalty(armorProfileValues(String(item.detail||'')).armorPenalty),0)}
 export function equipmentSpeedPenalty(items:ProtectiveEquipmentSource[]|undefined,hasSteadyPace=false){const raw=Math.min(0,equipmentArmorPenalty(items));return hasSteadyPace?Math.min(0,raw+STEADY_PACE_RULE.speedPenaltyReduction):raw}
 export function speciesMinimumSpeed(speciesName:string|undefined){return speciesName==='Tordan'?STEADY_PACE_RULE.minimumSpeed:1}

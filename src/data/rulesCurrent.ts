@@ -3308,7 +3308,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "When wielding a weapon in each hand, your character suffers a [-2] condition to all Strike rolls made with those weapons. Weapon qualities shared by both wielded weapons apply only once. If one or both weapons have Versatile, apply its [+1] to strike once, reducing the Dual Wielding penalty to [-1]."
+            "text": "When wielding a weapon in each hand, your character suffers a [-2] condition to all Strike rolls made with those weapons and gains Mana Syphon [+1]. Weapon qualities shared by both wielded weapons apply only once. If one or both weapons have Versatile, apply its [+1] to strike once, reducing the Dual Wielding penalty to [-1]."
           },
           {
             "type": "paragraph",

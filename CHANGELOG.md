@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.06 — Compact Equipment & Character Reference Refinement
+
+## Application & Presentation
+
+- Makes the shared Equipment card compact and expandable by default so Adventuring Items and Character Sheet gear keep independent heights while retaining the existing full detail presentation when opened.
+- Adds editable attachment controls to compatible Character Sheet Trinkets and keeps attached spell Trinkets synchronized with live pill markers on their Spell cards.
+- Separates Character Sheet Mana calculation detail from the Mana badge and removes the duplicate inline Signature marker from shared Spell titles.
+- Expands Watcher monster profile presentation with structured Creature-facing Actions and Monstrous Traits plus a reusable monster-art frame and fallback placeholder.
+
+## Reliability
+
+- Extends the existing shared RuleFeatureCard/EquipmentCard and SpellCard authorities instead of adding page-specific replacements, so future equipment and Spell additions inherit the same behavior automatically.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.06 while Game Update advances to v0.02.
+
 # Brambleheart Beta 0.05 — Ability Templates & Reference Organization
 
 ## Rules & Presentation
@@ -29,19 +43,3 @@
 
 - Extends shared-card authority coverage to reduce future box-format drift when new content is added or when custom data is loaded.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.04 while retaining Game Update v0.01, Launch Patch.
-
-# Brambleheart Beta 0.03 — Character Sheet & Reference Alignment
-
-## Character Sheet & Rules Presentation
-
-- Aligns Rhythm Engine Character Sheet Talents and Known Spells with the same shared card presentations used by their related Rules pages, including consistent headers, accents, rule-detail rows, badges, and keyword pills.
-- Aligns Character Sheet Equipment & Gear cards with the Rules equipment presentation by preserving the shared item-card surface, header badge, descriptive fields, and equipment accent instead of applying Character Sheet-only card overrides.
-- Displays Known Spells on individual Lores of Magic pages in one column while retaining the shared Spell card authority used elsewhere.
-- Gives the Adventurer Oath detail content the full width of its inner detail area, restores interior padding for Talent text, and uses the common Adventuring Item accent for Trinkets.
-- Removes the visible Character Accent Color label from the Character Sheet while retaining an accessible label on the color picker.
-
-## Reliability
-
-- Establishes one shared Talent card authority across Rules, Character Creation, and Character Sheets and removes superseded Character Sheet Talent presentation paths.
-- Extends repository regression checks for shared Talent, Spell, and equipment presentation, Lore-page column behavior, Adventurer Oath layout, Trinket accent consistency, and the Character Sheet accent control.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.03 while retaining Game Update v0.01, Launch Patch.

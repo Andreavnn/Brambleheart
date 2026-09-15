@@ -11,6 +11,7 @@ const props=withDefaults(defineProps<{
   flavor?:string
   fields?:SpellField[]
   keywords?:string[]
+  trinkets?:string[]
   custom?:boolean
   signature?:boolean
 }>(),{
@@ -19,12 +20,19 @@ const props=withDefaults(defineProps<{
   flavor:'',
   fields:()=>[],
   keywords:()=>[],
+  trinkets:()=>[],
   custom:false,
   signature:false,
 })
 
 const loreClass=computed(()=>`spell-lore-${String(props.lore||'invocation').toLowerCase().replace(/[^a-z0-9]+/g,'-')}`)
 const featureKeywords=computed(()=>abilityFeaturePillKeywords(props.keywords))
+const costParts=computed(()=>{
+  const raw=String(props.cost||'').trim()
+  const match=raw.match(/^(.+?)\s*[·]?\s*\((.+)\)$/)
+  return match?{primary:match[1].trim(),detail:match[2].trim()}:{primary:raw,detail:''}
+})
+function trinketPillLabel(name:string){return name==='Scriptweave Book'?'SCRIPTWEAVE':String(name||'').toUpperCase()}
 </script>
 
 <template>
@@ -33,13 +41,13 @@ const featureKeywords=computed(()=>abilityFeaturePillKeywords(props.keywords))
       <div>
         <h2>
           {{ title }}
-          <small v-if="signature" class="custom-content-badge">SIGNATURE</small>
           <small v-if="custom" class="custom-content-badge">CUSTOM</small>
         </h2>
       </div>
-      <div class="trait-title-costs"><span v-if="cost" class="mana-badge">{{ cost }}</span></div>
+      <div class="trait-title-costs"><span v-if="costParts.primary" class="mana-badge">{{ costParts.primary }}</span></div>
     </header>
 
+    <small v-if="costParts.detail" class="spell-cost-detail">{{ costParts.detail }}</small>
     <p v-if="flavor" class="rule-flavor"><em>{{ flavor }}</em></p>
 
     <div v-if="fields.length" class="rule-breakdown-grid">
@@ -49,8 +57,9 @@ const featureKeywords=computed(()=>abilityFeaturePillKeywords(props.keywords))
       </div>
     </div>
 
-    <div v-if="featureKeywords.length" class="keyword-pill-row">
+    <div v-if="featureKeywords.length||trinkets.length" class="keyword-pill-row">
       <span v-for="keyword in featureKeywords" :key="keyword" :class="abilityFeaturePillClass(keyword)">{{ abilityFeaturePillLabel(keyword) }}</span>
+      <span v-for="trinket in trinkets" :key="trinket" class="keyword-pill spell-trinket-pill">{{ trinketPillLabel(trinket) }}</span>
     </div>
   </article>
 </template>

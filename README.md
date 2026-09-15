@@ -1,19 +1,24 @@
-# Brambleheart TTRPG — Beta 0.05
+# Brambleheart TTRPG — Beta 0.06
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.05 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.06 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.05
+## Current Site Update — Beta 0.06
 
-- Consolidates Core Actions, monster Actions, and Monstrous Traits onto the shared Ability card authority so related action types use the same fields, accents, and keyword presentation.
-- Refines Magic reference layout by separating Invocation Cantrips from Invocations, spacing Lore spell menus, and keeping Character Sheet Spells in one column.
-- Sorts Armor entries by Guts within each armor category, adds spacing between Adventuring Item categories, and moves Generic Monsters to the top of the monster reference with guidance for deadlier creature categories.
+- Makes shared Equipment cards compact and collapsible by default across the Rules reference, Character Creation review, and Rhythm Engine Character Sheet while preserving the full existing details when expanded.
+- Expands Watcher monster profiles with structured Creature-facing action/trait fields and a reusable monster-art frame that automatically uses named monster artwork when available and otherwise shows a placeholder.
+- Refines Character Sheet Magic by separating Mana-cost calculation detail from the Mana pill, removing the inline Signature title marker, and showing attached spell Trinkets as live pills.
+- Adds Character Sheet Equipment attachment controls for compatible Trinkets while keeping the dedicated Trinkets section intact.
 
-## Current Game Update — v0.01
+## Current Game Update — v0.02
 
-Game Update v0.01, **Launch Patch**, is the consolidated current rules history, including current equipment bindings, Health thresholds, Species tuning, advancement, Talents, and starter monster rules.
+Game Update v0.02, **Dual Wielding & Sapguard**, adds the current dual-wielding Mana Syphon rule and clarifies the Sapguard exception. Game Update v0.01 remains the consolidated Launch Patch beneath it.
 
 ### Current Rules Clarifications
+
+Dual wielding now applies Mana Syphon [+1] while wielding a weapon in each hand, in addition to its existing Strike condition and off-hand damage rules.
+
+Sapguard may be used while wielding a weapon in each hand. While doing so, the character suffers condition [-1] to melee and ranged weapon TO HIT rolls; Shield Hand removes that Sapguard penalty.
 
 Once per turn, before or after resolving another Core Combat Action, Arcane Command may cast one Enhance or Hex Spell. Increase that Spell’s Mana cost by [+1].
 
@@ -98,10 +103,10 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.05`
-- package version: `0.05.0`
-- PWA cache: `v0.05`
-- Game Update: `v0.01`
+- Site Update / BUILD/export: `0.06`
+- package version: `0.06.0`
+- PWA cache: `v0.06`
+- Game Update: `v0.02`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`
 
