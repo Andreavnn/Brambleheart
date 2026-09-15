@@ -479,7 +479,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
                 "Urging a stag through dense brush, calming a panicked mount."
               ],
               [
-                "Whisperster",
+                "Whisperstep",
                 "The craft of moving unseen, unheard, or unnoticed.",
                 "Hiding among reeds, slipping past patrols."
               ]
@@ -1342,7 +1342,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Skills: Whisperster, Herbalry Optional Replacements: Awareness, Bondcraft"
+            "text": "Skills: Whisperstep, Herbalry Optional Replacements: Awareness, Bondcraft"
           }
         ]
       },
@@ -3394,7 +3394,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Armor Penalty represents the burden of protective gear. Add the Armor Penalty from equipped armor and shields together, reduce Speed by that total, and apply the same total as a negative condition to Whisperster Skill Checks."
+            "text": "Armor Penalty represents the burden of protective gear. Add the Armor Penalty from equipped armor and shields together, reduce Speed by that total, and apply the same total as a negative condition to Whisperstep Skill Checks."
           },
           {
             "type": "table",
@@ -3411,7 +3411,7 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Armor protects the body at the cost of speed and silence. EFFECT: Add together the Armor Penalty from all equipped armor and shields. Reduce your Speed by the total Armor Penalty. Speed cannot be reduced below [1]. Apply the same total as a negative condition to all Whisperster Skill Checks. RESTRICTIONS: Only equipped armor and shields contribute to Armor Penalty. Armor Penalty does not apply to other Agility Skills unless another rule specifically says so. EXAMPLE: Root Weave [-2] plus Vinegrip [-1] produces Armor Penalty [-3]. A character with Speed [6] is reduced to Speed [3] and suffers condition [-3] to Whisperster Skill Checks."
+            "text": "Armor protects the body at the cost of speed and silence. EFFECT: Add together the Armor Penalty from all equipped armor and shields. Reduce your Speed by the total Armor Penalty. Speed cannot be reduced below [1]. Apply the same total as a negative condition to all Whisperstep Skill Checks. RESTRICTIONS: Only equipped armor and shields contribute to Armor Penalty. Armor Penalty does not apply to other Agility Skills unless another rule specifically says so. EXAMPLE: Root Weave [-2] plus Vinegrip [-1] produces Armor Penalty [-3]. A character with Speed [6] is reduced to Speed [3] and suffers condition [-3] to Whisperstep Skill Checks."
           }
         ]
       },

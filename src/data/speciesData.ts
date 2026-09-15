@@ -284,7 +284,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Skill",
           "Culture Trait"
         ],
-        "text": "The Cethra find balance in creation — their art a mirror of patience and will. EFFECT: Gain rank [+1] in the Tumblecraft and either the Shadehand or Whisperster skill."
+        "text": "The Cethra find balance in creation — their art a mirror of patience and will. EFFECT: Gain rank [+1] in the Tumblecraft and either the Shadehand or Whisperstep skill."
       },
       {
         "name": "Viled Paw",
@@ -401,7 +401,7 @@ export const speciesData: SpeciesDefinition[] = [
           "Skill",
           "Culture Trait"
         ],
-        "text": "Ravari crafts are built to the sound of laughter, argument, and rhythm. EFFECT: Gain rank [+1] in the Guile and Tumblecraft skill. Additionally, gain rank [+1] in one of the following skills: Shadehand, Stonegrasp, Whisperster, Seeking, or Wayfinding skill."
+        "text": "Ravari crafts are built to the sound of laughter, argument, and rhythm. EFFECT: Gain rank [+1] in the Guile and Tumblecraft skill. Additionally, gain rank [+1] in one of the following skills: Shadehand, Stonegrasp, Whisperstep, Seeking, or Wayfinding skill."
       },
       {
         "name": "Dexterous Paws",

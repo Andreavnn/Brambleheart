@@ -1,14 +1,16 @@
-# Brambleheart TTRPG — Beta 0.06
+# Brambleheart TTRPG — Beta 0.07
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.06 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.07 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.06
+## Current Site Update — Beta 0.07
 
-- Makes shared Equipment cards compact and collapsible by default across the Rules reference, Character Creation review, and Rhythm Engine Character Sheet while preserving the full existing details when expanded.
-- Expands Watcher monster profiles with structured Creature-facing action/trait fields and a reusable monster-art frame that automatically uses named monster artwork when available and otherwise shows a placeholder.
-- Refines Character Sheet Magic by separating Mana-cost calculation detail from the Mana pill, removing the inline Signature title marker, and showing attached spell Trinkets as live pills.
-- Adds Character Sheet Equipment attachment controls for compatible Trinkets while keeping the dedicated Trinkets section intact.
+- Launches the installed app into News and refreshes PWA manifest/icon resources only while Brambleheart is open, using release-versioned install assets so supported platforms can detect icon changes without background polling.
+- Moves Cloak of Windweave into Traveler’s Gear and keeps Rules Adventuring Item prices tied to the canonical equipment-price authority in both collapsed and expanded cards.
+- Replaces Character Sheet equipment price badges with item quantities while retaining Trinkets in Equipment & Gear and their existing editable attachment controls.
+- Moves Spell Mana calculation detail beneath the Mana badge on the right side of the shared Spell header and retains attached-Trinket pills.
+- Renames the current Whisperster Skill to Whisperstep throughout current rules/data while migrating older saved Whisperster records at the storage boundary.
+- Refines the Glop profile: Gelatinous Bash now mirrors the parent melee-action structure, Reconstitute requires below 5 Health, Slick Trail affects only the final traversed square, and Gelatinous Body now prevents forced movement, disarm, grapple, and pin effects.
 
 ## Current Game Update — v0.02
 
@@ -103,9 +105,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.06`
-- package version: `0.06.0`
-- PWA cache: `v0.06`
+- Site Update / BUILD/export: `0.07`
+- package version: `0.07.0`
+- PWA cache: `v0.07`
 - Game Update: `v0.02`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

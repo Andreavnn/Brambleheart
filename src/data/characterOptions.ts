@@ -183,7 +183,7 @@ export const homelandDetails: Record<string,HomelandDetail> = {
   "Gloommere": {
     "description": "Where the fog listens closer than the folk who walk it. In Gloommere, morning never truly comes — only paler shades of night. The air hums with unseen life, and the marsh grass sways even when the wind is still. Here, superstition is survival; every traveler carries charms against reflection and silence. You learned to move like a ghost among the reeds, to listen for what others can’t hear, and to never trust still water.",
     "skills": [
-      "Whisperster",
+      "Whisperstep",
       "Herbalry"
     ],
     "optionalReplacements": [
@@ -285,7 +285,7 @@ export const skillDefinitions: SkillDefinition[] = [
     "example": "Urging a stag through dense brush, calming a panicked mount."
   },
   {
-    "name": "Whisperster",
+    "name": "Whisperstep",
     "attribute": "Agility",
     "restricted": false,
     "expanded": false,
@@ -647,7 +647,7 @@ export const gearShopItems: GearShopItem[] = [
     "costSp": 4.0,
     "detail": "3 lb.",
     "description": "A heavy weather-ready cloak that protects against wind and cold while helping careful movement and concealment.",
-    "effect": "While worn, gain +1 to Whisperster Skill checks.",
+    "effect": "While worn, gain +1 to Whisperstep Skill checks.",
     "shopGroup": "Traveler’s Gear",
     "costWp": 200
   },
@@ -1050,7 +1050,7 @@ export const gearShopItems: GearShopItem[] = [
       "Radiant",
       "Shadow"
     ],
-    "shopGroup": "Tools",
+    "shopGroup": "Traveler’s Gear",
     "costWp": 500
   },
   {

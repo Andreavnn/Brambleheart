@@ -27,7 +27,7 @@ export const homelands = [
   { name:'Wandering Road', skills:['Guile','Charm'] },
   { name:'Tidewake Harbor', skills:['Seeking','Tradeskill'] },
   { name:'Ancient Towers', skills:['Lorekeeping (Ancients)','Awareness'] },
-  { name:'Gloommere', skills:['Whisperster','Herbalry'] },
+  { name:'Gloommere', skills:['Whisperstep','Herbalry'] },
   { name:'Halerun Fields', skills:['Beastride','Stonegrasp'] },
   { name:'Deepmarket', skills:['Shadehand','Guile'] },
   { name:'Redmir Dunes', skills:['Wayfinding','Stonegrasp'] },

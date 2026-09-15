@@ -44,10 +44,8 @@ function trinketPillLabel(name:string){return name==='Scriptweave Book'?'SCRIPTW
           <small v-if="custom" class="custom-content-badge">CUSTOM</small>
         </h2>
       </div>
-      <div class="trait-title-costs"><span v-if="costParts.primary" class="mana-badge">{{ costParts.primary }}</span></div>
+      <div class="spell-card-costs"><span v-if="costParts.primary" class="mana-badge">{{ costParts.primary }}</span><small v-if="costParts.detail" class="spell-cost-detail">{{ costParts.detail }}</small></div>
     </header>
-
-    <small v-if="costParts.detail" class="spell-cost-detail">{{ costParts.detail }}</small>
     <p v-if="flavor" class="rule-flavor"><em>{{ flavor }}</em></p>
 
     <div v-if="fields.length" class="rule-breakdown-grid">

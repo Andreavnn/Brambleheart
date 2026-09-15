@@ -25,6 +25,11 @@ export function equipmentToneClass(_item:EquipmentPresentationItem){
   return 'detail-tone-equipment'
 }
 
+export function equipmentQuantityLabel(item:EquipmentPresentationItem){
+  const quantity=Math.max(1,Math.floor(Number(item.quantity)||1))
+  return`${quantity} ${quantity===1?'ITEM':'ITEMS'}`
+}
+
 
 export function mergeEquipmentPresentation<T extends EquipmentPresentationItem>(item:T,catalog:ReadonlyArray<EquipmentPresentationItem>):T&EquipmentPresentationItem{
   const source=catalog.find(candidate=>candidate.name===item.name)

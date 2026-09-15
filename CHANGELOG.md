@@ -1,3 +1,20 @@
+# Brambleheart Beta 0.07 — Installed App, Equipment & Glop Refinement
+
+## Application & Presentation
+
+- Opens installed Brambleheart sessions on News and refreshes versioned manifest/icon resources only while the application is open, without adding background polling.
+- Moves Cloak of Windweave from Tools to Traveler’s Gear and keeps Adventuring Item price badges resolved from the canonical equipment catalog when cards are collapsed or expanded.
+- Replaces Character Sheet Equipment & Gear cost badges with per-entry item quantities while retaining Trinkets and their supported attachment controls.
+- Moves Spell Mana calculation detail beneath the Mana badge on the right side of the shared Spell header.
+- Renames current Skill references from Whisperster to Whisperstep while preserving migration of older saved characters at the persistence boundary.
+- Refines Glop Action and Monstrous Trait wording and behavior for Gelatinous Bash, Reconstitute, Slick Trail, and Gelatinous Body.
+
+## Reliability
+
+- Keeps install-update checks tied to application load rather than timers or background-sync behavior.
+- Extends regression checks for the installed-app launch route, versioned install assets, equipment pricing/quantity presentation, Whisperstep migration, Spell cost layout, and Glop rule structure.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.07 while retaining Game Update v0.02.
+
 # Brambleheart Beta 0.06 — Compact Equipment & Character Reference Refinement
 
 ## Application & Presentation
@@ -28,18 +45,3 @@
 - Reuses the shared Ability card instead of maintaining a parallel Core Action renderer and removes the Monster-only trait color override that could diverge from canonical ability tones.
 - Extends repository regression coverage for Ability-card authority, Invocation grouping, Armor ordering, monster-category order, menu spacing, and Character Sheet Spell layout.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.05 while retaining Game Update v0.01, Launch Patch.
-
-# Brambleheart Beta 0.04 — Presentation Templates & Magic/Monster Layout Alignment
-
-## Application & Presentation
-
-- Establishes additional shared presentation templates for reusable Ability, Equipment, and Trait cards so Rules, Character Creation, Character Sheets, and Monster references use the same default boxes for related content.
-- Moves Lore of Magic pages to a signature-spell-first layout, places the remaining Lore Spells inside a collapsible menu, and keeps those Spell cards in a single-column presentation.
-- Changes Rhythm Engine Character Sheet Magic to a single-column Spell layout and prevents Character Sheet Equipment & Gear cards from stretching to the height of adjacent cards.
-- Reworks Watcher monster profiles so Actions and Monstrous Traits render in the matching ability-style cards and renames the old Special Rules section to Monstrous Traits.
-- Enlarges the Spell Range demo squares so Caster and Point labels fit cleanly and corrects the ORB area graphic to match the documented example.
-
-## Reliability
-
-- Extends shared-card authority coverage to reduce future box-format drift when new content is added or when custom data is loaded.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.04 while retaining Game Update v0.01, Launch Patch.

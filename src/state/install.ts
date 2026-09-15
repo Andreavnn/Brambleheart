@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { APP_RELEASE } from '../data/release'
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -14,6 +15,11 @@ let initialized = false
 function detectStandalone() {
   const iosStandalone = Boolean((navigator as Navigator & { standalone?: boolean }).standalone)
   return window.matchMedia?.('(display-mode: standalone)').matches || iosStandalone
+}
+
+const installMetadataPaths=['/manifest.webmanifest','/icons/favicon-64.png','/icons/icon-192.png','/icons/icon-512.png','/icons/icon-maskable-512.png','/icons/apple-touch-icon.png'] as const
+async function refreshInstallMetadata(){
+  await Promise.allSettled(installMetadataPaths.map(path=>fetch(`${path}?v=${APP_RELEASE}`,{cache:'reload'})))
 }
 
 export function setupInstallSupport() {
@@ -33,11 +39,10 @@ export function setupInstallSupport() {
     installMessage.value = 'Brambleheart is installed.'
   })
 
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js', { updateViaCache:'none' }).then(registration => registration.update()).catch(() => undefined)
-    }, { once:true })
-  }
+  window.addEventListener('load', () => {
+    void refreshInstallMetadata()
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', { updateViaCache:'none' }).then(registration => registration.update()).catch(() => undefined)
+  }, { once:true })
 }
 
 export async function requestInstall() {

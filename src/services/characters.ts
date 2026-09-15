@@ -17,7 +17,7 @@ export const CHARACTER_STORE=STORAGE_KEYS.characters
 const economyGearItems=gearShopItems
 const validStatuses=new Set<CharacterStatus>(['incomplete','unapproved','approved'])
 const wholeWp=(value:unknown)=>Math.max(0,Math.floor(Number(value)||0))
-const skillAliases:Readonly<Record<string,string>>={Whisperstep:'Whisperster',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
+const skillAliases:Readonly<Record<string,string>>={Whisperster:'Whisperstep',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
 function canonicalSavedSkill(value:string){const source=String(value||'').replace(/^Crafting\s*\(Blacksmithing\)$/i,'Tradeskill (Blacksmithing)').trim();return skillAliases[source]||source}
 function canonicalEquipmentDetail(value:string|undefined){return String(value||'').replace(/\bStealth Condition\b/gi,'Armor Penalty').replace(/\bStealth Penalty\b/gi,'Armor Penalty')}
 function normalizeLoreSpellSelection(values:string[]|undefined){return Array.from(new Set((values||[]).filter(Boolean).filter(name=>!RETIRED_OFFICIAL_SPELLS.has(name)&&!SIGNATURE_SPELLS.has(name)&&!LEGACY_SIGNATURE_SPELLS.has(name))))}

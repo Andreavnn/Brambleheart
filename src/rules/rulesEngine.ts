@@ -20,7 +20,7 @@ export type EquipmentProfileSource={name:string;detail?:string}
 export type CharacterSheetEquipmentSource=EquipmentProfileSource&{attachedTo?:string;category?:string;effect?:string;equipped?:boolean;statBonuses?:EquipmentStatBonuses;quantity?:number;weightLb?:number}
 
 export function rankModifier(rank:number){return Number(rank||0)*2}
-const SKILL_ALIASES:Readonly<Record<string,string>>={Whisperstep:'Whisperster',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
+const SKILL_ALIASES:Readonly<Record<string,string>>={Whisperster:'Whisperstep',Tradecraft:'Tradeskill',Beastcraft:'Bondcraft'}
 export function normalizeSkillName(name:string){
   const source=String(name||'').replace(/^Crafting\s*\(Blacksmithing\)$/i,'Tradeskill (Blacksmithing)').trim()
   const base=source.replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim()

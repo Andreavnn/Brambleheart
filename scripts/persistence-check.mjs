@@ -90,11 +90,11 @@ if(phase==='write'){
   const encounter=list[0];if(encounter.id!=='persist-encounter'||encounter.opponents[0]?.quantity!==2||encounter.environment!=='Mire crossing'||encounter.traps[0]!=='Pitfall'||encounter.environments[0]!=='Wetlands'||encounter.status!=='unapproved'||encounter.creationComplete!==true||encounter.locked!==true)throw new Error('encounter state did not persist')
   console.log('ENCOUNTER_READ_OK')
 }else if(phase==='legacy-seed'){
-  const legacy={...record,id:'legacy-character',name:'Legacy Character',skills:['Whisperstep'],skillRanks:{Whisperstep:2},spells:['Smolder','Fire Bolt'],equipment:[{name:'Caster’s Totem',category:'Trinket',costSp:99,detail:'Stealth Condition -2'}],wealthRemaining:30,wealthCurrency:'SP',startingWealth:30,status:undefined,locked:true,creationComplete:undefined,draft:false}
+  const legacy={...record,id:'legacy-character',name:'Legacy Character',skills:['Whisperster'],skillRanks:{Whisperster:2},spells:['Smolder','Fire Bolt'],equipment:[{name:'Caster’s Totem',category:'Trinket',costSp:99,detail:'Stealth Condition -2'}],wealthRemaining:30,wealthCurrency:'SP',startingWealth:30,status:undefined,locked:true,creationComplete:undefined,draft:false}
   global.localStorage.setItem(storage.STORAGE_KEYS.characters,JSON.stringify([legacy]));console.log('LEGACY_SEEDED')
 }else if(phase==='legacy-read'){
   const c=chars.loadCharacters()[0];if(!c||c.id!=='legacy-character')throw new Error('legacy character missing')
-  if(!c.skills.includes('Whisperster')||c.skillRanks.Whisperster!==2)throw new Error('legacy Skill did not migrate')
+  if(!c.skills.includes('Whisperstep')||c.skillRanks.Whisperstep!==2||c.skills.includes('Whisperster')||Object.hasOwn(c.skillRanks,'Whisperster'))throw new Error('legacy Whisperster Skill did not migrate to Whisperstep')
   if(c.spells.includes('Smolder'))throw new Error('retired Spell survived migration')
   if(!c.spells.includes('Fire Bolt'))throw new Error('current Spell lost during migration')
   if(c.equipment[0]?.name!=='Caster Totem')throw new Error('legacy equipment name did not migrate')

@@ -1,5 +1,5 @@
-const CACHE='brambleheart-shell-v0.06'
-const SHELL=['/','/assets/Logo.png','/icons/favicon-64.png','/icons/icon-192.png','/icons/icon-512.png','/icons/icon-maskable-512.png','/icons/apple-touch-icon.png','/manifest.webmanifest','/audio/brambleheart-launch.wav']
+const CACHE='brambleheart-shell-v0.07'
+const SHELL=['/','/news','/assets/Logo.png','/icons/favicon-64.png?v=0.07','/icons/icon-192.png?v=0.07','/icons/icon-512.png?v=0.07','/icons/icon-maskable-512.png?v=0.07','/icons/apple-touch-icon.png?v=0.07','/manifest.webmanifest?v=0.07','/audio/brambleheart-launch.wav']
 const CACHEABLE_DESTINATIONS=new Set(['script','style','image','font','manifest','worker','audio'])
 
 self.addEventListener('install',event=>{
@@ -19,7 +19,7 @@ self.addEventListener('fetch',event=>{
   if(request.mode==='navigate'){
     event.respondWith(
       fetch(request).then(response=>response).catch(async()=>{
-        const shell=await caches.match('/')
+        const shell=await caches.match('/news')||await caches.match('/')
         return shell||Response.error()
       })
     )

@@ -14,7 +14,7 @@ import GameUpdatesView from './views/GameUpdatesView.vue'
 import { hasSeenWelcome } from './services/welcome'
 
 const router=createRouter({history:createWebHistory(),scrollBehavior:()=>({top:0}),routes:[
- {path:'/',redirect:'/characters'},
+ {path:'/',redirect:'/news'},
  {path:'/welcome',name:'welcome',component:SplashView},{path:'/news',name:'news',component:NewsView},{path:'/characters',name:'characters',component:HomeView},{path:'/characters/create',name:'create-character',component:CreateCharacterView},{path:'/characters/:id/level-up',name:'level-up-character',component:LevelUpView},
  {path:'/rules',name:'rules',component:RulesView},
  {path:'/rules/read/dice-rules',redirect:'/rules/read/core-rules'},{path:'/rules/read/keyword-abilities',redirect:'/rules/read/abilities'},{path:'/rules/read/core-abilities',redirect:'/rules/read/abilities'},{path:'/rules/read/stacking',redirect:'/rules/read/abilities#abilities-chaining'},{path:'/rules/read/chaining',redirect:'/rules/read/abilities#abilities-chaining'},

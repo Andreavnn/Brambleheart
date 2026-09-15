@@ -1,22 +1,22 @@
-**Brambleheart Beta 0.06 — Compact Equipment & Character Reference Refinement**
+**Brambleheart Beta 0.07 — Installed App, Equipment & Glop Refinement**
 
-**Site Update — Beta 0.06**  
+**Site Update — Beta 0.07**  
 **Game Update — v0.02, Dual Wielding & Sapguard**
 
-- Makes shared Equipment cards compact and expandable by default across the Rules reference, Character Creation review, and Character Sheet; adjacent item cards keep independent heights.
-- Keeps Trinkets in the Character Sheet Trinket area and also includes them in Equipment & Gear, where compatible Trinkets can change their attachment target and persist that change.
-- Removes the inline Signature marker from shared Spell titles, separates Mana calculation details from the Mana pill, and displays attached spell Trinkets as live pills.
-- Adds a reusable monster-art frame with a fallback placeholder and expands Glop Actions and Monstrous Traits with structured Creature-facing Triggers, Effects, TO HIT, Restrictions, and Cooldowns where applicable.
-- Adds the Dual Wielding rules reference above Makeshift Weapons and marks Sapguard with its table note in Armor & Shields.
-- Game Update v0.02 adds Mana Syphon [+1] while dual wielding and clarifies Sapguard use while wielding a weapon in each hand.
-- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.06 and Game Update v0.02.
+- Opens installed sessions on News, versions the PWA manifest/icon URLs, and refreshes install metadata only when Brambleheart is open.
+- Moves Cloak of Windweave into Traveler’s Gear and routes Rules Adventuring Item price badges through the canonical equipment-price authority.
+- Replaces Character Sheet item-cost badges with quantity badges while retaining Trinkets in Equipment & Gear and their persisted attachment controls.
+- Moves Spell Mana calculation detail below the Mana badge at the right side of the shared Spell header.
+- Changes the current Skill name from Whisperster to Whisperstep across rules/data while migrating legacy saved Whisperster values into the new canonical name.
+- Updates Glop so Gelatinous Bash exposes Trigger, Declare, Effect, TO HIT, Damage, and Restrictions; Reconstitute requires below 5 Health; Slick Trail affects the last traversed square; and Gelatinous Body prevents forced movement, disarm, grapple, and pin effects.
+- Updates package/runtime/build/export/PWA/cache metadata to Site Update Beta 0.07. Game Update remains v0.02.
 
 **Patch-note verification**
 
-- Previous version reviewed: 0.05
-- New version: 0.06
+- Previous version reviewed: 0.06
+- New version: 0.07
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (74 source units); Vue template tag-balance audit (31 files); CSS parser validation (19 stylesheet blocks); responsive CSS audit at 1280 px, 768 px, and 390 px for the changed equipment and monster layouts. A full `vue-tsc`/Vite production build was not completed because dependency installation timed out in this environment. Live browser visual testing was not completed in this environment.
+- Tests actually run: `npm test` (repository integrity + persistence regression); TypeScript/Vue script syntax transpilation (74 source units); Vue template tag-balance audit (31 files); CSS parser validation (19 stylesheet blocks); manifest JSON validation; service-worker JavaScript syntax validation; relative-import audit; Adventuring Item catalog cost/grouping verification; static responsive layout audit at 1280 px, 768 px, and 390 px. Full `vue-tsc`/Vite production build was not completed because the offline npm cache does not contain `@vitejs/plugin-vue`. Live browser visual testing was not completed.
 - Known unfinished work intentionally excluded: None identified
