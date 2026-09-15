@@ -5658,19 +5658,31 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Anthro Mundas is a living world born from ruin and ash, its soil still warm with the echoes of creation. The realm itself aware, as though every mountain and grove holds a quiet intent."
+            "text": "Anthro Mundas is a strange and enchanted world, alive with the rhythm and rhyme of the Winds of Magic. It is a world broken and remade, where the memory of a great cataclysm can still be felt in root, river, stone, and soil. Magical energies permeate every reach of the world, from its deepest places to its highest mountain peaks, coursing through forests, waters, creatures, and the very air itself. Anthro Mundas does not merely contain magic; the world itself is living magic, and even the smallest leaf seems to possess some quiet intent of its own. Deep woods close over new and forgotten roads alike, rivers abandon old courses to carve new ones, and some places change so completely between seasons that travelers returning months later scarcely recognize them. Whether this strange vitality is a lasting consequence of the world's remaking, the natural rhythm of the magical winds, or the will Anthro Mundas itself has occupied scholars, priests, and wanderers for generations."
           },
           {
             "type": "paragraph",
-            "text": "Across its vast continents stretch many faces of the land. The Veilwood forests climb sky-high canopies, woven with glowmoss and ancient rope bridges where Ravari dwell among whispering leaves. The Sea of Roots, where Axalori villages cling to mangrove pillars. The sun-seared reaches of the Barrens where the Sauren shepherd herd flocks of [creature]. Where the earth cools the Urnath stand sentinel against the creeping Blight that still seeps from the cursed heart of Dominous."
+            "text": "Upon this living world dwell the Beastfolk, the many peoples who call Anthro Mundas home. The name describes no single nation or culture, but a great breadth of peoples whose forms echo the creatures of the natural world. Their bodies reflect these varied lineages in countless ways, bearing fur, feather, scale, horn, quill, and other traits shaped by the ancestors they resemble. No two Beastfolk peoples are quite alike, for each carries its own languages, customs, beliefs, histories, and ways of understanding the living world around them, while traditions may differ greatly even among distant communities of the same people. The term Beastfolk therefore tells only part of the story; to know Anthro Mundas is to know the many peoples who have learned to live within it, shaping their homes and traditions around the land even as the land, in turn, shapes them."
           },
           {
             "type": "paragraph",
-            "text": "Rivkan river-cities coil like silver serpents through marsh and delta, trading goods and tales alike. Elsewhere, the Hedgkin tend their gardens and villages—quiet, enduring hearts that keep the world’s rhythm steady. The skies are no less alive than the ground. The Virelan ride warm currents and magical winds, building crystal roosts that sing in during storms."
+            "text": "Across the vast reaches of Anthro Mundas, the Beastfolk have made homes in nearly every kind of land. In the towering Veilwood, the nimble Ravari, whose forms echo clever forest scavengers, build among glowmoss-covered branches and swaying rope bridges. Along the Sea of Roots, the amphibian Axalori raise villages among mangrove pillars and winding tidal channels, while far beyond them the scaled Sauren cross the sun-seared Barrens with their herds and Vurox companions. In the frozen north, the great ursine Urnath keep watch over hearth and border alike, standing between the settled world and the Blight that creeps outward from ruins of Dominous."
           },
           {
             "type": "paragraph",
-            "text": "But beauty never stands alone in Anthro Mundas. For every tranquil glade, there is ruins where something old still stirs. Relics of the Ancients—machines, idols, and forges—sometimes wake without warning, belching light and sorrow into the world."
+            "text": "Elsewhere, the amphibian Rivkan build bustling river-cities through marsh and delta, carrying goods, news, and travelers along the waterways. The quilled Hedgkin tend gardens, orchards, and quiet villages rooted deeply in the soil, while high above, the avian Virelan ride warm currents and magical winds between cliffside roosts and soaring spires of stone. These are only a few of the peoples and places that shape Anthro Mundas, each carrying traditions of their own and each changed, in turn, by the living world around them."
+          },
+          {
+            "type": "paragraph",
+            "text": "For all its beauty and diversity, Anthro Mundas is marked by a forgotten history and the remains of an age long past. Beyond the roads and regions known to most travelers, vast and inexplicable ruins lie beneath overgrown valleys, protrude from cliff faces, and sleep below marsh and sand. Remnants of the Ancients, a people who vanished from the world centuries ago, leaving behind creations that have outlived the memory of their makers."
+          },
+          {
+            "type": "paragraph",
+            "text": "Shattered halls, impossible machines, silent idols, strange lights that burn beneath stone, and forgotten devices that may stir to life with unknown purposes remain scattered and hidden throughout Anthro Mundas, their origins obscured by the calamity that divided the present from the past."
+          },
+          {
+            "type": "paragraph",
+            "text": "Yet the ruins of the Ancients are only one part of a world filled with unanswered mysteries. Among the traces of their forgotten civilization and living lands shaped by magic, Anthro Mundas tells a story far older and more mysterious than anyone could fully understand."
           },
           {
             "type": "paragraph",
