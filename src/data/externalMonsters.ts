@@ -17,7 +17,7 @@ const categorySummary:Record<string,string>={
 function monster(name:string,category:string,group?:string,profile?:MonsterProfile):ExternalMonsterEntry{return{name,category,group,summary:categorySummary[category]||'A creature in the Watcher monster catalog.',profile}}
 function placeholder(name:string,category:string):ExternalMonsterEntry{return{name,category,summary:categorySummary[category]||'A creature in the Watcher monster catalog.',placeholder:true}}
 
-const glopProfile:MonsterProfile={
+const mucklingProfile:MonsterProfile={
   threatLevel:1,threatPoints:8,health:19,
   attributes:{agility:1,might:2,hide:2,lore:1,bravery:1},
   actions:[
@@ -33,7 +33,7 @@ const glopProfile:MonsterProfile={
   ],
 }
 
-const elementalGlopProfile:MonsterProfile={
+const elementalMucklingProfile:MonsterProfile={
   threatLevel:2,threatPoints:16,health:31,
   attributes:{agility:3,might:3,hide:2,lore:2,bravery:2},
   actions:[
@@ -50,7 +50,25 @@ const elementalGlopProfile:MonsterProfile={
   ],
 }
 
-const prismheartGlopProfile:MonsterProfile={
+const noxiousMucklingProfile:MonsterProfile={
+  threatLevel:2,threatPoints:16,health:25,
+  attributes:{agility:3,might:2,hide:2,lore:2,bravery:2},
+  actions:[
+    {name:'Seeping Slosh',type:'Move',text:'TRIGGER: During the Creature’s Turn. EFFECT: Move up to the Creature’s Speed [+1]. The Creature may move through mud, shallow water, poisonous terrain, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
+    {name:'Toxic Bash',type:'Touch',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [1] square. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Fury Standard nature damage. TOXIN: A character that suffers damage from this Strike gains [1] Toxin stack.',keywords:['CORE','COMBAT']},
+    {name:'Toxic Spit',type:'Shoot',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [6] squares. TO HIT: Make a ranged Strike using (3d10) + the Creature’s Aim + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Accuracy Standard nature damage. TOXIN: A character that suffers damage from this Strike gains [1] Toxin stack.',keywords:['CORE','COMBAT','SHOOT']},
+    {name:'Toxic Reconstitution',type:'Instinct',text:'TRIGGER: At the start of the round, if the Creature is below [10] Health. EFFECT: The Creature rolls [1d10]. On [5+], restore [2] Health to the Creature.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
+  ],
+  monstrousTraits:[
+    {name:'Toxin Saturation',text:'EFFECT: A character can have a maximum of [3] Toxin stacks total, regardless of source. At the start of an affected character’s turn, that character suffers [1] Lethal On-Going nature damage for each Toxin stack it currently has. After resolving this damage, the affected character rolls [1d10]. On [5+], remove [1] Toxin stack. Toxin stacks remain until removed by this effect or another rule that removes them.',keywords:['PASSIVE','TOXIN']},
+    {name:'Toxic Membrane',text:'TRIGGER: The first time each round another character within [1] square deals melee damage to the Creature. EFFECT: That character gains [1] Toxin stack.',keywords:['PASSIVE','TOXIN']},
+    {name:'Poisonous Trail',text:'TRIGGER: When the Creature ends a Move after moving at least [1] square. EFFECT: The last square the Creature passed through becomes Toxic until the end of the round. The first time each round another character enters that Toxic square, it suffers [1] Lethal nature damage and gains [1] Toxin stack.',keywords:['PASSIVE','MOVEMENT','TOXIN']},
+    {name:'Gelatinous Body',text:'TRIGGER: When the Creature suffers Standard or Direct damage, suffers damage from a non-magical ranged attack, or an effect would forcibly move, disarm, grapple, or otherwise pin it. EFFECT: Reduce Standard damage suffered by the Creature by [-1]. Reduce Direct damage suffered by the Creature by [-1]. When the Creature suffers damage from a non-magical ranged attack, reduce that damage by an additional [-1] regardless of Damage Category. Damage cannot be reduced below [1] by this effect. FORMLESS: The Creature is immune to effects that would forcibly move, disarm, grapple, or otherwise pin it.',keywords:['PASSIVE']},
+    {name:'Amorphous',text:'EFFECT: The Creature can squeeze through narrow openings that could reasonably admit part of its body. RESTRICTIONS: The Creature cannot use this rule to pass through solid barriers or occupy another Creature’s space at the end of movement.',keywords:['PASSIVE','MOVEMENT']},
+  ],
+}
+
+const prismheartMucklingProfile:MonsterProfile={
   threatLevel:4,threatPoints:36,health:51,
   attributes:{agility:3,might:3,hide:3,lore:3,bravery:2},
   actions:[
@@ -77,7 +95,7 @@ export const externalMonsters:ExternalMonsterEntry[]=[
 
   placeholder('Briar Mantis','Insectoid Terrors'),placeholder('Glasswing Swarm','Insectoid Terrors'),placeholder('Ironbark Beetle','Insectoid Terrors'),placeholder('Mire Centipede','Insectoid Terrors'),placeholder('Needle Wasp','Insectoid Terrors'),placeholder('Rootborer Grub','Insectoid Terrors'),placeholder('Lantern Moth','Insectoid Terrors'),placeholder('Webthorn Spider','Insectoid Terrors'),placeholder('Carrion Cicada','Insectoid Terrors'),placeholder('Spore Ant Colony','Insectoid Terrors'),
 
-  monster('Glop','Generic Monsters',undefined,glopProfile),monster('Elemental Glop','Generic Monsters','Glop',elementalGlopProfile),monster('Prismheart Glop','Generic Monsters','Glop',prismheartGlopProfile),placeholder('Bramble Boar','Generic Monsters'),placeholder('Mossback Stag','Generic Monsters'),placeholder('Mire Hound','Generic Monsters'),placeholder('Ashfang Wolf','Generic Monsters'),placeholder('Stonehide Ram','Generic Monsters'),placeholder('Reed Serpent','Generic Monsters'),placeholder('Thornback Toad','Generic Monsters'),placeholder('Hollowclaw Bear','Generic Monsters'),
+  monster('Muckling','Generic Monsters',undefined,mucklingProfile),monster('Elemental Muckling','Generic Monsters','Muckling',elementalMucklingProfile),monster('Noxious Muckling','Generic Monsters','Muckling',noxiousMucklingProfile),monster('Prismheart Muckling','Generic Monsters','Muckling',prismheartMucklingProfile),placeholder('Bramble Boar','Generic Monsters'),placeholder('Mossback Stag','Generic Monsters'),placeholder('Mire Hound','Generic Monsters'),placeholder('Ashfang Wolf','Generic Monsters'),placeholder('Stonehide Ram','Generic Monsters'),placeholder('Reed Serpent','Generic Monsters'),placeholder('Thornback Toad','Generic Monsters'),placeholder('Hollowclaw Bear','Generic Monsters'),
 
   monster('Undeath Sorcerer','Necrotic Horrors'),monster('Lich Archregent','Necrotic Horrors','Undeath Sorcerer'),monster('Lich Lord','Necrotic Horrors','Undeath Sorcerer'),monster('Undeath Warrior','Necrotic Horrors'),monster('Crypt Guard','Necrotic Horrors','Undeath Warrior'),monster('Legionnaire','Necrotic Horrors','Undeath Warrior'),monster('Graveborn Horror','Necrotic Horrors'),monster('Terrorghiest','Necrotic Horrors'),monster('Necrotide','Necrotic Horrors'),monster('Ghoul Pack','Necrotic Horrors','Necrotide'),
 
