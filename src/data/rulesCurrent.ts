@@ -5730,27 +5730,35 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Before the rise of the Beastfolk, the world belonged to the Ancients—a people whose names and faces have long since turned to dust. Only their ruins remain: blackened towers on the horizon, half-sunken vaults beneath the roots, and fractured monuments humming faintly with forgotten power."
+            "text": "Long before the histories of the Beastfolk began, another civilization walked Anthro Mundas. Known only as the Ancients, a name given to a people whose true names, faces, and nations have long since disappeared from the world’s memory. Everything known of them has been learned from what they left behind: towers rising from living forests, sealed chambers buried beneath the earth, broken monuments whose inscriptions resist translation, and machines that continue to hum quietly despite centuries without a hand to tend them. Whether the Ancients were one people or many has been lost to time, but the evidence left behind suggests that they once ruled across all of Anthro Mundas, mastering even the Winds of Magic themselves."
           },
           {
             "type": "paragraph",
-            "text": "The Ancients were not born of magic—they made it. They discovered the Winds of Magic and, through genius and arrogance, learned to shape them as easily as breath. Their cities gleamed with light that never dimmed; their skies sang with silver vessels; their seas were carved by engines that parted waves like cloth."
+            "text": "The Ancients did not simply use the Winds; they conquered them, bending magic to their will and binding it into both themselves and their machines. Where the Beastfolk know the Winds as living currents that move through the world and its creatures, the Ancients learned to measure their rhythms, isolate their resonance, and draw magical energy into devices of metal, and crystal. To them, magic appears to have been neither miracle nor mystery, but a force that could be studied, harvested, and ultimately made to obey."
           },
           {
             "type": "paragraph",
-            "text": "To the Ancients, the Winds were not sacred or wild, but a science of rhythm and resonance. They built colossal engines called Aeroliths, continent-spanning machines that tethered the Winds and bent them to their purpose."
+            "text": "What remains of their civilization suggests a mastery almost impossible for the modern world to comprehend. Their cities were illuminated without flame, structures repaired wounds on their own, and great vessels crossed impossible distances by means no living persons can explain. Scattered throughout Anthro Mundas stand the remains of machines known to Beastfolk scholars as Aeroliths, colossal temple-like structures that appear to draw the Winds of Magic toward them. None can say with certainty whether that is truly their purpose, or what the Ancients intended them to accomplish, but even after countless generations their silent forms remain largely untouched by time."
           },
           {
             "type": "paragraph",
-            "text": "They wove the Winds into every facet of life—architecture that healed its own cracks, fields that grew without seed, and voices that could command metal as if it were clay. Through their mastery, the Ancients lifted entire cities into the clouds, anchored by unseen chains of force."
+            "text": "For all their power, scholars widely agree that the Ancients’ mastery over Anthro Mundas and the Winds of Magic carried a terrible cost. The more their machines drew upon the Winds, the more their civilization appears to have suffered. A Virelan scholar named Caldrin Venn, once recorded the discovery of an Ancient tome whose language could not be read, yet whose surviving illustrations depicted cities withering, lands failing, and obscured figures gathered beneath darkened skies. The lands surrounding many Ancient ruins seem to support that interpretation, bearing strange scars where the Winds move differently from the regions around them. Whether the Ancients understood what was happening to Anthro Mundas remains unknown, but the surviving evidence suggests that the civilization which learned to command magic eventually became dependent upon that command, drawing so deeply upon the Winds that it began to starve the world itself of mana."
           },
           {
             "type": "paragraph",
-            "text": "Yet, in binding the Winds, they began to starve the world itself. The natural balance—the living pulse of magic that threaded soil to spirit—was bled dry to feed their engines. Where the Winds once danced freely, they were now trapped in brass hearts and crystal chambers, humming like caged storms."
+            "text": "Yet not everything left behind by the Ancients is shrouded in such deep mystery. Among the countless artifacts discovered in the wake of their disappearance, few have become more sought after than Threadpieces: perfectly cut screws, threaded rods, nuts, washers, plates, and other precision fittings recovered from Ancient ruins. Their original names and purposes are mostly forgotten, but the craftsmanship remains unmistakable. Beastfolk smiths can forge fasteners of their own, yet even the finest workshops struggle to reproduce the precise threading, uniform dimensions, perfectly flat surfaces, and minute tolerances found in Ancient pieces."
           },
           {
             "type": "paragraph",
-            "text": "The exact cause of the Ancients’ downfall is lost to history, but every telling agrees that their hunger exceeded their wisdom."
+            "text": "That precision makes Threadpieces useful almost everywhere. A fitting recovered from a ruined machine may find new life in a mill, a bridge, a tool, a wagon, or another device built thousands of years after its original purpose was lost. Over generations, that usefulness gave Threadpieces a value recognized far beyond the workshops that first sought them, and certain pieces eventually became accepted in trade throughout much of Beastfolk society. Their worth rests not only upon rarity, but upon the simple truth that a genuine Threadpiece is almost always useful to someone."
+          },
+          {
+            "type": "paragraph",
+            "text": "For this reason, even ruins stripped of obvious treasure may still draw salvagers, scholars, craftsfolk, and wanderers. A collapsed chamber filled with corroded machinery can contain more practical wealth than a jeweled monument, while an untouched mechanism may hold enough Threadpieces to change the fortunes of an entire settlement. Their scarcity has made the ruins of the Ancients part of the economy of the present, and pieces of a vanished civilization now pass from paw to claw, market to workshop, and generation to generation throughout Anthro Mundas."
+          },
+          {
+            "type": "paragraph",
+            "text": "Though the Ancients are gone and their true identities and fate remain unknown, their influence did not disappear with them. Perhaps the greatest unanswered question is not simply what happened to the Ancients, but how much of Anthro Mundas as it exists today was shaped by them, or because of them, before their story came to an end."
           },
           {
             "type": "paragraph",
