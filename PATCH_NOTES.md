@@ -1,22 +1,20 @@
-**Brambleheart Beta 0.09 — Character Sheet, Level Up & Reference Alignment**
+**Brambleheart Beta 0.10 — Card Flow & Character Sheet Cleanup**
 
-**Site Update — Beta 0.09**  
+**Site Update — Beta 0.10**  
 **Game Update — v0.01, Launch Patch**
 
-- Monster Profile Action and Monstrous Trait cards now flow independently inside their respective two-column layouts, and Monster index links show Threat Level detail where a profile exists.
-- Level Up now uses the Character Sheet-style central content column, places the character name beneath the Level Up heading, and retains the current interactive advancement controls inside that shared presentation.
-- Character Sheets now include a compact Level Up control beside Campaign, and the Dice Roller uses the selected character’s saved Character Sheet accent color.
-- Saved Encounters now reuse the Character Roster icon-action presentation for Edit, Lock, Approval, Copy, and Delete where applicable.
-- The Ancients now follows Lore - Anthro Mundas in reference navigation and uses the supplied expanded Ancient-civilization and Threadpiece lore.
-- The Attacking & Defending comparison graphic has additional separation before Tie Goes to the Defender.
-- Game Update v0.02 has been consolidated into the v0.01 Launch Patch; there is again one canonical Game Update entry.
-- Updates package/runtime/build/export/PWA/install-asset metadata to Site Update Beta 0.09 while Game Update is v0.01.
+- Removes Character Sheet bag drag-and-drop and returns supported bags to the normal Equipment & Gear card flow without deleting legacy saved container assignments.
+- Adds orange left/right under-construction accents to The Role-Play, The Watcher, and Encounter Builder navigation controls.
+- Introduces one shared independent-height card-column presentation and reuses it across repeated card lists, including Complete Core Actions, Talents, Species Traits, Spell Keywords, Sparks, Deeds, Adventuring Items, Experience methods, narrative references, Character Creation and Level Up review cards, Monster Profile cards, Character Sheet Skills/Trinkets, and Character Sheet Equipment & Gear.
+- Removes superseded Monster-specific column layout code and obsolete grid selectors replaced by the shared column authority.
+- Slightly enlarges the Character Sheet Level Up control without changing the surrounding Campaign field layout.
+- Updates package/runtime/build/export/PWA/install-asset metadata to Site Update Beta 0.10 while Game Update remains v0.01.
 
 Verification:
-- Previous Site Update reviewed: 0.08
-- New Site Update: 0.09
+- Previous Site Update reviewed: 0.09
+- New Site Update: 0.10
 - Source/diff reviewed: Yes
 - Changelog synchronized: Yes
 - Version metadata synchronized: Yes
-- Tests actually run: `npm test` (repository integrity + persistence regression); TypeScript/Vue script syntax transpilation (75 source units); changed-Vue template tag-balance audit (3 files); CSS parser validation (20 stylesheet blocks); relative-import audit (78 source files); static responsive CSS audit at 1280 px, 768 px, and 390 px. Full `vue-tsc`/Vite production build was not completed because `vue-tsc` is not installed in this environment. Live browser visual testing was not completed.
+- Tests actually run: Repository integrity check; persistence regression check; TypeScript/Vue script syntax transpilation (76 source units); Vue template tag-balance audit (33 files); CSS parser validation (21 stylesheet blocks); relative-import audit (79 source files); static responsive audit at 1280 px, 768 px, and 390 px. A full vue-tsc/Vite production build could not be run because project dependencies are not installed and the offline npm cache does not contain @vitejs/plugin-vue. Live browser visual testing was not completed.
 - Known unfinished work intentionally excluded: None identified

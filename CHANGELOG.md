@@ -1,3 +1,23 @@
+# Brambleheart Beta 0.10 — Card Flow & Character Sheet Cleanup
+
+## Rhythm Engine & Navigation
+
+- Removes Character Sheet Equipment & Gear drag-and-drop storage interaction and returns Traveler’s Pack and Forager’s Satchel to the same normal equipment-card flow as other carried items, while retaining existing persisted storage data for backward compatibility.
+- Marks Encounter Builder as under construction with orange accents on both ends of its Rhythm Engine navigation tab.
+- Slightly enlarges the Character Sheet Level Up control while preserving the existing Campaign field spacing and direct character Level Up link.
+
+## Rules & Shared Presentation
+
+- Marks The Role-Play and The Watcher expandable Rules categories as under construction with orange accents on both ends of their category title bars.
+- Promotes the independent-height two-column behavior introduced for Monster Profiles into one shared card-column component and reuses it across repeated card lists, including Complete Core Actions, Talents, Species Traits, Spell Keywords, Sparks, Deeds, Adventuring Items, Experience methods, narrative lists, Character Creation reviews, Level Up known-content/equipment lists, and Character Sheet Skills, Trinkets, and Equipment & Gear.
+- Removes superseded per-page column implementations and obsolete grid rules replaced by the shared independent-column authority.
+
+## Reliability
+
+- Keeps legacy equipment-container assignments isolated in character persistence for saved-data compatibility while removing their Character Sheet interaction and presentation logic.
+- Extends repository regression checks for the shared independent-column authority, removed bag interaction UI, under-construction navigation accents, and enlarged Level Up control.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.10 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.09 — Character Sheet, Level Up & Reference Alignment
 
 ## Rhythm Engine & Character Progression
@@ -40,23 +60,3 @@
 - Extracts the interactive Attribute display into one shared component used by both Character Creation and Level Up rather than maintaining separate renderers.
 - Extends persistence coverage for equipment-container assignment and current Level Up presentation state.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.08 while retaining the consolidated Game Update v0.01.
-
-# Brambleheart Beta 0.07 — Installed App, Equipment & Glop Refinement
-
-## Application & Character Sheet
-
-- Opens installed Brambleheart sessions on News and refreshes release-versioned manifest/icon metadata only when the application itself is opened.
-- Corrects Character Sheet Spell Mana presentation and attachment pills, including live Scriptweave attachment display.
-- Refines Character Sheet Equipment & Gear counts and shared compact Equipment presentation while retaining Trinkets in the main gear list and their dedicated slot area.
-
-## Rules & Watcher
-
-- Moves Cloak of Windweave into Traveler’s Gear and keeps current Adventuring Item prices visible in shared equipment cards.
-- Normalizes Whisperstep terminology across current character/rules data.
-- Expands Glop Action and Monstrous Trait wording and behavior for Gelatinous Bash, Reconstitute, Slick Trail, and Gelatinous Body.
-- Adds reusable monster artwork resolution with an explicit placeholder when artwork is unavailable.
-
-## Reliability
-
-- Keeps installed-app refresh work tied to application launch rather than background polling or periodic sync.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.07 while retaining the consolidated Game Update v0.01.

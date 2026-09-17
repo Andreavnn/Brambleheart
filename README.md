@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.09
+# Brambleheart TTRPG — Beta 0.10
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.09 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.10 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.09
+## Current Site Update — Beta 0.10
 
-Beta 0.09 aligns the Level Up experience with the Rhythm Engine Character Sheet shell, adds direct Level Up navigation from Character Sheets, applies character accent colors to the Dice Roller, gives Monster Profile columns independent vertical flow, adds Threat Level detail to Monster links, updates The Ancients reference and navigation order, and aligns Saved Encounter controls with Character Roster action buttons.
+Beta 0.10 removes Character Sheet bag drag-and-drop while preserving normal equipment cards, extends one independent-height card-column authority across applicable repeated Rules, Character Creation, Character Sheet, and Level Up lists, marks under-construction navigation with orange edge accents, and slightly enlarges the Character Sheet Level Up control.
 
 ## Current Game Update — v0.01
 
@@ -26,9 +26,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.09`
-- package version: `0.09.0`
-- PWA cache: `v0.09`
+- Site Update / BUILD/export: `0.10`
+- package version: `0.10.0`
+- PWA cache: `v0.10`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

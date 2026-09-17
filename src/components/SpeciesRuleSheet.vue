@@ -4,6 +4,7 @@ import { structuredRule, visibleRuleFields } from '../rules/rulesEngine'
 import { traitPillKeywords } from '../rules/abilityPresentation'
 import RuleCollapsibleCard from './RuleCollapsibleCard.vue'
 import TraitCard from './TraitCard.vue'
+import IndependentCardColumns from './IndependentCardColumns.vue'
 
 type SpeciesDefinition=(typeof speciesData)[number]
 const props=defineProps<{species:SpeciesDefinition}>()
@@ -25,10 +26,10 @@ function footerKeywords(values:string[],kind:'Heritage'|'Cultural'){return trait
     </section>
     <RuleCollapsibleCard :title="`${species.name} Lore`" class="species-menu-panel species-rule-lore-placeholder"><div class="species-lore-placeholder-body" aria-label="Species lore placeholder"></div></RuleCollapsibleCard>
     <RuleCollapsibleCard title="Heritage Traits" tone-class="detail-tone-heritage" class="species-menu-panel species-rule-trait-section">
-      <div class="rule-box-grid"><TraitCard v-for="trait in species.speciesTraits" :key="trait.name" :title="trait.name" :subtitle="`${species.name} · Heritage`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Heritage')" :tone-class="['heritage-trait-card','species-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></div>
+      <IndependentCardColumns :items="species.speciesTraits" item-key="name"><template #default="{item:trait}"><TraitCard :title="trait.name" :subtitle="`${species.name} · Heritage`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Heritage')" :tone-class="['heritage-trait-card','species-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></template></IndependentCardColumns>
     </RuleCollapsibleCard>
     <RuleCollapsibleCard title="Cultural Traits" tone-class="detail-tone-culture" class="species-menu-panel species-rule-trait-section">
-      <div class="rule-box-grid"><TraitCard v-for="trait in species.cultureTraits" :key="trait.name" :title="trait.name" :subtitle="`${species.name} · Cultural`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Cultural')" :tone-class="['culture-trait-card','culture-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></div>
+      <IndependentCardColumns :items="species.cultureTraits" item-key="name"><template #default="{item:trait}"><TraitCard :title="trait.name" :subtitle="`${species.name} · Cultural`" :flavor="structuredRule(trait.text).intro" :fields="visibleRuleFields(trait.text)" :keywords="footerKeywords(trait.keywords,'Cultural')" :tone-class="['culture-trait-card','culture-trait-rule']" :cost="manaCostFromRule(trait.text)!==null?`${manaCostFromRule(trait.text)} Mana`:''" /></template></IndependentCardColumns>
     </RuleCollapsibleCard>
   </section>
 </template>
