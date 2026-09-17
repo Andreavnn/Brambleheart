@@ -21,7 +21,7 @@ const mucklingProfile:MonsterProfile={
   threatLevel:1,threatPoints:8,health:19,
   attributes:{agility:1,might:2,hide:2,lore:1,bravery:1},
   actions:[
-    {name:'Slosh',type:'Move',text:'TRIGGER: During the Creature’s Turn. EFFECT: Move up to the Creature’s Speed [+1]. The Creature may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
+    {name:'STRIDE',type:'Move',text:'TRIGGER: During your turn. EFFECT: Move up to your Speed in squares. This movement may be split before and after your Core Combat Action. SLOSH: Increase the Creature’s Speed by [+1] for this Stride. The Creature may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
     {name:'Gelatinous Bash',type:'Touch',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [1] square. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [5] + Fury Standard damage. ON SUCCESS: The Creature may move up to [1] square.',keywords:['CORE']},
     {name:'Sticky Splash',type:'Shoot',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [5] squares. TO HIT: Make a ranged Strike using (3d10) + the Creature’s Aim + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Accuracy Standard damage. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['CORE','COMBAT','SHOOT']},
     {name:'Reconstitute',type:'Instinct',text:'TRIGGER: At the start of the round, if the Creature is below [8] Health. EFFECT: The Creature rolls [1d10]. On [5+], restore [1] Health to the Creature.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
@@ -37,7 +37,7 @@ const elementalMucklingProfile:MonsterProfile={
   threatLevel:2,threatPoints:16,health:31,
   attributes:{agility:3,might:3,hide:2,lore:2,bravery:2},
   actions:[
-    {name:'Elemental Slosh',type:'Move',text:'TRIGGER: During the Creature’s Turn. EFFECT: Move up to the Creature’s Speed [+2]. The Creature may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
+    {name:'STRIDE',type:'Move',text:'TRIGGER: During your turn. EFFECT: Move up to your Speed in squares. This movement may be split before and after your Core Combat Action. ELEMENTAL SLOSH: Increase the Creature’s Speed by [+2] for this Stride. The Creature may move through mud, shallow water, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
     {name:'Infused Bash',type:'Touch',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [1] square. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [5] + Fury Standard damage of the type granted by Elemental Core. ON SUCCESS: The Creature may move up to [1] square.',keywords:['CORE']},
     {name:'Elemental Splash',type:'Shoot',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [6] squares. TO HIT: Make a ranged Strike using (3d10) + the Creature’s Aim + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [4] + Accuracy Standard damage of the type granted by Elemental Core. ON SUCCESS: The target suffers condition [-1] to its next Agility Save before the end of its next turn.',keywords:['CORE','COMBAT','SHOOT']},
     {name:'Elemental Reconstitution',type:'Instinct',text:'TRIGGER: At the start of the round, if the Creature is below [10] Health. EFFECT: The Creature rolls [1d10]. On [5+], restore [2] Health to the Creature.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
@@ -54,7 +54,7 @@ const noxiousMucklingProfile:MonsterProfile={
   threatLevel:2,threatPoints:16,health:25,
   attributes:{agility:3,might:2,hide:2,lore:2,bravery:2},
   actions:[
-    {name:'Seeping Slosh',type:'Move',text:'TRIGGER: During the Creature’s Turn. EFFECT: Move up to the Creature’s Speed [+1]. The Creature may move through mud, shallow water, poisonous terrain, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
+    {name:'STRIDE',type:'Move',text:'TRIGGER: During your turn. EFFECT: Move up to your Speed in squares. This movement may be split before and after your Core Combat Action. SEEPING SLOSH: Increase the Creature’s Speed by [+1] for this Stride. The Creature may move through mud, shallow water, poisonous terrain, and spaces narrow enough for its amorphous body without additional movement cost.',keywords:['CORE']},
     {name:'Toxic Bash',type:'Touch',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [1] square. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Fury Standard nature damage. TOXIN: A character that suffers damage from this Strike gains [1] Toxin stack.',keywords:['CORE','COMBAT']},
     {name:'Toxic Spit',type:'Shoot',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [6] squares. TO HIT: Make a ranged Strike using (3d10) + the Creature’s Aim + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Accuracy Standard nature damage. TOXIN: A character that suffers damage from this Strike gains [1] Toxin stack.',keywords:['CORE','COMBAT','SHOOT']},
     {name:'Toxic Reconstitution',type:'Instinct',text:'TRIGGER: At the start of the round, if the Creature is below [10] Health. EFFECT: The Creature rolls [1d10]. On [5+], restore [2] Health to the Creature.\nCOOLDOWN: This Ability cannot be used again for [1d10/2] rounds.',keywords:['INSTINCT']},
@@ -72,7 +72,7 @@ const prismheartMucklingProfile:MonsterProfile={
   threatLevel:4,threatPoints:36,health:51,
   attributes:{agility:3,might:3,hide:3,lore:3,bravery:2},
   actions:[
-    {name:'Prismatic Surge',type:'Move',text:'TRIGGER: During the Creature’s Turn. EFFECT: Move up to the Creature’s Speed [+3]. The Creature may move through mud, shallow water, narrow openings, and spaces occupied by other characters without additional movement cost. RESTRICTIONS: The Creature cannot end this Move in another character’s space.',keywords:['CORE']},
+    {name:'STRIDE',type:'Move',text:'TRIGGER: During your turn. EFFECT: Move up to your Speed in squares. This movement may be split before and after your Core Combat Action. PRISMATIC SURGE: Increase the Creature’s Speed by [+3] for this Stride. The Creature may move through mud, shallow water, narrow openings, and spaces occupied by other characters without additional movement cost. RESTRICTIONS: The Creature cannot end this Move in another character’s space.',keywords:['CORE']},
     {name:'Prism Bash',type:'Touch',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [1] square. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [6] + Fury Standard damage of the type granted by Prismheart Core. ON SUCCESS: The Creature may move up to [2] squares.',keywords:['CORE']},
     {name:'Spectrum Lance',type:'Shoot',text:'TRIGGER: During the Creature’s Turn. TARGET: One character within [7] squares. TO HIT: Make a ranged Strike using (3d10) + the Creature’s Aim + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [5] + Accuracy Standard damage of the type granted by Prismheart Core. ON SUCCESS: Reduce the target’s Speed by [-1] until the end of its next turn.',keywords:['CORE','COMBAT','SHOOT']},
     {name:'Core Rupture',type:'Magic',text:'TRIGGER: During the Creature’s Turn. TARGET: Every other character within [2] squares. TO HIT: Make a separate Magic Strike against each target using (3d10) + the Creature’s Control + condition(s) against that target’s (3d10) + Ward + condition(s). DAMAGE: On a successful Strike, deal [6] Direct damage of the type granted by Prismheart Core. AFTEREFFECT: After resolving Core Rupture, change the Creature’s elemental affinity to a different affinity listed by Prismheart Core.\nCOOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',keywords:['CORE','COMBAT','MAGIC']},
@@ -86,12 +86,101 @@ const prismheartMucklingProfile:MonsterProfile={
   ],
 }
 
+
+type DurtleProfileOptions={
+  strideLabel:string
+  strideText:string
+  breathName:string
+  breathText:string
+  pulseName:string
+  pulseText:string
+  shellName:string
+  shellText:string
+}
+
+function durtleProfile(options:DurtleProfileOptions):MonsterProfile{
+  return{
+    threatLevel:5,threatPoints:48,health:55,
+    attributes:{agility:2,might:5,hide:4,lore:4,bravery:5},
+    actions:[
+      {name:'STRIDE',type:'Move',text:`TRIGGER: During your turn. EFFECT: Move up to your Speed in squares. This movement may be split before and after your Core Combat Action. ${options.strideLabel}: ${options.strideText}`,keywords:['CORE']},
+      {name:'Crushing Bite',type:'Touch',text:'TRIGGER: During the Creature’s Turn. DECLARE: Choose [1] enemy character within [3] squares. EFFECT: The Creature may move up to [2] squares toward the target before resolving TO HIT. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: On a successful Strike, deal [7] + Fury Standard damage and [1] Lethal damage. RESTRICTIONS: The target must be within [1] square when TO HIT is resolved.',keywords:['CORE']},
+      {name:'Shell Ram',type:'Touch',text:'TRIGGER: After resolving Crushing Bite, if the Creature moved at least [1] square toward the target as part of that Crushing Bite. TARGET: The target of that Crushing Bite. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [5] + Fury Direct damage. ON SUCCESS: Move the target up to [2] squares directly away from the Creature. After resolving that forced movement, the target suffers [1] Lethal damage.',keywords:['ABILITY']},
+      {name:options.breathName,type:'Shoot',text:options.breathText,keywords:['CORE','COMBAT','SHOOT']},
+      {name:options.pulseName,type:'Instinct',text:options.pulseText,keywords:['CORE','MAGIC']},
+      {name:'Tail Sweep',type:'Reactive',text:'TRIGGER: When an enemy character finishes a Move within [2] squares of the Creature. TARGET: The character that triggered this Ability. TO HIT: Make a melee Strike using (3d10) + the Creature’s Brawl + condition(s) against the target’s (3d10) + Ward + condition(s). DAMAGE: [3] + Fury Standard damage. ON SUCCESS: Move the target up to [1] square directly away from the Creature.',keywords:['TOUCH','COMBAT']},
+    ],
+    monstrousTraits:[
+      {name:options.shellName,text:options.shellText,keywords:['PASSIVE']},
+      {name:'Mountainous Shell',text:'EFFECT: The Creature is immune to effects that would forcibly move, disarm, grapple, or otherwise pin it.',keywords:['PASSIVE']},
+      {name:'Awakened Core',text:`TRIGGER: The first time the Creature is reduced to [27] Health or less. EFFECT: End the current cooldown on ${options.breathName}. At the end of the current turn, the Creature may immediately use ${options.pulseName} without spending its normal Core Instinct Action. This additional use does not prevent the Creature from using ${options.pulseName} normally at the end of the round; if the current turn is also the final turn of the round, ${options.pulseName} may therefore resolve twice. RESTRICTIONS: Awakened Core can trigger only once per encounter.`,keywords:['PASSIVE','MAGIC']},
+    ],
+  }
+}
+
+const emberDurtleProfile=durtleProfile({
+  strideLabel:'CINDERSTEP',
+  strideText:'The Creature ignores additional movement costs caused by rubble, mud, shallow water, and natural difficult terrain while using Stride.',
+  breathName:'Ember Breath',
+  breathText:'TRIGGER: During the Creature’s Turn. DECLARE: Target all enemy characters within CONE[6]. TO HIT: Each target makes a Renew the Heart (Hard) save. EFFECT: On a failed save, the target suffers [8] Direct fire damage. On a successful save, the target suffers [4] Direct fire damage instead. CINDER: A target that fails the save also suffers [1] Lethal On-Going fire damage at the start of its next turn. The effect then ends. COOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',
+  pulseName:'Furnace Pulse',
+  pulseText:'TRIGGER: At the end of the round. TARGET: Every other character within ORB[10] centered on the Creature. EFFECT: Each target suffers [1] Lethal fire damage. Characters within [3] squares of the Creature suffer [2] Lethal fire damage instead.',
+  shellName:'Furnace Shell',
+  shellText:'EFFECT: The Creature gains Resistance [+4] against fire damage. The first time each round another character within [1] square deals melee damage to the Creature, that character suffers [1] Lethal fire damage.',
+})
+
+const rimeDurtleProfile=durtleProfile({
+  strideLabel:'ICEFALL',
+  strideText:'The Creature ignores additional movement costs caused by rubble, mud, shallow water, ice, snow, and natural difficult terrain while using Stride.',
+  breathName:'Rime Breath',
+  breathText:'TRIGGER: During the Creature’s Turn. DECLARE: Target all enemy characters within CONE[6]. TO HIT: Each target makes a Renew the Heart (Hard) save. EFFECT: On a failed save, the target suffers [8] Direct cold damage. On a successful save, the target suffers [4] Direct cold damage instead. CHILL: A target that fails the save reduces its Speed by [-2] until the end of its next turn. COOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',
+  pulseName:'Rime Pulse',
+  pulseText:'TRIGGER: At the end of the round. TARGET: Every other character within ORB[10] centered on the Creature. EFFECT: Each target suffers [1] Lethal cold damage and reduces its Speed by [-1] until the end of its next turn.',
+  shellName:'Glacial Shell',
+  shellText:'EFFECT: The Creature gains Resistance [+4] against cold damage. The first time each round the Creature suffers Standard damage, reduce that damage by [-2], to a minimum of [1].',
+})
+
+const stormDurtleProfile=durtleProfile({
+  strideLabel:'THUNDERSTEP',
+  strideText:'The Creature ignores additional movement costs caused by rubble, mud, shallow water, and natural difficult terrain while using Stride. If the Creature moves at least [3] squares during this Stride, gain condition [+1] to the next Crushing Bite Strike made before the end of the turn.',
+  breathName:'Storm Breath',
+  breathText:'TRIGGER: During the Creature’s Turn. DECLARE: Target all enemy characters within CONE[6]. TO HIT: Each target makes a Renew the Heart (Hard) save. EFFECT: On a failed save, the target suffers [8] Direct lightning damage. On a successful save, the target suffers [4] Direct lightning damage instead. ARC: After resolving the saves, choose up to [1] other enemy character within [2] squares of a character that failed the save. The chosen character suffers [2] Lethal lightning damage. A character can suffer this ARC damage only once from each use of Storm Breath. COOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',
+  pulseName:'Thunder Pulse',
+  pulseText:'TRIGGER: At the end of the round. TARGET: Every other character within ORB[10] centered on the Creature. EFFECT: Each target suffers [1] Lethal lightning damage. STATIC: A character damaged by Thunder Pulse suffers condition [-1] to its next Ward roll before the end of its next turn.',
+  shellName:'Charged Shell',
+  shellText:'EFFECT: The Creature gains Resistance [+4] against lightning damage. The first time each round another character within [1] square deals melee damage to the Creature, that character suffers [1] Lethal lightning damage.',
+})
+
+const verdantDurtleProfile=durtleProfile({
+  strideLabel:'ROOTWALK',
+  strideText:'The Creature ignores additional movement costs caused by rubble, mud, shallow water, vegetation, roots, and natural difficult terrain while using Stride.',
+  breathName:'Verdant Breath',
+  breathText:'TRIGGER: During the Creature’s Turn. DECLARE: Target all enemy characters within CONE[6]. TO HIT: Each target makes a Renew the Heart (Hard) save. EFFECT: On a failed save, the target suffers [8] Direct nature damage. On a successful save, the target suffers [4] Direct nature damage instead. OVERGROWTH: After resolving this Ability, the affected squares become Overgrown until the end of the next round. Other characters must spend [+1] additional Speed to enter an Overgrown square. COOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',
+  pulseName:'Verdant Pulse',
+  pulseText:'TRIGGER: At the end of the round. TARGET: Every other character within ORB[10] centered on the Creature. EFFECT: Each target suffers [1] Lethal nature damage. RENEWAL: Restore [1] Health to the Creature for each character damaged by Verdant Pulse, to a maximum of [3] Health.',
+  shellName:'Living Shell',
+  shellText:'EFFECT: The Creature gains Resistance [+4] against nature damage.',
+})
+
+const arcaneDurtleProfile=durtleProfile({
+  strideLabel:'WYRDFOLD',
+  strideText:'The Creature ignores additional movement costs caused by rubble, mud, shallow water, and natural difficult terrain while using Stride. During this Stride, the Creature may move through spaces occupied by other characters but cannot end its movement in another character’s space.',
+  breathName:'Arcane Breath',
+  breathText:'TRIGGER: During the Creature’s Turn. DECLARE: Target all enemy characters within CONE[6]. TO HIT: Each target makes a Renew the Heart (Hard) save. EFFECT: On a failed save, the target suffers [8] Direct arcane damage. On a successful save, the target suffers [4] Direct arcane damage instead. DISRUPTION: A character that fails the save makes its next Strike roll before the end of its next turn Weighted. COOLDOWN: This Ability cannot be used again for [1d10/2+1] rounds.',
+  pulseName:'Wyrd Pulse',
+  pulseText:'TRIGGER: At the end of the round. TARGET: Every other character within ORB[10] centered on the Creature. EFFECT: Each target suffers [1] Lethal arcane damage. DISRUPTION: A character damaged by Wyrd Pulse makes its next Attribute Save before the end of its next turn Weighted.',
+  shellName:'Wyrd Shell',
+  shellText:'EFFECT: The Creature gains Resistance [+4] against arcane damage. The first time each round the Creature is targeted by a Magic Strike, that Strike is Weighted.',
+})
+
 export const externalMonsters:ExternalMonsterEntry[]=[
   monster('Aeronaut','Companions'),monster('Familiars','Companions'),monster('Fenrir','Companions'),monster('Rollodillo','Companions'),monster('Seastrider','Companions'),placeholder('Mossling','Companions'),placeholder('Reedrunner','Companions'),placeholder('Lantern Toad','Companions'),placeholder('Bramble Hare','Companions'),placeholder('Pondskipper','Companions'),
 
   placeholder('Runegear Sentinel','Arcane Automata'),placeholder('Aethercoil Hound','Arcane Automata'),placeholder('Brassroot Custodian','Arcane Automata'),placeholder('Glyphwork Warden','Arcane Automata'),placeholder('Spellcoil Drone','Arcane Automata'),placeholder('Lantern Engine','Arcane Automata'),placeholder('Sigilbound Porter','Arcane Automata'),placeholder('Hexglass Observer','Arcane Automata'),placeholder('Clockvine Harrier','Arcane Automata'),placeholder('Mana-Lattice Golem','Arcane Automata'),
 
   placeholder('Veil-Eater','Eldritch Abominations'),placeholder('Hollow Starling','Eldritch Abominations'),placeholder('Many-Eyed Pilgrim','Eldritch Abominations'),placeholder('Whisper Maw','Eldritch Abominations'),placeholder('Folded One','Eldritch Abominations'),placeholder('Skinless Echo','Eldritch Abominations'),placeholder('Dream Leech','Eldritch Abominations'),placeholder('Unmoored Witness','Eldritch Abominations'),placeholder('Pale Geometry','Eldritch Abominations'),placeholder('Starved Oracle','Eldritch Abominations'),
+
+  monster('Ember Durtle','Epic Legends and Tall-Tale Terrors',undefined,emberDurtleProfile),monster('Rime Durtle','Epic Legends and Tall-Tale Terrors',undefined,rimeDurtleProfile),monster('Storm Durtle','Epic Legends and Tall-Tale Terrors',undefined,stormDurtleProfile),monster('Verdant Durtle','Epic Legends and Tall-Tale Terrors',undefined,verdantDurtleProfile),monster('Arcane Durtle','Epic Legends and Tall-Tale Terrors',undefined,arcaneDurtleProfile),
 
   placeholder('Briar Mantis','Insectoid Terrors'),placeholder('Glasswing Swarm','Insectoid Terrors'),placeholder('Ironbark Beetle','Insectoid Terrors'),placeholder('Mire Centipede','Insectoid Terrors'),placeholder('Needle Wasp','Insectoid Terrors'),placeholder('Rootborer Grub','Insectoid Terrors'),placeholder('Lantern Moth','Insectoid Terrors'),placeholder('Webthorn Spider','Insectoid Terrors'),placeholder('Carrion Cicada','Insectoid Terrors'),placeholder('Spore Ant Colony','Insectoid Terrors'),
 
