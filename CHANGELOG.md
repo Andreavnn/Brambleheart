@@ -1,3 +1,23 @@
+# Brambleheart Beta 0.11 — Monster, Lore & Under-Construction Refinement
+
+## Watcher & Rules
+
+- Adds Ember Dyrtle to the Watcher catalog with a full monster profile, updates its requested action and trait wording, converts its referenced Drutle naming to Dyrtle, and applies the supplied Ember Dyrtle artwork.
+- Adds the supplied Muckling artwork to its Watcher entry so the creature now has profile art in the Rules reader.
+- Replaces the Winds of Magic lore page with the newly supplied expanded reference text.
+- Standardizes structured rule labels so target declaration language is presented uniformly as Target rather than mixing Target and Declare across equivalent rule fields.
+
+## Shared Presentation
+
+- Replaces the former orange edge accents on The Role-Play, The Watcher, and the Encounter Builder tab with a visible Under Construction stamp treatment that avoids covering surrounding text.
+- Standardizes ability and rules pill ordering through a shared keyword-priority pass so repeated pill groups present in a consistent order throughout the site.
+
+## Rhythm Engine & Reliability
+
+- Restores missing expanded Equipment & Gear details for Adventure Kit items such as Torch and Trail Rations by matching them against the shared equipment catalog and falling back to clean weight-detail text when needed.
+- Extends the current data set with the new monster-art assets and the new Ember Dyrtle profile while preserving the current Site Update / Game Update split.
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.11 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.10 — Card Flow & Character Sheet Cleanup
 
 ## Rhythm Engine & Navigation
@@ -40,23 +60,3 @@
 - Consolidates the former Game Update v0.02 Dual Wielding & Sapguard notes into the v0.01 Launch Patch so the Game Updates history once again has one canonical current entry.
 - Extends repository regression checks for independent Monster Profile columns, monster Threat Level link details, Anthro Mundas lore ordering, Level Up page-shell alignment, Character Sheet Level Up navigation, selected-character Dice Roller accents, shared encounter record controls, and the consolidated Game Update history.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.09 while Game Update returns to v0.01.
-
-# Brambleheart Beta 0.08 — Inventory Containers & Level Up Alignment
-
-## Rhythm Engine & Level Up
-
-- Gives Character Sheet inventory containers full-width presentation below loose equipment, shows contained item count and weight, supports Empty state detail, and allows inventory items to be moved between loose storage and supported bags.
-- Reuses the Character Creation interactive Attribute graphic for Level Up, places known Skills and Talents in expandable menus, highlights unused Magic spell capacity, and removes the redundant Signature Known status.
-- Aligns Level Up Equipment & Gear with the shared Character Sheet equipment cards, removes Equip/Equipped controls, and places the existing Sell action in the card header.
-
-## Rules & Watcher
-
-- Gives Watcher monster Actions and Monstrous Traits independent heights with thinner category title bars.
-- Refines Glop so Gelatinous Bash uses Trigger, Target, To Hit, and Damage without the former free movement effect, while Gelatinous Body separates its forced-movement immunity into a dedicated Formless field.
-- Adds separation between the Attacking & Defending comparison graphic and the Tie Goes to the Defender example card.
-
-## Reliability
-
-- Extracts the interactive Attribute display into one shared component used by both Character Creation and Level Up rather than maintaining separate renderers.
-- Extends persistence coverage for equipment-container assignment and current Level Up presentation state.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, and PWA cache metadata at Beta 0.08 while retaining the consolidated Game Update v0.01.

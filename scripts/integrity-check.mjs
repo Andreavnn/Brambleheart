@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.10','0.09','0.08'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.11','0.10','0.09'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -302,9 +302,9 @@ assert.match(simulatorView,/\.character-level-up-link\{[^}]*min-height:26px[^}]*
 assert.match(simulatorView,/\.character-level-up-link img\{[^}]*width:26px[^}]*height:22px/,'Character Sheet Level Up icon must retain its enlarged size')
 const rulesView=read('src/views/RulesView.vue')
 assert.match(rulesView,/rules-chapter-under-construction[^\n]{0,220}role-play[^\n]{0,120}watcher/,'Role-Play and Watcher Rules categories must share the under-construction modifier')
-assert.match(rulesView,/rules-chapter-under-construction>\.rules-chapter-heading\{border-left:5px solid var\(--detail-spark\);border-right:5px solid var\(--detail-spark\)\}/,'Under-construction Rules categories must use orange accents on both ends')
-assert.match(simulatorView,/segment-tab under-construction-tab[^>]*>Encounter Builder<\/button>/,'Encounter Builder navigation must use the under-construction modifier')
-assert.match(simulatorView,/under-construction-tab\{border-left:4px solid var\(--detail-spark\);border-right:4px solid var\(--detail-spark\)\}/,'Encounter Builder navigation must use orange accents on both ends')
+assert.match(rulesView,/construction-stamp">Under Construction<\/small>/,'Under-construction Rules categories must show the Under Construction stamp label')
+assert.match(simulatorView,/segment-tab under-construction-tab[^>]*><span>Encounter Builder<\/span><small class=\"construction-stamp\">Under Construction<\/small><\/button>/,'Encounter Builder navigation must show the Under Construction stamp label')
+assert.match(simulatorView,/\.rhythm-sheet-tabs \.under-construction-tab\{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap\}/,'Encounter Builder navigation must use the updated stamp layout')
 assert.match(simulatorView,/rhythm-tool-card[^>]*:style=[^>]*selectedCharacter\?\.sheetAccent/,'Dice Roller must inherit the selected character accent when available')
 
 const encounters=read('src/services/encounters.ts')

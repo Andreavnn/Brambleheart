@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.10
+# Brambleheart TTRPG — Beta 0.11
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.10 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.11 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.10
+## Current Site Update — Beta 0.11
 
-Beta 0.10 removes Character Sheet bag drag-and-drop while preserving normal equipment cards, extends one independent-height card-column authority across applicable repeated Rules, Character Creation, Character Sheet, and Level Up lists, marks under-construction navigation with orange edge accents, and slightly enlarges the Character Sheet Level Up control.
+Beta 0.11 adds the Ember Dyrtle monster profile and Muckling art, replaces the Winds of Magic lore page with the supplied expanded text, changes under-construction navigation accents into stamp-style labels, standardizes pill ordering and Target field presentation, and restores missing expanded Equipment & Gear details for Adventure Kit items.
 
 ## Current Game Update — v0.01
 
@@ -26,9 +26,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.10`
-- package version: `0.10.0`
-- PWA cache: `v0.10`
+- Site Update / BUILD/export: `0.11`
+- package version: `0.11.0`
+- PWA cache: `v0.11`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

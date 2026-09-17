@@ -5690,19 +5690,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "Winds of Magic, unseen streams of primal energy that twist through air, soil, and soul. Birthing beasts of impossible form: vine-serpents, molten hounds, and whispering swarms that steal dreams."
+            "text": "The Winds of Magic are currents of primal energy that flow through every reach of Anthro Mundas. Despite their name, they do not belong to the sky alone, moving through air and water, beneath soil and stone, and through the bodies and spirits of all living creatures. They gather, divide, cross, and change course like great rivers, carrying the magical rhythm that pulses through the world. Most often the Winds pass unseen, their presence known only by the changes they leave behind, but where they gather in strength they can reveal themselves in faint shimmers, flowing ribbons of color, or strange light that moves across earth, water, and sky."
           },
           {
             "type": "paragraph",
-            "text": "Some scholars say the Winds are the lifeblood of Anthro Mundas; others believe they are the last breath of the broken gods known only as the Ancients."
+            "text": "Where the Winds gather strongly, the world becomes strange. Plants grow into impossible forms, stone warms without flame, and creatures touched by concentrated magic can change in ways nature alone could never produce. Vine-serpents coil through overgrown ruins, molten hounds leave glowing tracks across blackened earth, and even whispering swarms are said to steal dreams from those who sleep beneath them. Such beings are often called creatures of the winds, though whether magic created them or changed what was already there remains a subject of argument among scholars."
           },
           {
             "type": "paragraph",
-            "text": "The Winds are fickle, calm one day, furious the next. They gather in storms that flash colors unknown to mortal eyes, or fall silent for seasons, leaving spellcraft weak and sluggish."
+            "text": "The Winds seldom hold to a single course or temper, moving gently through a region for generations before gathering without warning into violent magical storms, filling the sky with strange colors and causing the land beneath them to behave in ways no season should allow. At other times they thin or fall almost silent, leaving magic difficult to summon and places once vibrant with enchantment curiously still. No calendar has ever reliably predicted these changes, and even the most learned observers can do little more than recognize patterns after the Winds have already begun to turn."
           },
           {
             "type": "paragraph",
-            "text": "To the Beastfolk, the Winds are not merely tools but living presences. Mages and shamans describe them as spirits, moods, or even songs—forces that must be coaxed, never commanded."
+            "text": "To the Beastfolk, the Winds are understood in countless ways. Scholars describe currents, resonance, and concentrations of magical energy, while shamans speak of moods, spirits, and songs moving through the world. Some faiths regard the Winds as the breath of Anthro Mundas itself, while others believe they predate the world as it is known today. Mages learn to feel their movement and draw upon their passing currents, but even the most accomplished practitioners do not truly command them. They listen, reach, shape what they can, and release what they cannot hold."
+          },
+          {
+            "type": "paragraph",
+            "text": "There are places where the Winds seem to touch more than the living world. In certain valleys, ruins, sacred groves, and forgotten paths, the boundary between Anthro Mundas and the realm known as the Hollowing Hallows grows thin, and those who pass through may hear voices, glimpse figures long dead, or feel memories that are not their own. Some believe these places reveal the Winds in their purest state, flowing not only through matter and life, but through memory, spirit, and whatever lies beyond death. Others dismiss such claims as superstition, though few who have experienced such places return entirely certain of that belief."
+          },
+          {
+            "type": "paragraph",
+            "text": "For all that the Beastfolk have learned to study and wield their power, the true nature of the Winds remains unknown. Perhaps they are simply the natural rhythm of a living world, or perhaps they are the reason Anthro Mundas lives at all."
           },
           {
             "type": "paragraph",

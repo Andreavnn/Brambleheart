@@ -1,5 +1,42 @@
 export const ABILITY_TYPE_KEYWORDS=new Set(['Core','Move','Combat','Reactive','Instinct','Passive','Touch','Shoot','Magic'])
 
+const KEYWORD_PRIORITY=[
+  'Ability',
+  'Core',
+  'Instinct',
+  'Move',
+  'Combat',
+  'Touch',
+  'Shoot',
+  'Magic',
+  'Reactive',
+  'Passive',
+  'Heritage',
+  'Cultural',
+  'Skill',
+  'Signature',
+  'Cantrip',
+  'Enhance',
+  'Hex',
+  'Summon',
+  'Magic Missile',
+  'Assailment',
+  'Conveyance',
+  'Invocation',
+  'Flames',
+  'Frost',
+  'Hallows',
+  'Harmony',
+  'Life',
+  'Oath',
+  'Oaths',
+  'Wilds',
+  'Line',
+  'Cone',
+  'Orb',
+] as const
+const KEYWORD_PRIORITY_INDEX=new Map<string,number>(KEYWORD_PRIORITY.map((value,index)=>[value,index]))
+
 export function canonicalAbilityType(value:string){
   const normalized=value.trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ')
   if(!normalized)return''
@@ -18,7 +55,15 @@ export function activeAbilityKeywords(values:string[]|undefined){
       if(!out.some(item=>item.toLowerCase()===token.toLowerCase()))out.push(token)
     }
   }
-  return out
+  return out.sort(compareAbilityKeywords)
+}
+
+function compareAbilityKeywords(left:string,right:string){
+  const leftCanonical=canonicalAbilityType(left),rightCanonical=canonicalAbilityType(right)
+  const leftPriority=KEYWORD_PRIORITY_INDEX.get(leftCanonical)??KEYWORD_PRIORITY.length
+  const rightPriority=KEYWORD_PRIORITY_INDEX.get(rightCanonical)??KEYWORD_PRIORITY.length
+  if(leftPriority!==rightPriority)return leftPriority-rightPriority
+  return leftCanonical.localeCompare(rightCanonical)
 }
 
 export function abilityTypeKeywords(values:string[]|undefined){
