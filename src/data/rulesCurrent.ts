@@ -5714,23 +5714,27 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "THE HOWLING HALLOWS"
+            "text": "THE HOLLOWING HALLOWS"
           },
           {
             "type": "paragraph",
-            "text": "Beyond the mortal veil lies the Howling Hallows, a realm of soft winds, silver light, and endless murmurs. The folk of Anthro Mundas say that when one dies their spirit walks among trees whose leaves sing with memory. The Hallows is neither paradise nor punishment—it is reflection, a place where the echoes of all things drift until they fade or find their way home."
+            "text": "Beyond the veil of the living world lies the Hollowing Hallows, a realm hidden within the seams of Anthro Mundas. It is neither wholly part of the mortal world nor entirely separate from it, but a place between places where spirit, memory, and magic seem to mingle freely. Beastfolk traditions differ greatly in what they believe comes after passing, yet many share the belief that the departed must first pass through the Hallows before continuing on their journey."
           },
           {
             "type": "paragraph",
-            "text": "To some, the Hallows appears as a vast forest of moonlit paths; to others, a valley of flowing stars, or a quiet ocean lit from beneath. Its form bends to the soul that sees it, shaped by memory and emotion."
+            "text": "The Winds of Magic flow strongly through the Hollowing Hallows, and many traditions hold that there they exist in their purest nature. Where its currents press against Anthro Mundas, the boundary between realms can grow thin. A reflection may briefly show another face, a familiar voice may travel upon a wind through an empty room, or the shape of someone long departed may appear at the edge of sight before fading again. In rarer places, the veil opens further, allowing the living to cross into the Hallows for a brief time through ritual, magic, dream, or circumstances no scholar has successfully explained."
           },
           {
             "type": "paragraph",
-            "text": "The winds that sigh through the Hallows are said to be the same that stir the living world—the Winds of Magic in their purest state. Where they blow strongest, the veil thins. In such places, the living may glimpse their ancestors or feel unseen hands guiding them."
+            "text": "No spiritwalker has ever returned with a true map of the Hollowing Hallows, for the realm appears to possess no single shape of its own. Those few who have crossed the veil and returned describe places that differ wildly from one another, even when their journeys began from the same point in Anthro Mundas. One spirit may walk beneath immense trees whose silver leaves whisper with familiar voices, while another finds a valley beneath a sky flowing with distant stars. Some speak of endless shores illuminated by light beneath the water, quiet mountain paths beneath unfamiliar moons, or places resembling homes and lands remembered from life. The Hallows seems to clothe itself in memory, taking forms the spirit can recognize even when the realm itself remains unknowable."
           },
           {
             "type": "paragraph",
-            "text": "To live in Anthro Mundas is to walk with ghosts. Every whispering wind and flickering flame may carry the voice of someone who once was—and perhaps, will be again."
+            "text": "Within this shifting place, the dead are sometimes encountered as they once were, though perhaps not precisely as they lived. Ancestors may speak with voices remembered from childhood, departed companions may offer guidance, and figures known only through stories have appeared to those who never knew them in life. Such meetings are rarely long, and whether the spirits encountered are truly the dead, memories given shape, or echoes left behind during their passage remains a matter of faith and debate. What is certain is that those who have such encounters often carry knowledge, words, or memories they had no ordinary means of possessing."
+          },
+          {
+            "type": "paragraph",
+            "text": "Time fares little better within this realm of spirits; minutes within the Hallows may become hours beyond it, while journeys that seem to last through the night may end with scarcely a moment having passed in Anthro Mundas. Yet, what lies beyond the Hollowing Hallows remains perhaps the greater mystery. The spirits encountered there do not appear to linger forever, and even the oldest traditions speak of a point beyond which neither vision, magic, nor memory can follow. Where the departed go when they leave the Hallows has given rise to countless faiths and philosophies throughout Beastfolk history, each offering its own answer to a question the living have never been able to settle. The Hallows may stand upon the threshold of that answer, but it never surrendered what awaits on the other side."
           },
           {
             "type": "paragraph",

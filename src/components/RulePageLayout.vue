@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import AppHeader from './AppHeader.vue'
 import RulePageNavigation from './RulePageNavigation.vue'
 import RuleSurfaceScope from './RuleSurfaceScope.vue'
@@ -6,11 +7,12 @@ import type { RulePageNavigation as RulePageNavigationData } from '../data/ruleC
 
 interface RuleBreadcrumbParent { label:string; path:string }
 
-withDefaults(defineProps<{
+const props=withDefaults(defineProps<{
   title:string
   section:string
   summary?:string
   parent?:RuleBreadcrumbParent|null
+  parents?:RuleBreadcrumbParent[]
   backTo?:string
   backLabel?:string
   preferBackTo?:boolean
@@ -20,6 +22,7 @@ withDefaults(defineProps<{
 }>(),{
   summary:'',
   parent:null,
+  parents:()=>[],
   backTo:'/rules',
   backLabel:'Back to Rules',
   preferBackTo:false,
@@ -27,6 +30,8 @@ withDefaults(defineProps<{
   navigation:null,
   bodyClass:'',
 })
+
+const breadcrumbParents=computed(()=>props.parents.length?props.parents:(props.parent?[props.parent]:[]))
 </script>
 
 <template>
@@ -36,7 +41,7 @@ withDefaults(defineProps<{
       <article class="rule-page-shell">
         <nav class="rule-breadcrumb" aria-label="Breadcrumb">
           <RouterLink to="/rules">Rules</RouterLink><span>›</span>
-          <template v-if="parent"><RouterLink :to="parent.path">{{ parent.label }}</RouterLink><span>›</span></template>
+          <template v-for="breadcrumbParent in breadcrumbParents" :key="breadcrumbParent.path"><RouterLink :to="breadcrumbParent.path">{{ breadcrumbParent.label }}</RouterLink><span>›</span></template>
           <strong>{{ title }}</strong>
         </nav>
         <header class="rule-page-hero card-surface">
