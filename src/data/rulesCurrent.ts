@@ -5774,95 +5774,83 @@ export const ruleSourceDocuments:Record<string,RuleSourceDocument>={
           },
           {
             "type": "paragraph",
-            "text": "THE GREAT MORPHING"
+            "text": "THE AGES OF ANTHRO MUNDAS"
           },
           {
             "type": "paragraph",
-            "text": "When the world rose to life, the towers of the Ancients fell silent. The Winds of Magic, once bound, broke free in a single cataclysmic exhalation that rippled across land and sea. The air shimmered with wild colors, the earth shuddered, and oceans boiled with light as mountains unfolded like petals."
+            "text": "The oldest history of Anthro Mundas is defined as much by what is missing as by what remains. Beastfolk chronicles, family histories, oral traditions, and the records of early settlements can be followed backward only so far before they simply end, beyond which lies an unknown span of time separating the earliest known Beastfolk from the vanished civilization of the Ancients. Recovered Ancient tomes, carvings, murals, and surviving illustrations depict their cities, machines, landscapes, and creatures, yet nowhere among them does a Beastfolk form appear."
           },
           {
             "type": "paragraph",
-            "text": "No one knows whether it was punishment, healing, or just fate. But from the ruins of the old world rose the Beastfolk. Creatures who morphed from fur and feathers, waking beneath strange starts, with the spark of recognition in their eyes."
+            "text": "Scholars call this missing age the Great Morphing, a name describing no single event that history can confidently place, but an era during which Anthro Mundas appears to have changed beyond recognition. The machines of the Ancients seem to have ceased answering their makers, signs preserved in stone and ruin suggest that the Winds of Magic erupted across the world with extraordinary force. Entire landmasses appear to have been altered and shifted during this lost age, scarred by violent magical storms rarely witnessed in the current age. Whether this transformation occurred in a single terrible upheaval or unfolded across generations remains unknown."
           },
           {
             "type": "paragraph",
-            "text": "THE ERA OF DISCOVERY"
+            "text": "On the other side of this silent age, the Beastfolk appear within the oldest surviving histories as scattered communities living among the remains of something far older than themselves. Stories passed down among distant cultures tell strangely similar tales of ancestors awakening beneath unfamiliar stars, wandering through abandoned places, and learning the name of a world they did not yet understand. Scholars have also noted a curious detail within surviving Ancient imagery, where creatures resembling Beastfolk appear frequently even though Beastfolk themselves never do. Whether this is coincidence, evidence of some larger unknown history, or merely another attempt to force meaning upon an unknowable past remains fiercely debated."
           },
           {
             "type": "paragraph",
-            "text": "For a time, the world itself seemed to breathe with the Beastfolk. New forests spread over the bones of old cities. The seas cooled. The great magical storms that had ravaged the land softened into mist and rain. The Winds, still wild but no longer furious, found rhythm again."
+            "text": "Whatever occurred during the Great Morphing, the world encountered by the Beastfolk was still changing, and its earliest communities survived as small, scattered groups that hunted, gathered, and sought shelter among natural places and abandoned ruins. Necessity became their teacher as stone became tool, bark and fiber became cloth, fire became hearth, and the rhythms of the Winds slowly became something that could be listened to rather than merely feared. Different communities discovered their own ways of living, crafting, and working magic, and over generations those became traditions, languages, and cultures of their own."
           },
           {
             "type": "paragraph",
-            "text": "At first, the Beastfolk wandered. They were hunters and gatherers of wonder, seeking shelter among the shattered towers and overgrown halls of the old world. But as time creped ever forward. They learned to weave bark into cloth, to strike flint for flame, and to sing small songs that kept the restless spirits at bay. Each tribe discovered its own rhythm with the Winds, and from those rhythms, the first cultures took root."
+            "text": "As settlements grew into villages and villages into kingdoms, paths became roads, river crossings became markets, and isolated communities began trading knowledge as readily as goods. Beastfolk spread far across the world, from forest to marshes, mountains, deserts, and frozen lands. Later generations would come to know this long period of exploration, settlement, and expanding the Era of Discovery."
           },
           {
             "type": "paragraph",
-            "text": "As generations passed, the Beastfolk spread across Anthro Mundas, shaping the land as the land shaped them. The Rivkan followed the rivers, learning the songs of water and current. The Virelan rose to the skies, carving dwellings in storm-ridden cliffs. The Hedgkin cultivated gardens where wildflowers once ruled, coaxing peace from soil and seed. The Axalori built floating sanctuaries upon the mangrove tides, and the Urnath turned their strengths into fortress of ice and stone."
+            "text": "With expanding kingdoms came expanding ambitions, and prosperity brought new disagreements over land, trade, belief, and magical practice that gradually hardened into rivalries. Alliances formed and fractured, rulers sought greater influence, and knowledge once shared between communities was increasingly guarded as a source of power, while magic itself became drawn further into those conflicts. Spells capable of healing, sheltering, and shaping the land were turned toward siege and conquest, and determined warlords sought increasingly dangerous ways to bend the Winds against their enemies."
           },
           {
             "type": "paragraph",
-            "text": "THE AGE OF STRIFE"
+            "text": "Among the warlords who rose from this Age of Strife, none would leave a deeper scar upon Anthro Mundas than King Covine, a Braelor war-sorcerer of extraordinary ability and greater desire. Covine gathered followers beneath a blackened banner with promises of conquest, glory, and a dominion that would never fade, drawing kingdom after kingdom into his wars through allegiance, fear, or force. Yet conquest alone was not enough, and as his power grew, Covine turned his mastery of magic toward an obsession greater than any throne or territory: he intended not merely to rule Anthro Mundas, but to rule it forever."
           },
           {
             "type": "paragraph",
-            "text": "As generations passed, harmony faded into pride. What began as small rivalries between tribes and trades grew into deeper divides. Unity slowly unraveled beneath the weight of desire. Scholars hoarded knowledge, warlords forged spells as weapons, and the old oaths that once bound the Beastfolk began to lose their strength."
+            "text": "THE BLIGHT OF THE UNDEATH"
           },
           {
             "type": "paragraph",
-            "text": "Magic, once wondrous and unbound, became a tool of ambition. No longer a gift, but a weapon. Spells that once healed now shattered stone. War and conquest scarred the lands where pride drowned wisdom."
+            "text": "Deep within the frozen north, beneath the ruined fortress of Dominous, Covine discovered what he believed to be the answer to the immortal rule he sought. Hidden among chambers older than any Beastfolk kingdom was an Ancient grimoire that would become known as the Tome of Undeath, a work of bone, ash, and blood whose surviving passages illustrated the spirit and powers beyond mortal death. What the Ancients intended the tome to accomplish remains unknown, but Covine became convinced that within its pages lay the means to free himself from mortality."
           },
           {
             "type": "paragraph",
-            "text": "Out of that chaos rose King Covine, a Braelor war-sorcerer whose hunger outmatched all. Charismatic and cruel, he gathered followers beneath a blackened banner, promising glory and dominion that would never fade. He envisioned himself as a deathless king, ruling Anthro Mundas for all eternity."
+            "text": "His pursuit of that promise culminated at Dominous, where the kingdoms and tribes of Anthro Mundas finally united against him. As their armies pushed into the frozen reaches surrounding his fortress, Covine drew upon the Tome and unleashed a spell unlike any recorded before it, tearing violently at the veil separating the living world from the Hollowing Hallows. The sky above Dominous darkened beneath the force of the spellcraft, the Winds twisted into unnatural currents, and the world itself seemed to recoil as something meant to remain divided was forced together."
           },
           {
             "type": "paragraph",
-            "text": "THE BLIGHT OF UNDEATH"
+            "text": "The spell granted Covine neither the eternal life nor the unending reign he had sought, but transformed both him and his army into something caught horribly between life and death. Flesh paled, withered, and began to rot while spirits that should have passed beyond the mortal veil remained unnaturally tethered to ruined bodies. Covine endured at the center of the catastrophe, no longer living yet refusing death, and from that moment the king who had sought immortality became remembered as Covine the Undead Lich King. Around him, the remnants of his armies became a legion of restless dead whose bodies continued to move long after life had abandoned them."
           },
           {
             "type": "paragraph",
-            "text": "In the far, frozen north hidden deep beneath the ruined fortress of Dominous, Covine discovered the answer to the undying rule sought. The Tome of Undeath, a grimoire of the Ancients written in bone, ash, and blood."
+            "text": "The corruption did not remain within Covine or his followers, for the land surrounding Dominous began to change with them. Soil darkened beneath frost, living things sickened, and the dead rose where the corruption passed. This spreading curse became known as the Blight, an infection of both land and spirit that crept outward from Dominous and left death, decay, and undeath in its wake."
           },
           {
             "type": "paragraph",
-            "text": "During the climactic battle of Dominous, at the peak of the world, as the united tribes of Anthro Mundas marched against him. Covine unleashed a catastrophic spell that tore a hole in the veil between life and the Hallows."
+            "text": "The struggle that followed became remembered as the Battle of Dominous, seven days and seven nights in which the united forces of Anthro Mundas fought to prevent Covine and the Blight from spreading beyond the north. By its end, the Lich King and his surviving legion had been driven back into the frozen reaches surrounding Dominous, but neither Covine nor the corruption he had unleashed could be destroyed. With no means of ending the Blight itself, the survivors raised great cairns and wards along its borders, marking a boundary between the lands of the living and the spreading death beyond."
           },
           {
             "type": "paragraph",
-            "text": "The sky became pitch black and land itself recoiled as earth screamed. But the spell did not grant eternal life. Instead Covine and his followers began to wither as their spirits were ripped from their bodies. Their skin turned as pale as ash and rotted away, as the light left their eyes. Covine became the Lich King of the Undeath and his armies turned into a legion of undead monsters."
+            "text": "Generations later, the Urnath still keep vigil along the frozen frontier, tending the old cairns, watching for movement beyond them, and standing between the settled lands of Anthro Mundas and the deathless kingdom that still endures beneath the shadow of Dominous."
           },
           {
             "type": "paragraph",
-            "text": "The land, too, was corrupted by the curse, a spreading infection that could not be cured, called the Blight washed over the world. Leaving death and undead monsters in its wake."
+            "text": "THE GREAT ADVENTURE"
           },
           {
             "type": "paragraph",
-            "text": "The war that followed is remembered as The Battle of Dominous. It lasted seven days and seven nights. At its end, Covine and his legion had been pushed back deep into the frozen north. Yet, with no end in sight the survivors built great cairns along the Blight’s border to contain the plague."
+            "text": "Many years have passed since the Battle of Dominous, and although the Blight remains a constant threat, the wars surrounding Covine slowly receded into history. Kingdoms rebuilt, roads reopened, and stories once carried by those who had witnessed the conflict became tales told beside hearths and legends preserved in song. Anthro Mundas had not become safe, nor had all the wounds of the past healed, but life continued, and with it came a growing desire to explore and understand the world."
           },
           {
             "type": "paragraph",
-            "text": "To this day, the Urnath stand upon a frozen horizon, guarding the world against the silence of the undead."
+            "text": "Lore seekers, explorers, salvagers, and wanderers began adventuring into long abandoned places, tracing old maps and half-remembered paths toward ruins swallowed by wilderness and regions known only through rumors. Ancient sites once avoided as places of danger drew new attention from those searching for lost knowledge, valuable Threadpieces, forgotten histories, or answers to questions buried beneath centuries of time. What began as scattered journeys gradually became part of Beastfolk life, carrying travelers farther from familiar settlements and into corners of Anthro Mundas few living eyes had seen."
           },
           {
             "type": "paragraph",
-            "text": "AGE OF ADVENTURE"
+            "text": "From villages, cities, temples, workshops, and quiet hearths came those willing to follow these roads, each driven by reasons of their own. Some sought knowledge, others fortune, duty, redemption, or simply the distant horizon, while many discovered purposes they had never expected to find when their journeys began. They crossed mountains, entered the remains of forgotten civilizations, followed the shifting Winds, and returned with stories that slowly became part of the world’s growing memory."
           },
           {
             "type": "paragraph",
-            "text": "As the world healed and the fires of war dimmed, stories turned into tales and tales into legends. And as the scars of the undeath and blight faded into history, a new generation of courage and adventure bloomed."
-          },
-          {
-            "type": "paragraph",
-            "text": "Lore seekers, adventurers and treasure hunters began to trace overgrown paths rediscovering the ancient wonders of a forgotten age. This stirring of journey marked the Age of Adventure, when hope and courage became the compass."
-          },
-          {
-            "type": "paragraph",
-            "text": "From humble hearths came brave souls who sought not power, but purpose. They crossed mountains, delved the ruins of the past, and wove new stories into the world’s long memory."
-          },
-          {
-            "type": "paragraph",
-            "text": "This is the age of Brambleheart, where the light of the past guides courageous heroes toward the unknown, and every step forged into the legend of Anthro Mundas."
+            "text": "This is the time in which Brambleheart begins, an age not yet given a name by those living through it. The mysteries of Anthro Mundas stretch far beyond the borders of any map, and countless stories still wait beyond the next hill, or wherever the Winds choose to lead."
           }
         ]
       }

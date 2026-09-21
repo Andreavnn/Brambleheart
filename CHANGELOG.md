@@ -1,3 +1,22 @@
+# Brambleheart Beta 0.13 — Lore Restructure, Monster Locking & Sheet Polish
+
+## Lore & References
+
+- Replaces The Great Morphing, The Era of Discovery, and The Age of Strife with a single The Ages of Anthro Mundas page positioned between Hollowing Hallows and The Blight of the Undeath.
+- Replaces the Anthro Mundas lore text for The Blight of the Undeath with the supplied current copy and renames Age of Adventure to The Great Adventure with its replacement lore.
+- Adds lore illustration slots to Anthro Mundas reference pages, uses the supplied artwork for Lore - Anthro Mundas, The Ancients, and Winds of Magic, and preserves visible placeholders for pages that do not yet have assigned art.
+
+## Watcher & Character Sheets
+
+- Locks unfinished monster entries in Rules › The Watcher › Monsters so only Muckling, Noxious Muckling, and Ember Dyrtle remain selectable, with greyed locked rows and lock indicators for unavailable profiles.
+- Updates monster family summaries so variant counts show the total number of monsters in that family rather than only the number of child entries.
+- Restores Adventure Kit gear to the Level Up equipment review and changes Character Sheet spell cards to the shared independent two-column layout.
+- Aligns deed reward pills with the other footer pills so the Bonus Reward box matches the companion boxes in the Sparks / Deeds presentation.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.13 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.12 — Watcher Navigation, Creature Profiles & Level Up Alignment
 
 ## Watcher & Monster Profiles
@@ -38,22 +57,3 @@
 - Restores missing expanded Equipment & Gear details for Adventure Kit items such as Torch and Trail Rations by matching them against the shared equipment catalog and falling back to clean weight-detail text when needed.
 - Extends the current data set with the new monster-art assets and the new Ember Dyrtle profile while preserving the current Site Update / Game Update split.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.11 while Game Update remains v0.01.
-# Brambleheart Beta 0.10 — Card Flow & Character Sheet Cleanup
-
-## Rhythm Engine & Navigation
-
-- Removes Character Sheet Equipment & Gear drag-and-drop storage interaction and returns Traveler’s Pack and Forager’s Satchel to the same normal equipment-card flow as other carried items, while retaining existing persisted storage data for backward compatibility.
-- Marks Encounter Builder as under construction with orange accents on both ends of its Rhythm Engine navigation tab.
-- Slightly enlarges the Character Sheet Level Up control while preserving the existing Campaign field spacing and direct character Level Up link.
-
-## Rules & Shared Presentation
-
-- Marks The Role-Play and The Watcher expandable Rules categories as under construction with orange accents on both ends of their category title bars.
-- Promotes the independent-height two-column behavior introduced for Monster Profiles into one shared card-column component and reuses it across repeated card lists, including Complete Core Actions, Talents, Species Traits, Spell Keywords, Sparks, Deeds, Adventuring Items, Experience methods, narrative lists, Character Creation reviews, Level Up known-content/equipment lists, and Character Sheet Skills, Trinkets, and Equipment & Gear.
-- Removes superseded per-page column implementations and obsolete grid rules replaced by the shared independent-column authority.
-
-## Reliability
-
-- Keeps legacy equipment-container assignments isolated in character persistence for saved-data compatibility while removing their Character Sheet interaction and presentation logic.
-- Extends repository regression checks for the shared independent-column authority, removed bag interaction UI, under-construction navigation accents, and enlarged Level Up control.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.10 while Game Update remains v0.01.
