@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.13','0.12','0.11'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.14','0.13','0.12'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -61,6 +61,13 @@ assert.doesNotMatch(read('src/views/SettingsView.vue'),/archived Game Updates/,'
 
 assert.equal(exists('style-audit.html'),false,'Temporary style audit artifacts must not be committed')
 assert.doesNotMatch(read('src/styles.css'),/semantic-collapsible/,'Superseded style-repair override must not remain')
+assert.doesNotMatch(read('src/views/RuleReaderView.vue'),/rule-banners|currentBanner|rule-page-banner-placeholder|anthro-rule-banner/,'Retired lore banner authority must not remain in RuleReader')
+assert.doesNotMatch(read('src/styles.css'),/rule-page-banner-placeholder|anthro-rule-banner/,'Retired lore banner CSS must not remain')
+assert.equal(exists('src/assets/rule-banners/banner_AnthroMundas.png'),false,'Retired Anthro Mundas banner asset must be removed')
+assert.equal(exists('src/assets/rule-banners/README.txt'),false,'Retired rule-banner documentation must be removed with the unused banner system')
+for(const loreAsset of ['anthro-mundas.png','the-ancients.png','winds-of-magic.png','hollowing-hallows.png','the-blight-of-the-undeath.png','the-great-adventure.png'])assert.ok(exists(`src/assets/lore/${loreAsset}`),`Lore artwork missing: ${loreAsset}`)
+assert.match(read('src/data/ruleCatalog.ts'),/id:'brambleheart-lore',title:'Brambleheart Lore'/,'References must expose one Brambleheart Lore group authority')
+assert.match(read('src/views/RulesView.vue'),/referencePageGroups/,'References index must render the shared Brambleheart Lore group')
 
 for(const obsolete of ['src/data/equipmentNormalization.ts','src/data/rulesSource.ts','src/data/beta032Content.ts','src/styles.beta032.css'])assert.equal(exists(obsolete),false,`${obsolete} must remain removed`)
 for(const obsoleteAsset of ['src/assets/backgrounds/Blightbound Horror.png','src/assets/page-headers/rules.png.png'])assert.equal(exists(obsoleteAsset),false,`${obsoleteAsset} must remain removed`)
@@ -219,7 +226,7 @@ assert.match(equipmentCard,/:collapsible="collapsible"/,'EquipmentCard must dele
 const spellCard=read('src/components/SpellCard.vue')
 assert.match(ruleReader,/<SpellCard[\s\S]{0,500}v-if="currentLoreSignatureSpell"[\s\S]{0,700}signature/,'Lore pages must render the Signature Spell through the shared SpellCard authority')
 assert.match(ruleReader,/<RuleCollapsibleCard title="Lore Spells"[\s\S]{0,900}v-for="spell in currentLoreKnownSpells"/,'Lore pages must render remaining Lore Spells through the shared SpellCard authority')
-assert.match(simulatorView,/<h3 class="review-subheading">Known Spells<\/h3>[\s\S]{0,900}<SpellCard v-for="spell in characterSpells"/,'Character Sheet must render Known Spells through the shared SpellCard authority')
+assert.match(simulatorView,/<h3 class="review-subheading">Known Spells<\/h3>[\s\S]{0,900}<IndependentCardColumns v-if="characterSpells.length" :items="characterSpells">[\s\S]{0,900}<SpellCard/,'Character Sheet must render Known Spells through the shared independent-column and SpellCard authorities')
 assert.match(createView,/IndependentCardColumns :items="\[\.\.\.form\.spells,\.\.\.form\.invocationSpells\][\s\S]{0,500}<SpellCard/,'Character Creation must render selected Spells through the shared SpellCard authority')
 assert.match(spellCard,/class="spell-card"[\s\S]{0,1800}class="mana-badge"[\s\S]{0,1800}rule-breakdown-grid[\s\S]{0,1800}keyword-pill-row/,'SpellCard must own the established header Mana badge, rule details, and keyword presentation')
 assert.doesNotMatch(spellCard,/v-if="signature"[^>]*>SIGNATURE</,'Shared Spell titles must not append a duplicate SIGNATURE marker')
@@ -228,9 +235,9 @@ assert.match(spellCard,/class="spell-card-costs"[\s\S]{0,260}class="mana-badge"[
 assert.match(styles,/\.spell-card-costs\{display:grid;justify-items:end;/,'Spell cost stack must align to the right side of the shared Spell header')
 assert.match(spellCard,/trinkets[\s\S]{0,1200}spell-trinket-pill/,'SpellCard must render attached Trinkets through the shared pill area')
 assert.match(ruleReader,/RuleCollapsibleCard title="Cantrips"[\s\S]{0,900}v-for="spell in currentInvocationCantrips"[\s\S]{0,1400}RuleCollapsibleCard title="Invocations"[\s\S]{0,900}v-for="spell in currentInvocationSpells"/,'Invocation reference must separate Cantrips from Invocations')
-assert.match(simulatorView,/spell-card-grid character-spell-column[\s\S]{0,700}v-for="spell in characterSpells"/,'Rhythm Character Sheet Spells must use the single-column modifier')
+assert.doesNotMatch(simulatorView,/spell-card-grid character-spell-column[\s\S]{0,700}characterSpells/,'Character Sheet Spells must not regress to the superseded single-column grid')
 assert.match(styles,/\.spell-card-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/,'Shared Spell card grids must retain the two-column layout outside Lore pages')
-assert.match(styles,/\.lore-spell-card-grid,\.character-spell-column\{grid-template-columns:1fr;\}/,'Lore pages and Character Sheet Spells must force the shared Spell card grid to one column')
+assert.match(styles,/\.lore-spell-card-grid,\.character-spell-column\{grid-template-columns:1fr;\}/,'Lore pages and Character Creation spell review must retain their single-column Spell card modifier')
 assert.match(styles,/@media\(max-width:760px\)\{\.spell-card-grid\{grid-template-columns:1fr;\}\}/,'Spell cards must collapse to one column on narrow screens')
 assert.match(styles,/\.spell-card\{[^}]*border-top-width:7px[^}]*border-top-color:var\(--spell-lore/,'Spell cards must retain the established seven-pixel Lore edge')
 assert.match(styles,/\.spell-card \.rule-breakdown-grid\{display:grid;grid-template-columns:1fr;gap:0/,'Spell rule details must retain the established inline row presentation')

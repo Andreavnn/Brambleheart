@@ -4,14 +4,15 @@ import { externalMonsters, monsterSlug } from './externalMonsters'
 
 export interface RuleSourceSlice { document: string; sections?: string[] }
 export interface RulePageDefinition {slug:string;title:string;summary:string;sources?:RuleSourceSlice[];note?:string;keywords?:string[];loreHeading?:string}
-export interface RulePageGroupDefinition {id:string;title:string;pageSlugs:string[]}
+export interface RulePageGroupDefinition {id:string;title:string;pageSlugs:string[];summary?:string}
 export interface RuleCategoryDefinition {id:string;title:string;summary:string;landing:RulePageDefinition;pages:RulePageDefinition[];groups?:RulePageGroupDefinition[]}
 const page=(slug:string,title:string,summary:string,sources?:RuleSourceSlice[],note?:string,keywords?:string[],loreHeading?:string):RulePageDefinition=>({slug,title,summary,sources,note,keywords,loreHeading})
 const lorePage=(slug:string,title:string,summary:string,heading:string)=>page(slug,title,summary,[{document:'lore-anthro-mundas'}],undefined,['Lore','Anthro Mundas'],heading)
 export const loreAnthroMundasPages:RulePageDefinition[]=[
  lorePage('lore-anthro-mundas','Lore - Anthro Mundas','The living world, its lands, peoples, ruins, and restless wonders.','ANTHRO MUNDAS'),lorePage('lore-anthro-mundas-ancients','The Ancients','The vanished people who mastered, bound, and ultimately starved the Winds.','THE ANCIENTS'),lorePage('lore-anthro-mundas-winds','Winds of Magic','The unseen primal currents that move through air, soil, spirit, and spellcraft.','WINDS OF MAGIC'),lorePage('lore-anthro-mundas-hallows','Hollowing Hallows','The realm beyond the mortal veil, shaped by memory, spirit, and the Winds.','THE HOLLOWING HALLOWS'),lorePage('lore-anthro-mundas-ages','The Ages of Anthro Mundas','The lost age between the Ancients and the rise of Covine, from the Great Morphing through the Age of Strife.','THE AGES OF ANTHRO MUNDAS'),lorePage('lore-anthro-mundas-undeath','The Blight of the Undeath','Covine, Dominous, the breach into the Hallows, and the spreading Blight.','THE BLIGHT OF THE UNDEATH'),lorePage('lore-anthro-mundas-adventure','The Great Adventure','The hopeful age of rediscovery in which Brambleheart takes place.','THE GREAT ADVENTURE')]
 export const loreNavigation=loreAnthroMundasPages.map(({slug,title,loreHeading})=>({slug,title,heading:loreHeading||title.toUpperCase()}))
-export const quickReferencePages:RulePageDefinition[]=[loreAnthroMundasPages[0],page('faq','FAQ','Common questions answered from the currently loaded rules.'),page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.')]
+export const referenceGroups:RulePageGroupDefinition[]=[{id:'brambleheart-lore',title:'Brambleheart Lore',pageSlugs:loreAnthroMundasPages.map(item=>item.slug),summary:'The living world, its lands, peoples, ruins, and restless wonders.'}]
+export const quickReferencePages:RulePageDefinition[]=[page('faq','FAQ','Common questions answered from the currently loaded rules.'),page('changes-updates','Changes & Updates','System errata, amendments, and rules changes.')]
 
 const fundamentalPages:RulePageDefinition[]=[
  page('introduction','Introduction','What Brambleheart is, the Watcher, the flow of play, and the core principles of the game.',[{document:'introduction'}]),
@@ -32,11 +33,11 @@ export const ruleCategories:RuleCategoryDefinition[]=[
 const monsterRulePages=externalMonsters.map(monster=>page(monsterSlug(monster.name),monster.name,`${monster.category}${monster.group?` · ${monster.group}`:''}. ${monster.summary}`))
 export const magicLorePages=(ruleCategories.find(category=>category.id==='winds-of-magic')?.pages||[]).filter(item=>item.slug.startsWith('lore-')&&item.slug!=='lore-invocation')
 
-export const allRulePages=[...quickReferencePages,...loreAnthroMundasPages.slice(1),...ruleCategories.flatMap(category=>[category.landing,...category.pages]),...monsterRulePages]
+export const allRulePages=[...loreAnthroMundasPages,...quickReferencePages,...ruleCategories.flatMap(category=>[category.landing,...category.pages]),...monsterRulePages]
 
 export interface RuleNavigationLink {slug:string;title:string;section:string}
 export interface RulePageNavigation {previous:RuleNavigationLink|null;next:RuleNavigationLink|null}
-const referenceNavigationPages=[...loreAnthroMundasPages,...quickReferencePages.filter(item=>item.slug!=='lore-anthro-mundas')]
+const referenceNavigationPages=[...loreAnthroMundasPages,...quickReferencePages]
 const categoryNavigationPages=ruleCategories.flatMap(category=>[
   category.landing,
   ...category.pages,

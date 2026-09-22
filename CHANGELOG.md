@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.14 — Lore Navigation & Artwork Refresh
+
+## Lore & References
+
+- Reorganizes Rules › References so Anthro Mundas material is grouped under an expandable Brambleheart Lore parent, with each lore page available directly beneath it while FAQ and Changes & Updates remain separate reference entries.
+- Removes the retired lore banner layer and its Anthro Mundas banner asset so lore pages now use only the dedicated lore illustration area.
+- Replaces the Anthro Mundas, The Ancients, and Winds of Magic illustrations with the supplied updated artwork and adds supplied artwork for Hollowing Hallows, The Blight of the Undeath, and The Great Adventure.
+- Keeps The Ages of Anthro Mundas on the shared lore illustration layout with its placeholder until dedicated artwork is supplied.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.14 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.13 — Lore Restructure, Monster Locking & Sheet Polish
 
 ## Lore & References
@@ -37,23 +50,3 @@
 
 - Replaces the Hollowing Hallows reference page with the supplied current lore text and aligns the page title and heading to Hollowing Hallows.
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.12 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.11 — Monster, Lore & Under-Construction Refinement
-
-## Watcher & Rules
-
-- Adds Ember Dyrtle to the Watcher catalog with a full monster profile, updates its requested action and trait wording, converts its referenced Drutle naming to Dyrtle, and applies the supplied Ember Dyrtle artwork.
-- Adds the supplied Muckling artwork to its Watcher entry so the creature now has profile art in the Rules reader.
-- Replaces the Winds of Magic lore page with the newly supplied expanded reference text.
-- Standardizes structured rule labels so target declaration language is presented uniformly as Target rather than mixing Target and Declare across equivalent rule fields.
-
-## Shared Presentation
-
-- Replaces the former orange edge accents on The Role-Play, The Watcher, and the Encounter Builder tab with a visible Under Construction stamp treatment that avoids covering surrounding text.
-- Standardizes ability and rules pill ordering through a shared keyword-priority pass so repeated pill groups present in a consistent order throughout the site.
-
-## Rhythm Engine & Reliability
-
-- Restores missing expanded Equipment & Gear details for Adventure Kit items such as Torch and Trail Rations by matching them against the shared equipment catalog and falling back to clean weight-detail text when needed.
-- Extends the current data set with the new monster-art assets and the new Ember Dyrtle profile while preserving the current Site Update / Game Update split.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.11 while Game Update remains v0.01.

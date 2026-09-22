@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.13
+# Brambleheart TTRPG — Beta 0.14
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.13 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.14 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.13
+## Current Site Update — Beta 0.14
 
-Beta 0.13 restructures the Anthro Mundas lore sequence, adds per-page lore illustration slots, locks unfinished Watcher monster entries behind clear disabled states, restores Adventure Kit gear to Level Up equipment review, aligns deed reward pills, and converts Character Sheet magic cards to independent two-column presentation.
+Beta 0.14 reorganizes References around a Brambleheart Lore parent, removes the retired lore banner layer, and refreshes the Anthro Mundas lore artwork, including new Hollowing Hallows, The Blight of the Undeath, and The Great Adventure illustrations.
 
 ## Current Game Update — v0.01
 
@@ -26,9 +26,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.13`
-- package version: `0.13.0`
-- PWA cache: `v0.13`
+- Site Update / BUILD/export: `0.14`
+- package version: `0.14.0`
+- PWA cache: `v0.14`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

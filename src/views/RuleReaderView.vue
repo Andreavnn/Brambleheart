@@ -67,19 +67,8 @@ function adjustCreationAttribute(id:AttributeId,amount:number){
 }
 watch(slug,(value,previous)=>{if(value==='character-creation'||previous==='character-creation')creationAttributeRanks.value=freshCreationAttributeRanks()})
 
-const bannerModules=import.meta.glob('../assets/rule-banners/*.{png,PNG,jpg,JPG,jpeg,JPEG,webp,WEBP}',{eager:true,query:'?url',import:'default'}) as Record<string,string>
 const monsterArtModules=import.meta.glob('../assets/monsters/*.{png,PNG,jpg,JPG,jpeg,JPEG,webp,WEBP}',{eager:true,query:'?url',import:'default'}) as Record<string,string>
 const loreImageModules=import.meta.glob('../assets/lore/*.{png,PNG,jpg,JPG,jpeg,JPEG,webp,WEBP}',{eager:true,query:'?url',import:'default'}) as Record<string,string>
-function bannerKey(value:string){const key=value.replace(/[^a-z0-9]+/gi,'').toLowerCase();return key==='athromundas'?'anthromundas':key}
-function bannerStem(path:string){return (path.split('/').pop()||'').replace(/\.[^.]+$/,'').replace(/^banner[-_ ]*/i,'')}
-const currentBanner=computed(()=>{
-  if(!page.value)return''
-  const wanted=Array.from(new Set([page.value.title,page.value.slug,page.value.title.replace(/^Lore of /i,''),page.value.slug.replace(/^lore[-_]?/i,'')].map(bannerKey).filter(Boolean)))
-  const entry=Object.entries(bannerModules).find(([path])=>{
-    const stem=bannerKey(bannerStem(path));return wanted.some(key=>stem===key||stem.endsWith(key)||key.endsWith(stem))
-  })
-  return entry?.[1]||''
-})
 function displayText(value:string){return formatMeasurementText(value.replace(/\bProwess\b/g,'Agility').replace(/\bprowess\b/g,'agility'),measurement.value)}
 function isDialogue(value:string){return /\b(?:Watcher|Player|Selu):/.test(value)}
 function dialogueParts(value:string){
@@ -144,7 +133,7 @@ const currentMonsterArt=computed(()=>{const monster=currentMonster.value;if(!mon
 const unlockedMonsterNames=new Set(['Muckling','Noxious Muckling','Ember Dyrtle'])
 function monsterIsAvailable(monster:{name:string}){return unlockedMonsterNames.has(monster.name)}
 function monsterVariantCount(family:{parent:{name:string};children:{name:string}[]}){return 1+family.children.length}
-const loreIllustrationNames:Record<string,string>={'lore-anthro-mundas':'anthro-mundas','lore-anthro-mundas-ancients':'the-ancients','lore-anthro-mundas-winds':'winds-of-magic'}
+const loreIllustrationNames:Record<string,string>={'lore-anthro-mundas':'anthro-mundas','lore-anthro-mundas-ancients':'the-ancients','lore-anthro-mundas-winds':'winds-of-magic','lore-anthro-mundas-hallows':'hollowing-hallows','lore-anthro-mundas-undeath':'the-blight-of-the-undeath','lore-anthro-mundas-adventure':'the-great-adventure'}
 const currentLoreIllustration=computed(()=>{const wanted=loreIllustrationNames[canonicalSlug.value];if(!wanted)return'';return Object.entries(loreImageModules).find(([path])=>monsterArtKey((path.split('/').pop()||'').replace(/\.[^.]+$/,''))===monsterArtKey(wanted))?.[1]||''})
 const showLoreIllustrationPlaceholder=computed(()=>canonicalSlug.value.startsWith('lore-anthro-mundas'))
 const monsterGroups=computed(()=>monsterCategories.map(category=>{
@@ -537,7 +526,6 @@ const workedSeluThreat=workedSelu?characterThreatBreakdown({attributeRanks:attri
             <article v-for="(entry,index) in sourceSections" :key="`${entry.document}-${entry.section.heading}-${index}`" class="rule-page-section source-rule-section" :class="{'example-source-card':isExampleHeading(entry.section.heading),'creation-step-section':isCharacterCreationStep(entry.section),'creation-path-step':creationGraphicStep(entry.section,6)}">
               <header v-if="isCharacterCreationStep(entry.section)" class="creation-step-heading"><span>{{ characterCreationStepParts(entry.section)?.number }}</span><div><h2>{{ characterCreationStepParts(entry.section)?.title }}</h2></div></header>
               <h2 v-else-if="entry.section.heading!=='Overview'">{{ displayText(entry.section.heading) }}</h2>
-              <div v-if="loreIndex>=0&&index===0" class="rule-page-banner-placeholder anthro-rule-banner" :class="{empty:!currentBanner}" :style="currentBanner?{backgroundImage:`url(${currentBanner})`}:undefined" aria-hidden="true"></div>
               <figure v-if="showLoreIllustrationPlaceholder&&index===0" class="lore-illustration-placeholder" :class="{empty:!currentLoreIllustration}"><img v-if="currentLoreIllustration" :src="currentLoreIllustration" :alt="`${page.title} illustration`" /><div v-else class="lore-illustration-empty"><span>LORE IMAGE</span><strong>{{ page.title }}</strong><small>Illustration placeholder</small></div></figure>
               <div v-if="canonicalSlug==='character-creation'&&entry.section.heading==='CHARACTER CREATION'" class="creation-overview-flow"><p>{{ sectionParagraphs(entry.section)[0] }}</p><div><span><small>IDENTITY</small><strong>Species · Spark · Homeland · Faith · Oath</strong></span><b>→</b><span><small>CAPABILITIES</small><strong>Attributes · Path · Talents · Magic</strong></span><b>→</b><span><small>READY FOR PLAY</small><strong>Equipment · Languages · Review</strong></span></div><p>{{ sectionParagraphs(entry.section)[2] }}</p></div>
               <template v-for="(block,blockIndex) in entry.section.blocks" :key="blockIndex">
