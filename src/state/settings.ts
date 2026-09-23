@@ -33,7 +33,7 @@ const defaults:SettingsState={
   logoSize:'largest',
   boldText:false,
   roleTheme:'default',
-  backgroundImage:'none',
+  backgroundImage:'ready-for-adventure',
   backgroundGrayscale:false,
   bootAudio:true,
   measurement:'squares',

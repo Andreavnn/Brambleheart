@@ -1,3 +1,17 @@
+# Brambleheart Beta 0.15 — Reference Typography, Header Artwork & Default Background
+
+## References & Presentation
+
+- Renames the Brambleheart Lore child entry from Lore - Anthro Mundas to Anthro Mundas while preserving its existing lore route and source material.
+- Aligns the Brambleheart Lore parent title and detail typography with the FAQ and Changes & Updates entries without changing the expandable lore-group structure.
+- Replaces the News, Character Roster, Rhythm Engine, Rules, and Settings page-header character artwork using the existing shared header placement and responsive behavior.
+- Replaces the News Share Brambleheart character artwork while retaining the existing Share card layout and behavior.
+- Changes the default site background for new/reset settings to Ready For Adventure while preserving previously saved user background selections.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.15 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.14 — Lore Navigation & Artwork Refresh
 
 ## Lore & References
@@ -29,24 +43,3 @@
 ## Release Integrity
 
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.13 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.12 — Watcher Navigation, Creature Profiles & Level Up Alignment
-
-## Watcher & Monster Profiles
-
-- Renames Generic Monsters to Creatures of the Winds and places Muckling, Noxious Muckling, and Ember Dyrtle in that category while removing the requested Elemental/Prismheart Muckling and Rime/Storm/Verdant/Arcane Dyrtle entries.
-- Adds dedicated bio text to Muckling, Noxious Muckling, and Ember Dyrtle and updates their profile rules to refer to each monster by name instead of generic player- or Creature-facing wording.
-- Presents Muckling Slosh, Noxious Muckling Seeping Slosh, and Ember Dyrtle Cinderstep as dedicated structured rule rows below Effect.
-- Extends rule breadcrumbs to support nested Watcher navigation so monster profiles show Rules › The Watcher › Monsters › Monster and return directly to Monsters.
-
-## Rhythm Engine & Character Progression
-
-- Moves the Encounter Builder Under Construction stamp behind the tab label with a lighter, lower-opacity treatment so the navigation bar keeps its normal height.
-- Removes the selected-character duplicate detail text beside the Character selector on Character Sheet and Dice Roller views.
-- Extracts Character Detail into one shared section used by both the Character Sheet and Level Up, including identity, campaign, origin, Threat, Health, and character accent controls.
-- Aligns Level Up section headers with the Character Sheet collapsible-section presentation while retaining the existing advancement controls.
-
-## Lore & Release Integrity
-
-- Replaces the Hollowing Hallows reference page with the supplied current lore text and aligns the page title and heading to Hollowing Hallows.
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.12 while Game Update remains v0.01.

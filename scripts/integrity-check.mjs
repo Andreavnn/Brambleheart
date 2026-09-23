@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.14','0.13','0.12'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.15','0.14','0.13'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -68,6 +68,12 @@ assert.equal(exists('src/assets/rule-banners/README.txt'),false,'Retired rule-ba
 for(const loreAsset of ['anthro-mundas.png','the-ancients.png','winds-of-magic.png','hollowing-hallows.png','the-blight-of-the-undeath.png','the-great-adventure.png'])assert.ok(exists(`src/assets/lore/${loreAsset}`),`Lore artwork missing: ${loreAsset}`)
 assert.match(read('src/data/ruleCatalog.ts'),/id:'brambleheart-lore',title:'Brambleheart Lore'/,'References must expose one Brambleheart Lore group authority')
 assert.match(read('src/views/RulesView.vue'),/referencePageGroups/,'References index must render the shared Brambleheart Lore group')
+assert.match(read('src/data/ruleCatalog.ts'),/lorePage\('lore-anthro-mundas','Anthro Mundas'/,'The Anthro Mundas lore child must use the current title')
+assert.doesNotMatch(read('src/data/ruleCatalog.ts'),/Lore - Anthro Mundas/,'Retired Anthro Mundas title must not remain in the catalog')
+assert.match(read('src/views/RulesView.vue'),/reference-subcategory/,'Brambleheart Lore must use the dedicated References typography hook')
+assert.match(read('src/state/settings.ts'),/backgroundImage:'ready-for-adventure'/,'Ready For Adventure must be the default site background')
+for(const headerAsset of ['news.png','character-roster.png','rhythm-engine.png','rules.png','settings.png'])assert.ok(exists(`src/assets/page-headers/${headerAsset}`),`Page-header artwork missing: ${headerAsset}`)
+assert.ok(exists('src/assets/news/share-brambleheart.png'),'Share Brambleheart artwork must remain available')
 
 for(const obsolete of ['src/data/equipmentNormalization.ts','src/data/rulesSource.ts','src/data/beta032Content.ts','src/styles.beta032.css'])assert.equal(exists(obsolete),false,`${obsolete} must remain removed`)
 for(const obsoleteAsset of ['src/assets/backgrounds/Blightbound Horror.png','src/assets/page-headers/rules.png.png'])assert.equal(exists(obsoleteAsset),false,`${obsoleteAsset} must remain removed`)
