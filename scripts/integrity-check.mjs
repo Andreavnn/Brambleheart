@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.15','0.14','0.13'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.16','0.15','0.14'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -65,7 +65,7 @@ assert.doesNotMatch(read('src/views/RuleReaderView.vue'),/rule-banners|currentBa
 assert.doesNotMatch(read('src/styles.css'),/rule-page-banner-placeholder|anthro-rule-banner/,'Retired lore banner CSS must not remain')
 assert.equal(exists('src/assets/rule-banners/banner_AnthroMundas.png'),false,'Retired Anthro Mundas banner asset must be removed')
 assert.equal(exists('src/assets/rule-banners/README.txt'),false,'Retired rule-banner documentation must be removed with the unused banner system')
-for(const loreAsset of ['anthro-mundas.png','the-ancients.png','winds-of-magic.png','hollowing-hallows.png','the-blight-of-the-undeath.png','the-great-adventure.png'])assert.ok(exists(`src/assets/lore/${loreAsset}`),`Lore artwork missing: ${loreAsset}`)
+for(const loreAsset of ['anthro-mundas.png','the-ancients.png','winds-of-magic.png','hollowing-hallows.png','the-ages-of-anthro-mundas.png','the-blight-of-the-undeath.png','the-great-adventure.png'])assert.ok(exists(`src/assets/lore/${loreAsset}`),`Lore artwork missing: ${loreAsset}`)
 assert.match(read('src/data/ruleCatalog.ts'),/id:'brambleheart-lore',title:'Brambleheart Lore'/,'References must expose one Brambleheart Lore group authority')
 assert.match(read('src/views/RulesView.vue'),/referencePageGroups/,'References index must render the shared Brambleheart Lore group')
 assert.match(read('src/data/ruleCatalog.ts'),/lorePage\('lore-anthro-mundas','Anthro Mundas'/,'The Anthro Mundas lore child must use the current title')

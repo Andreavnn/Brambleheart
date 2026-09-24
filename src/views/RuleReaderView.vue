@@ -133,7 +133,7 @@ const currentMonsterArt=computed(()=>{const monster=currentMonster.value;if(!mon
 const unlockedMonsterNames=new Set(['Muckling','Noxious Muckling','Ember Dyrtle'])
 function monsterIsAvailable(monster:{name:string}){return unlockedMonsterNames.has(monster.name)}
 function monsterVariantCount(family:{parent:{name:string};children:{name:string}[]}){return 1+family.children.length}
-const loreIllustrationNames:Record<string,string>={'lore-anthro-mundas':'anthro-mundas','lore-anthro-mundas-ancients':'the-ancients','lore-anthro-mundas-winds':'winds-of-magic','lore-anthro-mundas-hallows':'hollowing-hallows','lore-anthro-mundas-undeath':'the-blight-of-the-undeath','lore-anthro-mundas-adventure':'the-great-adventure'}
+const loreIllustrationNames:Record<string,string>={'lore-anthro-mundas':'anthro-mundas','lore-anthro-mundas-ancients':'the-ancients','lore-anthro-mundas-winds':'winds-of-magic','lore-anthro-mundas-hallows':'hollowing-hallows','lore-anthro-mundas-ages':'the-ages-of-anthro-mundas','lore-anthro-mundas-undeath':'the-blight-of-the-undeath','lore-anthro-mundas-adventure':'the-great-adventure'}
 const currentLoreIllustration=computed(()=>{const wanted=loreIllustrationNames[canonicalSlug.value];if(!wanted)return'';return Object.entries(loreImageModules).find(([path])=>monsterArtKey((path.split('/').pop()||'').replace(/\.[^.]+$/,''))===monsterArtKey(wanted))?.[1]||''})
 const showLoreIllustrationPlaceholder=computed(()=>canonicalSlug.value.startsWith('lore-anthro-mundas'))
 const monsterGroups=computed(()=>monsterCategories.map(category=>{

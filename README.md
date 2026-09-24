@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.15
+# Brambleheart TTRPG — Beta 0.16
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.15 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.16 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.15
+## Current Site Update — Beta 0.16
 
-Beta 0.15 aligns the Brambleheart Lore reference typography with the other reference entries, renames the first lore child to Anthro Mundas, refreshes the shared page-header and Share artwork, and makes Ready For Adventure the default site background for new/reset settings.
+Beta 0.16 finishes the current Anthro Mundas lore illustration set by adding The Ages of Anthro Mundas artwork, brings the Brambleheart Lore parent row onto the same base color treatment as the other reference rows, and adjusts the News Share card art scale and placement to better match the neighboring promo cards.
 
 ## Current Game Update — v0.01
 
@@ -26,9 +26,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.15`
-- package version: `0.15.0`
-- PWA cache: `v0.15`
+- Site Update / BUILD/export: `0.16`
+- package version: `0.16.0`
+- PWA cache: `v0.16`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

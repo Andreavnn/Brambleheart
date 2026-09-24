@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.16 — Lore Art Completion & Reference Polish
+
+## References & Presentation
+
+- Changes the Brambleheart Lore parent entry styling so its closed row uses the same base color treatment as FAQ and Changes & Updates while keeping the expandable lore-group structure.
+- Adds the supplied The Ages of Anthro Mundas illustration to the matching lore page, completing the current Anthro Mundas lore artwork set.
+- Enlarges and lowers the News Share card character image so it better matches the visual scale of the Discord and Creator Content cards beside it.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.16 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.15 — Reference Typography, Header Artwork & Default Background
 
 ## References & Presentation
@@ -24,22 +36,3 @@
 ## Release Integrity
 
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.14 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.13 — Lore Restructure, Monster Locking & Sheet Polish
-
-## Lore & References
-
-- Replaces The Great Morphing, The Era of Discovery, and The Age of Strife with a single The Ages of Anthro Mundas page positioned between Hollowing Hallows and The Blight of the Undeath.
-- Replaces the Anthro Mundas lore text for The Blight of the Undeath with the supplied current copy and renames Age of Adventure to The Great Adventure with its replacement lore.
-- Adds lore illustration slots to Anthro Mundas reference pages, uses the supplied artwork for Lore - Anthro Mundas, The Ancients, and Winds of Magic, and preserves visible placeholders for pages that do not yet have assigned art.
-
-## Watcher & Character Sheets
-
-- Locks unfinished monster entries in Rules › The Watcher › Monsters so only Muckling, Noxious Muckling, and Ember Dyrtle remain selectable, with greyed locked rows and lock indicators for unavailable profiles.
-- Updates monster family summaries so variant counts show the total number of monsters in that family rather than only the number of child entries.
-- Restores Adventure Kit gear to the Level Up equipment review and changes Character Sheet spell cards to the shared independent two-column layout.
-- Aligns deed reward pills with the other footer pills so the Bonus Reward box matches the companion boxes in the Sparks / Deeds presentation.
-
-## Release Integrity
-
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.13 while Game Update remains v0.01.
