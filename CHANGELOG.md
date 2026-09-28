@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.17 — Character Art Refresh
+
+## Artwork & Presentation
+
+- Replaces the News, Character Roster, Rhythm Engine, Rules, and Settings header characters with the newly supplied artwork while preserving the shared page-header layout and removing the uploaded black backgrounds.
+- Updates the Share Brambleheart promo art with the supplied replacement image and removes its uploaded black background so it continues to display cleanly inside the News card.
+- Replaces the Muckling, Noxious Muckling, and Ember Dyrtle monster art with the supplied updated artwork, including adding a dedicated Noxious Muckling image so all currently unlocked monster profiles now have matching art.
+- Refreshes all 12 playable-species art assets with the supplied updated artwork and removes uploaded black backgrounds before applying them to the site.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.17 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.16 — Lore Art Completion & Reference Polish
 
 ## References & Presentation
@@ -23,16 +36,3 @@
 ## Release Integrity
 
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.15 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.14 — Lore Navigation & Artwork Refresh
-
-## Lore & References
-
-- Reorganizes Rules › References so Anthro Mundas material is grouped under an expandable Brambleheart Lore parent, with each lore page available directly beneath it while FAQ and Changes & Updates remain separate reference entries.
-- Removes the retired lore banner layer and its Anthro Mundas banner asset so lore pages now use only the dedicated lore illustration area.
-- Replaces the Anthro Mundas, The Ancients, and Winds of Magic illustrations with the supplied updated artwork and adds supplied artwork for Hollowing Hallows, The Blight of the Undeath, and The Great Adventure.
-- Keeps The Ages of Anthro Mundas on the shared lore illustration layout with its placeholder until dedicated artwork is supplied.
-
-## Release Integrity
-
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.14 while Game Update remains v0.01.

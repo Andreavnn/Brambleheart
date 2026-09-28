@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.16','0.15','0.14'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.17','0.16','0.15'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -74,6 +74,8 @@ assert.match(read('src/views/RulesView.vue'),/reference-subcategory/,'Bramblehea
 assert.match(read('src/state/settings.ts'),/backgroundImage:'ready-for-adventure'/,'Ready For Adventure must be the default site background')
 for(const headerAsset of ['news.png','character-roster.png','rhythm-engine.png','rules.png','settings.png'])assert.ok(exists(`src/assets/page-headers/${headerAsset}`),`Page-header artwork missing: ${headerAsset}`)
 assert.ok(exists('src/assets/news/share-brambleheart.png'),'Share Brambleheart artwork must remain available')
+for(const monsterArt of ['Muckling.png','Noxious Muckling.png','Ember Dyrtle.png'])assert.ok(exists(`src/assets/monsters/${monsterArt}`),`Unlocked monster artwork missing: ${monsterArt}`)
+for(const speciesArt of ['ardenn.png','auravex.png','axalori.png','braelor.png','cethra.png','hedgkin.png','ravari.png','rivkan.png','sauren.png','tordan.png','urnath.png','virelan.png'])assert.ok(exists(`public/assets/species/${speciesArt}`),`Playable species artwork missing: ${speciesArt}`)
 
 for(const obsolete of ['src/data/equipmentNormalization.ts','src/data/rulesSource.ts','src/data/beta032Content.ts','src/styles.beta032.css'])assert.equal(exists(obsolete),false,`${obsolete} must remain removed`)
 for(const obsoleteAsset of ['src/assets/backgrounds/Blightbound Horror.png','src/assets/page-headers/rules.png.png'])assert.equal(exists(obsoleteAsset),false,`${obsoleteAsset} must remain removed`)
