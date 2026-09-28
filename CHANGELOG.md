@@ -1,3 +1,16 @@
+# Brambleheart Beta 0.19 — Species Asset Authority Fix
+
+## Species Artwork
+
+- Corrects the species-art asset authority so Character Creation and Rules pages now resolve species images through the same explicit filename mapping instead of independently forcing every species filename to lowercase.
+- Uses the newly uploaded case-sensitive species files for Ardenn, Auravex, Axalori, Cethra, Ravari, Sauren, Tordan, Urnath, and Virelan rather than the older lowercase image copies that remained from the previous artwork pass.
+- Keeps Braelor, Hedgkin, and Rivkan on their existing lowercase assets until replacement files with their species-name filenames are supplied, avoiding broken images while removing the automatic lowercase behavior from the application.
+- Retires the superseded lowercase duplicates for the nine species that already have replacement uploads.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.19 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.18 — Species Artwork Presentation Cleanup
 
 ## Species Artwork
@@ -22,15 +35,3 @@
 ## Release Integrity
 
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.17 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.16 — Lore Art Completion & Reference Polish
-
-## References & Presentation
-
-- Changes the Brambleheart Lore parent entry styling so its closed row uses the same base color treatment as FAQ and Changes & Updates while keeping the expandable lore-group structure.
-- Adds the supplied The Ages of Anthro Mundas illustration to the matching lore page, completing the current Anthro Mundas lore artwork set.
-- Enlarges and lowers the News Share card character image so it better matches the visual scale of the Discord and Creator Content cards beside it.
-
-## Release Integrity
-
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.16 while Game Update remains v0.01.

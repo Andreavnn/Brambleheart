@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { speciesData } from '../data/speciesData'
+import { speciesImagePaths } from '../data/creationRules'
 import { structuredRule, visibleRuleFields } from '../rules/rulesEngine'
 import { traitPillKeywords } from '../rules/abilityPresentation'
 import RuleCollapsibleCard from './RuleCollapsibleCard.vue'
@@ -9,7 +10,7 @@ import IndependentCardColumns from './IndependentCardColumns.vue'
 type SpeciesDefinition=(typeof speciesData)[number]
 const props=defineProps<{species:SpeciesDefinition}>()
 
-function speciesImageUrl(name:string){return`/assets/species/${name.toLowerCase()}.png`}
+function speciesImageUrl(name:string){return speciesImagePaths[name]||''}
 function manaCostFromRule(text:string){const match=text.match(/\bCOST:\s*\[?([0-9]+)\]?\s*mana/i);return match?Number(match[1]):null}
 function footerKeywords(values:string[],kind:'Heritage'|'Cultural'){return traitPillKeywords(values,kind,props.species.name)}
 </script>

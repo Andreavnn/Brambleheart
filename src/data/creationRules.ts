@@ -22,18 +22,18 @@ export const cultureSkillGrants: Record<string, CultureSkillGrant> = {
 }
 
 export const speciesImagePaths: Record<string,string> = {
-  Ardenn:'/assets/species/ardenn.png',
-  Auravex:'/assets/species/auravex.png',
-  Axalori:'/assets/species/axalori.png',
+  Ardenn:'/assets/species/Ardenn.png',
+  Auravex:'/assets/species/Auravex.png',
+  Axalori:'/assets/species/Axalori.png',
   Braelor:'/assets/species/braelor.png',
-  Cethra:'/assets/species/cethra.png',
+  Cethra:'/assets/species/Cethra.png',
   Hedgkin:'/assets/species/hedgkin.png',
-  Ravari:'/assets/species/ravari.png',
+  Ravari:'/assets/species/Ravari.png',
   Rivkan:'/assets/species/rivkan.png',
-  Sauren:'/assets/species/sauren.png',
-  Tordan:'/assets/species/tordan.png',
-  Urnath:'/assets/species/urnath.png',
-  Virelan:'/assets/species/virelan.png',
+  Sauren:'/assets/species/Sauren.png',
+  Tordan:'/assets/species/Tordan.png',
+  Urnath:'/assets/species/Urnath.png',
+  Virelan:'/assets/species/Virelan.png',
 }
 
 export const startingPathOptions = [
