@@ -1,3 +1,15 @@
+# Brambleheart Beta 0.18 — Species Artwork Presentation Cleanup
+
+## Species Artwork
+
+- Removes the decorative gradient, black border, rounded clipping, and overflow treatment from the Character Creation species image shell so uploaded species artwork is displayed without site-applied background or clipping effects.
+- Removes the tinted artwork-side background from playable-species Rules pages so transparent species images render against the normal page surface rather than a species-specific color treatment.
+- Removes the duplicate Character Creation species border override and stale Rules-reader species frame styling, leaving the shared stylesheet as the single authority for species artwork layout.
+
+## Release Integrity
+
+- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.18 while Game Update remains v0.01.
+
 # Brambleheart Beta 0.17 — Character Art Refresh
 
 ## Artwork & Presentation
@@ -22,17 +34,3 @@
 ## Release Integrity
 
 - Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.16 while Game Update remains v0.01.
-
-# Brambleheart Beta 0.15 — Reference Typography, Header Artwork & Default Background
-
-## References & Presentation
-
-- Renames the Brambleheart Lore child entry from Lore - Anthro Mundas to Anthro Mundas while preserving its existing lore route and source material.
-- Aligns the Brambleheart Lore parent title and detail typography with the FAQ and Changes & Updates entries without changing the expandable lore-group structure.
-- Replaces the News, Character Roster, Rhythm Engine, Rules, and Settings page-header character artwork using the existing shared header placement and responsive behavior.
-- Replaces the News Share Brambleheart character artwork while retaining the existing Share card layout and behavior.
-- Changes the default site background for new/reset settings to Ready For Adventure while preserving previously saved user background selections.
-
-## Release Integrity
-
-- Synchronizes Site Update, package, runtime/export, downloadable instructions, install-asset versioning, and PWA cache metadata at Beta 0.15 while Game Update remains v0.01.

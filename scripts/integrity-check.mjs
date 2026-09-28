@@ -40,7 +40,7 @@ assert.doesNotMatch(installSupport,/setInterval|periodicSync|sync\.register/,'In
 
 const changelog=read('CHANGELOG.md')
 const changelogReleases=[...changelog.matchAll(/^# Brambleheart Beta ([0-9.]+)/gm)].map(match=>match[1])
-assert.deepEqual(changelogReleases,['0.17','0.16','0.15'],'Site Update history must retain the condensed three-release history')
+assert.deepEqual(changelogReleases,['0.18','0.17','0.16'],'Site Update history must retain the condensed three-release history')
 let activeCategory='';let categoryCount=0
 for(const line of changelog.split(/\r?\n/)){
   if(line.startsWith('## ')){if(activeCategory)assert.ok(categoryCount<=12,`${activeCategory} exceeds the 12-log category maximum`);activeCategory=line.slice(3).trim();categoryCount=0}
@@ -221,6 +221,11 @@ assert.match(characterDetailSection,/Threat Level · Point[\s\S]{0,240}threat\.l
 const speciesSheet=read('src/components/SpeciesRuleSheet.vue')
 assert.doesNotMatch(speciesSheet,/<small>Expanded lore<\/small>|traits<\/small>/,'Species collapse summaries must not retain redundant right-side detail text')
 const styles=read('src/styles.css')
+assert.doesNotMatch(styles,/\.species-art-shell\{[^}]*\b(?:background|border|border-radius|overflow):/,'Species image shell must not apply a background, border, rounded clipping, or overflow effect')
+assert.doesNotMatch(styles,/\.species-rule-side\{[^}]*background:/,'Playable Species rules artwork must not apply a tinted background behind species images')
+assert.doesNotMatch(read('src/views/CreateCharacterView.vue'),/\.species-art-shell\{[^}]*border:/,'Character Creation must not restack a species image border override')
+assert.doesNotMatch(read('src/components/SpeciesRuleSheet.vue'),/species-rule-art-frame/,'Playable Species must not retain the obsolete species artwork frame wrapper')
+assert.doesNotMatch(read('src/views/RuleReaderView.vue'),/species-rule-art-frame/,'Rules reader must not retain the obsolete species artwork frame styling')
 assert.match(styles,/border-top-color:var\(--rule-tone,var\(--accent\)\)/,'shared RuleFeatureCard surfaces must preserve their tone accent')
 const ruleCollapsible=read('src/components/RuleCollapsibleCard.vue')
 assert.match(ruleCollapsible,/rule-feature-box rule-feature-card rule-collapsible-card/,'Semantic expandable Rules boxes must reuse the RuleFeature card authority')

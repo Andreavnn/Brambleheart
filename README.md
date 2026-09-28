@@ -1,11 +1,11 @@
-# Brambleheart TTRPG — Beta 0.17
+# Brambleheart TTRPG — Beta 0.18
 Brambleheart is a Vue 3 + TypeScript + Vite + Vue Router tabletop companion application.
 
-Beta 0.17 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
+Beta 0.18 is the current **Site Update**. Site Updates track application, interface, storage, navigation, presentation, and deployment changes. Brambleheart game-rule changes are tracked separately as **Game Updates**.
 
-## Current Site Update — Beta 0.17
+## Current Site Update — Beta 0.18
 
-Beta 0.17 refreshes the shared page-header art, Share Brambleheart promo art, the currently unlocked monster art, and all playable-species art using the newly supplied assets, with uploaded black backgrounds removed before the artwork is applied.
+Beta 0.18 removes the species-specific image background, border, clipping, and tint treatments so replacement species artwork is displayed directly by the site without an additional visual effect layered behind or around it.
 
 ## Current Game Update — v0.01
 
@@ -26,9 +26,9 @@ The game remains square-based. Rule text displays bracketed distances with a spa
 
 ## Release integrity
 
-- Site Update / BUILD/export: `0.17`
-- package version: `0.17.0`
-- PWA cache: `v0.17`
+- Site Update / BUILD/export: `0.18`
+- package version: `0.18.0`
+- PWA cache: `v0.18`
 - Game Update: `v0.01`
 - Site Update history: `CHANGELOG.md`
 - Game Update history: `src/data/gameUpdates.ts`

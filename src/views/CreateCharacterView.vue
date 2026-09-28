@@ -899,7 +899,6 @@ watch(()=>form.path,()=>ensureTalentSlots())
 .species-choice-copy .creation-info-panel,.species-choice-copy .creation-info-body,.species-choice-copy .trait-stack,.species-choice-copy .trait-card,.faith-oath-column>section,.faith-oath-column .creation-info-panel,.faith-oath-column .creation-info-body,.faith-oath-column .choice-summary{min-width:0;max-width:100%}
 .species-choice-copy .rule-breakdown-grid>div{min-width:0}
 .species-choice-copy .rule-breakdown-grid span,.species-choice-copy .rule-flavor,.species-choice-copy .creation-info-body p,.faith-oath-column p{overflow-wrap:anywhere}
-.species-art-shell{border:2px solid #000}
 .appearance-textarea{min-height:82px;padding-top:10px;padding-bottom:10px;resize:vertical;line-height:1.45;font:inherit}
 .creator-start-over{color:#000}
 .creator-close-button{color:var(--danger)}

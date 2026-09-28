@@ -21,7 +21,7 @@ function footerKeywords(values:string[],kind:'Heritage'|'Cultural'){return trait
       <small class="species-rule-pronunciation">{{ species.pronunciation }}</small>
       <div class="species-rule-layout">
         <div class="species-rule-lore-copy"><p>{{ species.lore }}</p><p><strong>Language:</strong> {{ species.language }}</p></div>
-        <div class="species-rule-side"><div class="species-rule-art"><div class="species-rule-art-frame"><img :src="speciesImageUrl(species.name)" :alt="`${species.name} species artwork`" /></div></div><blockquote class="species-rule-quote">“{{ species.quote }}”</blockquote></div>
+        <div class="species-rule-side"><div class="species-rule-art"><img :src="speciesImageUrl(species.name)" :alt="`${species.name} species artwork`" /></div><blockquote class="species-rule-quote">“{{ species.quote }}”</blockquote></div>
       </div>
     </section>
     <RuleCollapsibleCard :title="`${species.name} Lore`" class="species-menu-panel species-rule-lore-placeholder"><div class="species-lore-placeholder-body" aria-label="Species lore placeholder"></div></RuleCollapsibleCard>
